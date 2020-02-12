@@ -1,0 +1,832 @@
+syntax = "proto3";
+
+package terraform.digitalocean.resources;
+
+import "terraform/meta.proto";
+
+//DigitaloceanCdn version is 0
+message DigitaloceanCdn {
+  //ID of a DigitalOcean managed TLS certificate for use with custom domains
+  string certificate_id = 1 [json_name = "certificate_id"];
+
+  //The date and time (ISO8601) of when the CDN endpoint was created.
+  string created_at = 2 [json_name = "created_at"];
+
+  //fully qualified domain name (FQDN) for custom subdomain, (requires certificate_id)
+  string custom_domain = 3 [json_name = "custom_domain"];
+
+  //fully qualified domain name (FQDN) to serve the CDN content
+  string endpoint = 4;
+
+  string id = 5;
+
+  //fully qualified domain name (FQDN) for the origin server
+  string origin = 6;
+
+  //The amount of time the content is cached in the CDN
+  int64 ttl = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//DigitaloceanCertificate version is 0
+message DigitaloceanCertificate {
+  string certificate_chain = 1 [json_name = "certificate_chain"];
+
+  repeated string domains = 2;
+
+  string id = 3;
+
+  string leaf_certificate = 4 [json_name = "leaf_certificate"];
+
+  string name = 5;
+
+  string not_after = 6 [json_name = "not_after"];
+
+  string private_key = 7 [json_name = "private_key"];
+
+  string sha1_fingerprint = 8 [json_name = "sha1_fingerprint"];
+
+  string state = 9;
+
+  string type = 10;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//DigitaloceanDatabaseCluster version is 0
+message DigitaloceanDatabaseCluster {
+  string database = 1;
+
+  string engine = 2;
+
+  string eviction_policy = 3 [json_name = "eviction_policy"];
+
+  string host = 4;
+
+  string id = 5;
+
+  string name = 6;
+
+  int64 node_count = 7 [json_name = "node_count"];
+
+  string password = 8;
+
+  int64 port = 9;
+
+  string private_host = 10 [json_name = "private_host"];
+
+  string private_uri = 11 [json_name = "private_uri"];
+
+  string region = 12;
+
+  string size = 13;
+
+  string sql_mode = 14 [json_name = "sql_mode"];
+
+  repeated string tags = 15;
+
+  string uri = 16;
+
+  string urn = 17;
+
+  string user = 18;
+
+  string version = 19;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
+
+  int32 count = 21;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 22;
+
+  string provider = 23;
+
+  terraform.meta.Lifecycle lifecycle = 24;
+}
+
+//DigitaloceanDatabaseConnectionPool version is 0
+message DigitaloceanDatabaseConnectionPool {
+  string cluster_id = 1 [json_name = "cluster_id"];
+
+  string db_name = 2 [json_name = "db_name"];
+
+  string host = 3;
+
+  string id = 4;
+
+  string mode = 5;
+
+  string name = 6;
+
+  string password = 7;
+
+  int64 port = 8;
+
+  string private_host = 9 [json_name = "private_host"];
+
+  string private_uri = 10 [json_name = "private_uri"];
+
+  int64 size = 11;
+
+  string uri = 12;
+
+  string user = 13;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//DigitaloceanDatabaseDb version is 0
+message DigitaloceanDatabaseDb {
+  string cluster_id = 1 [json_name = "cluster_id"];
+
+  string id = 2;
+
+  string name = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//DigitaloceanDatabaseFirewall version is 0
+message DigitaloceanDatabaseFirewall {
+  string cluster_id = 1 [json_name = "cluster_id"];
+
+  string id = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//DigitaloceanDatabaseReplica version is 0
+message DigitaloceanDatabaseReplica {
+  string cluster_id = 1 [json_name = "cluster_id"];
+
+  string database = 2;
+
+  string host = 3;
+
+  string id = 4;
+
+  string name = 5;
+
+  string password = 6;
+
+  int64 port = 7;
+
+  string private_host = 8 [json_name = "private_host"];
+
+  string private_uri = 9 [json_name = "private_uri"];
+
+  string region = 10;
+
+  string size = 11;
+
+  repeated string tags = 12;
+
+  string uri = 13;
+
+  string user = 14;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
+
+  int32 count = 16;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
+
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
+}
+
+//DigitaloceanDatabaseUser version is 0
+message DigitaloceanDatabaseUser {
+  string cluster_id = 1 [json_name = "cluster_id"];
+
+  string id = 2;
+
+  string name = 3;
+
+  string password = 4;
+
+  string role = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//DigitaloceanDomain version is 0
+message DigitaloceanDomain {
+  string id = 1;
+
+  string ip_address = 2 [json_name = "ip_address"];
+
+  string name = 3;
+
+  string urn = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//DigitaloceanDroplet version is 1
+message DigitaloceanDroplet {
+  bool backups = 1;
+
+  string created_at = 2 [json_name = "created_at"];
+
+  int64 disk = 3;
+
+  string id = 4;
+
+  string image = 5;
+
+  string ipv4_address = 6 [json_name = "ipv4_address"];
+
+  string ipv4_address_private = 7 [json_name = "ipv4_address_private"];
+
+  bool ipv6 = 8;
+
+  string ipv6_address = 9 [json_name = "ipv6_address"];
+
+  string ipv6_address_private = 10 [json_name = "ipv6_address_private"];
+
+  bool locked = 11;
+
+  int64 memory = 12;
+
+  bool monitoring = 13;
+
+  string name = 14;
+
+  int64 price_hourly = 15 [json_name = "price_hourly"];
+
+  int64 price_monthly = 16 [json_name = "price_monthly"];
+
+  bool private_networking = 17 [json_name = "private_networking"];
+
+  string region = 18;
+
+  bool resize_disk = 19 [json_name = "resize_disk"];
+
+  string size = 20;
+
+  repeated string ssh_keys = 21 [json_name = "ssh_keys"];
+
+  string status = 22;
+
+  repeated string tags = 23;
+
+  string urn = 24;
+
+  string user_data = 25 [json_name = "user_data"];
+
+  int64 vcpus = 26;
+
+  repeated string volume_ids = 27 [json_name = "volume_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 28;
+
+  int32 count = 29;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 30;
+
+  string provider = 31;
+
+  terraform.meta.Lifecycle lifecycle = 32;
+}
+
+//DigitaloceanDropletSnapshot version is 0
+message DigitaloceanDropletSnapshot {
+  string created_at = 1 [json_name = "created_at"];
+
+  string droplet_id = 2 [json_name = "droplet_id"];
+
+  string id = 3;
+
+  int64 min_disk_size = 4 [json_name = "min_disk_size"];
+
+  string name = 5;
+
+  repeated string regions = 6;
+
+  int64 size = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//DigitaloceanFirewall version is 0
+message DigitaloceanFirewall {
+  string created_at = 1 [json_name = "created_at"];
+
+  repeated int64 droplet_ids = 2 [json_name = "droplet_ids"];
+
+  string id = 3;
+
+  string name = 4;
+
+  repeated PendingChanges pending_changes = 5 [json_name = "pending_changes"];
+
+  string status = 6;
+
+  repeated string tags = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message PendingChanges {
+    int64 droplet_id = 1 [json_name = "droplet_id"];
+
+    bool removing = 2;
+
+    string status = 3;
+  }
+}
+
+//DigitaloceanFloatingIp version is 0
+message DigitaloceanFloatingIp {
+  int64 droplet_id = 1 [json_name = "droplet_id"];
+
+  string id = 2;
+
+  string ip_address = 3 [json_name = "ip_address"];
+
+  string region = 4;
+
+  //the uniform resource name for the floating ip
+  string urn = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//DigitaloceanFloatingIpAssignment version is 0
+message DigitaloceanFloatingIpAssignment {
+  int64 droplet_id = 1 [json_name = "droplet_id"];
+
+  string id = 2;
+
+  string ip_address = 3 [json_name = "ip_address"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//DigitaloceanKubernetesCluster version is 1
+message DigitaloceanKubernetesCluster {
+  string cluster_subnet = 1 [json_name = "cluster_subnet"];
+
+  string created_at = 2 [json_name = "created_at"];
+
+  string endpoint = 3;
+
+  string id = 4;
+
+  string ipv4_address = 5 [json_name = "ipv4_address"];
+
+  repeated KubeConfig kube_config = 6 [json_name = "kube_config"];
+
+  string name = 7;
+
+  string region = 8;
+
+  string service_subnet = 9 [json_name = "service_subnet"];
+
+  string status = 10;
+
+  repeated string tags = 11;
+
+  string updated_at = 12 [json_name = "updated_at"];
+
+  string version = 13;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+
+  message KubeConfig {
+    string client_certificate = 1 [json_name = "client_certificate"];
+
+    string client_key = 2 [json_name = "client_key"];
+
+    string cluster_ca_certificate = 3 [json_name = "cluster_ca_certificate"];
+
+    string expires_at = 4 [json_name = "expires_at"];
+
+    string host = 5;
+
+    string raw_config = 6 [json_name = "raw_config"];
+
+    string token = 7;
+  }
+}
+
+//DigitaloceanKubernetesNodePool version is 1
+message DigitaloceanKubernetesNodePool {
+  int64 actual_node_count = 1 [json_name = "actual_node_count"];
+
+  bool auto_scale = 2 [json_name = "auto_scale"];
+
+  string cluster_id = 3 [json_name = "cluster_id"];
+
+  string id = 4;
+
+  int64 max_nodes = 5 [json_name = "max_nodes"];
+
+  int64 min_nodes = 6 [json_name = "min_nodes"];
+
+  string name = 7;
+
+  int64 node_count = 8 [json_name = "node_count"];
+
+  repeated Nodes nodes = 9;
+
+  string size = 10;
+
+  repeated string tags = 11;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+
+  message Nodes {
+    string created_at = 1 [json_name = "created_at"];
+
+    string droplet_id = 2 [json_name = "droplet_id"];
+
+    string id = 3;
+
+    string name = 4;
+
+    string status = 5;
+
+    string updated_at = 6 [json_name = "updated_at"];
+  }
+}
+
+//DigitaloceanLoadbalancer version is 0
+message DigitaloceanLoadbalancer {
+  string algorithm = 1;
+
+  repeated int64 droplet_ids = 2 [json_name = "droplet_ids"];
+
+  string droplet_tag = 3 [json_name = "droplet_tag"];
+
+  bool enable_proxy_protocol = 4 [json_name = "enable_proxy_protocol"];
+
+  string id = 5;
+
+  string ip = 6;
+
+  string name = 7;
+
+  bool redirect_http_to_https = 8 [json_name = "redirect_http_to_https"];
+
+  string region = 9;
+
+  string status = 10;
+
+  //the uniform resource name for the load balancer
+  string urn = 11;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//DigitaloceanProject version is 0
+message DigitaloceanProject {
+  //the date and time when the project was created, (ISO8601)
+  string created_at = 1 [json_name = "created_at"];
+
+  //the descirption of the project
+  string description = 2;
+
+  //the environment of the project's resources
+  string environment = 3;
+
+  string id = 4;
+
+  //the human-readable name for the project
+  string name = 5;
+
+  //the id of the project owner.
+  int64 owner_id = 6 [json_name = "owner_id"];
+
+  //the unique universal identifier of the project owner.
+  string owner_uuid = 7 [json_name = "owner_uuid"];
+
+  //the purpose of the project
+  string purpose = 8;
+
+  //the resources associated with the project
+  repeated string resources = 9;
+
+  //the date and time when the project was last updated, (ISO8601)
+  string updated_at = 10 [json_name = "updated_at"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//DigitaloceanRecord version is 0
+message DigitaloceanRecord {
+  string domain = 1;
+
+  int64 flags = 2;
+
+  string fqdn = 3;
+
+  string id = 4;
+
+  string name = 5;
+
+  int64 port = 6;
+
+  int64 priority = 7;
+
+  string tag = 8;
+
+  int64 ttl = 9;
+
+  string type = 10;
+
+  string value = 11;
+
+  int64 weight = 12;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+
+  int32 count = 14;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+}
+
+//DigitaloceanSpacesBucket version is 0
+message DigitaloceanSpacesBucket {
+  //Canned ACL applied on bucket creation
+  string acl = 1;
+
+  //The FQDN of the bucket
+  string bucket_domain_name = 2 [json_name = "bucket_domain_name"];
+
+  //Unless true, the bucket will only be destroyed if empty
+  bool force_destroy = 3 [json_name = "force_destroy"];
+
+  string id = 4;
+
+  //Bucket name
+  string name = 5;
+
+  //Bucket region
+  string region = 6;
+
+  //the uniform resource name for the bucket
+  string urn = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//DigitaloceanSshKey version is 0
+message DigitaloceanSshKey {
+  string fingerprint = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string public_key = 4 [json_name = "public_key"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//DigitaloceanTag version is 0
+message DigitaloceanTag {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//DigitaloceanVolume version is 0
+message DigitaloceanVolume {
+  string description = 1;
+
+  repeated int64 droplet_ids = 2 [json_name = "droplet_ids"];
+
+  string filesystem_label = 3 [json_name = "filesystem_label"];
+
+  string filesystem_type = 4 [json_name = "filesystem_type"];
+
+  string id = 5;
+
+  string initial_filesystem_label = 6 [json_name = "initial_filesystem_label"];
+
+  string initial_filesystem_type = 7 [json_name = "initial_filesystem_type"];
+
+  string name = 8;
+
+  string region = 9;
+
+  int64 size = 10;
+
+  string snapshot_id = 11 [json_name = "snapshot_id"];
+
+  repeated string tags = 12;
+
+  //the uniform resource name for the volume.
+  string urn = 13;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//DigitaloceanVolumeAttachment version is 0
+message DigitaloceanVolumeAttachment {
+  int64 droplet_id = 1 [json_name = "droplet_id"];
+
+  string id = 2;
+
+  string volume_id = 3 [json_name = "volume_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//DigitaloceanVolumeSnapshot version is 0
+message DigitaloceanVolumeSnapshot {
+  string created_at = 1 [json_name = "created_at"];
+
+  string id = 2;
+
+  int64 min_disk_size = 3 [json_name = "min_disk_size"];
+
+  string name = 4;
+
+  repeated string regions = 5;
+
+  int64 size = 6;
+
+  repeated string tags = 7;
+
+  string volume_id = 8 [json_name = "volume_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
