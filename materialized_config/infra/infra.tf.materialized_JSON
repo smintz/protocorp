@@ -11,7 +11,7 @@
           "region": "ams3",
           "size": "s-1vcpu-1gb",
           "ssh_keys": [
-            "25982933"
+            "${digitalocean_ssh_key.smintz-0.id}"
           ],
           "tags": [
             "client"
@@ -30,7 +30,7 @@
           "region": "ams3",
           "size": "s-1vcpu-1gb",
           "ssh_keys": [
-            "25982933"
+            "${digitalocean_ssh_key.smintz-0.id}"
           ],
           "tags": [
             "client"
@@ -49,7 +49,7 @@
           "region": "ams3",
           "size": "s-1vcpu-1gb",
           "ssh_keys": [
-            "25982933"
+            "${digitalocean_ssh_key.smintz-0.id}"
           ],
           "tags": [
             "server"
@@ -68,7 +68,7 @@
           "region": "ams3",
           "size": "s-1vcpu-1gb",
           "ssh_keys": [
-            "25982933"
+            "${digitalocean_ssh_key.smintz-0.id}"
           ],
           "tags": [
             "server"
@@ -87,7 +87,7 @@
           "region": "ams3",
           "size": "s-1vcpu-1gb",
           "ssh_keys": [
-            "25982933"
+            "${digitalocean_ssh_key.smintz-0.id}"
           ],
           "tags": [
             "server"
@@ -98,6 +98,12 @@
               "user_data"
             ]
           }
+        }
+      },
+      "digitalocean_ssh_key": {
+        "smintz-0": {
+          "name": "smintz-0",
+          "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk4ST4XhbBmZ3AKej/HWBBvodS/GBs3T6w6pP3WS2463QSOPnY42SVeH4AJZP3nVvvljeH7cYdFShastYOA6pkCxIVw7HSkE2xPLc+09n8bzaU3L8kHmjtfyZEQRxKmYTJA9dv0o3QYiJZgPWvUfGoLSYG4fqgD7KBZZrO+kygoAVby23mK3uPY67Z3mwQ8tB2JL3Fj00zbe+dTagHzXbudlUk28DvWBN59F8xLRZ0zI263MkkS0/1DuzmLlwj9XDfKaSxfSBOLBlAVF3CJ63dHLZ72JQ3ca5utFHkyK+WWymZskN+g3ahlvzb/cN/mMbSusVjvYg7+SDvPiN0waFP smintz@onavo"
         }
       },
       "random_pet": {
