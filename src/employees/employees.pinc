@@ -1,0 +1,12 @@
+# vim: ft=python
+load("employee.proto", "Employee")
+
+smintz=Employee(
+    id=10001,
+    unix_name="smintz",
+    first_name="Shahar",
+    last_name="Mintz",
+    ssh_keys=["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk4ST4XhbBmZ3AKej/HWBBvodS/GBs3T6w6pP3WS2463QSOPnY42SVeH4AJZP3nVvvljeH7cYdFShastYOA6pkCxIVw7HSkE2xPLc+09n8bzaU3L8kHmjtfyZEQRxKmYTJA9dv0o3QYiJZgPWvUfGoLSYG4fqgD7KBZZrO+kygoAVby23mK3uPY67Z3mwQ8tB2JL3Fj00zbe+dTagHzXbudlUk28DvWBN59F8xLRZ0zI263MkkS0/1DuzmLlwj9XDfKaSxfSBOLBlAVF3CJ63dHLZ72JQ3ca5utFHkyK+WWymZskN+g3ahlvzb/cN/mMbSusVjvYg7+SDvPiN0waFP smintz@onavo"]
+)
+
+EMPLOYEES=[smintz]

@@ -1,0 +1,7 @@
+load("employee.proto", "Employee")
+
+def positive_id(e):
+    if e.id < 1:
+        fail("Employee.id must be greater than 0")
+
+add_validator(Employee, positive_id)
