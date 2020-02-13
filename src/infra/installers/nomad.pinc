@@ -37,7 +37,9 @@ EOF
             config=config
         )
         + """
+cat <<EOF | sudo tee /etc/nomad.d/datacenter.hcl
 datacenter = "{}"
+EOF
 """.format(
             dc
         )

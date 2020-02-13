@@ -6,7 +6,7 @@ validate: compile
 	terraform validate tf/infra
 
 init:
-	terraform init -get-plugins -upgrade=true tf/infra
+	terraform init tf/infra
 
 gen:
 	pc4tf generate
