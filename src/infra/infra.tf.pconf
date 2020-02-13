@@ -16,7 +16,7 @@ load("installers/consul.pinc", "consul_setup")
 load("installers/nomad.pinc", "nomad_setup")
 load("/employees/employees.pinc", "EMPLOYEES")
 
-COUNTER = 3
+COUNTER = 0
 SERVERS = 3
 CLIENTS = 0
 
@@ -70,6 +70,14 @@ def create_device(tf, name, role, dc, provider):
         dc: The datacenter to deploy the device in.
         provider: The cloud provider to use
     """
+
+    nomad_config = """\
+advertise {
+    http = {{GetPublicIP}}
+    rpc = {{GetPublicIP}}
+    serf = {{GetPublicIP}}
+}
+"""
     tf.random_pet[name] = RandomPet()
     user_data = (
         INSTALL_BASE
@@ -77,7 +85,7 @@ def create_device(tf, name, role, dc, provider):
         + consul_setup(
             role, dc, CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])
         )
-        + nomad_setup(role, dc)
+        + nomad_setup(role, dc, config=nomad_config)
     )
     tf.digitalocean_droplet[name] = CREATE_FUNCS[provider](
         tf, "${random_pet.%s.id}" % name, role, dc, user_data
