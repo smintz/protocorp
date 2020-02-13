@@ -16,7 +16,7 @@ load("installers/consul.pinc", "consul_setup")
 load("installers/nomad.pinc", "nomad_setup")
 load("/employees/employees.pinc", "EMPLOYEES")
 
-COUNTER = 5
+COUNTER = 7
 SERVERS = 5
 CLIENTS = 0
 
@@ -73,9 +73,9 @@ def create_device(tf, name, role, dc, provider):
 
     nomad_config = """\
 advertise {
-    http = {{GetPublicIP}}
-    rpc = {{GetPublicIP}}
-    serf = {{GetPublicIP}}
+    http = "{{GetPublicIP}}"
+    rpc = "{{GetPublicIP}}"
+    serf = "{{GetPublicIP}}"
 }
 """
     tf.random_pet[name] = RandomPet()
