@@ -85,7 +85,9 @@ advertise {
         + consul_setup(
             role, dc, CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])
         )
-        + nomad_setup(role, dc, config=nomad_config)
+        + nomad_setup(
+            role, dc, CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])
+        )
     )
     tf.digitalocean_droplet[name] = CREATE_FUNCS[provider](
         tf, "${random_pet.%s.id}" % name, role, dc, user_data
