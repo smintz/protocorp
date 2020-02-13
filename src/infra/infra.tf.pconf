@@ -10,19 +10,14 @@ load(
 )
 load("/terraform/random-resources.proto", "RandomPet")
 load("/terraform/meta.proto", "Lifecycle")
-load(
-    "install_scripts.pinc",
-    "INSTALL_BASE",
-    "INSTALL_DOCKER",
-    "ETCD_SETUP",  # @unused
-    "K3S_INSTALL",  # @unused
-    "consul_setup",
-    "nomad_setup",
-)
+load("installers/base.pinc", "INSTALL_BASE")
+load("installers/docker.pinc", "INSTALL_DOCKER")
+load("installers/consul.pinc", "consul_setup")
+load("installers/nomad.pinc", "nomad_setup")
 load("/employees/employees.pinc", "EMPLOYEES")
 
 COUNTER = 0
-SERVERS = 0
+SERVERS = 3
 CLIENTS = 0
 
 CONSUL_JOIN_ARGS = {

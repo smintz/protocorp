@@ -1,0 +1,54 @@
+"""
+This file contains constants and functions to assist with instance installations.
+"""
+# vi:filetype=python syntax=python
+load("/infra/installers/systemd.pinc", "systemd")
+
+
+def consul_setup(role="server", dc="dc1", additional_args="", config=""):
+    """
+    Defines the installation of consul
+    Args:
+        role: either `server` or `client`
+        dc: Name of the datacenter
+        additional_args: Additional command line arguments to pass to the consul agent
+        config: Content to put as a config for consul
+    Returns:
+        Installation and configuration script for the consul agent.
+    """
+    agent_args = []
+    if role == "server":
+        agent_args.append("-server -bootstrap-expect=3")
+
+    agent_args.append("""-ui -client 0.0.0.0 -advertise '{{GetPublicIP}}'""")
+    agent_args.append("-datacenter=" + dc)
+    agent_args.append("-data-dir=/opt/consul/data")
+    agent_args.append(additional_args)
+
+    return (
+        """\
+echo "Determining Consul version to install ..."
+CHECKPOINT_URL="https://checkpoint-api.hashicorp.com/v1/check"
+CONSUL_DEMO_VERSION=$(curl -s "$${CHECKPOINT_URL}"/consul | jq .current_version | tr -d '"')
+echo "Fetching Consul version $${CONSUL_DEMO_VERSION} ..."
+cd /tmp/
+curl -s https://releases.hashicorp.com/consul/$${CONSUL_DEMO_VERSION}/consul_$${CONSUL_DEMO_VERSION}_linux_amd64.zip -o consul.zip
+echo "Installing Consul version $${CONSUL_DEMO_VERSION} ..."
+unzip consul.zip
+sudo chmod +x consul
+sudo mv consul /usr/local/bin/consul
+sudo mkdir /etc/consul.d
+sudo chmod a+w /etc/consul.d
+sudo mkdir -p /opt/consul/data
+"""
+        + """
+cat <<EOF | sudo tee /etc/consul.d/config.hcl
+{config}
+EOF
+""".format(
+            config=config
+        )
+        + systemd(
+            "consul", " ".join(["/usr/local/bin/consul", "agent", " ".join(agent_args)])
+        )
+    )
