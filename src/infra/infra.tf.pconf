@@ -16,7 +16,7 @@ load("installers/consul.pinc", "consul_setup")
 load("installers/nomad.pinc", "nomad_setup")
 load("/employees/employees.pinc", "EMPLOYEES")
 
-COUNTER = 0
+COUNTER = 1
 SERVERS = 3
 CLIENTS = 0
 
