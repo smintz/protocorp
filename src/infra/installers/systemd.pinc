@@ -28,8 +28,8 @@ sudo systemctl daemon-reload
     )
 
     if enable:
-        retstring = retstring + "sudo systemctl enable {service_name}\n"
+        retstring = retstring + "sudo systemctl enable {}\n".format(service_name)
     if start:
-        retstring = retstring + "sudo systemctl start {service_name}\n"
+        retstring = retstring + "sudo systemctl start {}\n".format(service_name)
 
     return retstring
