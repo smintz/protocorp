@@ -17,8 +17,8 @@ load("installers/nomad.pinc", "nomad_setup")
 load("/employees/employees.pinc", "EMPLOYEES")
 
 COUNTER = 5
-SERVERS = 5
-CLIENTS = 0
+SERVERS = 3
+CLIENTS = 2
 
 CONSUL_JOIN_ARGS = {
     "digitalocean": """-retry-join 'provider=digitalocean api_token={token} region={dc} tag_name=server'""",
