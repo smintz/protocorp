@@ -17,7 +17,7 @@ load("installers/nomad.pinc", "nomad_setup")
 load("/employees/employees.pinc", "EMPLOYEES")
 
 COUNTER = 0
-SERVERS = 3
+SERVERS = 0
 CLIENTS = 0
 
 CONSUL_JOIN_ARGS = {
