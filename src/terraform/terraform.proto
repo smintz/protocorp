@@ -6,6 +6,8 @@ import "terraform/digitalocean-resources.proto";
 
 import "terraform/random-resources.proto";
 
+import "terraform/tls-resources.proto";
+
 message Terraform {
   Resources resource = 1;
 
@@ -73,5 +75,13 @@ message Terraform {
     map<string, random.resources.RandomString> random_string = 31 [json_name = "random_string"];
 
     map<string, random.resources.RandomUuid> random_uuid = 32 [json_name = "random_uuid"];
+
+    map<string, tls.resources.TlsCertRequest> tls_cert_request = 33 [json_name = "tls_cert_request"];
+
+    map<string, tls.resources.TlsLocallySignedCert> tls_locally_signed_cert = 34 [json_name = "tls_locally_signed_cert"];
+
+    map<string, tls.resources.TlsPrivateKey> tls_private_key = 35 [json_name = "tls_private_key"];
+
+    map<string, tls.resources.TlsSelfSignedCert> tls_self_signed_cert = 36 [json_name = "tls_self_signed_cert"];
   }
 }

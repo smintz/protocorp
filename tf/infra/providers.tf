@@ -9,3 +9,4 @@ provider "google" {
 }
 
 provider "random" {}
+provider "tls" {}
