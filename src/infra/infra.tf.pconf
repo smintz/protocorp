@@ -16,7 +16,7 @@ load("installers/consul.pinc", "consul_setup")
 load("installers/nomad.pinc", "nomad_setup")
 load("/employees/employees.pinc", "EMPLOYEES")
 
-COUNTER = 2
+COUNTER = 5
 SERVERS = 5
 CLIENTS = 0
 
@@ -86,7 +86,10 @@ advertise {
             role, dc, CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])
         )
         + nomad_setup(
-            role, dc, CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])
+            role,
+            dc,
+            CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider]),
+            config=nomad_config,
         )
     )
     tf.digitalocean_droplet[name] = CREATE_FUNCS[provider](

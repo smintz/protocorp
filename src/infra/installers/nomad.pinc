@@ -10,6 +10,7 @@ def nomad_setup(role="server", dc="dc1", additional_args="", config=""):
     if role == "server":
         agent_args.append("-bootstrap-expect=3")
     agent_args.append("-data-dir=/opt/nomad/data")
+    agent_args.append("-config=/etc/nomad.d")
     agent_args.append(additional_args)
 
     return """\
