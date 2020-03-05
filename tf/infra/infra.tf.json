@@ -109,6 +109,126 @@
       "serverams35": {},
       "serverams36": {},
       "serverams37": {}
+    },
+    "tls_cert_request": {
+      "clientams35": {
+        "key_algorithm": "${tls_private_key.clientams35.algorithm}",
+        "private_key_pem": "${tls_private_key.clientams35.private_key_pem}"
+      },
+      "clientams36": {
+        "key_algorithm": "${tls_private_key.clientams36.algorithm}",
+        "private_key_pem": "${tls_private_key.clientams36.private_key_pem}"
+      },
+      "serverams35": {
+        "key_algorithm": "${tls_private_key.serverams35.algorithm}",
+        "private_key_pem": "${tls_private_key.serverams35.private_key_pem}"
+      },
+      "serverams36": {
+        "key_algorithm": "${tls_private_key.serverams36.algorithm}",
+        "private_key_pem": "${tls_private_key.serverams36.private_key_pem}"
+      },
+      "serverams37": {
+        "key_algorithm": "${tls_private_key.serverams37.algorithm}",
+        "private_key_pem": "${tls_private_key.serverams37.private_key_pem}"
+      }
+    },
+    "tls_locally_signed_cert": {
+      "clientams35": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.clientams35.cert_request_pem}"
+      },
+      "clientams36": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.clientams36.cert_request_pem}"
+      },
+      "serverams35": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.serverams35.cert_request_pem}"
+      },
+      "serverams36": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.serverams36.cert_request_pem}"
+      },
+      "serverams37": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.serverams37.cert_request_pem}"
+      }
+    },
+    "tls_private_key": {
+      "clientams35": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384"
+      },
+      "clientams36": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384"
+      },
+      "root": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384"
+      },
+      "serverams35": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384"
+      },
+      "serverams36": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384"
+      },
+      "serverams37": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384"
+      }
+    },
+    "tls_self_signed_cert": {
+      "root": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth"
+        ],
+        "dns_names": [
+          "protoconf.com"
+        ],
+        "is_ca_certificate": true,
+        "key_algorithm": "${tls_private_key.root.algorithm}",
+        "private_key_pem": "${tls_private_key.root.private_key_pem}"
+      }
     }
   }
 }
