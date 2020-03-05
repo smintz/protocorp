@@ -4,6 +4,8 @@ package terraform.tls.resources;
 
 import "terraform/meta.proto";
 
+import "terraform/tls-subject.proto";
+
 //TlsCertRequest version is 0
 message TlsCertRequest {
   string cert_request_pem = 1 [json_name = "cert_request_pem"];
@@ -34,6 +36,8 @@ message TlsCertRequest {
   string provider = 11;
 
   terraform.meta.Lifecycle lifecycle = 12;
+
+  terraform.tls.subject.TlsSubject  subject = 13;
 }
 
 //TlsLocallySignedCert version is 0
@@ -84,6 +88,7 @@ message TlsLocallySignedCert {
   string provider = 18;
 
   terraform.meta.Lifecycle lifecycle = 19;
+  terraform.tls.subject.TlsSubject subject = 20;
 }
 
 //TlsPrivateKey version is 0
@@ -169,4 +174,5 @@ message TlsSelfSignedCert {
   string provider = 19;
 
   terraform.meta.Lifecycle lifecycle = 20;
+  terraform.tls.subject.TlsSubject subject = 21;
 }

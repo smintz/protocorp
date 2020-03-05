@@ -116,23 +116,38 @@
       "tls_cert_request": {
         "clientams35": {
           "key_algorithm": "${tls_private_key.clientams35.algorithm}",
-          "private_key_pem": "${tls_private_key.clientams35.private_key_pem}"
+          "private_key_pem": "${tls_private_key.clientams35.private_key_pem}",
+          "subject": {
+            "common_name": "clientams35"
+          }
         },
         "clientams36": {
           "key_algorithm": "${tls_private_key.clientams36.algorithm}",
-          "private_key_pem": "${tls_private_key.clientams36.private_key_pem}"
+          "private_key_pem": "${tls_private_key.clientams36.private_key_pem}",
+          "subject": {
+            "common_name": "clientams36"
+          }
         },
         "serverams35": {
           "key_algorithm": "${tls_private_key.serverams35.algorithm}",
-          "private_key_pem": "${tls_private_key.serverams35.private_key_pem}"
+          "private_key_pem": "${tls_private_key.serverams35.private_key_pem}",
+          "subject": {
+            "common_name": "serverams35"
+          }
         },
         "serverams36": {
           "key_algorithm": "${tls_private_key.serverams36.algorithm}",
-          "private_key_pem": "${tls_private_key.serverams36.private_key_pem}"
+          "private_key_pem": "${tls_private_key.serverams36.private_key_pem}",
+          "subject": {
+            "common_name": "serverams36"
+          }
         },
         "serverams37": {
           "key_algorithm": "${tls_private_key.serverams37.algorithm}",
-          "private_key_pem": "${tls_private_key.serverams37.private_key_pem}"
+          "private_key_pem": "${tls_private_key.serverams37.private_key_pem}",
+          "subject": {
+            "common_name": "serverams37"
+          }
         }
       },
       "tls_locally_signed_cert": {
@@ -145,7 +160,8 @@
           "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
           "ca_key_algorithm": "${tls_private_key.root.algorithm}",
           "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
-          "cert_request_pem": "${tls_cert_request.clientams35.cert_request_pem}"
+          "cert_request_pem": "${tls_cert_request.clientams35.cert_request_pem}",
+          "validity_period_hours": 7776000
         },
         "clientams36": {
           "allowed_uses": [
@@ -156,7 +172,8 @@
           "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
           "ca_key_algorithm": "${tls_private_key.root.algorithm}",
           "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
-          "cert_request_pem": "${tls_cert_request.clientams36.cert_request_pem}"
+          "cert_request_pem": "${tls_cert_request.clientams36.cert_request_pem}",
+          "validity_period_hours": 7776000
         },
         "serverams35": {
           "allowed_uses": [
@@ -167,7 +184,8 @@
           "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
           "ca_key_algorithm": "${tls_private_key.root.algorithm}",
           "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
-          "cert_request_pem": "${tls_cert_request.serverams35.cert_request_pem}"
+          "cert_request_pem": "${tls_cert_request.serverams35.cert_request_pem}",
+          "validity_period_hours": 7776000
         },
         "serverams36": {
           "allowed_uses": [
@@ -178,7 +196,8 @@
           "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
           "ca_key_algorithm": "${tls_private_key.root.algorithm}",
           "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
-          "cert_request_pem": "${tls_cert_request.serverams36.cert_request_pem}"
+          "cert_request_pem": "${tls_cert_request.serverams36.cert_request_pem}",
+          "validity_period_hours": 7776000
         },
         "serverams37": {
           "allowed_uses": [
@@ -189,7 +208,8 @@
           "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
           "ca_key_algorithm": "${tls_private_key.root.algorithm}",
           "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
-          "cert_request_pem": "${tls_cert_request.serverams37.cert_request_pem}"
+          "cert_request_pem": "${tls_cert_request.serverams37.cert_request_pem}",
+          "validity_period_hours": 7776000
         }
       },
       "tls_private_key": {
@@ -230,7 +250,9 @@
           ],
           "is_ca_certificate": true,
           "key_algorithm": "${tls_private_key.root.algorithm}",
-          "private_key_pem": "${tls_private_key.root.private_key_pem}"
+          "private_key_pem": "${tls_private_key.root.private_key_pem}",
+          "validity_period_hours": 315360000,
+          "subject": {}
         }
       }
     }

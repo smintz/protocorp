@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package terraform.tls.subject;
+
+message TlsSubject {
+    string organization = 1;
+    string common_name = 2 [json_name = "common_name"];
+    string organizational_unit = 3 [json_name = "organizational_unit"];
+    repeated string street_address = 4 [json_name = "street_address"];
+    string locality = 5;
+    string province = 6;
+    string country = 7;
+    string postal_code = 8 [json_name = "postal_code"];
+    string serial_number = 9 [json_name = "serial_number"];
+
+}
