@@ -19,7 +19,7 @@ def CA(tf, dns_names=["protoconf.com"]):
         is_ca_certificate=True,
         validity_period_hours=86400 * 365 * 10,
         dns_names=dns_names,
-        subject=TlsSubject(),
+        subject=TlsSubject(organization="protoconf", organizational_unit="protocorp"),
     )
 
     def server_cert(name, dns_names=[], ip_addresses=[]):
