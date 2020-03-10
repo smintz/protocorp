@@ -22,7 +22,7 @@ def NomadInstall(version):
                 version
             ),
         ),
-        Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin/nomad"),
+        Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin"),
         Command("rm", downloaded_file),
     ]
 

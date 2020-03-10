@@ -22,7 +22,7 @@ def ConsulInstall(version):
                 version
             ),
         ),
-        Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin/consul"),
+        Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin"),
     ]
 
     def render():
