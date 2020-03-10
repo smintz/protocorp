@@ -55,9 +55,9 @@ def Consul(role="server", dc="dc1", join_lan=[], join_wan=[]):
             content="\n".join(
                 [
                     "ui = true",
-                    'advertise = "{{GetPublicIP}}"',
+                    'advertise_addr = "{{GetPublicIP}}"',
                     'datacenter = "{}"'.format(dc),
-                    'data-dir = "/opt/consul"',
+                    'data_dir = "/opt/consul"',
                 ]
             ),
         ),
