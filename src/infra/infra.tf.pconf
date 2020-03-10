@@ -10,14 +10,16 @@ load(
 )
 load("/terraform/random-resources.proto", "RandomPet")
 load("/terraform/meta.proto", "Lifecycle")
-load("installers/base.pinc", "INSTALL_BASE")
-load("installers/docker.pinc", "INSTALL_DOCKER")
-load("installers/consul.pinc", "consul_setup")
-load("installers/nomad.pinc", "nomad_setup")
+load("installers/base.pinc", "Base")
+load("installers/docker.pinc", "Docker")
+load("installers/consul.pinc", "Consul")
+load("installers/nomad.pinc", "Nomad")
 load("ca.pinc", "CA")
 load("/employees/employees.pinc", "EMPLOYEES")
+load("/pc4os/pc4os.pinc", "compile")
+load("/pc4os/component.pinc", "Component")
 
-COUNTER = 5
+COUNTER = 0
 SERVERS = 3
 CLIENTS = 2
 
@@ -30,6 +32,13 @@ TOKENS = {"digitalocean": "${var.digitalocean_token}"}
 
 
 def set_ssh_keys(tf, provider):
+    """
+    set_ssh_keys adds ssh keys of protocorp's employees to our provider project
+
+    Args:
+        tf: an instance of Terraform.Resource 
+        provider: the provider type (digitalocean)
+    """
     for e in EMPLOYEES:
         key_counter = 0
         for key in e.ssh_keys:
@@ -61,9 +70,39 @@ def create_droplet(tf, hostname, role="server", dc="ams3", user_data=""):
 CREATE_FUNCS = {"digitalocean": create_droplet}
 
 
+def DeviceUserData(role, dc, provider):
+    nomad_config = """\
+advertise {
+    http = "{{GetPublicIP}}"
+    rpc = "{{GetPublicIP}}"
+    serf = "{{GetPublicIP}}"
+}
+"""
+
+    def render():
+        return [
+            Base(),
+            Docker(),
+            Consul(
+                role,
+                dc,
+                CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider]),
+            ),
+            Nomad(
+                role,
+                dc,
+                CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider]),
+                config=nomad_config,
+            ),
+        ]
+
+    return Component("DeviceUserData", render)
+
+
 def create_device(tf, name, role, dc, provider):
     """
     create_device adds devices and their "pet" names to the terraform object
+
     Args:
         tf: The terraform protobuf object
         name: Name of the terraform key to be used as resource ids.
@@ -72,27 +111,8 @@ def create_device(tf, name, role, dc, provider):
         provider: The cloud provider to use
     """
 
-    nomad_config = """\
-advertise {
-    http = "{{GetPublicIP}}"
-    rpc = "{{GetPublicIP}}"
-    serf = "{{GetPublicIP}}"
-}
-"""
     tf.random_pet[name] = RandomPet()
-    user_data = (
-        INSTALL_BASE
-        + INSTALL_DOCKER
-        + consul_setup(
-            role, dc, CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])
-        )
-        + nomad_setup(
-            role,
-            dc,
-            CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider]),
-            config=nomad_config,
-        )
-    )
+    user_data = compile(DeviceUserData(role, dc, provider))
     tf.digitalocean_droplet[name] = CREATE_FUNCS[provider](
         tf, "${random_pet.%s.id}" % name, role, dc, user_data
     )

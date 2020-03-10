@@ -1,0 +1,27 @@
+"""
+ubuntu.pinc
+"""
+load("component.pinc", "Component")
+load("command.pinc", "Command")
+
+
+def Packages(packages, action="install"):
+    def render():
+        return [Command("apt-get", action, "-y", " ".join(packages))]
+
+    return Component("Packages", render)
+
+
+def Install(*packages):
+    return Packages(packages)
+
+
+def Remove(*packages):
+    return Packages(packages, "purge")
+
+
+def PackagesRegistryUpdate():
+    def render():
+        return [Command("apt-get", "update")]
+
+    return Component("PackagesRegistryUpdate", render)

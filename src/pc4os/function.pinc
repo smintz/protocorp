@@ -1,0 +1,23 @@
+"""
+function.pinc
+"""
+load("component.pinc", "Component", "String")
+load("command.pinc", "Command")
+
+
+def Function(id, component):
+    def render():
+        return [String("""function {}(){{""".format(id)), component, String("}")]
+
+    return Component("Function", render)
+
+
+def Condition(prefix, validator, component, op="||"):
+    def render():
+        return [
+            Function(prefix + "_validator", validator),
+            Function(prefix + "_comopnent", component),
+            Command(prefix + "_validator", op, prefix + "_component"),
+        ]
+
+    return Component("Condition", render)

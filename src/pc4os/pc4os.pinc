@@ -1,0 +1,20 @@
+"""
+pc4os.pinc
+"""
+
+
+def compile(component):
+    """
+    compile takes a Component and renders it into an actionable script
+
+    Args:
+        component: a Component to render
+    Returns:
+        string
+    """
+    if component.is_string_renderer:
+        return component.render()
+    else:
+        return "\n".join(
+            [compile(c) for c in component.render() if not component.is_rendered]
+        )

@@ -1,0 +1,89 @@
+"""
+systemd.pinc
+"""
+load("component.pinc", "Component")
+load("file.pinc", "File")
+load("command.pinc", "Command")
+load("systemd.proto", "SystemdService", "Install", "Unit", "Service")
+
+
+def default_unit(service_name, documentation="http://localhost"):
+    return Unit(Description=service_name, Documentation=documentation)
+
+
+def service(exec_start):
+    return Service(
+        Type="notify",
+        Restart="always",
+        # RestartSec=5,
+        # LimitNOFILE=40000,
+        TimeoutStartSec=0,
+        ExecStart=exec_start,
+    )
+
+
+def install(wanted_by="multi-user.target"):
+    return Install(WantedBy=wanted_by)
+
+
+def serialize_msg(msg):
+    """
+    serialize_msg gets a proto message and returns in in a systemd compatible array
+
+    Args:
+        msg: the proto message
+    Returns:
+        array of strings
+    """
+    arr = []
+    for field in dir(msg):
+        value = getattr(msg, field)
+        if value:
+            arr.append(field + "=" + str(value))
+
+    return arr
+
+
+def Systemd(
+    service_name, service=None, unit=None, install=install(), start=True, enable=True
+):
+    """
+    Systemd installs and manages a systemd config
+
+    Args:
+        service_name: the name of the service to use
+        service: Instance of SystemdService.Service
+        unit: Instance of SystemdService.Unit
+        install: Instance of SystemdService.Install
+        start: should the service be started?
+        enable: should the service be enabled?
+    Returns:
+        a systemd component
+    """
+    if not unit:
+        unit = default_unit(service_name)
+    systemd = SystemdService(Unit=unit, Service=service, Install=install)
+
+    file = ["[Unit]"]
+    file.extend(serialize_msg(systemd.Unit))
+    file.append("[Service]")
+    file.extend(serialize_msg(systemd.Service))
+    file.append("[Install]")
+    file.extend(serialize_msg(systemd.Install))
+
+    ret = [
+        File(
+            "/etc/systemd/system/{}.service".format(service_name),
+            content="\n".join(file),
+        )
+    ]
+
+    if start:
+        ret.append(Command("systemctl", "start", service_name))
+    if enable:
+        ret.append(Command("systemctl", "enable", service_name))
+
+    def render():
+        return ret
+
+    return Component("Systemd", render)

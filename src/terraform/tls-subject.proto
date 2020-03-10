@@ -12,5 +12,4 @@ message TlsSubject {
     string country = 7;
     string postal_code = 8 [json_name = "postal_code"];
     string serial_number = 9 [json_name = "serial_number"];
-
 }

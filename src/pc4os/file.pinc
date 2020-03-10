@@ -1,0 +1,58 @@
+"""
+file.pinc
+"""
+
+load("component.pinc", "Component", "String")
+load("command.pinc", "Command")
+
+
+def File(
+    path,
+    content=None,
+    download=None,
+    owner="root",
+    group="root",
+    mode="0644",
+    requires=[],
+    before=[],
+):
+    if not path.startswith("/"):
+        fail("path (%s) must start with a /" % path)
+
+    f = Command("touch", path)
+    if download:
+        f = Command("curl", "-L", download, "-o", path)
+    if content:
+        f = String(
+            """\
+cat <<FILE_CONTENT | tee {path}
+{content}
+FILE_CONTENT""".format(
+                path=path, content=content
+            )
+        )
+
+    def render():
+
+        return [
+            f,
+            Command("chown", owner + ":" + group, path),
+            Command("chmod", mode, path),
+        ]
+
+    return Component("File", render)
+
+
+def Directory(path, owner="root", group="root", mode="0755"):
+    if not path.startswith("/"):
+        fail("path (%s) must start with a /" % path)
+
+    def render():
+        return [
+            Command("mkdir", "-p", path),
+            Command("chown", owner + ":" + group, path),
+            Command("chmod", mode, path),
+        ]
+
+    return Component("Directory", render)
+

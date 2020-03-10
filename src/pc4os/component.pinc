@@ -1,0 +1,43 @@
+"""
+component.pinc
+"""
+
+
+def Component(name, render, requires=[], before=[], is_string_renderer=False):
+    """
+    Component implements the base interface of pc4os component
+
+    Args:
+        name: a name identifier of the component
+        render: a function returns a list of Components
+        requires: array of Components which should be render before this components (not implemented)
+        before: array of Components this Component should trigger (not implemented)
+        is_string_renderer: bool, defines whether the render fucntion return a string of a list of Components
+    Returns:
+        a Component
+    """
+    _render = render
+    is_rendered = False
+
+    def render():
+        is_rendered = True
+        return _render()
+
+    component = struct(
+        name=name,
+        requires=requires,
+        before=before,
+        render=render,
+        is_rendered=is_rendered,
+        is_string_renderer=is_string_renderer,
+    )
+
+    return component
+
+
+def String(content):
+    def render():
+        return content
+
+    return Component("String", render, is_string_renderer=True)
+

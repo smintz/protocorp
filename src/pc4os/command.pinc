@@ -1,0 +1,15 @@
+"""
+command.pinc
+"""
+load("component.pinc", "Component", "String")
+
+
+def Command(*cmd):
+    def render():
+        return [String(" ".join(cmd))]
+
+    return Component("Command", render)
+
+
+def Sudo(*cmd):
+    return Command("sudo", *cmd)

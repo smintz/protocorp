@@ -2,10 +2,16 @@
 This file contains constants and functions to assist with instance installations.
 """
 # vi:filetype=python syntax=python
+load("/pc4os/pc4os.pinc", "compile")
+load("/pc4os/component.pinc", "Component")
+load("/pc4os/ubuntu.pinc", "PackagesRegistryUpdate", "Install")
 
-INSTALL_BASE = """\
-#!/bin/bash
-echo "Installing dependencies ..."
-sudo apt-get update
-sudo apt-get install -y unzip curl jq dnsutils
-"""
+
+def Base():
+    def render():
+        return [PackagesRegistryUpdate(), Install("unzip", "curl", "jq", "dnsutils")]
+
+    return Component("Base", render)
+
+
+INSTALL_BASE = compile(Base())

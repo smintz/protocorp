@@ -1,0 +1,7 @@
+{
+  "protoFile": "pc4os/test.proto",
+  "value": {
+    "@type": "type.googleapis.com/ExampleFile",
+    "content": "cat \u003c\u003cFILE_CONTENT | tee /tmp/hello\nhello world!\nFILE_CONTENT\nchown root:root /tmp/hello\nchmod 0644 /tmp/hello"
+  }
+}

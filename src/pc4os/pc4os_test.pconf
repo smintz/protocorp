@@ -1,0 +1,35 @@
+"""
+test.pconf
+"""
+load("pc4os_test.proto", "ExampleFile")
+load("pc4os.pinc", "compile")
+load("file.pinc", "File", "Directory")
+load("component.pinc", "Component")
+load("command.pinc", "Command")
+load("systemd.pinc", "Systemd", "service")
+load("function.pinc", "Condition")
+
+
+def MyComponent():
+    """
+    MyComponent is used for this 
+    """
+
+    def render():
+        return [
+            Directory("/hello"),
+            Systemd("my_service", service("/bin/true")),
+            Condition(
+                "does_hello_exists",
+                Command("which", "consul"),
+                File(path="/usr/local/bin/consul", mode="0755"),
+            ),
+        ]
+
+    return Component("MyComponent", render)
+
+
+def main():
+    m = MyComponent()
+    return ExampleFile(content=compile(m))
+

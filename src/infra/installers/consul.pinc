@@ -3,11 +3,38 @@ This file contains constants and functions to assist with instance installations
 """
 # vi:filetype=python syntax=python
 load("/infra/installers/systemd.pinc", "systemd")
+load("/pc4os/pc4os.pinc", "compile")
+load("/pc4os/component.pinc", "Component")
+load("/pc4os/file.pinc", "File", "Directory")
+load("/pc4os/command.pinc", "Command")
+load("/pc4os/systemd.pinc", "Systemd")
+load("/pc4os/systemd.proto", "Service")
 
 
-def consul_setup(role="server", dc="dc1", additional_args="", config=""):
+def ConsulInstall(version):
+    downloaded_file = "/tmp/consul-{}.zip".format(version)
+    install = [
+        Directory("/etc/consul.d"),
+        Directory("/opt/consul/data"),
+        File(
+            downloaded_file,
+            download="https://releases.hashicorp.com/consul/{0}/consul_{0}_linux_amd64.zip".format(
+                version
+            ),
+        ),
+        Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin/consul"),
+    ]
+
+    def render():
+        return install
+
+    return Component("ConsulInstall", render)
+
+
+def Consul(role="server", dc="dc1", additional_args="", config=""):
     """
     Defines the installation of consul
+
     Args:
         role: either `server` or `client`
         dc: Name of the datacenter
@@ -25,30 +52,25 @@ def consul_setup(role="server", dc="dc1", additional_args="", config=""):
     agent_args.append("-data-dir=/opt/consul/data")
     agent_args.append(additional_args)
 
-    return (
-        """\
-echo "Determining Consul version to install ..."
-CHECKPOINT_URL="https://checkpoint-api.hashicorp.com/v1/check"
-CONSUL_DEMO_VERSION=$(curl -s "$${CHECKPOINT_URL}"/consul | jq .current_version | tr -d '"')
-echo "Fetching Consul version $${CONSUL_DEMO_VERSION} ..."
-cd /tmp/
-curl -s https://releases.hashicorp.com/consul/$${CONSUL_DEMO_VERSION}/consul_$${CONSUL_DEMO_VERSION}_linux_amd64.zip -o consul.zip
-echo "Installing Consul version $${CONSUL_DEMO_VERSION} ..."
-unzip consul.zip
-sudo chmod +x consul
-sudo mv consul /usr/local/bin/consul
-sudo mkdir /etc/consul.d
-sudo chmod a+w /etc/consul.d
-sudo mkdir -p /opt/consul/data
-"""
-        + """
-cat <<EOF | sudo tee /etc/consul.d/config.hcl
-{config}
-EOF
-""".format(
-            config=config
-        )
-        + systemd(
-            "consul", " ".join(["/usr/local/bin/consul", "agent", " ".join(agent_args)])
-        )
-    )
+    def render():
+        return [
+            ConsulInstall("1.7.0"),
+            File("/etc/consul.d/config.hcl", content=config),
+            Systemd(
+                "consul",
+                Service(
+                    Type="notify",
+                    # User="consul",
+                    # Group="consul",
+                    ExecStart=" ".join(
+                        ["/usr/local/bin/consul", "agent", " ".join(agent_args)]
+                    ),
+                    ExecReload="/usr/local/bin/consul reload",
+                    # KillMode="process",
+                    Restart="on-failure",
+                    # LimitNOFILE=65536,
+                ),
+            ),
+        ]
+
+    return Component("Consul", render)

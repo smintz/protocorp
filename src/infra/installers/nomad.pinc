@@ -3,9 +3,36 @@ This file contains constants and functions to assist with instance installations
 """
 # vi:filetype=python syntax=python
 load("/infra/installers/systemd.pinc", "systemd")
+load("/pc4os/pc4os.pinc", "compile")
+load("/pc4os/component.pinc", "Component")
+load("/pc4os/file.pinc", "File", "Directory")
+load("/pc4os/command.pinc", "Command")
+load("/pc4os/systemd.pinc", "Systemd")
+load("/pc4os/systemd.proto", "Service")
 
 
-def nomad_setup(role="server", dc="dc1", additional_args="", config=""):
+def NomadInstall(version):
+    downloaded_file = "/tmp/nomad-{}.zip".format(version)
+    install = [
+        Directory("/etc/nomad.d"),
+        Directory("/opt/nomad/data"),
+        File(
+            downloaded_file,
+            download="https://releases.hashicorp.com/nomad/{0}/nomad_{0}_linux_amd64.zip".format(
+                version
+            ),
+        ),
+        Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin/nomad"),
+        Command("rm", downloaded_file),
+    ]
+
+    def render():
+        return install
+
+    return Component("NomadInstall", render)
+
+
+def Nomad(role="server", dc="dc1", additional_args="", config=""):
     agent_args = ["-" + role]
     if role == "server":
         agent_args.append("-bootstrap-expect=3")
@@ -13,37 +40,25 @@ def nomad_setup(role="server", dc="dc1", additional_args="", config=""):
     agent_args.append("-config=/etc/nomad.d")
     agent_args.append(additional_args)
 
-    return (
-        """\
-echo "Determining Nomad version to install ..."
-CHECKPOINT_URL="https://checkpoint-api.hashicorp.com/v1/check"
-NOMAD_VERSION=$(curl -s "$${CHECKPOINT_URL}"/nomad | jq .current_version | tr -d '"')
-echo "Fetching Consul version $${NOMAD_VERSION} ..."
-cd /tmp/
-curl -s https://releases.hashicorp.com/nomad/$${NOMAD_VERSION}/nomad_$${NOMAD_VERSION}_linux_amd64.zip -o nomad.zip
-echo "Installing Nomad version $${NOMAD_VERSION} ..."
-unzip nomad.zip
-sudo chmod +x nomad
-sudo mv nomad /usr/local/bin/nomad
-sudo mkdir /etc/nomad.d
-sudo chmod a+w /etc/nomad.d
-sudo mkdir -p /opt/nomad/data
-"""
-        + """
-cat <<EOF | sudo tee /etc/nomad.d/nomad.hcl
-{config}
-EOF
-""".format(
-            config=config
-        )
-        + """
-cat <<EOF | sudo tee /etc/nomad.d/datacenter.hcl
-datacenter = "{}"
-EOF
-""".format(
-            dc
-        )
-        + systemd(
-            "nomad", " ".join(["/usr/local/bin/nomad", "agent", " ".join(agent_args)])
-        )
-    )
+    def render():
+        return [
+            NomadInstall("0.10.0"),
+            File("/etc/nomad.d/nomad.hcl", config),
+            File("/etc/nomad.d/datacenter.hcl", "datacenter = {}".format(dc)),
+            Systemd(
+                "nomad",
+                Service(
+                    Type="notify",
+                    ExecStart=" ".join(
+                        ["/usr/local/bin/nomad", "agent", " ".join(agent_args)]
+                    ),
+                    ExecReload="/usr/local/bin/consul reload",
+                    # KillMode="process",
+                    Restart="on-failure",
+                    # LimitNOFILE=65536,)
+                ),
+            ),
+        ]
+
+    return Component("Nomad", render)
+

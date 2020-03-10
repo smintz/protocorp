@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+message ExampleFile {
+    string content = 1;
+}
