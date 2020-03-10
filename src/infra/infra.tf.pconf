@@ -19,12 +19,12 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 0
+COUNTER = 6
 SERVERS = 3
 CLIENTS = 0
 
 CONSUL_JOIN_ARGS = {
-    "digitalocean": """-retry-join 'provider=digitalocean api_token={token} region={dc} tag_name=server'""",
+    "digitalocean": "provider=digitalocean api_token={token} region={dc} tag_name=server",
     # Will support more providers later
 }
 
@@ -87,7 +87,7 @@ advertise {
             Consul(
                 role,
                 dc,
-                CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider]),
+                [CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])],
             ),
             Nomad(
                 role,

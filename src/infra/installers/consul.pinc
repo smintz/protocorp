@@ -32,15 +32,15 @@ def ConsulInstall(version):
     return Component("ConsulInstall", render)
 
 
-def Consul(role="server", dc="dc1", additional_args="", config=""):
+def Consul(role="server", dc="dc1", join_lan=[], join_wan=[]):
     """
     Defines the installation of consul
 
     Args:
         role: either `server` or `client`
         dc: Name of the datacenter
-        additional_args: Additional command line arguments to pass to the consul agent
-        config: Content to put as a config for consul
+        join_lan: list of servers or discovery expressions to join via lan
+        join_wan: list of servers or discovery expressions to join via wan
     Returns:
         Installation and configuration script for the consul agent.
     """
@@ -55,7 +55,6 @@ def Consul(role="server", dc="dc1", additional_args="", config=""):
             content="\n".join(
                 [
                     "ui = true",
-                    "client 0.0.0.0",
                     'advertise = "{{GetPublicIP}}"',
                     'datacenter = "{}"'.format(dc),
                     "data-dir = /opt/consul",
@@ -71,6 +70,32 @@ def Consul(role="server", dc="dc1", additional_args="", config=""):
                 owner="consul",
                 group="consul",
                 content="""server = true\nbootstrap_expect = 3""",
+            )
+        )
+
+    if len(join_lan) > 0:
+        setup.append(
+            File(
+                "/etc/consul.d/join_lan.hcl",
+                mode="0640",
+                owner="consul",
+                group="consul",
+                content="retry_join = [{}]".format(
+                    ",".join(['"{}"'.format(s) for s in join_lan])
+                ),
+            )
+        )
+
+    if len(join_wan) > 0:
+        setup.append(
+            File(
+                "/etc/consul.d/join_wan.hcl",
+                mode="0640",
+                owner="consul",
+                group="consul",
+                content="""retry_join_wan = [{}]""".format(
+                    ",".join(['"{}"'.format(s) for s in join_wan])
+                ),
             )
         )
 
