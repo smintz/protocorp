@@ -19,7 +19,7 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 1
+COUNTER = 0
 SERVERS = 3
 CLIENTS = 0
 
@@ -119,6 +119,19 @@ def create_device(tf, name, role, dc, provider):
     )
 
 
+tf = Terraform(resource=Terraform.Resources())
+ca = CA(tf.resource)
+provider = "digitalocean"
+set_ssh_keys(tf.resource, provider)
+for dc in ["ams3"]:
+    for i in range(COUNTER + 0, COUNTER + SERVERS):
+        server_name = "server%s%s" % (dc, i)
+        create_device(tf.resource, server_name, "server", dc, provider)
+    for i in range(COUNTER + 0, COUNTER + CLIENTS):
+        server_name = "client%s%s" % (dc, i)
+        create_device(tf.resource, server_name, "client", dc, provider)
+
+
 def main():
     """
     Entrypoint function
@@ -126,18 +139,5 @@ def main():
     Returns:
         Terraform object to compile
     """
-    tf = Terraform(resource=Terraform.Resources())
-    provider = "digitalocean"
-    set_ssh_keys(tf.resource, provider)
-    ca = CA(tf.resource)
-    for dc in ["ams3"]:
-        for i in range(COUNTER + 0, COUNTER + SERVERS):
-            server_name = "server%s%s" % (dc, i)
-            ca.server_cert(server_name)
-            create_device(tf.resource, server_name, "server", dc, provider)
-        for i in range(COUNTER + 0, COUNTER + CLIENTS):
-            server_name = "client%s%s" % (dc, i)
-            ca.server_cert(server_name)
-            create_device(tf.resource, server_name, "client", dc, provider)
 
     return tf
