@@ -198,6 +198,11 @@ message Service {
     
     // Configure the Out-Of-Memory (OOM) killer policy. On Linux, when memory becomes scarce the kernel might decide to kill a running process in order to free up memory and reduce memory pressure. This setting takes one of continue, stop or kill. If set to continue and a process of the service is killed by the kernel's OOM killer this is logged but the service continues running. If set to stop the event is logged but the service is terminated cleanly by the service manager. If set to kill and one of the service's processes is killed by the OOM killer the kernel is instructed to kill all remaining processes of the service, too. Defaults to the setting DefaultOOMPolicy= in system.conf(5) is set to, except for services where Delegate= is turned on, where it defaults to continue.
     string OOMPolicy=33;
+    string User = 34;
+    string Group = 35;
+    string KillMode = 36;
+    uint32 LimitNOFILE = 37;
+
 }
 message Install {
     string WantedBy = 1;

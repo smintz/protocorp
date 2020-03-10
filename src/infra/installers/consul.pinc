@@ -2,20 +2,19 @@
 This file contains constants and functions to assist with instance installations.
 """
 # vi:filetype=python syntax=python
-load("/infra/installers/systemd.pinc", "systemd")
-load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component")
 load("/pc4os/file.pinc", "File", "Directory")
 load("/pc4os/command.pinc", "Command")
 load("/pc4os/systemd.pinc", "Systemd")
-load("/pc4os/systemd.proto", "Service")
+load("/pc4os/systemd.proto", "Service", "Unit")
 
 
 def ConsulInstall(version):
     downloaded_file = "/tmp/consul-{}.zip".format(version)
     install = [
+        Command("useradd --system --home /etc/consul.d --shell /bin/false consul"),
         Directory("/etc/consul.d"),
-        Directory("/opt/consul/data"),
+        Directory("/opt/consul", owner="consul", group="consul"),
         File(
             downloaded_file,
             download="https://releases.hashicorp.com/consul/{0}/consul_{0}_linux_amd64.zip".format(
@@ -23,6 +22,8 @@ def ConsulInstall(version):
             ),
         ),
         Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin"),
+        Command("consul", "-autocomplete-install"),
+        Command("complete", "-C", "/usr/local/bin/consul", "consul"),
     ]
 
     def render():
@@ -43,34 +44,61 @@ def Consul(role="server", dc="dc1", additional_args="", config=""):
     Returns:
         Installation and configuration script for the consul agent.
     """
-    agent_args = []
-    if role == "server":
-        agent_args.append("-server -bootstrap-expect=3")
 
-    agent_args.append("""-ui -client 0.0.0.0 -advertise '{{GetPublicIP}}'""")
-    agent_args.append("-datacenter=" + dc)
-    agent_args.append("-data-dir=/opt/consul/data")
-    agent_args.append(additional_args)
+    setup = [
+        ConsulInstall("1.7.1"),
+        File(
+            "/etc/consul.d/config.hcl",
+            mode="0640",
+            owner="consul",
+            group="consul",
+            content="\n".join(
+                [
+                    "ui = true",
+                    "client 0.0.0.0",
+                    'advertise = "{{GetPublicIP}}"',
+                    'datacenter = "{}"'.format(dc),
+                    "data-dir = /opt/consul",
+                ]
+            ),
+        ),
+    ]
+    if role == "server":
+        setup.append(
+            File(
+                "/etc/consul.d/server.hcl",
+                mode="0640",
+                owner="consul",
+                group="consul",
+                content="""server = true\nbootstrap_expect = 3""",
+            )
+        )
+
+    setup.append(
+        Systemd(
+            "consul",
+            Service(
+                Type="notify",
+                User="consul",
+                Group="consul",
+                ExecStart=" ".join(
+                    ["/usr/local/bin/consul", "agent", "-config-dir=/etc/consul.d/"]
+                ),
+                ExecReload="/usr/local/bin/consul reload",
+                KillMode="process",
+                Restart="on-failure",
+                LimitNOFILE=65536,
+            ),
+            unit=Unit(
+                Description="HashiCorp Consul - A service mesh solution",
+                Documentation="https://www.consul.io/",
+                Requires="network-online.target",
+                After="network-online.target",
+            ),
+        )
+    )
 
     def render():
-        return [
-            ConsulInstall("1.7.0"),
-            File("/etc/consul.d/config.hcl", content=config),
-            Systemd(
-                "consul",
-                Service(
-                    Type="notify",
-                    # User="consul",
-                    # Group="consul",
-                    ExecStart=" ".join(
-                        ["/usr/local/bin/consul", "agent", " ".join(agent_args)]
-                    ),
-                    ExecReload="/usr/local/bin/consul reload",
-                    # KillMode="process",
-                    Restart="on-failure",
-                    # LimitNOFILE=65536,
-                ),
-            ),
-        ]
+        return setup
 
     return Component("Consul", render)
