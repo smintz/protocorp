@@ -201,7 +201,13 @@ message Service {
     string User = 34;
     string Group = 35;
     string KillMode = 36;
-    uint32 LimitNOFILE = 37;
+    string LimitNOFILE = 37;
+    string KillSignal = 38;
+    string LimitNPROC = 39;
+    uint32 StartLimitBurst = 40;
+    uint32 StartLimitIntervalSec = 41;
+    string TasksMax = 42;
+
 
 }
 message Install {

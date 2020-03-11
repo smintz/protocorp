@@ -19,7 +19,7 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 0
+COUNTER = 3
 SERVERS = 3
 CLIENTS = 0
 
@@ -89,12 +89,7 @@ advertise {
                 dc,
                 [CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])],
             ),
-            Nomad(
-                role,
-                dc,
-                CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider]),
-                config=nomad_config,
-            ),
+            Nomad(role, dc, nomad_config),
         ]
 
     return Component("DeviceUserData", render)

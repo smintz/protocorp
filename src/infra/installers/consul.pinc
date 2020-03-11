@@ -22,6 +22,7 @@ def ConsulInstall(version):
             ),
         ),
         Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin"),
+        Command("rm", downloaded_file),
         Command("consul", "-autocomplete-install"),
         Command("complete", "-C", "/usr/local/bin/consul", "consul"),
     ]
@@ -113,7 +114,7 @@ def Consul(role="server", dc="dc1", join_lan=[], join_wan=[]):
                 ExecReload="/usr/local/bin/consul reload",
                 KillMode="process",
                 Restart="on-failure",
-                LimitNOFILE=65536,
+                LimitNOFILE="65536",
             ),
             unit=Unit(
                 Description="HashiCorp Consul - A service mesh solution",

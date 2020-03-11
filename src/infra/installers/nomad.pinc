@@ -2,20 +2,31 @@
 This file contains constants and functions to assist with instance installations.
 """
 # vi:filetype=python syntax=python
-load("/infra/installers/systemd.pinc", "systemd")
-load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component")
 load("/pc4os/file.pinc", "File", "Directory")
 load("/pc4os/command.pinc", "Command")
 load("/pc4os/systemd.pinc", "Systemd")
 load("/pc4os/systemd.proto", "Service")
 
+SERVER_CONFIG = """\
+server {
+  enabled = true
+  bootstrap_expect = 3
+}
+"""
+
+CLIENT_CONFIG = """\
+client {
+  enabled = true
+}
+"""
+
 
 def NomadInstall(version):
     downloaded_file = "/tmp/nomad-{}.zip".format(version)
     install = [
-        Directory("/etc/nomad.d"),
-        Directory("/opt/nomad/data"),
+        Directory("/etc/nomad.d", mode="700"),
+        Directory("/opt/nomad"),
         File(
             downloaded_file,
             download="https://releases.hashicorp.com/nomad/{0}/nomad_{0}_linux_amd64.zip".format(
@@ -24,6 +35,8 @@ def NomadInstall(version):
         ),
         Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin"),
         Command("rm", downloaded_file),
+        Command("nomad", "-autocomplete-install"),
+        Command("complete", "-C", "/usr/local/bin/nomad", "nomad"),
     ]
 
     def render():
@@ -32,33 +45,53 @@ def NomadInstall(version):
     return Component("NomadInstall", render)
 
 
-def Nomad(role="server", dc="dc1", additional_args="", config=""):
-    agent_args = ["-" + role]
+def Nomad(role="server", dc="dc1", additional_config=None):
+    """
+    Nomad installs and configures the nomad agent on the host
+
+    Args:
+        role: either server or client
+        dc: name of the datacenter
+        additional_config: adds a file with additional configs
+    Returns:
+        a Nomad component
+    """
+    setup = [
+        NomadInstall("0.10.4"),
+        File("/etc/nomad.d/nomad.hcl", content="\n".join(['data_dir = "/opt/nomad'])),
+        File("/etc/nomad.d/datacenter.hcl", "datacenter = {}".format(dc)),
+        File("/etc/nomad.d/client.hcl", content=CLIENT_CONFIG),
+    ]
+
     if role == "server":
-        agent_args.append("-bootstrap-expect=3")
-    agent_args.append("-data-dir=/opt/nomad/data")
-    agent_args.append("-config=/etc/nomad.d")
-    agent_args.append(additional_args)
+        setup.append(File("/etc/nomad.d/server.hcl", content=SERVER_CONFIG))
+
+    if additional_config:
+        setup.append(
+            File("/etc/nomad.d/99-additional-configs.hcl", content=additional_config)
+        )
+
+    setup.append(
+        Systemd(
+            "nomad",
+            Service(
+                ExecReload="/bin/kill -HUP $MAINPID",
+                ExecStart="/usr/local/bin/nomad agent -config /etc/nomad.d",
+                KillMode="process",
+                KillSignal="SIGINT",
+                LimitNOFILE="infinity",
+                LimitNPROC="infinity",
+                Restart="on-failure",
+                RestartSec="2",
+                StartLimitBurst=3,
+                StartLimitIntervalSec=10,
+                TasksMax="infinity",
+            ),
+        )
+    )
 
     def render():
-        return [
-            NomadInstall("0.10.0"),
-            File("/etc/nomad.d/nomad.hcl", config),
-            File("/etc/nomad.d/datacenter.hcl", "datacenter = {}".format(dc)),
-            Systemd(
-                "nomad",
-                Service(
-                    Type="notify",
-                    ExecStart=" ".join(
-                        ["/usr/local/bin/nomad", "agent", " ".join(agent_args)]
-                    ),
-                    ExecReload="/usr/local/bin/consul reload",
-                    # KillMode="process",
-                    Restart="on-failure",
-                    # LimitNOFILE=65536,)
-                ),
-            ),
-        ]
+        return setup
 
     return Component("Nomad", render)
 
