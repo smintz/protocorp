@@ -21,7 +21,7 @@ load("/pc4os/component.pinc", "Component", "String")
 
 COUNTER = 3
 SERVERS = 3
-CLIENTS = 0
+CLIENTS = 2
 
 CONSUL_JOIN_ARGS = {
     "digitalocean": "provider=digitalocean api_token={token} region={dc} tag_name=server",
