@@ -59,7 +59,7 @@ def Nomad(role="server", dc="dc1", additional_config=None):
     setup = [
         NomadInstall("0.10.4"),
         File("/etc/nomad.d/nomad.hcl", content="\n".join(['data_dir = "/opt/nomad'])),
-        File("/etc/nomad.d/datacenter.hcl", "datacenter = {}".format(dc)),
+        File("/etc/nomad.d/datacenter.hcl", 'datacenter = "{}"'.format(dc)),
         File("/etc/nomad.d/client.hcl", content=CLIENT_CONFIG),
     ]
 
