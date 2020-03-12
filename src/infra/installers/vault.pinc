@@ -1,0 +1,97 @@
+"""
+vault.pinc
+"""
+load("/pc4os/component.pinc", "Component")
+load("/pc4os/file.pinc", "File", "Directory")
+load("/pc4os/function.pinc", "Function", "Condition")
+load("/pc4os/command.pinc", "Command")
+load("/pc4os/systemd.pinc", "Systemd")
+load("/pc4os/systemd.proto", "Service")
+
+
+def VaultInstall(version):
+    downloaded_file = "/tmp/vault-{}.zip".format(version)
+    install = [
+        File(
+            downloaded_file,
+            download="https://releases.hashicorp.com/vault/{0}/vault_{0}_linux_amd64.zip".format(
+                version
+            ),
+        ),
+        Command("unzip", "-x", downloaded_file, "-d", "/usr/local/bin"),
+        Command("rm", downloaded_file),
+        Command("vault", "-autocomplete-install"),
+        Command("setcap", "cap_ipc_lock=+ep", "/usr/local/bin/vault"),
+        Command(
+            "useradd",
+            "--system",
+            "--home",
+            "/etc/vault.d",
+            "--shell",
+            "/bin/false vault",
+        ),
+        Directory("/etc/vault.d", owner="vault", group="vault"),
+    ]
+
+    def render():
+        return install
+
+    return Component("VaultInstall", render)
+
+
+CONSUL_ACL_FILE = """\
+acl {
+  enabled = true
+  default_policy = "deny"
+  enable_token_persistence = true
+}
+"""
+
+
+def Vault(consul_acl=False):
+    setup = [VaultInstall("1.3.2")]
+
+    if consul_acl:
+        setup.extend(
+            [
+                File("/etc/consul.d/acl.hcl", content=CONSUL_ACL_FILE),
+                Command("systemdctl", "restart", "consul"),
+                # With Lock aquired and condition
+                Function("bootstrap_acl"),
+            ]
+        )
+    setup.append(
+        Systemd(
+            "vault",
+            Service(
+                User="vault",
+                Group="vault",
+                ProtectSystem="full",
+                ProtectHome="read-only",
+                PrivateTmp="yes",
+                PrivateDevices="yes",
+                SecureBits="keep-caps",
+                AmbientCapabilities="CAP_IPC_LOCK",
+                Capabilities="CAP_IPC_LOCK+ep",
+                CapabilityBoundingSet="CAP_SYSLOG CAP_IPC_LOCK",
+                NoNewPrivileges="yes",
+                ExecStart="/usr/local/bin/vault server -config=/etc/vault.d/vault.hcl",
+                ExecReload="/bin/kill --signal HUP $MAINPID",
+                KillMode="process",
+                KillSignal="SIGINT",
+                Restart="on-failure",
+                RestartSec=5,
+                TimeoutStopSec=30,
+                StartLimitInterval=60,
+                StartLimitIntervalSec=60,
+                StartLimitBurst=3,
+                LimitNOFILE="65536",
+                LimitMEMLOCK="infinity",
+            ),
+        )
+    )
+
+    def render():
+        return setup
+
+    return Component("Vault", render)

@@ -5,9 +5,9 @@ load("component.pinc", "Component", "String")
 load("command.pinc", "Command")
 
 
-def Function(id, component):
+def Function(id, components):
     def render():
-        return [String("""function {}(){{""".format(id)), component, String("}")]
+        return [String("""function {}(){{""".format(id)), components, String("}")]
 
     return Component("Function", render)
 

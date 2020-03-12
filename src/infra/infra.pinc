@@ -1,0 +1,131 @@
+# vi:filetype=python syntax=python
+"""
+This is the entrypoint of the terraform file.
+"""
+load("/terraform/terraform.proto", "Terraform")
+load(
+    "/terraform/digitalocean-resources.proto",
+    "DigitaloceanDroplet",
+    "DigitaloceanSshKey",
+)
+load("/terraform/random-resources.proto", "RandomPet")
+load("/terraform/meta.proto", "Lifecycle")
+load("installers/base.pinc", "Base")
+load("installers/docker.pinc", "Docker")
+load("installers/consul.pinc", "Consul")
+load("installers/nomad.pinc", "Nomad")
+load("ca.pinc", "CA")
+load("/employees/employees.pinc", "EMPLOYEES")
+load("/pc4os/pc4os.pinc", "compile")
+load("/pc4os/component.pinc", "Component", "String")
+
+COUNTER = 0
+SERVERS = 3
+CLIENTS = 0
+
+tf = Terraform(resource=Terraform.Resources())
+ca = CA(tf.resource)
+provider = "digitalocean"
+CONSUL_JOIN_ARGS = {
+    "digitalocean": "provider=digitalocean api_token={token} region={dc} tag_name=server",
+    # Will support more providers later
+}
+
+TOKENS = {"digitalocean": "${var.digitalocean_token}"}
+
+
+def set_ssh_keys(tf, provider):
+    """
+    set_ssh_keys adds ssh keys of protocorp's employees to our provider project
+
+    Args:
+        tf: an instance of Terraform.Resource 
+        provider: the provider type (digitalocean)
+    """
+    for e in EMPLOYEES:
+        key_counter = 0
+        for key in e.ssh_keys:
+            key_name = "%s-%d" % (e.unix_name, key_counter)
+            if provider == "digitalocean":
+                tf.digitalocean_ssh_key[key_name] = DigitaloceanSshKey(
+                    name=key_name, public_key=key
+                )
+            key_counter = key_counter + 1
+
+
+set_ssh_keys(tf.resource, provider)
+
+
+def create_droplet(tf, hostname, role="server", dc="ams3", user_data=""):
+    return DigitaloceanDroplet(
+        name=hostname,
+        image="ubuntu-18-04-x64",
+        region=dc,
+        size="s-1vcpu-1gb",
+        ssh_keys=[
+            "${digitalocean_ssh_key.%s.id}" % keyname
+            for keyname in tf.digitalocean_ssh_key.keys()
+        ],
+        tags=[role],
+        private_networking=True,
+        user_data=user_data,
+        lifecycle=Lifecycle(ignore_changes=["user_data"]),
+    )
+
+
+CREATE_FUNCS = {"digitalocean": create_droplet}
+
+
+def DeviceUserData(role, dc, provider):
+    nomad_config = """\
+advertise {
+    http = "{{GetPublicIP}}"
+    rpc = "{{GetPublicIP}}"
+    serf = "{{GetPublicIP}}"
+}
+"""
+
+    def render():
+        return [
+            String("#!/bin/bash"),
+            Base(),
+            Docker(),
+            Consul(
+                role,
+                dc,
+                [CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])],
+                ca=ca,
+            ),
+            Nomad(role, dc, nomad_config),
+        ]
+
+    return Component("DeviceUserData", render)
+
+
+def create_device(tf, name, role, dc, provider):
+    """
+    create_device adds devices and their "pet" names to the terraform object
+
+    Args:
+        tf: The terraform protobuf object
+        name: Name of the terraform key to be used as resource ids.
+        role: Role of the server, either `server` or `client`
+        dc: The datacenter to deploy the device in.
+        provider: The cloud provider to use
+    """
+
+    tf.random_pet[name] = RandomPet()
+    user_data = compile(DeviceUserData(role, dc, provider))
+    tf.digitalocean_droplet[name] = CREATE_FUNCS[provider](
+        tf, "${random_pet.%s.id}" % name, role, dc, user_data
+    )
+
+
+for dc in ["ams3"]:
+    for i in range(COUNTER + 0, COUNTER + SERVERS):
+        server_name = "server%s%s" % (dc, i)
+        create_device(tf.resource, server_name, "server", dc, provider)
+    for i in range(COUNTER + 0, COUNTER + CLIENTS):
+        server_name = "client%s%s" % (dc, i)
+        create_device(tf.resource, server_name, "client", dc, provider)
+

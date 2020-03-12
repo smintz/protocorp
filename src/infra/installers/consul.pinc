@@ -33,7 +33,7 @@ def ConsulInstall(version):
     return Component("ConsulInstall", render)
 
 
-def Consul(role="server", dc="dc1", join_lan=[], join_wan=[]):
+def Consul(role="server", dc="dc1", join_lan=[], join_wan=[], ca=None):
     """
     Defines the installation of consul
 
@@ -42,6 +42,7 @@ def Consul(role="server", dc="dc1", join_lan=[], join_wan=[]):
         dc: Name of the datacenter
         join_lan: list of servers or discovery expressions to join via lan
         join_wan: list of servers or discovery expressions to join via wan
+        ca: a facility to create certificates
     Returns:
         Installation and configuration script for the consul agent.
     """
@@ -73,6 +74,37 @@ def Consul(role="server", dc="dc1", join_lan=[], join_wan=[]):
                 group="consul",
                 content="""server = true\nbootstrap_expect = 3""",
             )
+        )
+
+    if ca:
+        pki = ca.server_cert("consul", ip_addresses=["127.0.0.1"])
+        setup.extend(
+            [
+                File("/usr/share/ca-certificates/consul.pem", "$${%s}" % ca.root_pem),
+                Command("update-ca-certificates"),
+                Directory("/etc/consul.d/tls"),
+                File(
+                    "/etc/consul.d/tls/key.pem",
+                    "$${%s}" % pki.private_key,
+                    mode="600",
+                    owner="consul",
+                    group="consul",
+                ),
+                File(
+                    "/etc/consul.d/tls/cert.pem",
+                    "$${%s}" % pki.certificate,
+                    owner="consul",
+                    group="consul",
+                ),
+                File(
+                    "/etc/consul.d/tls.hcl",
+                    """\
+key_file = "/etc/consul.d/tls/key.pem"
+cert_file = "/etc/consul.d/tls/cert.pem"
+ca_file = "/usr/share/ca-certificates/consul.pem"
+""",
+                ),
+            ]
         )
 
     if len(join_lan) > 0:
