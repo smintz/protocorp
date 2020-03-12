@@ -40,7 +40,7 @@ def CA(tf, dns_names=["protoconf.com"]):
                 ca_key_algorithm="${tls_private_key.root.algorithm}",
                 ca_private_key_pem="${tls_private_key.root.private_key_pem}",
                 ca_cert_pem="${tls_self_signed_cert.root.cert_pem}",
-                validity_period_hours=86400 * 30 * 3,
+                validity_period_hours=24 * 30 * 3,
                 allowed_uses=["key_encipherment", "digital_signature", "server_auth"],
             )
         return struct(
