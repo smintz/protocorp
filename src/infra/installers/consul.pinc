@@ -81,12 +81,18 @@ def Consul(role, nf, join_lan=[], join_wan=[], ca=None):
         pki = ca.server_cert(
             nf.id + "_consul",
             common_name=nf.fqdn,
-            dns_names=[nf.hostname, nf.fqdn],
+            dns_names=[
+                nf.hostname,
+                nf.fqdn,
+                "consul.service.{}".format(nf.domain),
+                "consul.service.{}.{}".format(nf.dc, nf.domain),
+                "localhost",
+            ],
             ip_addresses=["127.0.0.1"],
         )
         setup.extend(
             [
-                File("/usr/share/ca-certificates/consul.pem", "${%s}" % ca.root_pem),
+                File("/usr/share/ca-certificates/protoconf.crt", "${%s}" % ca.root_pem),
                 Command("update-ca-certificates"),
                 Directory("/etc/consul.d/tls"),
                 File(

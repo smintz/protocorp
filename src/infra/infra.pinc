@@ -64,7 +64,7 @@ def ServerNameFactory(tf):
         tf.random_pet[myid] = RandomPet()
         hostname = "${random_pet.%s.id}" % myid
         fqdn = "{}.node.{}.{}".format(hostname, dc, CONSUL_DOMAIN)
-        return struct(id=id, hostname=hostname, fqdn=fqdn, dc=dc)
+        return struct(id=id, hostname=hostname, fqdn=fqdn, dc=dc, domain=CONSUL_DOMAIN)
 
     return struct(create=create)
 
@@ -105,13 +105,13 @@ advertise {
         return [
             String("#!/bin/bash"),
             Base(),
-            Docker(),
             Consul(
                 role,
                 nf,
                 [CONSUL_JOIN_ARGS[provider].format(dc=nf.dc, token=TOKENS[provider])],
                 ca=ca,
             ),
+            Docker(),
             Nomad(role, dc, nomad_config),
         ]
 
