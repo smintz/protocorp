@@ -18,16 +18,21 @@ def CA(tf, dns_names=["protoconf.com"]):
         private_key_pem="${tls_private_key.root.private_key_pem}",
         is_ca_certificate=True,
         validity_period_hours=86400 * 365 * 10,
+        early_renewal_hours=86400 * 365 * 5,
         dns_names=dns_names,
         subject=TlsSubject(organization="protoconf", organizational_unit="protocorp"),
     )
 
-    def server_cert(name, dns_names=[], ip_addresses=[]):
+    def server_cert(name, common_name=None, dns_names=[], ip_addresses=[]):
+        if not common_name:
+            common_name = name
         if not hasattr(tf.tls_private_key, name):
             tf.tls_private_key[name] = PRIVATE_KEY
             tf.tls_cert_request[name] = TlsCertRequest(
                 key_algorithm="${tls_private_key.%s.algorithm}" % name,
                 private_key_pem="${tls_private_key.%s.private_key_pem}" % name,
+                dns_names=dns_names,
+                ip_addresses=ip_addresses,
                 subject=TlsSubject(common_name=name),
             )
             tf.tls_locally_signed_cert[name] = TlsLocallySignedCert(

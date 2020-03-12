@@ -33,19 +33,20 @@ def ConsulInstall(version):
     return Component("ConsulInstall", render)
 
 
-def Consul(role="server", dc="dc1", join_lan=[], join_wan=[], ca=None):
+def Consul(role, nf, join_lan=[], join_wan=[], ca=None):
     """
     Defines the installation of consul
 
     Args:
         role: either `server` or `client`
-        dc: Name of the datacenter
+        nf: ServerNameFactory for this instance
         join_lan: list of servers or discovery expressions to join via lan
         join_wan: list of servers or discovery expressions to join via wan
         ca: a facility to create certificates
     Returns:
         Installation and configuration script for the consul agent.
     """
+    dc = nf.dc
 
     setup = [
         ConsulInstall("1.7.1"),
@@ -77,7 +78,12 @@ def Consul(role="server", dc="dc1", join_lan=[], join_wan=[], ca=None):
         )
 
     if ca:
-        pki = ca.server_cert("consul", ip_addresses=["127.0.0.1"])
+        pki = ca.server_cert(
+            nf.id,
+            common_name=nf.fqdn,
+            dns_names=[nf.hostname, nf.fqdn],
+            ip_addresses=["127.0.0.1"],
+        )
         setup.extend(
             [
                 File("/usr/share/ca-certificates/consul.pem", "${%s}" % ca.root_pem),

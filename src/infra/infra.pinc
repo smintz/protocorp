@@ -23,6 +23,8 @@ COUNTER = 4
 SERVERS = 3
 CLIENTS = 0
 
+CONSUL_DOMAIN = "protoconf.com"
+
 tf = Terraform(resource=Terraform.Resources())
 ca = CA(tf.resource)
 provider = "digitalocean"
@@ -56,6 +58,20 @@ def set_ssh_keys(tf, provider):
 set_ssh_keys(tf.resource, provider)
 
 
+def ServerNameFactory(tf):
+    def create(id, dc):
+        myid = id + dc
+        tf.random_pet[myid] = RandomPet()
+        hostname = "${random_pet.%s.id}" % myid
+        fqdn = "{}.node.{}.{}".format(hostname, dc, CONSUL_DOMAIN)
+        return struct(id=id, hostname=hostname, fqdn=fqdn, dc=dc)
+
+    return struct(create=create)
+
+
+snf = ServerNameFactory(tf.resource)
+
+
 def create_droplet(tf, hostname, role="server", dc="ams3", user_data=""):
     return DigitaloceanDroplet(
         name=hostname,
@@ -69,14 +85,14 @@ def create_droplet(tf, hostname, role="server", dc="ams3", user_data=""):
         tags=[role],
         private_networking=True,
         user_data=user_data,
-        lifecycle=Lifecycle(ignore_changes=["user_data"]),
+        lifecycle=Lifecycle(ignore_changes=["user_data"], create_before_destroy=True),
     )
 
 
 CREATE_FUNCS = {"digitalocean": create_droplet}
 
 
-def DeviceUserData(role, dc, provider):
+def DeviceUserData(role, nf, provider):
     nomad_config = """\
 advertise {
     http = "{{GetPublicIP}}"
@@ -92,8 +108,8 @@ advertise {
             Docker(),
             Consul(
                 role,
-                dc,
-                [CONSUL_JOIN_ARGS[provider].format(dc=dc, token=TOKENS[provider])],
+                nf,
+                [CONSUL_JOIN_ARGS[provider].format(dc=nf.dc, token=TOKENS[provider])],
                 ca=ca,
             ),
             Nomad(role, dc, nomad_config),
@@ -114,10 +130,10 @@ def create_device(tf, name, role, dc, provider):
         provider: The cloud provider to use
     """
 
-    tf.random_pet[name] = RandomPet()
-    user_data = compile(DeviceUserData(role, dc, provider))
-    tf.digitalocean_droplet[name] = CREATE_FUNCS[provider](
-        tf, "${random_pet.%s.id}" % name, role, dc, user_data
+    nf = snf.create(name, dc)
+    user_data = compile(DeviceUserData(role, nf, provider))
+    tf.digitalocean_droplet[nf.id] = CREATE_FUNCS[provider](
+        tf, nf.hostname, role, dc, user_data
     )
 
 
