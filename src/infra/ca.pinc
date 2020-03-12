@@ -40,7 +40,7 @@ def CA(tf, dns_names=["protoconf.com"]):
             )
         return struct(
             private_key="tls_private_key.%s.private_key_pem" % name,
-            certificate="tls_locally_signed_cert.%s.cer_pem" % name,
+            certificate="tls_locally_signed_cert.%s.cert_pem" % name,
         )
 
     return struct(
