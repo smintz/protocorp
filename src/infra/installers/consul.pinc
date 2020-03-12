@@ -102,6 +102,12 @@ def Consul(role="server", dc="dc1", join_lan=[], join_wan=[], ca=None):
 key_file = "/etc/consul.d/tls/key.pem"
 cert_file = "/etc/consul.d/tls/cert.pem"
 ca_file = "/usr/share/ca-certificates/consul.pem"
+addresses {
+    https = "0.0.0.0"
+}
+ports {
+    https = 8501
+}
 """,
                 ),
             ]
