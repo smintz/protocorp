@@ -79,7 +79,7 @@ def Consul(role, nf, join_lan=[], join_wan=[], ca=None):
 
     if ca:
         pki = ca.server_cert(
-            nf.id,
+            nf.id + "_consul",
             common_name=nf.fqdn,
             dns_names=[nf.hostname, nf.fqdn],
             ip_addresses=["127.0.0.1"],
