@@ -13,14 +13,24 @@ PRIVATE_KEY = TlsPrivateKey(algorithm="ECDSA", ecdsa_curve="P384")
 def CA(tf, dns_names=["protoconf.com"]):
     tf.tls_private_key["root"] = PRIVATE_KEY
     tf.tls_self_signed_cert["root"] = TlsSelfSignedCert(
-        allowed_uses=["key_encipherment", "digital_signature", "server_auth"],
+        allowed_uses=[
+            "cert_signing",
+            "key_encipherment",
+            "digital_signature",
+            "server_auth",
+            "client_auth",
+        ],
         key_algorithm="${tls_private_key.root.algorithm}",
         private_key_pem="${tls_private_key.root.private_key_pem}",
         is_ca_certificate=True,
         validity_period_hours=24 * 365 * 10,
         early_renewal_hours=24 * 365 * 5,
         dns_names=dns_names,
-        subject=TlsSubject(organization="protoconf", organizational_unit="protocorp"),
+        subject=TlsSubject(
+            common_name=dns_names[0],
+            organization="protoconf",
+            organizational_unit="protocorp",
+        ),
     )
 
     def server_cert(name, common_name=None, dns_names=[], ip_addresses=[]):
@@ -41,6 +51,7 @@ def CA(tf, dns_names=["protoconf.com"]):
                 ca_private_key_pem="${tls_private_key.root.private_key_pem}",
                 ca_cert_pem="${tls_self_signed_cert.root.cert_pem}",
                 validity_period_hours=24 * 30 * 3,
+                early_renewal_hours=24 * 30 * 1,
                 allowed_uses=["key_encipherment", "digital_signature", "server_auth"],
             )
         return struct(
