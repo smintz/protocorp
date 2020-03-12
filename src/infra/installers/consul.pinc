@@ -80,19 +80,19 @@ def Consul(role="server", dc="dc1", join_lan=[], join_wan=[], ca=None):
         pki = ca.server_cert("consul", ip_addresses=["127.0.0.1"])
         setup.extend(
             [
-                File("/usr/share/ca-certificates/consul.pem", "\${%s}" % ca.root_pem),
+                File("/usr/share/ca-certificates/consul.pem", "${%s}" % ca.root_pem),
                 Command("update-ca-certificates"),
                 Directory("/etc/consul.d/tls"),
                 File(
                     "/etc/consul.d/tls/key.pem",
-                    "\${%s}" % pki.private_key,
+                    "${%s}" % pki.private_key,
                     mode="600",
                     owner="consul",
                     group="consul",
                 ),
                 File(
                     "/etc/consul.d/tls/cert.pem",
-                    "\${%s}" % pki.certificate,
+                    "${%s}" % pki.certificate,
                     owner="consul",
                     group="consul",
                 ),
