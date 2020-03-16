@@ -20,7 +20,7 @@ load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
 COUNTER = 0
-SERVERS = 3
+SERVERS = 0
 CLIENTS = 0
 
 CONSUL_DOMAIN = "pco.nf"
