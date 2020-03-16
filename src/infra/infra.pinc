@@ -19,7 +19,7 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 2
+COUNTER = 3
 SERVERS = 3
 CLIENTS = 0
 
@@ -115,7 +115,7 @@ advertise {
                 ca=ca,
             ),
             Docker(),
-            Nomad(role, nf, additional_config=nomad_config),
+            Nomad(role, nf, ca=ca, additional_config=nomad_config),
         ]
 
     return Component("DeviceUserData", render)
