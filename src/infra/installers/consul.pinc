@@ -118,6 +118,7 @@ def Consul(
                     'advertise_addr = "{{GetPublicIP}}"',
                     'datacenter = "{}"'.format(dc),
                     'data_dir = "/opt/consul"',
+                    'domain = "{}"'.format(nf.domain),
                 ]
             ),
         ),
