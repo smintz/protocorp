@@ -19,11 +19,11 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 1
+COUNTER = 0
 SERVERS = 3
 CLIENTS = 0
 
-CONSUL_DOMAIN = "protoconf.com"
+CONSUL_DOMAIN = "pco.nf"
 
 tf = Terraform(resource=Terraform.Resources())
 ca = CA(tf.resource)

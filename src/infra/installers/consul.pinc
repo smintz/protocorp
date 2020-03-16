@@ -8,6 +8,8 @@ load("/pc4os/command.pinc", "Command")
 load("/pc4os/systemd.pinc", "Systemd")
 load("/pc4os/systemd.proto", "Service", "Unit")
 
+CONSUL_VERSION = "1.7.1"
+
 
 def ConsulInstall(version):
     downloaded_file = "/tmp/consul-{}.zip".format(version)
@@ -33,23 +35,77 @@ def ConsulInstall(version):
     return Component("ConsulInstall", render)
 
 
-def Consul(role, nf, join_lan=[], join_wan=[], ca=None):
+CONSUL_NETDEV_CONFIG = """\
+# Creates a "dummy" network interface
+# we'll configure this interface with a link-local address
+# See: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html
+##
+
+[NetDev]
+Name=consul0
+Kind=dummy
+"""
+
+CONSUL_NETWORK_CONFIG = """\
+# We "find" the dummy0 interface we created and configure it with a link-local address
+# See: https://www.freedesktop.org/software/systemd/man/systemd.network.html
+##
+[Match]
+Name=consul0
+
+[Network]
+Address=169.254.1.1/32
+
+# We want these domains
+Domains= ~{}.
+
+# To go to the consul DNS server we'll bind to this address
+DNS=169.254.1.1
+"""
+
+
+def DummyInterface(domain="consul"):
+    def render():
+        return [
+            File("/etc/systemd/network/consul0.netdev", content=CONSUL_NETDEV_CONFIG),
+            File(
+                "/etc/systemd/network/consul0.network",
+                content=CONSUL_NETWORK_CONFIG.format(domain),
+            ),
+            Command("systemctl restart systemd-networkd"),
+        ]
+
+    return Component("DummyInterface", render)
+
+
+def Consul(
+    role,
+    nf,
+    version=CONSUL_VERSION,
+    join_lan=[],
+    join_wan=[],
+    ca=None,
+    advertise_iface="eth0",
+):
     """
     Defines the installation of consul
 
     Args:
         role: either `server` or `client`
         nf: ServerNameFactory for this instance
+        version: version used for installing consul
         join_lan: list of servers or discovery expressions to join via lan
         join_wan: list of servers or discovery expressions to join via wan
         ca: a facility to create certificates
+        advertise_iface: which interface holds the IP which should be used for consul communciation
     Returns:
         Installation and configuration script for the consul agent.
     """
     dc = nf.dc
 
     setup = [
-        ConsulInstall("1.7.1"),
+        ConsulInstall(version),
+        DummyInterface(domain=nf.domain),
         File(
             "/etc/consul.d/config.hcl",
             mode="0640",
@@ -92,7 +148,10 @@ def Consul(role, nf, join_lan=[], join_wan=[], ca=None):
         )
         setup.extend(
             [
-                File("/usr/share/ca-certificates/protoconf.crt", "${%s}" % ca.root_pem),
+                File(
+                    "/usr/local/share/ca-certificates/protoconf.crt",
+                    "${%s}" % ca.root_pem,
+                ),
                 Command("update-ca-certificates"),
                 Directory("/etc/consul.d/tls"),
                 File(
@@ -113,13 +172,16 @@ def Consul(role, nf, join_lan=[], join_wan=[], ca=None):
                     """\
 key_file = "/etc/consul.d/tls/key.pem"
 cert_file = "/etc/consul.d/tls/cert.pem"
-ca_file = "/usr/share/ca-certificates/protoconf.crt"
+ca_file = "/usr/local/share/ca-certificates/protoconf.crt"
 addresses {
     https = "0.0.0.0"
+    dns = "169.254.1.1"
 }
 ports {
     https = 8501
+    dns = 53
 }
+recursors = ["127.0.0.53"]
 """,
                 ),
             ]
@@ -165,6 +227,7 @@ ports {
                 KillMode="process",
                 Restart="on-failure",
                 LimitNOFILE="65536",
+                AmbientCapabilities="CAP_NET_BIND_SERVICE",
             ),
             unit=Unit(
                 Description="HashiCorp Consul - A service mesh solution",
