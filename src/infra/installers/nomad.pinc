@@ -87,9 +87,7 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
         setup.extend(
             [
                 Directory("/etc/nomad.d/tls"),
-                File(
-                    "/etc/consul.d/tls/key.pem", "${%s}" % pki.private_key, mode="600"
-                ),
+                File("/etc/nomad.d/tls/key.pem", "${%s}" % pki.private_key, mode="600"),
                 File("/etc/nomad.d/tls/cert.pem", "${%s}" % pki.certificate),
                 File(
                     "/etc/nomad.d/tls.hcl",

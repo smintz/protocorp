@@ -19,7 +19,7 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 3
+COUNTER = 2
 SERVERS = 3
 CLIENTS = 0
 
