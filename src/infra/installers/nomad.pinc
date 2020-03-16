@@ -80,6 +80,7 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
                 nf.fqdn,
                 "nomad.service.{}".format(nf.domain),
                 "nomad.service.{}.{}".format(nf.dc, nf.domain),
+                "server.global.nomad",
                 "localhost",
             ],
             ip_addresses=["127.0.0.1"],
