@@ -121,7 +121,9 @@ advertise {
                 nmd.role,
                 nmd,
                 join_lan=[
-                    CONSUL_JOIN_ARGS[provider].format(dc=nmd.dc, token=TOKENS[provider])
+                    CONSUL_JOIN_ARGS[provider].format(
+                        dc=nmd.region, token=TOKENS[provider]
+                    )
                 ],
                 ca=ca,
             ),
