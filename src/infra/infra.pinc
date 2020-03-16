@@ -19,7 +19,7 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 0
+COUNTER = 3
 SERVERS = 3
 CLIENTS = 0
 
@@ -73,7 +73,7 @@ snf = ServerNameFactory(tf.resource)
 
 
 def create_droplet(tf, hostname, role="server", dc="ams3", user_data=""):
-    return DigitaloceanDroplet(
+    droplet = DigitaloceanDroplet(
         name=hostname,
         image="ubuntu-18-04-x64",
         region=dc,
@@ -87,6 +87,7 @@ def create_droplet(tf, hostname, role="server", dc="ams3", user_data=""):
         user_data=user_data,
         lifecycle=Lifecycle(ignore_changes=["user_data"], create_before_destroy=True),
     )
+    return droplet
 
 
 CREATE_FUNCS = {"digitalocean": create_droplet}
