@@ -98,8 +98,8 @@ def create_droplet(tf, nmd, user_data=""):
         user_data=user_data,
     )
     if nmd.id > 0:
-        droplet.lifecycle = (
-            Lifecycle(ignore_changes=["user_data"], create_before_destroy=True),
+        droplet.lifecycle = Lifecycle(
+            ignore_changes=["user_data"], create_before_destroy=True
         )
     return droplet
 
@@ -144,7 +144,7 @@ def create_device(tf, nmd, provider):
 
     user_data = compile(DeviceUserData(nmd.role, nmd, provider))
 
-    if provider == "digitaloean":
+    if provider == "digitalocean":
         tf.digitalocean_droplet[nmd.tfid] = create_droplet(tf, nmd, user_data)
 
 
