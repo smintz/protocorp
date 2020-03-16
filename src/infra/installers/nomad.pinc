@@ -21,6 +21,8 @@ client {
 }
 """
 
+NOMAD_VERSION = "0.10.4"
+
 
 def NomadInstall(version):
     downloaded_file = "/tmp/nomad-{}.zip".format(version)
@@ -45,19 +47,22 @@ def NomadInstall(version):
     return Component("NomadInstall", render)
 
 
-def Nomad(role="server", dc="dc1", additional_config=None):
+def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
     """
     Nomad installs and configures the nomad agent on the host
 
     Args:
         role: either server or client
-        dc: name of the datacenter
+        nf: a server name factory
+        version: NOMAD_VERSION to use
+        ca: a CA factory
         additional_config: adds a file with additional configs
     Returns:
         a Nomad component
     """
+    dc = nf.dc
     setup = [
-        NomadInstall("0.10.4"),
+        NomadInstall(version),
         File("/etc/nomad.d/nomad.hcl", content="\n".join(['data_dir = "/opt/nomad"'])),
         File("/etc/nomad.d/datacenter.hcl", 'datacenter = "{}"'.format(dc)),
         File("/etc/nomad.d/client.hcl", content=CLIENT_CONFIG),
@@ -66,6 +71,44 @@ def Nomad(role="server", dc="dc1", additional_config=None):
     if role == "server":
         setup.append(File("/etc/nomad.d/server.hcl", content=SERVER_CONFIG))
 
+    if ca:
+        pki = ca.server_cert(
+            nf.id + "_nomad",
+            common_name=nf.fqdn,
+            dns_names=[
+                nf.hostname,
+                nf.fqdn,
+                "nomad.service.{}".format(nf.domain),
+                "nomad.service.{}.{}".format(nf.dc, nf.domain),
+                "localhost",
+            ],
+            ip_addresses=["127.0.0.1"],
+        )
+        setup.extend(
+            [
+                Directory("/etc/nomad.d/tls"),
+                File(
+                    "/etc/consul.d/tls/key.pem", "${%s}" % pki.private_key, mode="600"
+                ),
+                File("/etc/nomad.d/tls/cert.pem", "${%s}" % pki.certificate),
+                File(
+                    "/etc/nomad.d/tls.hcl",
+                    """\
+tls {
+  http = true
+  rpc  = true
+
+  ca_file   = "/usr/local/share/ca-certificates/protoconf.crt"
+  cert_file = "/etc/nomad.d/tls/cert.pem"
+  key_file  = "/etc/nomad.d/tls/key.pem"
+
+  verify_server_hostname = true
+  verify_https_client    = true
+}
+""",
+                ),
+            ]
+        )
     if additional_config:
         setup.append(
             File("/etc/nomad.d/99-additional-configs.hcl", content=additional_config)

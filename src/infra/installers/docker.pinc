@@ -1,7 +1,6 @@
 """
 docker.pinc
 """
-load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component")
 load("/pc4os/ubuntu.pinc", "PackagesRegistryUpdate", "Install")
 load("/pc4os/command.pinc", "Command")

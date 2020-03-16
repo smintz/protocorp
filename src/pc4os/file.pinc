@@ -6,16 +6,20 @@ load("component.pinc", "Component", "String")
 load("command.pinc", "Command")
 
 
-def File(
-    path,
-    content=None,
-    download=None,
-    owner="root",
-    group="root",
-    mode="0644",
-    requires=[],
-    before=[],
-):
+def File(path, content=None, download=None, owner="root", group="root", mode="0644"):
+    """
+    File generates a file on the filesystem path
+
+    Args:
+        path: where to store the file, must start with /
+        content: a static content to store in the file
+        download: a url to download a file from
+        owner: owner of the file
+        group: group of the file
+        mode: mode of the file
+    Returns:
+        A file component
+    """
     if not path.startswith("/"):
         fail("path (%s) must start with a /" % path)
 
