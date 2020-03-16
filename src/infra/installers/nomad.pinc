@@ -101,8 +101,8 @@ tls {
   cert_file = "/etc/nomad.d/tls/cert.pem"
   key_file  = "/etc/nomad.d/tls/key.pem"
 
-  verify_server_hostname = true
-  verify_https_client    = true
+  verify_server_hostname = false
+  verify_https_client    = false
 }
 """,
                 ),
