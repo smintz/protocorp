@@ -9,8 +9,224 @@
           "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk4ST4XhbBmZ3AKej/HWBBvodS/GBs3T6w6pP3WS2463QSOPnY42SVeH4AJZP3nVvvljeH7cYdFShastYOA6pkCxIVw7HSkE2xPLc+09n8bzaU3L8kHmjtfyZEQRxKmYTJA9dv0o3QYiJZgPWvUfGoLSYG4fqgD7KBZZrO+kygoAVby23mK3uPY67Z3mwQ8tB2JL3Fj00zbe+dTagHzXbudlUk28DvWBN59F8xLRZ0zI263MkkS0/1DuzmLlwj9XDfKaSxfSBOLBlAVF3CJ63dHLZ72JQ3ca5utFHkyK+WWymZskN+g3ahlvzb/cN/mMbSusVjvYg7+SDvPiN0waFP smintz@onavo"
         }
       },
+      "random_pet": {
+        "server-0-ams3-c01": {},
+        "server-1-ams3-c01": {},
+        "server-2-ams3-c01": {}
+      },
+      "tls_cert_request": {
+        "server-0-ams3-c01-consul": {
+          "dns_names": [
+            "${random_pet.server-0-ams3-c01.id}",
+            "${random_pet.server-0-ams3-c01.id}.node.ams3c01.pco.nf",
+            "consul.service.pco.nf",
+            "consul.service.ams3c01.pco.nf",
+            "localhost"
+          ],
+          "ip_addresses": [
+            "127.0.0.1"
+          ],
+          "key_algorithm": "${tls_private_key.server-0-ams3-c01-consul.algorithm}",
+          "private_key_pem": "${tls_private_key.server-0-ams3-c01-consul.private_key_pem}",
+          "subject": {
+            "common_name": "${random_pet.server-0-ams3-c01.id}.node.ams3c01.pco.nf"
+          }
+        },
+        "server-0-ams3-c01-nomad": {
+          "dns_names": [
+            "${random_pet.server-0-ams3-c01.id}",
+            "${random_pet.server-0-ams3-c01.id}.node.ams3c01.pco.nf",
+            "nomad.service.pco.nf",
+            "nomad.service.ams3c01.pco.nf",
+            "server.global.nomad",
+            "localhost"
+          ],
+          "ip_addresses": [
+            "127.0.0.1"
+          ],
+          "key_algorithm": "${tls_private_key.server-0-ams3-c01-nomad.algorithm}",
+          "private_key_pem": "${tls_private_key.server-0-ams3-c01-nomad.private_key_pem}",
+          "subject": {
+            "common_name": "${random_pet.server-0-ams3-c01.id}.node.ams3c01.pco.nf"
+          }
+        },
+        "server-1-ams3-c01-consul": {
+          "dns_names": [
+            "${random_pet.server-1-ams3-c01.id}",
+            "${random_pet.server-1-ams3-c01.id}.node.ams3c01.pco.nf",
+            "consul.service.pco.nf",
+            "consul.service.ams3c01.pco.nf",
+            "localhost"
+          ],
+          "ip_addresses": [
+            "127.0.0.1"
+          ],
+          "key_algorithm": "${tls_private_key.server-1-ams3-c01-consul.algorithm}",
+          "private_key_pem": "${tls_private_key.server-1-ams3-c01-consul.private_key_pem}",
+          "subject": {
+            "common_name": "${random_pet.server-1-ams3-c01.id}.node.ams3c01.pco.nf"
+          }
+        },
+        "server-1-ams3-c01-nomad": {
+          "dns_names": [
+            "${random_pet.server-1-ams3-c01.id}",
+            "${random_pet.server-1-ams3-c01.id}.node.ams3c01.pco.nf",
+            "nomad.service.pco.nf",
+            "nomad.service.ams3c01.pco.nf",
+            "server.global.nomad",
+            "localhost"
+          ],
+          "ip_addresses": [
+            "127.0.0.1"
+          ],
+          "key_algorithm": "${tls_private_key.server-1-ams3-c01-nomad.algorithm}",
+          "private_key_pem": "${tls_private_key.server-1-ams3-c01-nomad.private_key_pem}",
+          "subject": {
+            "common_name": "${random_pet.server-1-ams3-c01.id}.node.ams3c01.pco.nf"
+          }
+        },
+        "server-2-ams3-c01-consul": {
+          "dns_names": [
+            "${random_pet.server-2-ams3-c01.id}",
+            "${random_pet.server-2-ams3-c01.id}.node.ams3c01.pco.nf",
+            "consul.service.pco.nf",
+            "consul.service.ams3c01.pco.nf",
+            "localhost"
+          ],
+          "ip_addresses": [
+            "127.0.0.1"
+          ],
+          "key_algorithm": "${tls_private_key.server-2-ams3-c01-consul.algorithm}",
+          "private_key_pem": "${tls_private_key.server-2-ams3-c01-consul.private_key_pem}",
+          "subject": {
+            "common_name": "${random_pet.server-2-ams3-c01.id}.node.ams3c01.pco.nf"
+          }
+        },
+        "server-2-ams3-c01-nomad": {
+          "dns_names": [
+            "${random_pet.server-2-ams3-c01.id}",
+            "${random_pet.server-2-ams3-c01.id}.node.ams3c01.pco.nf",
+            "nomad.service.pco.nf",
+            "nomad.service.ams3c01.pco.nf",
+            "server.global.nomad",
+            "localhost"
+          ],
+          "ip_addresses": [
+            "127.0.0.1"
+          ],
+          "key_algorithm": "${tls_private_key.server-2-ams3-c01-nomad.algorithm}",
+          "private_key_pem": "${tls_private_key.server-2-ams3-c01-nomad.private_key_pem}",
+          "subject": {
+            "common_name": "${random_pet.server-2-ams3-c01.id}.node.ams3c01.pco.nf"
+          }
+        }
+      },
+      "tls_locally_signed_cert": {
+        "server-0-ams3-c01-consul": {
+          "allowed_uses": [
+            "key_encipherment",
+            "digital_signature",
+            "server_auth"
+          ],
+          "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+          "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+          "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+          "cert_request_pem": "${tls_cert_request.server-0-ams3-c01-consul.cert_request_pem}",
+          "early_renewal_hours": 720,
+          "validity_period_hours": 2160
+        },
+        "server-0-ams3-c01-nomad": {
+          "allowed_uses": [
+            "key_encipherment",
+            "digital_signature",
+            "server_auth"
+          ],
+          "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+          "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+          "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+          "cert_request_pem": "${tls_cert_request.server-0-ams3-c01-nomad.cert_request_pem}",
+          "early_renewal_hours": 720,
+          "validity_period_hours": 2160
+        },
+        "server-1-ams3-c01-consul": {
+          "allowed_uses": [
+            "key_encipherment",
+            "digital_signature",
+            "server_auth"
+          ],
+          "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+          "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+          "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+          "cert_request_pem": "${tls_cert_request.server-1-ams3-c01-consul.cert_request_pem}",
+          "early_renewal_hours": 720,
+          "validity_period_hours": 2160
+        },
+        "server-1-ams3-c01-nomad": {
+          "allowed_uses": [
+            "key_encipherment",
+            "digital_signature",
+            "server_auth"
+          ],
+          "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+          "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+          "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+          "cert_request_pem": "${tls_cert_request.server-1-ams3-c01-nomad.cert_request_pem}",
+          "early_renewal_hours": 720,
+          "validity_period_hours": 2160
+        },
+        "server-2-ams3-c01-consul": {
+          "allowed_uses": [
+            "key_encipherment",
+            "digital_signature",
+            "server_auth"
+          ],
+          "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+          "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+          "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+          "cert_request_pem": "${tls_cert_request.server-2-ams3-c01-consul.cert_request_pem}",
+          "early_renewal_hours": 720,
+          "validity_period_hours": 2160
+        },
+        "server-2-ams3-c01-nomad": {
+          "allowed_uses": [
+            "key_encipherment",
+            "digital_signature",
+            "server_auth"
+          ],
+          "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+          "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+          "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+          "cert_request_pem": "${tls_cert_request.server-2-ams3-c01-nomad.cert_request_pem}",
+          "early_renewal_hours": 720,
+          "validity_period_hours": 2160
+        }
+      },
       "tls_private_key": {
         "root": {
+          "algorithm": "ECDSA",
+          "ecdsa_curve": "P384"
+        },
+        "server-0-ams3-c01-consul": {
+          "algorithm": "ECDSA",
+          "ecdsa_curve": "P384"
+        },
+        "server-0-ams3-c01-nomad": {
+          "algorithm": "ECDSA",
+          "ecdsa_curve": "P384"
+        },
+        "server-1-ams3-c01-consul": {
+          "algorithm": "ECDSA",
+          "ecdsa_curve": "P384"
+        },
+        "server-1-ams3-c01-nomad": {
+          "algorithm": "ECDSA",
+          "ecdsa_curve": "P384"
+        },
+        "server-2-ams3-c01-consul": {
+          "algorithm": "ECDSA",
+          "ecdsa_curve": "P384"
+        },
+        "server-2-ams3-c01-nomad": {
           "algorithm": "ECDSA",
           "ecdsa_curve": "P384"
         }

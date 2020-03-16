@@ -136,7 +136,7 @@ def Consul(
 
     if ca:
         pki = ca.server_cert(
-            nf.id + "_consul",
+            nf.tfid + "-consul",
             common_name=nf.fqdn,
             dns_names=[
                 nf.hostname,

@@ -73,7 +73,7 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
 
     if ca:
         pki = ca.server_cert(
-            nf.id + "_nomad",
+            nf.tfid + "-nomad",
             common_name=nf.fqdn,
             dns_names=[
                 nf.hostname,
