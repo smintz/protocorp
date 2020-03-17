@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package terraform;
 
+import "terraform/cloudflare-resources.proto";
+
 import "terraform/digitalocean-resources.proto";
 
 import "terraform/random-resources.proto";
@@ -12,76 +14,138 @@ message Terraform {
   Resources resource = 1;
 
   message Resources {
-    map<string, digitalocean.resources.DigitaloceanCdn> digitalocean_cdn = 1 [json_name = "digitalocean_cdn"];
+    map<string, cloudflare.resources.CloudflareAccessApplication> cloudflare_access_application = 1 [json_name = "cloudflare_access_application"];
 
-    map<string, digitalocean.resources.DigitaloceanCertificate> digitalocean_certificate = 2 [json_name = "digitalocean_certificate"];
+    map<string, cloudflare.resources.CloudflareAccessGroup> cloudflare_access_group = 2 [json_name = "cloudflare_access_group"];
 
-    map<string, digitalocean.resources.DigitaloceanDatabaseCluster> digitalocean_database_cluster = 3 [json_name = "digitalocean_database_cluster"];
+    map<string, cloudflare.resources.CloudflareAccessIdentityProvider> cloudflare_access_identity_provider = 3 [json_name = "cloudflare_access_identity_provider"];
 
-    map<string, digitalocean.resources.DigitaloceanDatabaseConnectionPool> digitalocean_database_connection_pool = 4 [json_name = "digitalocean_database_connection_pool"];
+    map<string, cloudflare.resources.CloudflareAccessPolicy> cloudflare_access_policy = 4 [json_name = "cloudflare_access_policy"];
 
-    map<string, digitalocean.resources.DigitaloceanDatabaseDb> digitalocean_database_db = 5 [json_name = "digitalocean_database_db"];
+    map<string, cloudflare.resources.CloudflareAccessRule> cloudflare_access_rule = 5 [json_name = "cloudflare_access_rule"];
 
-    map<string, digitalocean.resources.DigitaloceanDatabaseFirewall> digitalocean_database_firewall = 6 [json_name = "digitalocean_database_firewall"];
+    map<string, cloudflare.resources.CloudflareAccessServiceToken> cloudflare_access_service_token = 6 [json_name = "cloudflare_access_service_token"];
 
-    map<string, digitalocean.resources.DigitaloceanDatabaseReplica> digitalocean_database_replica = 7 [json_name = "digitalocean_database_replica"];
+    map<string, cloudflare.resources.CloudflareAccountMember> cloudflare_account_member = 7 [json_name = "cloudflare_account_member"];
 
-    map<string, digitalocean.resources.DigitaloceanDatabaseUser> digitalocean_database_user = 8 [json_name = "digitalocean_database_user"];
+    map<string, cloudflare.resources.CloudflareArgo> cloudflare_argo = 8 [json_name = "cloudflare_argo"];
 
-    map<string, digitalocean.resources.DigitaloceanDomain> digitalocean_domain = 9 [json_name = "digitalocean_domain"];
+    map<string, cloudflare.resources.CloudflareCustomPages> cloudflare_custom_pages = 9 [json_name = "cloudflare_custom_pages"];
 
-    map<string, digitalocean.resources.DigitaloceanDroplet> digitalocean_droplet = 10 [json_name = "digitalocean_droplet"];
+    map<string, cloudflare.resources.CloudflareCustomSsl> cloudflare_custom_ssl = 10 [json_name = "cloudflare_custom_ssl"];
 
-    map<string, digitalocean.resources.DigitaloceanDropletSnapshot> digitalocean_droplet_snapshot = 11 [json_name = "digitalocean_droplet_snapshot"];
+    map<string, cloudflare.resources.CloudflareFilter> cloudflare_filter = 11 [json_name = "cloudflare_filter"];
 
-    map<string, digitalocean.resources.DigitaloceanFirewall> digitalocean_firewall = 12 [json_name = "digitalocean_firewall"];
+    map<string, cloudflare.resources.CloudflareFirewallRule> cloudflare_firewall_rule = 12 [json_name = "cloudflare_firewall_rule"];
 
-    map<string, digitalocean.resources.DigitaloceanFloatingIp> digitalocean_floating_ip = 13 [json_name = "digitalocean_floating_ip"];
+    map<string, cloudflare.resources.CloudflareLoadBalancer> cloudflare_load_balancer = 13 [json_name = "cloudflare_load_balancer"];
 
-    map<string, digitalocean.resources.DigitaloceanFloatingIpAssignment> digitalocean_floating_ip_assignment = 14 [json_name = "digitalocean_floating_ip_assignment"];
+    map<string, cloudflare.resources.CloudflareLoadBalancerMonitor> cloudflare_load_balancer_monitor = 14 [json_name = "cloudflare_load_balancer_monitor"];
 
-    map<string, digitalocean.resources.DigitaloceanKubernetesCluster> digitalocean_kubernetes_cluster = 15 [json_name = "digitalocean_kubernetes_cluster"];
+    map<string, cloudflare.resources.CloudflareLoadBalancerPool> cloudflare_load_balancer_pool = 15 [json_name = "cloudflare_load_balancer_pool"];
 
-    map<string, digitalocean.resources.DigitaloceanKubernetesNodePool> digitalocean_kubernetes_node_pool = 16 [json_name = "digitalocean_kubernetes_node_pool"];
+    map<string, cloudflare.resources.CloudflareLogpushJob> cloudflare_logpush_job = 16 [json_name = "cloudflare_logpush_job"];
 
-    map<string, digitalocean.resources.DigitaloceanLoadbalancer> digitalocean_loadbalancer = 17 [json_name = "digitalocean_loadbalancer"];
+    map<string, cloudflare.resources.CloudflareOriginCaCertificate> cloudflare_origin_ca_certificate = 17 [json_name = "cloudflare_origin_ca_certificate"];
 
-    map<string, digitalocean.resources.DigitaloceanProject> digitalocean_project = 18 [json_name = "digitalocean_project"];
+    map<string, cloudflare.resources.CloudflarePageRule> cloudflare_page_rule = 18 [json_name = "cloudflare_page_rule"];
 
-    map<string, digitalocean.resources.DigitaloceanRecord> digitalocean_record = 19 [json_name = "digitalocean_record"];
+    map<string, cloudflare.resources.CloudflareRateLimit> cloudflare_rate_limit = 19 [json_name = "cloudflare_rate_limit"];
 
-    map<string, digitalocean.resources.DigitaloceanSpacesBucket> digitalocean_spaces_bucket = 20 [json_name = "digitalocean_spaces_bucket"];
+    map<string, cloudflare.resources.CloudflareRecord> cloudflare_record = 20 [json_name = "cloudflare_record"];
 
-    map<string, digitalocean.resources.DigitaloceanSshKey> digitalocean_ssh_key = 21 [json_name = "digitalocean_ssh_key"];
+    map<string, cloudflare.resources.CloudflareSpectrumApplication> cloudflare_spectrum_application = 21 [json_name = "cloudflare_spectrum_application"];
 
-    map<string, digitalocean.resources.DigitaloceanTag> digitalocean_tag = 22 [json_name = "digitalocean_tag"];
+    map<string, cloudflare.resources.CloudflareWafGroup> cloudflare_waf_group = 22 [json_name = "cloudflare_waf_group"];
 
-    map<string, digitalocean.resources.DigitaloceanVolume> digitalocean_volume = 23 [json_name = "digitalocean_volume"];
+    map<string, cloudflare.resources.CloudflareWafPackage> cloudflare_waf_package = 23 [json_name = "cloudflare_waf_package"];
 
-    map<string, digitalocean.resources.DigitaloceanVolumeAttachment> digitalocean_volume_attachment = 24 [json_name = "digitalocean_volume_attachment"];
+    map<string, cloudflare.resources.CloudflareWafRule> cloudflare_waf_rule = 24 [json_name = "cloudflare_waf_rule"];
 
-    map<string, digitalocean.resources.DigitaloceanVolumeSnapshot> digitalocean_volume_snapshot = 25 [json_name = "digitalocean_volume_snapshot"];
+    map<string, cloudflare.resources.CloudflareWorkerRoute> cloudflare_worker_route = 25 [json_name = "cloudflare_worker_route"];
 
-    map<string, random.resources.RandomId> random_id = 26 [json_name = "random_id"];
+    map<string, cloudflare.resources.CloudflareWorkerScript> cloudflare_worker_script = 26 [json_name = "cloudflare_worker_script"];
 
-    map<string, random.resources.RandomInteger> random_integer = 27 [json_name = "random_integer"];
+    map<string, cloudflare.resources.CloudflareWorkersKv> cloudflare_workers_kv = 27 [json_name = "cloudflare_workers_kv"];
 
-    map<string, random.resources.RandomPassword> random_password = 28 [json_name = "random_password"];
+    map<string, cloudflare.resources.CloudflareWorkersKvNamespace> cloudflare_workers_kv_namespace = 28 [json_name = "cloudflare_workers_kv_namespace"];
 
-    map<string, random.resources.RandomPet> random_pet = 29 [json_name = "random_pet"];
+    map<string, cloudflare.resources.CloudflareZone> cloudflare_zone = 29 [json_name = "cloudflare_zone"];
 
-    map<string, random.resources.RandomShuffle> random_shuffle = 30 [json_name = "random_shuffle"];
+    map<string, cloudflare.resources.CloudflareZoneLockdown> cloudflare_zone_lockdown = 30 [json_name = "cloudflare_zone_lockdown"];
 
-    map<string, random.resources.RandomString> random_string = 31 [json_name = "random_string"];
+    map<string, cloudflare.resources.CloudflareZoneSettingsOverride> cloudflare_zone_settings_override = 31 [json_name = "cloudflare_zone_settings_override"];
 
-    map<string, random.resources.RandomUuid> random_uuid = 32 [json_name = "random_uuid"];
+    map<string, digitalocean.resources.DigitaloceanCdn> digitalocean_cdn = 32 [json_name = "digitalocean_cdn"];
 
-    map<string, tls.resources.TlsCertRequest> tls_cert_request = 33 [json_name = "tls_cert_request"];
+    map<string, digitalocean.resources.DigitaloceanCertificate> digitalocean_certificate = 33 [json_name = "digitalocean_certificate"];
 
-    map<string, tls.resources.TlsLocallySignedCert> tls_locally_signed_cert = 34 [json_name = "tls_locally_signed_cert"];
+    map<string, digitalocean.resources.DigitaloceanDatabaseCluster> digitalocean_database_cluster = 34 [json_name = "digitalocean_database_cluster"];
 
-    map<string, tls.resources.TlsPrivateKey> tls_private_key = 35 [json_name = "tls_private_key"];
+    map<string, digitalocean.resources.DigitaloceanDatabaseConnectionPool> digitalocean_database_connection_pool = 35 [json_name = "digitalocean_database_connection_pool"];
 
-    map<string, tls.resources.TlsSelfSignedCert> tls_self_signed_cert = 36 [json_name = "tls_self_signed_cert"];
+    map<string, digitalocean.resources.DigitaloceanDatabaseDb> digitalocean_database_db = 36 [json_name = "digitalocean_database_db"];
+
+    map<string, digitalocean.resources.DigitaloceanDatabaseFirewall> digitalocean_database_firewall = 37 [json_name = "digitalocean_database_firewall"];
+
+    map<string, digitalocean.resources.DigitaloceanDatabaseReplica> digitalocean_database_replica = 38 [json_name = "digitalocean_database_replica"];
+
+    map<string, digitalocean.resources.DigitaloceanDatabaseUser> digitalocean_database_user = 39 [json_name = "digitalocean_database_user"];
+
+    map<string, digitalocean.resources.DigitaloceanDomain> digitalocean_domain = 40 [json_name = "digitalocean_domain"];
+
+    map<string, digitalocean.resources.DigitaloceanDroplet> digitalocean_droplet = 41 [json_name = "digitalocean_droplet"];
+
+    map<string, digitalocean.resources.DigitaloceanDropletSnapshot> digitalocean_droplet_snapshot = 42 [json_name = "digitalocean_droplet_snapshot"];
+
+    map<string, digitalocean.resources.DigitaloceanFirewall> digitalocean_firewall = 43 [json_name = "digitalocean_firewall"];
+
+    map<string, digitalocean.resources.DigitaloceanFloatingIp> digitalocean_floating_ip = 44 [json_name = "digitalocean_floating_ip"];
+
+    map<string, digitalocean.resources.DigitaloceanFloatingIpAssignment> digitalocean_floating_ip_assignment = 45 [json_name = "digitalocean_floating_ip_assignment"];
+
+    map<string, digitalocean.resources.DigitaloceanKubernetesCluster> digitalocean_kubernetes_cluster = 46 [json_name = "digitalocean_kubernetes_cluster"];
+
+    map<string, digitalocean.resources.DigitaloceanKubernetesNodePool> digitalocean_kubernetes_node_pool = 47 [json_name = "digitalocean_kubernetes_node_pool"];
+
+    map<string, digitalocean.resources.DigitaloceanLoadbalancer> digitalocean_loadbalancer = 48 [json_name = "digitalocean_loadbalancer"];
+
+    map<string, digitalocean.resources.DigitaloceanProject> digitalocean_project = 49 [json_name = "digitalocean_project"];
+
+    map<string, digitalocean.resources.DigitaloceanRecord> digitalocean_record = 50 [json_name = "digitalocean_record"];
+
+    map<string, digitalocean.resources.DigitaloceanSpacesBucket> digitalocean_spaces_bucket = 51 [json_name = "digitalocean_spaces_bucket"];
+
+    map<string, digitalocean.resources.DigitaloceanSshKey> digitalocean_ssh_key = 52 [json_name = "digitalocean_ssh_key"];
+
+    map<string, digitalocean.resources.DigitaloceanTag> digitalocean_tag = 53 [json_name = "digitalocean_tag"];
+
+    map<string, digitalocean.resources.DigitaloceanVolume> digitalocean_volume = 54 [json_name = "digitalocean_volume"];
+
+    map<string, digitalocean.resources.DigitaloceanVolumeAttachment> digitalocean_volume_attachment = 55 [json_name = "digitalocean_volume_attachment"];
+
+    map<string, digitalocean.resources.DigitaloceanVolumeSnapshot> digitalocean_volume_snapshot = 56 [json_name = "digitalocean_volume_snapshot"];
+
+    map<string, random.resources.RandomId> random_id = 57 [json_name = "random_id"];
+
+    map<string, random.resources.RandomInteger> random_integer = 58 [json_name = "random_integer"];
+
+    map<string, random.resources.RandomPassword> random_password = 59 [json_name = "random_password"];
+
+    map<string, random.resources.RandomPet> random_pet = 60 [json_name = "random_pet"];
+
+    map<string, random.resources.RandomShuffle> random_shuffle = 61 [json_name = "random_shuffle"];
+
+    map<string, random.resources.RandomString> random_string = 62 [json_name = "random_string"];
+
+    map<string, random.resources.RandomUuid> random_uuid = 63 [json_name = "random_uuid"];
+
+    map<string, tls.resources.TlsCertRequest> tls_cert_request = 64 [json_name = "tls_cert_request"];
+
+    map<string, tls.resources.TlsLocallySignedCert> tls_locally_signed_cert = 65 [json_name = "tls_locally_signed_cert"];
+
+    map<string, tls.resources.TlsPrivateKey> tls_private_key = 66 [json_name = "tls_private_key"];
+
+    map<string, tls.resources.TlsSelfSignedCert> tls_self_signed_cert = 67 [json_name = "tls_self_signed_cert"];
   }
 }

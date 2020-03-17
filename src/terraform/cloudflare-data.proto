@@ -1,0 +1,158 @@
+syntax = "proto3";
+
+package terraform.cloudflare.data;
+
+import "terraform/meta.proto";
+
+//CloudflareIpRanges version is 0
+message CloudflareIpRanges {
+  repeated string cidr_blocks = 1 [json_name = "cidr_blocks"];
+
+  string id = 2;
+
+  repeated string ipv4_cidr_blocks = 3 [json_name = "ipv4_cidr_blocks"];
+
+  repeated string ipv6_cidr_blocks = 4 [json_name = "ipv6_cidr_blocks"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//CloudflareWafGroups version is 0
+message CloudflareWafGroups {
+  repeated Groups groups = 1;
+
+  string id = 2;
+
+  string package_id = 3 [json_name = "package_id"];
+
+  string zone_id = 4 [json_name = "zone_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Groups {
+    string description = 1;
+
+    string id = 2;
+
+    string mode = 3;
+
+    int64 modified_rules_count = 4 [json_name = "modified_rules_count"];
+
+    string name = 5;
+
+    string package_id = 6 [json_name = "package_id"];
+
+    int64 rules_count = 7 [json_name = "rules_count"];
+  }
+}
+
+//CloudflareWafPackages version is 0
+message CloudflareWafPackages {
+  string id = 1;
+
+  repeated Packages packages = 2;
+
+  string zone_id = 3 [json_name = "zone_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+
+  message Packages {
+    string action_mode = 1 [json_name = "action_mode"];
+
+    string description = 2;
+
+    string detection_mode = 3 [json_name = "detection_mode"];
+
+    string id = 4;
+
+    string name = 5;
+
+    string sensitivity = 6;
+  }
+}
+
+//CloudflareWafRules version is 0
+message CloudflareWafRules {
+  string id = 1;
+
+  string package_id = 2 [json_name = "package_id"];
+
+  repeated Rules rules = 3;
+
+  string zone_id = 4 [json_name = "zone_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Rules {
+    repeated string allowed_modes = 1 [json_name = "allowed_modes"];
+
+    string description = 2;
+
+    string group_id = 3 [json_name = "group_id"];
+
+    string group_name = 4 [json_name = "group_name"];
+
+    string id = 5;
+
+    string mode = 6;
+
+    string package_id = 7 [json_name = "package_id"];
+
+    string priority = 8;
+  }
+}
+
+//CloudflareZones version is 0
+message CloudflareZones {
+  string id = 1;
+
+  repeated Zones zones = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+
+  message Zones {
+    string id = 1;
+
+    string name = 2;
+  }
+}

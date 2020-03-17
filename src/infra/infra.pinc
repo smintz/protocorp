@@ -8,6 +8,7 @@ load(
     "DigitaloceanDroplet",
     "DigitaloceanSshKey",
 )
+load("/terraform/cloudflare-resources.proto", "CloudflareRecord")
 load("/terraform/random-resources.proto", "RandomPet")
 load("/terraform/meta.proto", "Lifecycle")
 load("installers/base.pinc", "Base")
@@ -153,6 +154,12 @@ def create_device(tf, nmd, provider):
 
     if provider == "digitalocean":
         tf.digitalocean_droplet[nmd.tfid] = create_droplet(tf, nmd, user_data)
+        tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
+            zone_id="f05cf5af25ffab8e186f43cfea099628",
+            name="{}.node.{}".format(nmd.hostname, nmd.dc),
+            type="A",
+            value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
+        )
 
 
 def Cluster(

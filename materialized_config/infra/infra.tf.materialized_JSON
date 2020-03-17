@@ -3,6 +3,26 @@
   "value": {
     "@type": "type.googleapis.com/terraform.Terraform",
     "resource": {
+      "cloudflare_record": {
+        "server-3-ams3-c01": {
+          "name": "${random_pet.server-3-ams3-c01.id}.node.ams3c01",
+          "type": "A",
+          "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
+        "server-4-ams3-c01": {
+          "name": "${random_pet.server-4-ams3-c01.id}.node.ams3c01",
+          "type": "A",
+          "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
+        "server-5-ams3-c01": {
+          "name": "${random_pet.server-5-ams3-c01.id}.node.ams3c01",
+          "type": "A",
+          "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        }
+      },
       "digitalocean_droplet": {
         "server-3-ams3-c01": {
           "image": "ubuntu-18-04-x64",
