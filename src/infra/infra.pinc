@@ -128,7 +128,12 @@ advertise {
                 ca=ca,
             ),
             Docker(),
-            Nomad(role, nmd, ca=ca, additional_config=nomad_config),
+            Nomad(
+                role,
+                nmd,
+                # ca=ca,
+                additional_config=nomad_config,
+            ),
         ]
 
     return Component("DeviceUserData", render)
@@ -180,12 +185,12 @@ def Cluster(
 
 
 CLUSTERS = [
-    # Cluster(
-    #     tf.resource,
-    #     "digitalocean",
-    #     region="ams3",
-    #     cluster_name="c01",
-    #     servers_count=3,
-    #     index=3,
-    # )
+    Cluster(
+        tf.resource,
+        "digitalocean",
+        region="ams3",
+        cluster_name="c01",
+        servers_count=3,
+        index=3,
+    )
 ]
