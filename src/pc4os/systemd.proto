@@ -208,8 +208,16 @@ message Service {
     uint32 StartLimitIntervalSec = 41;
     string TasksMax = 42;
     string AmbientCapabilities = 43;
-
-
+    string ProtectSystem = 44;
+    string ProtectHome = 45;
+    string PrivateTmp = 46;
+    string PrivateDevices = 47;
+    string SecureBits = 48;
+    string Capabilities = 49;
+    string CapabilityBoundingSet = 50;
+    string NoNewPrivileges = 51;
+    uint32 StartLimitInterval = 52;
+    string LimitMEMLOCK = 53;
 }
 message Install {
     string WantedBy = 1;

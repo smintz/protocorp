@@ -14,6 +14,7 @@ load("/terraform/meta.proto", "Lifecycle")
 load("installers/base.pinc", "Base")
 load("installers/docker.pinc", "Docker")
 load("installers/consul.pinc", "Consul")
+load("installers/vault.pinc", "Vault")
 load("installers/nomad.pinc", "Nomad")
 load("ca.pinc", "CA")
 load("/employees/employees.pinc", "EMPLOYEES")
@@ -128,6 +129,7 @@ advertise {
                 ],
                 ca=ca,
             ),
+            Vault(nmd, ca=ca),
             Docker(),
             Nomad(
                 role,

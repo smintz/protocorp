@@ -3,10 +3,11 @@ vault.pinc
 """
 load("/pc4os/component.pinc", "Component")
 load("/pc4os/file.pinc", "File", "Directory")
-load("/pc4os/function.pinc", "Function", "Condition")
 load("/pc4os/command.pinc", "Command")
 load("/pc4os/systemd.pinc", "Systemd")
 load("/pc4os/systemd.proto", "Service")
+
+VAULT_VERSION = "1.3.2"
 
 
 def VaultInstall(version):
@@ -39,27 +40,70 @@ def VaultInstall(version):
     return Component("VaultInstall", render)
 
 
-CONSUL_ACL_FILE = """\
-acl {
-  enabled = true
-  default_policy = "deny"
-  enable_token_persistence = true
-}
-"""
+def Vault(nmd, version=VAULT_VERSION, ca=None):
+    """
+    Vault defines and install the hashicorp's Vault server
 
+    Args:
+        nmd: NameMetadata
+        version: The version to be installed
+        ca: An instance of the root ca
+    Returns:
+        a Component
+    """
+    setup = [VaultInstall(version)]
 
-def Vault(consul_acl=False):
-    setup = [VaultInstall("1.3.2")]
-
-    if consul_acl:
+    if ca:
+        pki = ca.server_cert(
+            nmd.tfid + "-vault",
+            common_name=nmd.fqdn,
+            dns_names=[
+                nmd.hostname,
+                nmd.fqdn,
+                "vault.service.{}".format(nmd.domain),
+                "vault.service.{}.{}".format(nmd.dc, nmd.domain),
+                "localhost",
+            ],
+            ip_addresses=["127.0.0.1"],
+        )
         setup.extend(
             [
-                File("/etc/consul.d/acl.hcl", content=CONSUL_ACL_FILE),
-                Command("systemdctl", "restart", "consul"),
-                # With Lock aquired and condition
-                Function("bootstrap_acl"),
+                Directory("/etc/vault.d/tls"),
+                File(
+                    "/etc/vault.d/tls/key.pem",
+                    "${%s}" % pki.private_key,
+                    mode="600",
+                    owner="vault",
+                    group="vault",
+                ),
+                File(
+                    "/etc/vault.d/tls/cert.pem",
+                    "${%s}" % pki.certificate,
+                    owner="vault",
+                    group="vault",
+                ),
+                File(
+                    "/etc/vault.d/vault.hcl",
+                    """\
+ui = true
+storage "consul" {
+    path = "vault/"
+}
+""",
+                ),
+                File(
+                    "/etc/vault.d/tls.hcl",
+                    """\
+listener "tcp" {
+  address       = "0.0.0.0:8200"
+  tls_cert_file = "/etc/vault.d/tls/cert.pem"
+  tls_key_file  = "/etc/vault.d/tls/key.pem"
+}
+""",
+                ),
             ]
         )
+
     setup.append(
         Systemd(
             "vault",
@@ -80,7 +124,7 @@ def Vault(consul_acl=False):
                 KillMode="process",
                 KillSignal="SIGINT",
                 Restart="on-failure",
-                RestartSec=5,
+                RestartSec="5",
                 TimeoutStopSec=30,
                 StartLimitInterval=60,
                 StartLimitIntervalSec=60,
