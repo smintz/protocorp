@@ -53,6 +53,20 @@ def Vault(nmd, version=VAULT_VERSION, ca=None):
     """
     setup = [VaultInstall(version)]
 
+    vault_config = """\
+ui = true
+storage "consul" {
+    path = "vault/"
+}
+"""
+    vault_tls_config = """\
+listener "tcp" {
+  address       = "0.0.0.0:8200"
+  tls_cert_file = "/etc/vault.d/tls/cert.pem"
+  tls_key_file  = "/etc/vault.d/tls/key.pem"
+}
+"""
+
     if ca:
         pki = ca.server_cert(
             nmd.tfid + "-vault",
@@ -66,6 +80,7 @@ def Vault(nmd, version=VAULT_VERSION, ca=None):
             ],
             ip_addresses=["127.0.0.1"],
         )
+        vault_config = vault_config + vault_tls_config
         setup.extend(
             [
                 Directory("/etc/vault.d/tls"),
@@ -82,57 +97,41 @@ def Vault(nmd, version=VAULT_VERSION, ca=None):
                     owner="vault",
                     group="vault",
                 ),
-                File(
-                    "/etc/vault.d/vault.hcl",
-                    """\
-ui = true
-storage "consul" {
-    path = "vault/"
-}
-""",
-                ),
-                File(
-                    "/etc/vault.d/tls.hcl",
-                    """\
-listener "tcp" {
-  address       = "0.0.0.0:8200"
-  tls_cert_file = "/etc/vault.d/tls/cert.pem"
-  tls_key_file  = "/etc/vault.d/tls/key.pem"
-}
-""",
-                ),
             ]
         )
 
-    setup.append(
-        Systemd(
-            "vault",
-            Service(
-                User="vault",
-                Group="vault",
-                ProtectSystem="full",
-                ProtectHome="read-only",
-                PrivateTmp="yes",
-                PrivateDevices="yes",
-                SecureBits="keep-caps",
-                AmbientCapabilities="CAP_IPC_LOCK",
-                Capabilities="CAP_IPC_LOCK+ep",
-                CapabilityBoundingSet="CAP_SYSLOG CAP_IPC_LOCK",
-                NoNewPrivileges="yes",
-                ExecStart="/usr/local/bin/vault server -config=/etc/vault.d/vault.hcl",
-                ExecReload="/bin/kill --signal HUP $MAINPID",
-                KillMode="process",
-                KillSignal="SIGINT",
-                Restart="on-failure",
-                RestartSec="5",
-                TimeoutStopSec=30,
-                # StartLimitInterval=60,
-                # StartLimitIntervalSec=60,
-                # StartLimitBurst=3,
-                LimitNOFILE="65536",
-                LimitMEMLOCK="infinity",
+    setup.extend(
+        [
+            File("/etc/vault.d/vault.hcl", content=vault_config),
+            Systemd(
+                "vault",
+                Service(
+                    User="vault",
+                    Group="vault",
+                    ProtectSystem="full",
+                    ProtectHome="read-only",
+                    PrivateTmp="yes",
+                    PrivateDevices="yes",
+                    SecureBits="keep-caps",
+                    AmbientCapabilities="CAP_IPC_LOCK",
+                    Capabilities="CAP_IPC_LOCK+ep",
+                    CapabilityBoundingSet="CAP_SYSLOG CAP_IPC_LOCK",
+                    NoNewPrivileges="yes",
+                    ExecStart="/usr/local/bin/vault server -config=/etc/vault.d/vault.hcl",
+                    ExecReload="/bin/kill --signal HUP $MAINPID",
+                    KillMode="process",
+                    KillSignal="SIGINT",
+                    Restart="on-failure",
+                    RestartSec="5",
+                    TimeoutStopSec=30,
+                    # StartLimitInterval=60,
+                    # StartLimitIntervalSec=60,
+                    # StartLimitBurst=3,
+                    LimitNOFILE="65536",
+                    LimitMEMLOCK="infinity",
+                ),
             ),
-        )
+        ]
     )
 
     def render():
