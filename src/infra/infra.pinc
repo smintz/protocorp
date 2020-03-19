@@ -120,7 +120,7 @@ def create_gcp_vm(tf, nmd, user_data=""):
             GoogleComputeInstance.BootDisk(
                 initialize_params=[
                     GoogleComputeInstance.BootDisk.InitializeParams(
-                        image="ubuntu-os-cloud/ubuntu-1804-bionic"
+                        image="ubuntu-os-cloud/ubuntu-1804-lts"
                     )
                 ]
             )

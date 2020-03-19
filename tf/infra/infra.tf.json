@@ -32,7 +32,7 @@
           {
             "initialize_params": [
               {
-                "image": "ubuntu-os-cloud/ubuntu-1804-bionic"
+                "image": "ubuntu-os-cloud/ubuntu-1804-lts"
               }
             ]
           }
@@ -60,7 +60,7 @@
           {
             "initialize_params": [
               {
-                "image": "ubuntu-os-cloud/ubuntu-1804-bionic"
+                "image": "ubuntu-os-cloud/ubuntu-1804-lts"
               }
             ]
           }
@@ -94,7 +94,7 @@
           {
             "initialize_params": [
               {
-                "image": "ubuntu-os-cloud/ubuntu-1804-bionic"
+                "image": "ubuntu-os-cloud/ubuntu-1804-lts"
               }
             ]
           }
