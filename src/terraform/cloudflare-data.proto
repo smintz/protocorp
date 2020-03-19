@@ -46,18 +46,25 @@ message CloudflareWafGroups {
   terraform.meta.Lifecycle lifecycle = 9;
 
   message Groups {
+    //description: string
     string description = 1;
 
+    //id: string
     string id = 2;
 
+    //mode: string
     string mode = 3;
 
+    //modified_rules_count: number
     int64 modified_rules_count = 4 [json_name = "modified_rules_count"];
 
+    //name: string
     string name = 5;
 
+    //package_id: string
     string package_id = 6 [json_name = "package_id"];
 
+    //rules_count: number
     int64 rules_count = 7 [json_name = "rules_count"];
   }
 }
@@ -81,16 +88,22 @@ message CloudflareWafPackages {
   terraform.meta.Lifecycle lifecycle = 8;
 
   message Packages {
+    //action_mode: string
     string action_mode = 1 [json_name = "action_mode"];
 
+    //description: string
     string description = 2;
 
+    //detection_mode: string
     string detection_mode = 3 [json_name = "detection_mode"];
 
+    //id: string
     string id = 4;
 
+    //name: string
     string name = 5;
 
+    //sensitivity: string
     string sensitivity = 6;
   }
 }
@@ -116,20 +129,28 @@ message CloudflareWafRules {
   terraform.meta.Lifecycle lifecycle = 9;
 
   message Rules {
+    //allowed_modes: list of string
     repeated string allowed_modes = 1 [json_name = "allowed_modes"];
 
+    //description: string
     string description = 2;
 
+    //group_id: string
     string group_id = 3 [json_name = "group_id"];
 
+    //group_name: string
     string group_name = 4 [json_name = "group_name"];
 
+    //id: string
     string id = 5;
 
+    //mode: string
     string mode = 6;
 
+    //package_id: string
     string package_id = 7 [json_name = "package_id"];
 
+    //priority: string
     string priority = 8;
   }
 }
@@ -151,8 +172,10 @@ message CloudflareZones {
   terraform.meta.Lifecycle lifecycle = 7;
 
   message Zones {
+    //id: string
     string id = 1;
 
+    //name: string
     string name = 2;
   }
 }

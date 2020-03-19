@@ -402,10 +402,13 @@ message DigitaloceanFirewall {
   terraform.meta.Lifecycle lifecycle = 12;
 
   message PendingChanges {
+    //droplet_id: number
     int64 droplet_id = 1 [json_name = "droplet_id"];
 
+    //removing: bool
     bool removing = 2;
 
+    //status: string
     string status = 3;
   }
 }
@@ -492,18 +495,25 @@ message DigitaloceanKubernetesCluster {
   terraform.meta.Lifecycle lifecycle = 18;
 
   message KubeConfig {
+    //client_certificate: string
     string client_certificate = 1 [json_name = "client_certificate"];
 
+    //client_key: string
     string client_key = 2 [json_name = "client_key"];
 
+    //cluster_ca_certificate: string
     string cluster_ca_certificate = 3 [json_name = "cluster_ca_certificate"];
 
+    //expires_at: string
     string expires_at = 4 [json_name = "expires_at"];
 
+    //host: string
     string host = 5;
 
+    //raw_config: string
     string raw_config = 6 [json_name = "raw_config"];
 
+    //token: string
     string token = 7;
   }
 }
@@ -543,16 +553,22 @@ message DigitaloceanKubernetesNodePool {
   terraform.meta.Lifecycle lifecycle = 16;
 
   message Nodes {
+    //created_at: string
     string created_at = 1 [json_name = "created_at"];
 
+    //droplet_id: string
     string droplet_id = 2 [json_name = "droplet_id"];
 
+    //id: string
     string id = 3;
 
+    //name: string
     string name = 4;
 
+    //status: string
     string status = 5;
 
+    //updated_at: string
     string updated_at = 6 [json_name = "updated_at"];
   }
 }

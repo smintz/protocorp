@@ -821,96 +821,181 @@ message CloudflareZoneSettingsOverride {
   terraform.meta.Lifecycle lifecycle = 12;
 
   message InitialSettings {
+    //always_online: string
     string always_online = 1 [json_name = "always_online"];
 
+    //always_use_https: string
     string always_use_https = 2 [json_name = "always_use_https"];
 
+    //automatic_https_rewrites: string
     string automatic_https_rewrites = 3 [json_name = "automatic_https_rewrites"];
 
+    //brotli: string
     string brotli = 4;
 
+    //browser_cache_ttl: number
     int64 browser_cache_ttl = 5 [json_name = "browser_cache_ttl"];
 
+    //browser_check: string
     string browser_check = 6 [json_name = "browser_check"];
 
+    //cache_level: string
     string cache_level = 7 [json_name = "cache_level"];
 
+    //challenge_ttl: number
     int64 challenge_ttl = 8 [json_name = "challenge_ttl"];
 
+    //cname_flattening: string
     string cname_flattening = 9 [json_name = "cname_flattening"];
 
+    //development_mode: string
     string development_mode = 10 [json_name = "development_mode"];
 
+    //edge_cache_ttl: number
     int64 edge_cache_ttl = 11 [json_name = "edge_cache_ttl"];
 
+    //email_obfuscation: string
     string email_obfuscation = 12 [json_name = "email_obfuscation"];
 
+    //h2_prioritization: string
     string h2_prioritization = 13 [json_name = "h2_prioritization"];
 
+    //hotlink_protection: string
     string hotlink_protection = 14 [json_name = "hotlink_protection"];
 
+    //http2: string
     string http2 = 15;
 
+    //http3: string
     string http3 = 16;
 
+    //image_resizing: string
     string image_resizing = 17 [json_name = "image_resizing"];
 
+    //ip_geolocation: string
     string ip_geolocation = 18 [json_name = "ip_geolocation"];
 
+    //ipv6: string
     string ipv6 = 19;
 
+    //max_upload: number
     int64 max_upload = 20 [json_name = "max_upload"];
 
+    //min_tls_version: string
     string min_tls_version = 21 [json_name = "min_tls_version"];
 
-    repeated string minify = 22;
+    //minify: list of object
+    repeated Minify minify = 22;
 
+    //mirage: string
     string mirage = 23;
 
-    repeated string mobile_redirect = 24 [json_name = "mobile_redirect"];
+    //mobile_redirect: list of object
+    repeated MobileRedirect mobile_redirect = 24 [json_name = "mobile_redirect"];
 
+    //opportunistic_encryption: string
     string opportunistic_encryption = 25 [json_name = "opportunistic_encryption"];
 
+    //opportunistic_onion: string
     string opportunistic_onion = 26 [json_name = "opportunistic_onion"];
 
+    //origin_error_page_pass_thru: string
     string origin_error_page_pass_thru = 27 [json_name = "origin_error_page_pass_thru"];
 
+    //polish: string
     string polish = 28;
 
+    //prefetch_preload: string
     string prefetch_preload = 29 [json_name = "prefetch_preload"];
 
+    //privacy_pass: string
     string privacy_pass = 30 [json_name = "privacy_pass"];
 
+    //pseudo_ipv4: string
     string pseudo_ipv4 = 31 [json_name = "pseudo_ipv4"];
 
+    //response_buffering: string
     string response_buffering = 32 [json_name = "response_buffering"];
 
+    //rocket_loader: string
     string rocket_loader = 33 [json_name = "rocket_loader"];
 
-    repeated string security_header = 34 [json_name = "security_header"];
+    //security_header: list of object
+    repeated SecurityHeader security_header = 34 [json_name = "security_header"];
 
+    //security_level: string
     string security_level = 35 [json_name = "security_level"];
 
+    //server_side_exclude: string
     string server_side_exclude = 36 [json_name = "server_side_exclude"];
 
+    //sort_query_string_for_cache: string
     string sort_query_string_for_cache = 37 [json_name = "sort_query_string_for_cache"];
 
+    //ssl: string
     string ssl = 38;
 
+    //tls_1_2_only: string
     string tls_1_2_only = 39 [json_name = "tls_1_2_only"];
 
+    //tls_1_3: string
     string tls_1_3 = 40 [json_name = "tls_1_3"];
 
+    //tls_client_auth: string
     string tls_client_auth = 41 [json_name = "tls_client_auth"];
 
+    //true_client_ip_header: string
     string true_client_ip_header = 42 [json_name = "true_client_ip_header"];
 
+    //waf: string
     string waf = 43;
 
+    //webp: string
     string webp = 44;
 
+    //websockets: string
     string websockets = 45;
 
+    //zero_rtt: string
     string zero_rtt = 46 [json_name = "zero_rtt"];
+
+    message Minify {
+      //css: string
+      string css = 1;
+
+      //html: string
+      string html = 2;
+
+      //js: string
+      string js = 3;
+    }
+
+    message MobileRedirect {
+      //mobile_subdomain: string
+      string mobile_subdomain = 1 [json_name = "mobile_subdomain"];
+
+      //status: string
+      string status = 2;
+
+      //strip_uri: bool
+      bool strip_uri = 3 [json_name = "strip_uri"];
+    }
+
+    message SecurityHeader {
+      //enabled: bool
+      bool enabled = 1;
+
+      //include_subdomains: bool
+      bool include_subdomains = 2 [json_name = "include_subdomains"];
+
+      //max_age: number
+      int64 max_age = 3 [json_name = "max_age"];
+
+      //nosniff: bool
+      bool nosniff = 4;
+
+      //preload: bool
+      bool preload = 5;
+    }
   }
 }

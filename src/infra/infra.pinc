@@ -10,6 +10,7 @@ load(
 )
 load("/terraform/cloudflare-resources.proto", "CloudflareRecord")
 load("/terraform/random-resources.proto", "RandomPet")
+load("/terraform/google-data.proto", "GoogleComputeInstance")
 load("/terraform/meta.proto", "Lifecycle")
 load("installers/base.pinc", "Base")
 load("installers/docker.pinc", "Docker")
@@ -32,10 +33,11 @@ ca = CA(tf.resource)
 provider = "digitalocean"
 CONSUL_JOIN_ARGS = {
     "digitalocean": "provider=digitalocean api_token={token} region={dc} tag_name=server",
+    "google": "",
     # Will support more providers later
 }
 
-TOKENS = {"digitalocean": "${var.digitalocean_token}"}
+TOKENS = {"digitalocean": "${var.digitalocean_token}", "google": ""}
 
 
 def set_ssh_keys(tf, provider):
@@ -106,6 +108,31 @@ def create_droplet(tf, nmd, user_data=""):
     return droplet
 
 
+def create_gcp_vm(tf, nmd, user_data=""):
+    vm = GoogleComputeInstance(
+        name=nmd.hostname,
+        machine_type="f1-micro",
+        labels={"role": nmd.role, "cluster": nmd.cluster},
+        tags=[nmd.role, nmd.cluster],
+        metadata_startup_script=user_data,
+        boot_disk=[
+            GoogleComputeInstance.BootDisk(
+                initialize_params=[
+                    GoogleComputeInstance.BootDisk.InitializeParams(
+                        image="debian-cloud/debian9"
+                    )
+                ]
+            )
+        ],
+        network_interface=[GoogleComputeInstance.NetworkInterface(network="default")],
+    )
+    if nmd.id > 0:
+        vm.lifecycle = Lifecycle(
+            ignore_changes=["metadata_startup_script"], create_before_destroy=True
+        )
+    return vm
+
+
 def DeviceUserData(role, nmd, provider):
     nomad_config = """\
 advertise {
@@ -163,6 +190,16 @@ def create_device(tf, nmd, provider):
             value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
         )
 
+    if provider == "google":
+        tf.google_compute_instance[nmd.tfid] = create_gcp_vm(nmd.role, nmd, user_data)
+        tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
+            zone_id="f05cf5af25ffab8e186f43cfea099628",
+            name="{}.node.{}".format(nmd.hostname, nmd.dc),
+            type="A",
+            value="${google_compute_instance.%s.network_interface.0.network_ip}"
+            % nmd.tfid,
+        )
+
 
 def Cluster(
     tf, provider, region, cluster_name="c01", index=0, servers_count=0, clients_count=0
@@ -196,7 +233,7 @@ def Cluster(
 CLUSTERS = [
     Cluster(
         tf.resource,
-        "digitalocean",
+        "google",
         region="ams3",
         cluster_name="c01",
         servers_count=3,

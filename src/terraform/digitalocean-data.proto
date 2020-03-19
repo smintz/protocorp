@@ -122,8 +122,10 @@ message DigitaloceanDatabaseCluster {
   terraform.meta.Lifecycle lifecycle = 23;
 
   message MaintenanceWindow {
+    //day: string
     string day = 1;
 
+    //hour: string
     string hour = 2;
   }
 }
@@ -382,41 +384,78 @@ message DigitaloceanKubernetesCluster {
   terraform.meta.Lifecycle lifecycle = 19;
 
   message KubeConfig {
+    //client_certificate: string
     string client_certificate = 1 [json_name = "client_certificate"];
 
+    //client_key: string
     string client_key = 2 [json_name = "client_key"];
 
+    //cluster_ca_certificate: string
     string cluster_ca_certificate = 3 [json_name = "cluster_ca_certificate"];
 
+    //expires_at: string
     string expires_at = 4 [json_name = "expires_at"];
 
+    //host: string
     string host = 5;
 
+    //raw_config: string
     string raw_config = 6 [json_name = "raw_config"];
 
+    //token: string
     string token = 7;
   }
 
   message NodePool {
+    //actual_node_count: number
     int64 actual_node_count = 1 [json_name = "actual_node_count"];
 
+    //auto_scale: bool
     bool auto_scale = 2 [json_name = "auto_scale"];
 
+    //id: string
     string id = 3;
 
+    //max_nodes: number
     int64 max_nodes = 4 [json_name = "max_nodes"];
 
+    //min_nodes: number
     int64 min_nodes = 5 [json_name = "min_nodes"];
 
+    //name: string
     string name = 6;
 
+    //node_count: number
     int64 node_count = 7 [json_name = "node_count"];
 
-    repeated string nodes = 8;
+    //nodes: list of object
+    repeated Nodes nodes = 8;
 
+    //size: string
     string size = 9;
 
+    //tags: set of string
     repeated string tags = 10;
+
+    message Nodes {
+      //created_at: string
+      string created_at = 1 [json_name = "created_at"];
+
+      //droplet_id: string
+      string droplet_id = 2 [json_name = "droplet_id"];
+
+      //id: string
+      string id = 3;
+
+      //name: string
+      string name = 4;
+
+      //status: string
+      string status = 5;
+
+      //updated_at: string
+      string updated_at = 6 [json_name = "updated_at"];
+    }
   }
 }
 
@@ -495,40 +534,56 @@ message DigitaloceanLoadbalancer {
   terraform.meta.Lifecycle lifecycle = 19;
 
   message ForwardingRule {
+    //certificate_id: string
     string certificate_id = 1 [json_name = "certificate_id"];
 
+    //entry_port: number
     int64 entry_port = 2 [json_name = "entry_port"];
 
+    //entry_protocol: string
     string entry_protocol = 3 [json_name = "entry_protocol"];
 
+    //target_port: number
     int64 target_port = 4 [json_name = "target_port"];
 
+    //target_protocol: string
     string target_protocol = 5 [json_name = "target_protocol"];
 
+    //tls_passthrough: bool
     bool tls_passthrough = 6 [json_name = "tls_passthrough"];
   }
 
   message Healthcheck {
+    //check_interval_seconds: number
     int64 check_interval_seconds = 1 [json_name = "check_interval_seconds"];
 
+    //healthy_threshold: number
     int64 healthy_threshold = 2 [json_name = "healthy_threshold"];
 
+    //path: string
     string path = 3;
 
+    //port: number
     int64 port = 4;
 
+    //protocol: string
     string protocol = 5;
 
+    //response_timeout_seconds: number
     int64 response_timeout_seconds = 6 [json_name = "response_timeout_seconds"];
 
+    //unhealthy_threshold: number
     int64 unhealthy_threshold = 7 [json_name = "unhealthy_threshold"];
   }
 
   message StickySessions {
+    //cookie_name: string
     string cookie_name = 1 [json_name = "cookie_name"];
 
+    //cookie_ttl_seconds: number
     int64 cookie_ttl_seconds = 2 [json_name = "cookie_ttl_seconds"];
 
+    //type: string
     string type = 3;
   }
 }
@@ -596,22 +651,31 @@ message DigitaloceanSizes {
   terraform.meta.Lifecycle lifecycle = 7;
 
   message Sizes {
+    //available: bool
     bool available = 1;
 
+    //disk: number
     int64 disk = 2;
 
+    //memory: number
     int64 memory = 3;
 
+    //price_hourly: number
     int64 price_hourly = 4 [json_name = "price_hourly"];
 
+    //price_monthly: number
     int64 price_monthly = 5 [json_name = "price_monthly"];
 
+    //regions: set of string
     repeated string regions = 6;
 
+    //slug: string
     string slug = 7;
 
+    //transfer: number
     int64 transfer = 8;
 
+    //vcpus: number
     int64 vcpus = 9;
   }
 }

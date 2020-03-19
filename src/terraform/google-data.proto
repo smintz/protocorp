@@ -1,0 +1,2862 @@
+syntax = "proto3";
+
+package terraform.google.data;
+
+import "terraform/meta.proto";
+
+//GoogleActiveFolder version is 0
+message GoogleActiveFolder {
+  string display_name = 1 [json_name = "display_name"];
+
+  string id = 2;
+
+  string name = 3;
+
+  string parent = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//GoogleBigqueryDefaultServiceAccount version is 0
+message GoogleBigqueryDefaultServiceAccount {
+  string email = 1;
+
+  string id = 2;
+
+  string project = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//GoogleBillingAccount version is 0
+message GoogleBillingAccount {
+  string billing_account = 1 [json_name = "billing_account"];
+
+  string display_name = 2 [json_name = "display_name"];
+
+  string id = 3;
+
+  string name = 4;
+
+  bool open = 5;
+
+  repeated string project_ids = 6 [json_name = "project_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//GoogleClientConfig version is 0
+message GoogleClientConfig {
+  string access_token = 1 [json_name = "access_token"];
+
+  string id = 2;
+
+  string project = 3;
+
+  string region = 4;
+
+  string zone = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//GoogleClientOpenidUserinfo version is 0
+message GoogleClientOpenidUserinfo {
+  string email = 1;
+
+  string id = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//GoogleCloudfunctionsFunction version is 0
+message GoogleCloudfunctionsFunction {
+  int64 available_memory_mb = 1 [json_name = "available_memory_mb"];
+
+  string description = 2;
+
+  string entry_point = 3 [json_name = "entry_point"];
+
+  map<string, string> environment_variables = 4;
+
+  repeated EventTrigger event_trigger = 5 [json_name = "event_trigger"];
+
+  string https_trigger_url = 6 [json_name = "https_trigger_url"];
+
+  string id = 7;
+
+  map<string, string> labels = 8;
+
+  int64 max_instances = 9 [json_name = "max_instances"];
+
+  string name = 10;
+
+  string project = 11;
+
+  string region = 12;
+
+  string runtime = 13;
+
+  string service_account_email = 14 [json_name = "service_account_email"];
+
+  string source_archive_bucket = 15 [json_name = "source_archive_bucket"];
+
+  string source_archive_object = 16 [json_name = "source_archive_object"];
+
+  repeated SourceRepository source_repository = 17 [json_name = "source_repository"];
+
+  int64 timeout = 18;
+
+  bool trigger_http = 19 [json_name = "trigger_http"];
+
+  string vpc_connector = 20 [json_name = "vpc_connector"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 21;
+
+  int32 count = 22;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 23;
+
+  string provider = 24;
+
+  terraform.meta.Lifecycle lifecycle = 25;
+
+  message EventTrigger {
+    //event_type: string
+    string event_type = 1 [json_name = "event_type"];
+
+    //failure_policy: list of object
+    repeated FailurePolicy failure_policy = 2 [json_name = "failure_policy"];
+
+    //resource: string
+    string resource = 3;
+
+    message FailurePolicy {
+      //retry: bool
+      bool retry = 1;
+    }
+  }
+
+  message SourceRepository {
+    //deployed_url: string
+    string deployed_url = 1 [json_name = "deployed_url"];
+
+    //url: string
+    string url = 2;
+  }
+}
+
+//GoogleComposerImageVersions version is 0
+message GoogleComposerImageVersions {
+  string id = 1;
+
+  repeated ImageVersions image_versions = 2 [json_name = "image_versions"];
+
+  string project = 3;
+
+  string region = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message ImageVersions {
+    //image_version_id: string
+    string image_version_id = 1 [json_name = "image_version_id"];
+
+    //supported_python_versions: list of string
+    repeated string supported_python_versions = 2 [json_name = "supported_python_versions"];
+  }
+}
+
+//GoogleComputeAddress version is 0
+message GoogleComputeAddress {
+  string address = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string project = 4;
+
+  string region = 5;
+
+  string self_link = 6 [json_name = "self_link"];
+
+  string status = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//GoogleComputeBackendBucket version is 0
+message GoogleComputeBackendBucket {
+  //Cloud Storage bucket name.
+  string bucket_name = 1 [json_name = "bucket_name"];
+
+  //Cloud CDN configuration for this Backend Bucket.
+  repeated CdnPolicy cdn_policy = 2 [json_name = "cdn_policy"];
+
+  //Creation timestamp in RFC3339 text format.
+  string creation_timestamp = 3 [json_name = "creation_timestamp"];
+
+  //An optional textual description of the resource; provided by the
+  //client when the resource is created.
+  string description = 4;
+
+  //If true, enable Cloud CDN for this BackendBucket.
+  bool enable_cdn = 5 [json_name = "enable_cdn"];
+
+  string id = 6;
+
+  //Name of the resource. Provided by the client when the resource is
+  //created. The name must be 1-63 characters long, and comply with
+  //RFC1035.  Specifically, the name must be 1-63 characters long and
+  //match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means
+  //the first character must be a lowercase letter, and all following
+  //characters must be a dash, lowercase letter, or digit, except the
+  //last character, which cannot be a dash.
+  string name = 7;
+
+  string project = 8;
+
+  string self_link = 9 [json_name = "self_link"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+
+  message CdnPolicy {
+    //signed_url_cache_max_age_sec: number
+    int64 signed_url_cache_max_age_sec = 1 [json_name = "signed_url_cache_max_age_sec"];
+  }
+}
+
+//GoogleComputeBackendService version is 0
+message GoogleComputeBackendService {
+  //Lifetime of cookies in seconds if session_affinity is
+  //GENERATED_COOKIE. If set to 0, the cookie is non-persistent and lasts
+  //only until the end of the browser session (or equivalent). The
+  //maximum allowed value for TTL is one day.
+  //
+  //When the load balancing scheme is INTERNAL, this field is not used.
+  int64 affinity_cookie_ttl_sec = 1 [json_name = "affinity_cookie_ttl_sec"];
+
+  //The set of backends that serve this BackendService.
+  repeated Backend backend = 2;
+
+  //Cloud CDN configuration for this BackendService.
+  repeated CdnPolicy cdn_policy = 3 [json_name = "cdn_policy"];
+
+  //Time for which instance will be drained (not accept new
+  //connections, but still work to finish started).
+  int64 connection_draining_timeout_sec = 4 [json_name = "connection_draining_timeout_sec"];
+
+  //Creation timestamp in RFC3339 text format.
+  string creation_timestamp = 5 [json_name = "creation_timestamp"];
+
+  //An optional description of this resource.
+  string description = 6;
+
+  //If true, enable Cloud CDN for this BackendService.
+  bool enable_cdn = 7 [json_name = "enable_cdn"];
+
+  //Fingerprint of this resource. A hash of the contents stored in this
+  //object. This field is used in optimistic locking.
+  string fingerprint = 8;
+
+  //The set of URLs to the HttpHealthCheck or HttpsHealthCheck resource
+  //for health checking this BackendService. Currently at most one health
+  //check can be specified, and a health check is required.
+  //
+  //For internal load balancing, a URL to a HealthCheck resource must be specified instead.
+  repeated string health_checks = 9 [json_name = "health_checks"];
+
+  //Settings for enabling Cloud Identity Aware Proxy
+  repeated Iap iap = 10;
+
+  string id = 11;
+
+  //Indicates whether the backend service will be used with internal or
+  //external load balancing. A backend service created for one type of
+  //load balancing cannot be used with the other. Must be 'EXTERNAL' or
+  //'INTERNAL_SELF_MANAGED' for a global backend service. Defaults to 'EXTERNAL'.
+  string load_balancing_scheme = 12 [json_name = "load_balancing_scheme"];
+
+  //Name of the resource. Provided by the client when the resource is
+  //created. The name must be 1-63 characters long, and comply with
+  //RFC1035. Specifically, the name must be 1-63 characters long and match
+  //the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the
+  //first character must be a lowercase letter, and all following
+  //characters must be a dash, lowercase letter, or digit, except the last
+  //character, which cannot be a dash.
+  string name = 13;
+
+  //Name of backend port. The same name should appear in the instance
+  //groups referenced by this service. Required when the load balancing
+  //scheme is EXTERNAL.
+  string port_name = 14 [json_name = "port_name"];
+
+  string project = 15;
+
+  //The protocol this BackendService uses to communicate with backends.
+  //Possible values are HTTP, HTTPS, HTTP2, TCP, and SSL. The default is
+  //HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
+  //types and may result in errors if used with the GA API.
+  string protocol = 16;
+
+  //The security policy associated with this backend service.
+  string security_policy = 17 [json_name = "security_policy"];
+
+  string self_link = 18 [json_name = "self_link"];
+
+  //Type of session affinity to use. The default is NONE. Session affinity is
+  //not applicable if the protocol is UDP.
+  string session_affinity = 19 [json_name = "session_affinity"];
+
+  //How many seconds to wait for the backend before considering it a
+  //failed request. Default is 30 seconds. Valid range is [1, 86400].
+  int64 timeout_sec = 20 [json_name = "timeout_sec"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 21;
+
+  int32 count = 22;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 23;
+
+  string provider = 24;
+
+  terraform.meta.Lifecycle lifecycle = 25;
+
+  message Backend {
+    //balancing_mode: string
+    string balancing_mode = 1 [json_name = "balancing_mode"];
+
+    //capacity_scaler: number
+    int64 capacity_scaler = 2 [json_name = "capacity_scaler"];
+
+    //description: string
+    string description = 3;
+
+    //group: string
+    string group = 4;
+
+    //max_connections: number
+    int64 max_connections = 5 [json_name = "max_connections"];
+
+    //max_connections_per_endpoint: number
+    int64 max_connections_per_endpoint = 6 [json_name = "max_connections_per_endpoint"];
+
+    //max_connections_per_instance: number
+    int64 max_connections_per_instance = 7 [json_name = "max_connections_per_instance"];
+
+    //max_rate: number
+    int64 max_rate = 8 [json_name = "max_rate"];
+
+    //max_rate_per_endpoint: number
+    int64 max_rate_per_endpoint = 9 [json_name = "max_rate_per_endpoint"];
+
+    //max_rate_per_instance: number
+    int64 max_rate_per_instance = 10 [json_name = "max_rate_per_instance"];
+
+    //max_utilization: number
+    int64 max_utilization = 11 [json_name = "max_utilization"];
+  }
+
+  message CdnPolicy {
+    //cache_key_policy: list of object
+    repeated CacheKeyPolicy cache_key_policy = 1 [json_name = "cache_key_policy"];
+
+    //signed_url_cache_max_age_sec: number
+    int64 signed_url_cache_max_age_sec = 2 [json_name = "signed_url_cache_max_age_sec"];
+
+    message CacheKeyPolicy {
+      //include_host: bool
+      bool include_host = 1 [json_name = "include_host"];
+
+      //include_protocol: bool
+      bool include_protocol = 2 [json_name = "include_protocol"];
+
+      //include_query_string: bool
+      bool include_query_string = 3 [json_name = "include_query_string"];
+
+      //query_string_blacklist: set of string
+      repeated string query_string_blacklist = 4 [json_name = "query_string_blacklist"];
+
+      //query_string_whitelist: set of string
+      repeated string query_string_whitelist = 5 [json_name = "query_string_whitelist"];
+    }
+  }
+
+  message Iap {
+    //oauth2_client_id: string
+    string oauth2_client_id = 1 [json_name = "oauth2_client_id"];
+
+    //oauth2_client_secret: string
+    string oauth2_client_secret = 2 [json_name = "oauth2_client_secret"];
+
+    //oauth2_client_secret_sha256: string
+    string oauth2_client_secret_sha256 = 3 [json_name = "oauth2_client_secret_sha256"];
+  }
+}
+
+//GoogleComputeDefaultServiceAccount version is 0
+message GoogleComputeDefaultServiceAccount {
+  string display_name = 1 [json_name = "display_name"];
+
+  string email = 2;
+
+  string id = 3;
+
+  string name = 4;
+
+  string project = 5;
+
+  string unique_id = 6 [json_name = "unique_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//GoogleComputeForwardingRule version is 0
+message GoogleComputeForwardingRule {
+  string backend_service = 1 [json_name = "backend_service"];
+
+  string description = 2;
+
+  string id = 3;
+
+  string ip_address = 4 [json_name = "ip_address"];
+
+  string ip_protocol = 5 [json_name = "ip_protocol"];
+
+  string load_balancing_scheme = 6 [json_name = "load_balancing_scheme"];
+
+  string name = 7;
+
+  string network = 8;
+
+  string port_range = 9 [json_name = "port_range"];
+
+  repeated string ports = 10;
+
+  string project = 11;
+
+  string region = 12;
+
+  string self_link = 13 [json_name = "self_link"];
+
+  string subnetwork = 14;
+
+  string target = 15;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
+
+  int32 count = 17;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 18;
+
+  string provider = 19;
+
+  terraform.meta.Lifecycle lifecycle = 20;
+}
+
+//GoogleComputeGlobalAddress version is 0
+message GoogleComputeGlobalAddress {
+  string address = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string project = 4;
+
+  string self_link = 5 [json_name = "self_link"];
+
+  string status = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//GoogleComputeImage version is 0
+message GoogleComputeImage {
+  int64 archive_size_bytes = 1 [json_name = "archive_size_bytes"];
+
+  string creation_timestamp = 2 [json_name = "creation_timestamp"];
+
+  string description = 3;
+
+  int64 disk_size_gb = 4 [json_name = "disk_size_gb"];
+
+  string family = 5;
+
+  string id = 6;
+
+  string image_encryption_key_sha256 = 7 [json_name = "image_encryption_key_sha256"];
+
+  string image_id = 8 [json_name = "image_id"];
+
+  string label_fingerprint = 9 [json_name = "label_fingerprint"];
+
+  map<string, string> labels = 10;
+
+  repeated string licenses = 11;
+
+  string name = 12;
+
+  string project = 13;
+
+  string self_link = 14 [json_name = "self_link"];
+
+  string source_disk = 15 [json_name = "source_disk"];
+
+  string source_disk_encryption_key_sha256 = 16 [json_name = "source_disk_encryption_key_sha256"];
+
+  string source_disk_id = 17 [json_name = "source_disk_id"];
+
+  string source_image_id = 18 [json_name = "source_image_id"];
+
+  string status = 19;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
+
+  int32 count = 21;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 22;
+
+  string provider = 23;
+
+  terraform.meta.Lifecycle lifecycle = 24;
+}
+
+//GoogleComputeInstance version is 0
+message GoogleComputeInstance {
+  bool allow_stopping_for_update = 1 [json_name = "allow_stopping_for_update"];
+
+  repeated AttachedDisk attached_disk = 2 [json_name = "attached_disk"];
+
+  repeated BootDisk boot_disk = 3 [json_name = "boot_disk"];
+
+  bool can_ip_forward = 4 [json_name = "can_ip_forward"];
+
+  string cpu_platform = 5 [json_name = "cpu_platform"];
+
+  bool deletion_protection = 6 [json_name = "deletion_protection"];
+
+  string description = 7;
+
+  string desired_status = 8 [json_name = "desired_status"];
+
+  bool enable_display = 9 [json_name = "enable_display"];
+
+  repeated GuestAccelerator guest_accelerator = 10 [json_name = "guest_accelerator"];
+
+  string hostname = 11;
+
+  string id = 12;
+
+  string instance_id = 13 [json_name = "instance_id"];
+
+  string label_fingerprint = 14 [json_name = "label_fingerprint"];
+
+  map<string, string> labels = 15;
+
+  string machine_type = 16 [json_name = "machine_type"];
+
+  map<string, string> metadata = 17;
+
+  string metadata_fingerprint = 18 [json_name = "metadata_fingerprint"];
+
+  string metadata_startup_script = 19 [json_name = "metadata_startup_script"];
+
+  string min_cpu_platform = 20 [json_name = "min_cpu_platform"];
+
+  string name = 21;
+
+  repeated NetworkInterface network_interface = 22 [json_name = "network_interface"];
+
+  string project = 23;
+
+  repeated Scheduling scheduling = 24;
+
+  repeated ScratchDisk scratch_disk = 25 [json_name = "scratch_disk"];
+
+  string self_link = 26 [json_name = "self_link"];
+
+  repeated ServiceAccount service_account = 27 [json_name = "service_account"];
+
+  repeated ShieldedInstanceConfig shielded_instance_config = 28 [json_name = "shielded_instance_config"];
+
+  repeated string tags = 29;
+
+  string tags_fingerprint = 30 [json_name = "tags_fingerprint"];
+
+  string zone = 31;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 32;
+
+  int32 count = 33;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 34;
+
+  string provider = 35;
+
+  terraform.meta.Lifecycle lifecycle = 36;
+
+  message AttachedDisk {
+    //device_name: string
+    string device_name = 1 [json_name = "device_name"];
+
+    //disk_encryption_key_raw: string
+    string disk_encryption_key_raw = 2 [json_name = "disk_encryption_key_raw"];
+
+    //disk_encryption_key_sha256: string
+    string disk_encryption_key_sha256 = 3 [json_name = "disk_encryption_key_sha256"];
+
+    //kms_key_self_link: string
+    string kms_key_self_link = 4 [json_name = "kms_key_self_link"];
+
+    //mode: string
+    string mode = 5;
+
+    //source: string
+    string source = 6;
+  }
+
+  message BootDisk {
+    //auto_delete: bool
+    bool auto_delete = 1 [json_name = "auto_delete"];
+
+    //device_name: string
+    string device_name = 2 [json_name = "device_name"];
+
+    //disk_encryption_key_raw: string
+    string disk_encryption_key_raw = 3 [json_name = "disk_encryption_key_raw"];
+
+    //disk_encryption_key_sha256: string
+    string disk_encryption_key_sha256 = 4 [json_name = "disk_encryption_key_sha256"];
+
+    //initialize_params: list of object
+    repeated InitializeParams initialize_params = 5 [json_name = "initialize_params"];
+
+    //kms_key_self_link: string
+    string kms_key_self_link = 6 [json_name = "kms_key_self_link"];
+
+    //mode: string
+    string mode = 7;
+
+    //source: string
+    string source = 8;
+
+    message InitializeParams {
+      //image: string
+      string image = 1;
+
+      //labels: map of string
+      map<string, string> labels = 2;
+
+      //size: number
+      int64 size = 3;
+
+      //type: string
+      string type = 4;
+    }
+  }
+
+  message GuestAccelerator {
+    //count: number
+    int64 count = 1;
+
+    //type: string
+    string type = 2;
+  }
+
+  message NetworkInterface {
+    //access_config: list of object
+    repeated AccessConfig access_config = 1 [json_name = "access_config"];
+
+    //alias_ip_range: list of object
+    repeated AliasIpRange alias_ip_range = 2 [json_name = "alias_ip_range"];
+
+    //name: string
+    string name = 3;
+
+    //network: string
+    string network = 4;
+
+    //network_ip: string
+    string network_ip = 5 [json_name = "network_ip"];
+
+    //subnetwork: string
+    string subnetwork = 6;
+
+    //subnetwork_project: string
+    string subnetwork_project = 7 [json_name = "subnetwork_project"];
+
+    message AccessConfig {
+      //nat_ip: string
+      string nat_ip = 1 [json_name = "nat_ip"];
+
+      //network_tier: string
+      string network_tier = 2 [json_name = "network_tier"];
+
+      //public_ptr_domain_name: string
+      string public_ptr_domain_name = 3 [json_name = "public_ptr_domain_name"];
+    }
+
+    message AliasIpRange {
+      //ip_cidr_range: string
+      string ip_cidr_range = 1 [json_name = "ip_cidr_range"];
+
+      //subnetwork_range_name: string
+      string subnetwork_range_name = 2 [json_name = "subnetwork_range_name"];
+    }
+  }
+
+  message Scheduling {
+    //automatic_restart: bool
+    bool automatic_restart = 1 [json_name = "automatic_restart"];
+
+    //node_affinities: set of object
+    repeated NodeAffinities node_affinities = 2 [json_name = "node_affinities"];
+
+    //on_host_maintenance: string
+    string on_host_maintenance = 3 [json_name = "on_host_maintenance"];
+
+    //preemptible: bool
+    bool preemptible = 4;
+
+    message NodeAffinities {
+      //key: string
+      string key = 1;
+
+      //operator: string
+      string operator = 2;
+
+      //values: set of string
+      repeated string values = 3;
+    }
+  }
+
+  message ScratchDisk {
+    //interface: string
+    string interface = 1;
+  }
+
+  message ServiceAccount {
+    //email: string
+    string email = 1;
+
+    //scopes: set of string
+    repeated string scopes = 2;
+  }
+
+  message ShieldedInstanceConfig {
+    //enable_integrity_monitoring: bool
+    bool enable_integrity_monitoring = 1 [json_name = "enable_integrity_monitoring"];
+
+    //enable_secure_boot: bool
+    bool enable_secure_boot = 2 [json_name = "enable_secure_boot"];
+
+    //enable_vtpm: bool
+    bool enable_vtpm = 3 [json_name = "enable_vtpm"];
+  }
+}
+
+//GoogleComputeInstanceGroup version is 0
+message GoogleComputeInstanceGroup {
+  string description = 1;
+
+  string id = 2;
+
+  repeated string instances = 3;
+
+  string name = 4;
+
+  repeated NamedPort named_port = 5 [json_name = "named_port"];
+
+  string network = 6;
+
+  string project = 7;
+
+  string self_link = 8 [json_name = "self_link"];
+
+  int64 size = 9;
+
+  string zone = 10;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+
+  message NamedPort {
+    //name: string
+    string name = 1;
+
+    //port: number
+    int64 port = 2;
+  }
+}
+
+//GoogleComputeLbIpRanges version is 0
+message GoogleComputeLbIpRanges {
+  repeated string http_ssl_tcp_internal = 1 [json_name = "http_ssl_tcp_internal"];
+
+  string id = 2;
+
+  repeated string network = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//GoogleComputeNetwork version is 0
+message GoogleComputeNetwork {
+  string description = 1;
+
+  string gateway_ipv4 = 2 [json_name = "gateway_ipv4"];
+
+  string id = 3;
+
+  string name = 4;
+
+  string project = 5;
+
+  string self_link = 6 [json_name = "self_link"];
+
+  repeated string subnetworks_self_links = 7 [json_name = "subnetworks_self_links"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//GoogleComputeNetworkEndpointGroup version is 0
+message GoogleComputeNetworkEndpointGroup {
+  //The default port used if the port number is not specified in the
+  //network endpoint.
+  int64 default_port = 1 [json_name = "default_port"];
+
+  //An optional description of this resource. Provide this property when
+  //you create the resource.
+  string description = 2;
+
+  string id = 3;
+
+  //Name of the resource; provided by the client when the resource is
+  //created. The name must be 1-63 characters long, and comply with
+  //RFC1035. Specifically, the name must be 1-63 characters long and match
+  //the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the
+  //first character must be a lowercase letter, and all following
+  //characters must be a dash, lowercase letter, or digit, except the last
+  //character, which cannot be a dash.
+  string name = 4;
+
+  //The network to which all network endpoints in the NEG belong.
+  //Uses "default" project network if unspecified.
+  string network = 5;
+
+  //Type of network endpoints in this network endpoint group. Currently
+  //the only supported value is GCE_VM_IP_PORT.
+  string network_endpoint_type = 6 [json_name = "network_endpoint_type"];
+
+  string project = 7;
+
+  string self_link = 8 [json_name = "self_link"];
+
+  //Number of network endpoints in the network endpoint group.
+  int64 size = 9;
+
+  //Optional subnetwork to which all network endpoints in the NEG belong.
+  string subnetwork = 10;
+
+  //Zone where the network endpoint group is located.
+  string zone = 11;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//GoogleComputeNodeTypes version is 0
+message GoogleComputeNodeTypes {
+  string id = 1;
+
+  repeated string names = 2;
+
+  string project = 3;
+
+  string zone = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//GoogleComputeRegionInstanceGroup version is 0
+message GoogleComputeRegionInstanceGroup {
+  string id = 1;
+
+  repeated Instances instances = 2;
+
+  string name = 3;
+
+  string project = 4;
+
+  string region = 5;
+
+  string self_link = 6 [json_name = "self_link"];
+
+  int64 size = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message Instances {
+    //instance: string
+    string instance = 1;
+
+    //named_ports: list of object
+    repeated NamedPorts named_ports = 2 [json_name = "named_ports"];
+
+    //status: string
+    string status = 3;
+
+    message NamedPorts {
+      //name: string
+      string name = 1;
+
+      //port: number
+      int64 port = 2;
+    }
+  }
+}
+
+//GoogleComputeRegions version is 0
+message GoogleComputeRegions {
+  string id = 1;
+
+  repeated string names = 2;
+
+  string project = 3;
+
+  string status = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//GoogleComputeRouter version is 0
+message GoogleComputeRouter {
+  //BGP information specific to this router.
+  repeated Bgp bgp = 1;
+
+  //Creation timestamp in RFC3339 text format.
+  string creation_timestamp = 2 [json_name = "creation_timestamp"];
+
+  //An optional description of this resource.
+  string description = 3;
+
+  string id = 4;
+
+  //Name of the resource. The name must be 1-63 characters long, and
+  //comply with RFC1035. Specifically, the name must be 1-63 characters
+  //long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?'
+  //which means the first character must be a lowercase letter, and all
+  //following characters must be a dash, lowercase letter, or digit,
+  //except the last character, which cannot be a dash.
+  string name = 5;
+
+  //A reference to the network to which this router belongs.
+  string network = 6;
+
+  string project = 7;
+
+  //Region where the router resides.
+  string region = 8;
+
+  string self_link = 9 [json_name = "self_link"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+
+  message Bgp {
+    //advertise_mode: string
+    string advertise_mode = 1 [json_name = "advertise_mode"];
+
+    //advertised_groups: list of string
+    repeated string advertised_groups = 2 [json_name = "advertised_groups"];
+
+    //advertised_ip_ranges: list of object
+    repeated AdvertisedIpRanges advertised_ip_ranges = 3 [json_name = "advertised_ip_ranges"];
+
+    //asn: number
+    int64 asn = 4;
+
+    message AdvertisedIpRanges {
+      //description: string
+      string description = 1;
+
+      //range: string
+      string range = 2;
+    }
+  }
+}
+
+//GoogleComputeSslCertificate version is 0
+message GoogleComputeSslCertificate {
+  //The certificate in PEM format.
+  //The certificate chain must be no greater than 5 certs long.
+  //The chain must include at least one intermediate cert.
+  string certificate = 1;
+
+  //The unique identifier for the resource.
+  int64 certificate_id = 2 [json_name = "certificate_id"];
+
+  //Creation timestamp in RFC3339 text format.
+  string creation_timestamp = 3 [json_name = "creation_timestamp"];
+
+  //An optional description of this resource.
+  string description = 4;
+
+  string id = 5;
+
+  //Name of the resource. Provided by the client when the resource is
+  //created. The name must be 1-63 characters long, and comply with
+  //RFC1035. Specifically, the name must be 1-63 characters long and match
+  //the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the
+  //first character must be a lowercase letter, and all following
+  //characters must be a dash, lowercase letter, or digit, except the last
+  //character, which cannot be a dash.
+  //
+  //
+  //These are in the same namespace as the managed SSL certificates.
+  string name = 6;
+
+  string name_prefix = 7 [json_name = "name_prefix"];
+
+  //The write-only private key in PEM format.
+  string private_key = 8 [json_name = "private_key"];
+
+  string project = 9;
+
+  string self_link = 10 [json_name = "self_link"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//GoogleComputeSslPolicy version is 0
+message GoogleComputeSslPolicy {
+  //Creation timestamp in RFC3339 text format.
+  string creation_timestamp = 1 [json_name = "creation_timestamp"];
+
+  //Profile specifies the set of SSL features that can be used by the
+  //load balancer when negotiating SSL with clients. This can be one of
+  //'COMPATIBLE', 'MODERN', 'RESTRICTED', or 'CUSTOM'. If using 'CUSTOM',
+  //the set of SSL features to enable must be specified in the
+  //'customFeatures' field.
+  //
+  //See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
+  //for which ciphers are available to use. **Note**: this argument
+  //*must* be present when using the 'CUSTOM' profile. This argument
+  //*must not* be present when using any other profile.
+  repeated string custom_features = 2 [json_name = "custom_features"];
+
+  //An optional description of this resource.
+  string description = 3;
+
+  //The list of features enabled in the SSL policy.
+  repeated string enabled_features = 4 [json_name = "enabled_features"];
+
+  //Fingerprint of this resource. A hash of the contents stored in this
+  //object. This field is used in optimistic locking.
+  string fingerprint = 5;
+
+  string id = 6;
+
+  //The minimum version of SSL protocol that can be used by the clients
+  //to establish a connection with the load balancer. This can be one of
+  //'TLS_1_0', 'TLS_1_1', 'TLS_1_2'.
+  // Default is 'TLS_1_0'.
+  string min_tls_version = 7 [json_name = "min_tls_version"];
+
+  //Name of the resource. Provided by the client when the resource is
+  //created. The name must be 1-63 characters long, and comply with
+  //RFC1035. Specifically, the name must be 1-63 characters long and match
+  //the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the
+  //first character must be a lowercase letter, and all following
+  //characters must be a dash, lowercase letter, or digit, except the last
+  //character, which cannot be a dash.
+  string name = 8;
+
+  //Profile specifies the set of SSL features that can be used by the
+  //load balancer when negotiating SSL with clients. This can be one of
+  //'COMPATIBLE', 'MODERN', 'RESTRICTED', or 'CUSTOM'. If using 'CUSTOM',
+  //the set of SSL features to enable must be specified in the
+  //'customFeatures' field.
+  //
+  //See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
+  //for information on what cipher suites each profile provides. If
+  //'CUSTOM' is used, the 'custom_features' attribute **must be set**.
+  //Default is 'COMPATIBLE'.
+  string profile = 9;
+
+  string project = 10;
+
+  string self_link = 11 [json_name = "self_link"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//GoogleComputeSubnetwork version is 0
+message GoogleComputeSubnetwork {
+  string description = 1;
+
+  string gateway_address = 2 [json_name = "gateway_address"];
+
+  string id = 3;
+
+  string ip_cidr_range = 4 [json_name = "ip_cidr_range"];
+
+  string name = 5;
+
+  string network = 6;
+
+  bool private_ip_google_access = 7 [json_name = "private_ip_google_access"];
+
+  string project = 8;
+
+  string region = 9;
+
+  repeated SecondaryIpRange secondary_ip_range = 10 [json_name = "secondary_ip_range"];
+
+  string self_link = 11 [json_name = "self_link"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+
+  message SecondaryIpRange {
+    //ip_cidr_range: string
+    string ip_cidr_range = 1 [json_name = "ip_cidr_range"];
+
+    //range_name: string
+    string range_name = 2 [json_name = "range_name"];
+  }
+}
+
+//GoogleComputeVpnGateway version is 0
+message GoogleComputeVpnGateway {
+  string description = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string network = 4;
+
+  string project = 5;
+
+  string region = 6;
+
+  string self_link = 7 [json_name = "self_link"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//GoogleComputeZones version is 0
+message GoogleComputeZones {
+  string id = 1;
+
+  repeated string names = 2;
+
+  string project = 3;
+
+  string region = 4;
+
+  string status = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//GoogleContainerCluster version is 0
+message GoogleContainerCluster {
+  repeated string additional_zones = 1 [json_name = "additional_zones"];
+
+  repeated AddonsConfig addons_config = 2 [json_name = "addons_config"];
+
+  repeated AuthenticatorGroupsConfig authenticator_groups_config = 3 [json_name = "authenticator_groups_config"];
+
+  repeated ClusterAutoscaling cluster_autoscaling = 4 [json_name = "cluster_autoscaling"];
+
+  string cluster_ipv4_cidr = 5 [json_name = "cluster_ipv4_cidr"];
+
+  int64 default_max_pods_per_node = 6 [json_name = "default_max_pods_per_node"];
+
+  string description = 7;
+
+  bool enable_binary_authorization = 8 [json_name = "enable_binary_authorization"];
+
+  bool enable_intranode_visibility = 9 [json_name = "enable_intranode_visibility"];
+
+  bool enable_kubernetes_alpha = 10 [json_name = "enable_kubernetes_alpha"];
+
+  bool enable_legacy_abac = 11 [json_name = "enable_legacy_abac"];
+
+  bool enable_tpu = 12 [json_name = "enable_tpu"];
+
+  string endpoint = 13;
+
+  string id = 14;
+
+  int64 initial_node_count = 15 [json_name = "initial_node_count"];
+
+  repeated string instance_group_urls = 16 [json_name = "instance_group_urls"];
+
+  repeated IpAllocationPolicy ip_allocation_policy = 17 [json_name = "ip_allocation_policy"];
+
+  string label_fingerprint = 18 [json_name = "label_fingerprint"];
+
+  string location = 19;
+
+  string logging_service = 20 [json_name = "logging_service"];
+
+  repeated MaintenancePolicy maintenance_policy = 21 [json_name = "maintenance_policy"];
+
+  repeated MasterAuth master_auth = 22 [json_name = "master_auth"];
+
+  repeated MasterAuthorizedNetworksConfig master_authorized_networks_config = 23 [json_name = "master_authorized_networks_config"];
+
+  string master_version = 24 [json_name = "master_version"];
+
+  string min_master_version = 25 [json_name = "min_master_version"];
+
+  string monitoring_service = 26 [json_name = "monitoring_service"];
+
+  string name = 27;
+
+  string network = 28;
+
+  repeated NetworkPolicy network_policy = 29 [json_name = "network_policy"];
+
+  repeated NodeConfig node_config = 30 [json_name = "node_config"];
+
+  repeated string node_locations = 31 [json_name = "node_locations"];
+
+  repeated NodePool node_pool = 32 [json_name = "node_pool"];
+
+  string node_version = 33 [json_name = "node_version"];
+
+  string operation = 34;
+
+  repeated PodSecurityPolicyConfig pod_security_policy_config = 35 [json_name = "pod_security_policy_config"];
+
+  repeated PrivateClusterConfig private_cluster_config = 36 [json_name = "private_cluster_config"];
+
+  string project = 37;
+
+  string region = 38;
+
+  bool remove_default_node_pool = 39 [json_name = "remove_default_node_pool"];
+
+  map<string, string> resource_labels = 40;
+
+  string services_ipv4_cidr = 41 [json_name = "services_ipv4_cidr"];
+
+  string subnetwork = 42;
+
+  repeated VerticalPodAutoscaling vertical_pod_autoscaling = 43 [json_name = "vertical_pod_autoscaling"];
+
+  string zone = 44;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 45;
+
+  int32 count = 46;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 47;
+
+  string provider = 48;
+
+  terraform.meta.Lifecycle lifecycle = 49;
+
+  message AddonsConfig {
+    //horizontal_pod_autoscaling: list of object
+    repeated HorizontalPodAutoscaling horizontal_pod_autoscaling = 1 [json_name = "horizontal_pod_autoscaling"];
+
+    //http_load_balancing: list of object
+    repeated HttpLoadBalancing http_load_balancing = 2 [json_name = "http_load_balancing"];
+
+    //kubernetes_dashboard: list of object
+    repeated KubernetesDashboard kubernetes_dashboard = 3 [json_name = "kubernetes_dashboard"];
+
+    //network_policy_config: list of object
+    repeated NetworkPolicyConfig network_policy_config = 4 [json_name = "network_policy_config"];
+
+    message HorizontalPodAutoscaling {
+      //disabled: bool
+      bool disabled = 1;
+    }
+
+    message HttpLoadBalancing {
+      //disabled: bool
+      bool disabled = 1;
+    }
+
+    message KubernetesDashboard {
+      //disabled: bool
+      bool disabled = 1;
+    }
+
+    message NetworkPolicyConfig {
+      //disabled: bool
+      bool disabled = 1;
+    }
+  }
+
+  message AuthenticatorGroupsConfig {
+    //security_group: string
+    string security_group = 1 [json_name = "security_group"];
+  }
+
+  message ClusterAutoscaling {
+    //auto_provisioning_defaults: list of object
+    repeated AutoProvisioningDefaults auto_provisioning_defaults = 1 [json_name = "auto_provisioning_defaults"];
+
+    //enabled: bool
+    bool enabled = 2;
+
+    //resource_limits: list of object
+    repeated ResourceLimits resource_limits = 3 [json_name = "resource_limits"];
+
+    message AutoProvisioningDefaults {
+      //oauth_scopes: list of string
+      repeated string oauth_scopes = 1 [json_name = "oauth_scopes"];
+
+      //service_account: string
+      string service_account = 2 [json_name = "service_account"];
+    }
+
+    message ResourceLimits {
+      //maximum: number
+      int64 maximum = 1;
+
+      //minimum: number
+      int64 minimum = 2;
+
+      //resource_type: string
+      string resource_type = 3 [json_name = "resource_type"];
+    }
+  }
+
+  message IpAllocationPolicy {
+    //cluster_ipv4_cidr_block: string
+    string cluster_ipv4_cidr_block = 1 [json_name = "cluster_ipv4_cidr_block"];
+
+    //cluster_secondary_range_name: string
+    string cluster_secondary_range_name = 2 [json_name = "cluster_secondary_range_name"];
+
+    //node_ipv4_cidr_block: string
+    string node_ipv4_cidr_block = 3 [json_name = "node_ipv4_cidr_block"];
+
+    //services_ipv4_cidr_block: string
+    string services_ipv4_cidr_block = 4 [json_name = "services_ipv4_cidr_block"];
+
+    //services_secondary_range_name: string
+    string services_secondary_range_name = 5 [json_name = "services_secondary_range_name"];
+
+    //subnetwork_name: string
+    string subnetwork_name = 6 [json_name = "subnetwork_name"];
+  }
+
+  message MaintenancePolicy {
+    //daily_maintenance_window: list of object
+    repeated DailyMaintenanceWindow daily_maintenance_window = 1 [json_name = "daily_maintenance_window"];
+
+    message DailyMaintenanceWindow {
+      //duration: string
+      string duration = 1;
+
+      //start_time: string
+      string start_time = 2 [json_name = "start_time"];
+    }
+  }
+
+  message MasterAuth {
+    //client_certificate: string
+    string client_certificate = 1 [json_name = "client_certificate"];
+
+    //client_certificate_config: list of object
+    repeated ClientCertificateConfig client_certificate_config = 2 [json_name = "client_certificate_config"];
+
+    //client_key: string
+    string client_key = 3 [json_name = "client_key"];
+
+    //cluster_ca_certificate: string
+    string cluster_ca_certificate = 4 [json_name = "cluster_ca_certificate"];
+
+    //password: string
+    string password = 5;
+
+    //username: string
+    string username = 6;
+
+    message ClientCertificateConfig {
+      //issue_client_certificate: bool
+      bool issue_client_certificate = 1 [json_name = "issue_client_certificate"];
+    }
+  }
+
+  message MasterAuthorizedNetworksConfig {
+    //cidr_blocks: set of object
+    repeated CidrBlocks cidr_blocks = 1 [json_name = "cidr_blocks"];
+
+    message CidrBlocks {
+      //cidr_block: string
+      string cidr_block = 1 [json_name = "cidr_block"];
+
+      //display_name: string
+      string display_name = 2 [json_name = "display_name"];
+    }
+  }
+
+  message NetworkPolicy {
+    //enabled: bool
+    bool enabled = 1;
+
+    //provider: string
+    string provider = 2;
+  }
+
+  message NodeConfig {
+    //disk_size_gb: number
+    int64 disk_size_gb = 1 [json_name = "disk_size_gb"];
+
+    //disk_type: string
+    string disk_type = 2 [json_name = "disk_type"];
+
+    //guest_accelerator: list of object
+    repeated GuestAccelerator guest_accelerator = 3 [json_name = "guest_accelerator"];
+
+    //image_type: string
+    string image_type = 4 [json_name = "image_type"];
+
+    //labels: map of string
+    map<string, string> labels = 5;
+
+    //local_ssd_count: number
+    int64 local_ssd_count = 6 [json_name = "local_ssd_count"];
+
+    //machine_type: string
+    string machine_type = 7 [json_name = "machine_type"];
+
+    //metadata: map of string
+    map<string, string> metadata = 8;
+
+    //min_cpu_platform: string
+    string min_cpu_platform = 9 [json_name = "min_cpu_platform"];
+
+    //oauth_scopes: set of string
+    repeated string oauth_scopes = 10 [json_name = "oauth_scopes"];
+
+    //preemptible: bool
+    bool preemptible = 11;
+
+    //sandbox_config: list of object
+    repeated SandboxConfig sandbox_config = 12 [json_name = "sandbox_config"];
+
+    //service_account: string
+    string service_account = 13 [json_name = "service_account"];
+
+    //shielded_instance_config: list of object
+    repeated ShieldedInstanceConfig shielded_instance_config = 14 [json_name = "shielded_instance_config"];
+
+    //tags: list of string
+    repeated string tags = 15;
+
+    //taint: list of object
+    repeated Taint taint = 16;
+
+    //workload_metadata_config: list of object
+    repeated WorkloadMetadataConfig workload_metadata_config = 17 [json_name = "workload_metadata_config"];
+
+    message GuestAccelerator {
+      //count: number
+      int64 count = 1;
+
+      //type: string
+      string type = 2;
+    }
+
+    message SandboxConfig {
+      //sandbox_type: string
+      string sandbox_type = 1 [json_name = "sandbox_type"];
+    }
+
+    message ShieldedInstanceConfig {
+      //enable_integrity_monitoring: bool
+      bool enable_integrity_monitoring = 1 [json_name = "enable_integrity_monitoring"];
+
+      //enable_secure_boot: bool
+      bool enable_secure_boot = 2 [json_name = "enable_secure_boot"];
+    }
+
+    message Taint {
+      //effect: string
+      string effect = 1;
+
+      //key: string
+      string key = 2;
+
+      //value: string
+      string value = 3;
+    }
+
+    message WorkloadMetadataConfig {
+      //node_metadata: string
+      string node_metadata = 1 [json_name = "node_metadata"];
+    }
+  }
+
+  message NodePool {
+    //autoscaling: list of object
+    repeated Autoscaling autoscaling = 1;
+
+    //initial_node_count: number
+    int64 initial_node_count = 2 [json_name = "initial_node_count"];
+
+    //instance_group_urls: list of string
+    repeated string instance_group_urls = 3 [json_name = "instance_group_urls"];
+
+    //management: list of object
+    repeated Management management = 4;
+
+    //max_pods_per_node: number
+    int64 max_pods_per_node = 5 [json_name = "max_pods_per_node"];
+
+    //name: string
+    string name = 6;
+
+    //name_prefix: string
+    string name_prefix = 7 [json_name = "name_prefix"];
+
+    //node_config: list of object
+    repeated NodeConfig node_config = 8 [json_name = "node_config"];
+
+    //node_count: number
+    int64 node_count = 9 [json_name = "node_count"];
+
+    //version: string
+    string version = 10;
+
+    message Autoscaling {
+      //max_node_count: number
+      int64 max_node_count = 1 [json_name = "max_node_count"];
+
+      //min_node_count: number
+      int64 min_node_count = 2 [json_name = "min_node_count"];
+    }
+
+    message Management {
+      //auto_repair: bool
+      bool auto_repair = 1 [json_name = "auto_repair"];
+
+      //auto_upgrade: bool
+      bool auto_upgrade = 2 [json_name = "auto_upgrade"];
+    }
+
+    message NodeConfig {
+      //disk_size_gb: number
+      int64 disk_size_gb = 1 [json_name = "disk_size_gb"];
+
+      //disk_type: string
+      string disk_type = 2 [json_name = "disk_type"];
+
+      //guest_accelerator: list of object
+      repeated GuestAccelerator guest_accelerator = 3 [json_name = "guest_accelerator"];
+
+      //image_type: string
+      string image_type = 4 [json_name = "image_type"];
+
+      //labels: map of string
+      map<string, string> labels = 5;
+
+      //local_ssd_count: number
+      int64 local_ssd_count = 6 [json_name = "local_ssd_count"];
+
+      //machine_type: string
+      string machine_type = 7 [json_name = "machine_type"];
+
+      //metadata: map of string
+      map<string, string> metadata = 8;
+
+      //min_cpu_platform: string
+      string min_cpu_platform = 9 [json_name = "min_cpu_platform"];
+
+      //oauth_scopes: set of string
+      repeated string oauth_scopes = 10 [json_name = "oauth_scopes"];
+
+      //preemptible: bool
+      bool preemptible = 11;
+
+      //sandbox_config: list of object
+      repeated SandboxConfig sandbox_config = 12 [json_name = "sandbox_config"];
+
+      //service_account: string
+      string service_account = 13 [json_name = "service_account"];
+
+      //shielded_instance_config: list of object
+      repeated ShieldedInstanceConfig shielded_instance_config = 14 [json_name = "shielded_instance_config"];
+
+      //tags: list of string
+      repeated string tags = 15;
+
+      //taint: list of object
+      repeated Taint taint = 16;
+
+      //workload_metadata_config: list of object
+      repeated WorkloadMetadataConfig workload_metadata_config = 17 [json_name = "workload_metadata_config"];
+
+      message GuestAccelerator {
+        //count: number
+        int64 count = 1;
+
+        //type: string
+        string type = 2;
+      }
+
+      message SandboxConfig {
+        //sandbox_type: string
+        string sandbox_type = 1 [json_name = "sandbox_type"];
+      }
+
+      message ShieldedInstanceConfig {
+        //enable_integrity_monitoring: bool
+        bool enable_integrity_monitoring = 1 [json_name = "enable_integrity_monitoring"];
+
+        //enable_secure_boot: bool
+        bool enable_secure_boot = 2 [json_name = "enable_secure_boot"];
+      }
+
+      message Taint {
+        //effect: string
+        string effect = 1;
+
+        //key: string
+        string key = 2;
+
+        //value: string
+        string value = 3;
+      }
+
+      message WorkloadMetadataConfig {
+        //node_metadata: string
+        string node_metadata = 1 [json_name = "node_metadata"];
+      }
+    }
+  }
+
+  message PodSecurityPolicyConfig {
+    //enabled: bool
+    bool enabled = 1;
+  }
+
+  message PrivateClusterConfig {
+    //enable_private_endpoint: bool
+    bool enable_private_endpoint = 1 [json_name = "enable_private_endpoint"];
+
+    //enable_private_nodes: bool
+    bool enable_private_nodes = 2 [json_name = "enable_private_nodes"];
+
+    //master_ipv4_cidr_block: string
+    string master_ipv4_cidr_block = 3 [json_name = "master_ipv4_cidr_block"];
+
+    //peering_name: string
+    string peering_name = 4 [json_name = "peering_name"];
+
+    //private_endpoint: string
+    string private_endpoint = 5 [json_name = "private_endpoint"];
+
+    //public_endpoint: string
+    string public_endpoint = 6 [json_name = "public_endpoint"];
+  }
+
+  message VerticalPodAutoscaling {
+    //enabled: bool
+    bool enabled = 1;
+  }
+}
+
+//GoogleContainerEngineVersions version is 0
+message GoogleContainerEngineVersions {
+  string default_cluster_version = 1 [json_name = "default_cluster_version"];
+
+  string id = 2;
+
+  string latest_master_version = 3 [json_name = "latest_master_version"];
+
+  string latest_node_version = 4 [json_name = "latest_node_version"];
+
+  string location = 5;
+
+  string project = 6;
+
+  string region = 7;
+
+  repeated string valid_master_versions = 8 [json_name = "valid_master_versions"];
+
+  repeated string valid_node_versions = 9 [json_name = "valid_node_versions"];
+
+  string version_prefix = 10 [json_name = "version_prefix"];
+
+  string zone = 11;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//GoogleContainerRegistryImage version is 0
+message GoogleContainerRegistryImage {
+  string digest = 1;
+
+  string id = 2;
+
+  string image_url = 3 [json_name = "image_url"];
+
+  string name = 4;
+
+  string project = 5;
+
+  string region = 6;
+
+  string tag = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//GoogleContainerRegistryRepository version is 0
+message GoogleContainerRegistryRepository {
+  string id = 1;
+
+  string project = 2;
+
+  string region = 3;
+
+  string repository_url = 4 [json_name = "repository_url"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//GoogleDnsKeys version is 0
+message GoogleDnsKeys {
+  string id = 1;
+
+  repeated KeySigningKeys key_signing_keys = 2 [json_name = "key_signing_keys"];
+
+  string managed_zone = 3 [json_name = "managed_zone"];
+
+  string project = 4;
+
+  repeated ZoneSigningKeys zone_signing_keys = 5 [json_name = "zone_signing_keys"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message KeySigningKeys {
+    //algorithm: string
+    string algorithm = 1;
+
+    //creation_time: string
+    string creation_time = 2 [json_name = "creation_time"];
+
+    //description: string
+    string description = 3;
+
+    //digests: list of object
+    repeated Digests digests = 4;
+
+    //ds_record: string
+    string ds_record = 5 [json_name = "ds_record"];
+
+    //id: string
+    string id = 6;
+
+    //is_active: bool
+    bool is_active = 7 [json_name = "is_active"];
+
+    //key_length: number
+    int64 key_length = 8 [json_name = "key_length"];
+
+    //key_tag: number
+    int64 key_tag = 9 [json_name = "key_tag"];
+
+    //public_key: string
+    string public_key = 10 [json_name = "public_key"];
+
+    message Digests {
+      //digest: string
+      string digest = 1;
+
+      //type: string
+      string type = 2;
+    }
+  }
+
+  message ZoneSigningKeys {
+    //algorithm: string
+    string algorithm = 1;
+
+    //creation_time: string
+    string creation_time = 2 [json_name = "creation_time"];
+
+    //description: string
+    string description = 3;
+
+    //digests: list of object
+    repeated Digests digests = 4;
+
+    //id: string
+    string id = 5;
+
+    //is_active: bool
+    bool is_active = 6 [json_name = "is_active"];
+
+    //key_length: number
+    int64 key_length = 7 [json_name = "key_length"];
+
+    //key_tag: number
+    int64 key_tag = 8 [json_name = "key_tag"];
+
+    //public_key: string
+    string public_key = 9 [json_name = "public_key"];
+
+    message Digests {
+      //digest: string
+      string digest = 1;
+
+      //type: string
+      string type = 2;
+    }
+  }
+}
+
+//GoogleDnsManagedZone version is 0
+message GoogleDnsManagedZone {
+  string description = 1;
+
+  string dns_name = 2 [json_name = "dns_name"];
+
+  string id = 3;
+
+  string name = 4;
+
+  repeated string name_servers = 5 [json_name = "name_servers"];
+
+  string project = 6;
+
+  string visibility = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//GoogleFolder version is 0
+message GoogleFolder {
+  string create_time = 1 [json_name = "create_time"];
+
+  string display_name = 2 [json_name = "display_name"];
+
+  string folder = 3;
+
+  string id = 4;
+
+  string lifecycle_state = 5 [json_name = "lifecycle_state"];
+
+  bool lookup_organization = 6 [json_name = "lookup_organization"];
+
+  string name = 7;
+
+  string organization = 8;
+
+  string parent = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//GoogleFolderOrganizationPolicy version is 0
+message GoogleFolderOrganizationPolicy {
+  repeated BooleanPolicy boolean_policy = 1 [json_name = "boolean_policy"];
+
+  string constraint = 2;
+
+  string etag = 3;
+
+  string folder = 4;
+
+  string id = 5;
+
+  repeated ListPolicy list_policy = 6 [json_name = "list_policy"];
+
+  repeated RestorePolicy restore_policy = 7 [json_name = "restore_policy"];
+
+  string update_time = 8 [json_name = "update_time"];
+
+  int64 version = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+
+  message BooleanPolicy {
+    //enforced: bool
+    bool enforced = 1;
+  }
+
+  message ListPolicy {
+    //allow: list of object
+    repeated Allow allow = 1;
+
+    //deny: list of object
+    repeated Deny deny = 2;
+
+    //inherit_from_parent: bool
+    bool inherit_from_parent = 3 [json_name = "inherit_from_parent"];
+
+    //suggested_value: string
+    string suggested_value = 4 [json_name = "suggested_value"];
+
+    message Allow {
+      //all: bool
+      bool all = 1;
+
+      //values: set of string
+      repeated string values = 2;
+    }
+
+    message Deny {
+      //all: bool
+      bool all = 1;
+
+      //values: set of string
+      repeated string values = 2;
+    }
+  }
+
+  message RestorePolicy {
+    //default: bool
+    bool default = 1;
+  }
+}
+
+//GoogleIamPolicy version is 0
+message GoogleIamPolicy {
+  string id = 1;
+
+  string policy_data = 2 [json_name = "policy_data"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//GoogleIamRole version is 0
+message GoogleIamRole {
+  string id = 1;
+
+  repeated string included_permissions = 2 [json_name = "included_permissions"];
+
+  string name = 3;
+
+  string stage = 4;
+
+  string title = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//GoogleKmsCryptoKey version is 0
+message GoogleKmsCryptoKey {
+  string id = 1;
+
+  //The KeyRing that this key belongs to.
+  //Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyRing}}''.
+  string key_ring = 2 [json_name = "key_ring"];
+
+  //Labels with user-defined metadata to apply to this resource.
+  map<string, string> labels = 3;
+
+  //The resource name for the CryptoKey.
+  string name = 4;
+
+  //The immutable purpose of this CryptoKey. See the
+  //[purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
+  //for possible inputs.
+  string purpose = 5;
+
+  //Every time this period passes, generate a new CryptoKeyVersion and set it as the primary.
+  //The first rotation will take place after the specified period. The rotation period has
+  //the format of a decimal number with up to 9 fractional digits, followed by the
+  //letter 's' (seconds). It must be greater than a day (ie, 86400).
+  string rotation_period = 6 [json_name = "rotation_period"];
+
+  string self_link = 7 [json_name = "self_link"];
+
+  //A template describing settings for new crypto key versions.
+  repeated VersionTemplate version_template = 8 [json_name = "version_template"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+
+  message VersionTemplate {
+    //algorithm: string
+    string algorithm = 1;
+
+    //protection_level: string
+    string protection_level = 2 [json_name = "protection_level"];
+  }
+}
+
+//GoogleKmsCryptoKeyVersion version is 0
+message GoogleKmsCryptoKeyVersion {
+  string algorithm = 1;
+
+  string crypto_key = 2 [json_name = "crypto_key"];
+
+  string id = 3;
+
+  string protection_level = 4 [json_name = "protection_level"];
+
+  repeated PublicKey public_key = 5 [json_name = "public_key"];
+
+  string state = 6;
+
+  int64 version = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message PublicKey {
+    //algorithm: string
+    string algorithm = 1;
+
+    //pem: string
+    string pem = 2;
+  }
+}
+
+//GoogleKmsKeyRing version is 0
+message GoogleKmsKeyRing {
+  string id = 1;
+
+  //The location for the KeyRing.
+  //A full list of valid locations can be found by running 'gcloud kms locations list'.
+  string location = 2;
+
+  //The resource name for the KeyRing.
+  string name = 3;
+
+  string project = 4;
+
+  string self_link = 5 [json_name = "self_link"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//GoogleKmsSecret version is 0
+message GoogleKmsSecret {
+  string ciphertext = 1;
+
+  string crypto_key = 2 [json_name = "crypto_key"];
+
+  string id = 3;
+
+  string plaintext = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//GoogleKmsSecretCiphertext version is 0
+message GoogleKmsSecretCiphertext {
+  string ciphertext = 1;
+
+  string crypto_key = 2 [json_name = "crypto_key"];
+
+  string id = 3;
+
+  string plaintext = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//GoogleMonitoringNotificationChannel version is 0
+message GoogleMonitoringNotificationChannel {
+  //An optional human-readable description of this notification channel. This description may provide additional details, beyond the display name, for the channel. This may not exceed 1024 Unicode characters.
+  string description = 1;
+
+  //An optional human-readable name for this notification channel. It is recommended that you specify a non-empty and unique name in order to make it easier to identify the channels in your project, though this is not enforced. The display name is limited to 512 Unicode characters.
+  string display_name = 2 [json_name = "display_name"];
+
+  //Whether notifications are forwarded to the described channel. This makes it possible to disable delivery of notifications to a particular channel without removing the channel from all alerting policies that reference the channel. This is a more convenient approach when the change is temporary and you want to receive notifications from the same set of alerting policies on the channel at some point in the future.
+  bool enabled = 3;
+
+  string id = 4;
+
+  //Configuration fields that define the channel and its behavior. The
+  //permissible and required labels are specified in the
+  //NotificationChannelDescriptor corresponding to the type field.
+  //
+  //Labels with sensitive data are obfuscated by the API and therefore Terraform cannot
+  //determine if there are upstream changes to these fields. They can also be configured via
+  //the sensitive_labels block, but cannot be configured in both places.
+  map<string, string> labels = 5;
+
+  //The full REST resource name for this channel. The syntax is:
+  //projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
+  //The [CHANNEL_ID] is automatically assigned by the server on creation.
+  string name = 6;
+
+  string project = 7;
+
+  //Different notification type behaviors are configured primarily using the the 'labels' field on this
+  //resource. This block contains the labels which contain secrets or passwords so that they can be marked
+  //sensitive and hidden from plan output. The name of the field, eg: password, will be the key
+  //in the 'labels' map in the api request.
+  //
+  //Credentials may not be specified in both locations and will cause an error. Changing from one location
+  //to a different credential configuration in the config will require an apply to update state.
+  repeated SensitiveLabels sensitive_labels = 8 [json_name = "sensitive_labels"];
+
+  //The type of the notification channel. This field matches the value of the NotificationChannelDescriptor.type field. See https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.notificationChannelDescriptors/list to get the list of valid values such as "email", "slack", etc...
+  string type = 9;
+
+  //User-supplied key/value data that does not need to conform to the corresponding NotificationChannelDescriptor's schema, unlike the labels field. This field is intended to be used for organizing and identifying the NotificationChannel objects.The field can contain up to 64 entries. Each key and value is limited to 63 Unicode characters or 128 bytes, whichever is smaller. Labels and values can contain only lowercase letters, numerals, underscores, and dashes. Keys must begin with a letter.
+  map<string, string> user_labels = 10;
+
+  //Indicates whether this channel has been verified or not. On a ListNotificationChannels or GetNotificationChannel operation, this field is expected to be populated.If the value is UNVERIFIED, then it indicates that the channel is non-functioning (it both requires verification and lacks verification); otherwise, it is assumed that the channel works.If the channel is neither VERIFIED nor UNVERIFIED, it implies that the channel is of a type that does not require verification or that this specific channel has been exempted from verification because it was created prior to verification being required for channels of this type.This field cannot be modified using a standard UpdateNotificationChannel operation. To change the value of this field, you must call VerifyNotificationChannel.
+  string verification_status = 11 [json_name = "verification_status"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+
+  message SensitiveLabels {
+    //auth_token: string
+    string auth_token = 1 [json_name = "auth_token"];
+
+    //password: string
+    string password = 2;
+
+    //service_key: string
+    string service_key = 3 [json_name = "service_key"];
+  }
+}
+
+//GoogleNetblockIpRanges version is 0
+message GoogleNetblockIpRanges {
+  repeated string cidr_blocks = 1 [json_name = "cidr_blocks"];
+
+  repeated string cidr_blocks_ipv4 = 2 [json_name = "cidr_blocks_ipv4"];
+
+  repeated string cidr_blocks_ipv6 = 3 [json_name = "cidr_blocks_ipv6"];
+
+  string id = 4;
+
+  string range_type = 5 [json_name = "range_type"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//GoogleOrganization version is 0
+message GoogleOrganization {
+  string create_time = 1 [json_name = "create_time"];
+
+  string directory_customer_id = 2 [json_name = "directory_customer_id"];
+
+  string domain = 3;
+
+  string id = 4;
+
+  string lifecycle_state = 5 [json_name = "lifecycle_state"];
+
+  string name = 6;
+
+  string org_id = 7 [json_name = "org_id"];
+
+  string organization = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//GoogleProject version is 0
+message GoogleProject {
+  bool auto_create_network = 1 [json_name = "auto_create_network"];
+
+  string billing_account = 2 [json_name = "billing_account"];
+
+  string folder_id = 3 [json_name = "folder_id"];
+
+  string id = 4;
+
+  map<string, string> labels = 5;
+
+  string name = 6;
+
+  string number = 7;
+
+  string org_id = 8 [json_name = "org_id"];
+
+  string project_id = 9 [json_name = "project_id"];
+
+  bool skip_delete = 10 [json_name = "skip_delete"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//GoogleProjectOrganizationPolicy version is 0
+message GoogleProjectOrganizationPolicy {
+  repeated BooleanPolicy boolean_policy = 1 [json_name = "boolean_policy"];
+
+  string constraint = 2;
+
+  string etag = 3;
+
+  string id = 4;
+
+  repeated ListPolicy list_policy = 5 [json_name = "list_policy"];
+
+  string project = 6;
+
+  repeated RestorePolicy restore_policy = 7 [json_name = "restore_policy"];
+
+  string update_time = 8 [json_name = "update_time"];
+
+  int64 version = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+
+  message BooleanPolicy {
+    //enforced: bool
+    bool enforced = 1;
+  }
+
+  message ListPolicy {
+    //allow: list of object
+    repeated Allow allow = 1;
+
+    //deny: list of object
+    repeated Deny deny = 2;
+
+    //inherit_from_parent: bool
+    bool inherit_from_parent = 3 [json_name = "inherit_from_parent"];
+
+    //suggested_value: string
+    string suggested_value = 4 [json_name = "suggested_value"];
+
+    message Allow {
+      //all: bool
+      bool all = 1;
+
+      //values: set of string
+      repeated string values = 2;
+    }
+
+    message Deny {
+      //all: bool
+      bool all = 1;
+
+      //values: set of string
+      repeated string values = 2;
+    }
+  }
+
+  message RestorePolicy {
+    //default: bool
+    bool default = 1;
+  }
+}
+
+//GoogleProjects version is 0
+message GoogleProjects {
+  string filter = 1;
+
+  string id = 2;
+
+  repeated Projects projects = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+
+  message Projects {
+    //project_id: string
+    string project_id = 1 [json_name = "project_id"];
+  }
+}
+
+//GoogleServiceAccount version is 0
+message GoogleServiceAccount {
+  string account_id = 1 [json_name = "account_id"];
+
+  string display_name = 2 [json_name = "display_name"];
+
+  string email = 3;
+
+  string id = 4;
+
+  string name = 5;
+
+  string project = 6;
+
+  string unique_id = 7 [json_name = "unique_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//GoogleServiceAccountAccessToken version is 0
+message GoogleServiceAccountAccessToken {
+  string access_token = 1 [json_name = "access_token"];
+
+  repeated string delegates = 2;
+
+  string id = 3;
+
+  string lifetime = 4;
+
+  repeated string scopes = 5;
+
+  string target_service_account = 6 [json_name = "target_service_account"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//GoogleServiceAccountKey version is 0
+message GoogleServiceAccountKey {
+  string id = 1;
+
+  string key_algorithm = 2 [json_name = "key_algorithm"];
+
+  string name = 3;
+
+  string project = 4;
+
+  string public_key = 5 [json_name = "public_key"];
+
+  string public_key_type = 6 [json_name = "public_key_type"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//GoogleSqlCaCerts version is 0
+message GoogleSqlCaCerts {
+  string active_version = 1 [json_name = "active_version"];
+
+  repeated Certs certs = 2;
+
+  string id = 3;
+
+  string instance = 4;
+
+  string project = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Certs {
+    //cert: string
+    string cert = 1;
+
+    //common_name: string
+    string common_name = 2 [json_name = "common_name"];
+
+    //create_time: string
+    string create_time = 3 [json_name = "create_time"];
+
+    //expiration_time: string
+    string expiration_time = 4 [json_name = "expiration_time"];
+
+    //sha1_fingerprint: string
+    string sha1_fingerprint = 5 [json_name = "sha1_fingerprint"];
+  }
+}
+
+//GoogleStorageBucketObject version is 0
+message GoogleStorageBucketObject {
+  string bucket = 1;
+
+  string cache_control = 2 [json_name = "cache_control"];
+
+  string content = 3;
+
+  string content_disposition = 4 [json_name = "content_disposition"];
+
+  string content_encoding = 5 [json_name = "content_encoding"];
+
+  string content_language = 6 [json_name = "content_language"];
+
+  string content_type = 7 [json_name = "content_type"];
+
+  string crc32c = 8;
+
+  string detect_md5hash = 9 [json_name = "detect_md5hash"];
+
+  string id = 10;
+
+  string md5hash = 11;
+
+  map<string, string> metadata = 12;
+
+  string name = 13;
+
+  string output_name = 14 [json_name = "output_name"];
+
+  string self_link = 15 [json_name = "self_link"];
+
+  string source = 16;
+
+  string storage_class = 17 [json_name = "storage_class"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+
+  int32 count = 19;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+
+  string provider = 21;
+
+  terraform.meta.Lifecycle lifecycle = 22;
+}
+
+//GoogleStorageObjectSignedUrl version is 0
+message GoogleStorageObjectSignedUrl {
+  string bucket = 1;
+
+  string content_md5 = 2 [json_name = "content_md5"];
+
+  string content_type = 3 [json_name = "content_type"];
+
+  string credentials = 4;
+
+  string duration = 5;
+
+  map<string, string> extension_headers = 6;
+
+  string http_method = 7 [json_name = "http_method"];
+
+  string id = 8;
+
+  string path = 9;
+
+  string signed_url = 10 [json_name = "signed_url"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//GoogleStorageProjectServiceAccount version is 0
+message GoogleStorageProjectServiceAccount {
+  string email_address = 1 [json_name = "email_address"];
+
+  string id = 2;
+
+  string project = 3;
+
+  string user_project = 4 [json_name = "user_project"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//GoogleStorageTransferProjectServiceAccount version is 0
+message GoogleStorageTransferProjectServiceAccount {
+  string email = 1;
+
+  string id = 2;
+
+  string project = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//GoogleTpuTensorflowVersions version is 0
+message GoogleTpuTensorflowVersions {
+  string id = 1;
+
+  string project = 2;
+
+  repeated string versions = 3;
+
+  string zone = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
