@@ -244,7 +244,7 @@ def Cluster(
                 zone_id="f05cf5af25ffab8e186f43cfea099628",
                 name="{}.service.{}".format(svc, region + cluster_name),
                 type="A",
-                ttl=60,
+                ttl=120,
                 value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
             )
 
