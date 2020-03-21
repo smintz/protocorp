@@ -4,22 +4,29 @@
     "@type": "type.googleapis.com/terraform.Terraform",
     "resource": {
       "cloudflare_record": {
-        "consul": {
+        "server-3-ams3-c01": {
+          "name": "${random_pet.server-3-ams3-c01.id}.node.ams3c01",
+          "type": "A",
+          "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
+        "server-3-ams3-c01-consul": {
           "name": "consul.service.ams3c01",
           "ttl": 60,
           "type": "A",
-          "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address},${digitalocean_droplet.server-4-ams3-c01.ipv4_address},${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
+          "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
           "zone_id": "f05cf5af25ffab8e186f43cfea099628"
         },
-        "nomad": {
+        "server-3-ams3-c01-nomad": {
           "name": "nomad.service.ams3c01",
           "ttl": 60,
           "type": "A",
-          "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address},${digitalocean_droplet.server-4-ams3-c01.ipv4_address},${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
+          "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
           "zone_id": "f05cf5af25ffab8e186f43cfea099628"
         },
-        "server-3-ams3-c01": {
-          "name": "${random_pet.server-3-ams3-c01.id}.node.ams3c01",
+        "server-3-ams3-c01-vault": {
+          "name": "vault.service.ams3c01",
+          "ttl": 60,
           "type": "A",
           "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
           "zone_id": "f05cf5af25ffab8e186f43cfea099628"
@@ -30,17 +37,52 @@
           "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
           "zone_id": "f05cf5af25ffab8e186f43cfea099628"
         },
+        "server-4-ams3-c01-consul": {
+          "name": "consul.service.ams3c01",
+          "ttl": 60,
+          "type": "A",
+          "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
+        "server-4-ams3-c01-nomad": {
+          "name": "nomad.service.ams3c01",
+          "ttl": 60,
+          "type": "A",
+          "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
+        "server-4-ams3-c01-vault": {
+          "name": "vault.service.ams3c01",
+          "ttl": 60,
+          "type": "A",
+          "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
         "server-5-ams3-c01": {
           "name": "${random_pet.server-5-ams3-c01.id}.node.ams3c01",
           "type": "A",
           "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
           "zone_id": "f05cf5af25ffab8e186f43cfea099628"
         },
-        "vault": {
+        "server-5-ams3-c01-consul": {
+          "name": "consul.service.ams3c01",
+          "ttl": 60,
+          "type": "A",
+          "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
+        "server-5-ams3-c01-nomad": {
+          "name": "nomad.service.ams3c01",
+          "ttl": 60,
+          "type": "A",
+          "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
+        "server-5-ams3-c01-vault": {
           "name": "vault.service.ams3c01",
           "ttl": 60,
           "type": "A",
-          "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address},${digitalocean_droplet.server-4-ams3-c01.ipv4_address},${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
+          "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
           "zone_id": "f05cf5af25ffab8e186f43cfea099628"
         }
       },

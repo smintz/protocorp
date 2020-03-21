@@ -239,13 +239,14 @@ def Cluster(
         "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid for nmd in servers
     ]
     for svc in ["consul", "nomad", "vault"]:
-        tf.cloudflare_record[svc] = CloudflareRecord(
-            zone_id="f05cf5af25ffab8e186f43cfea099628",
-            name="{}.service.{}".format(svc, region + cluster_name),
-            type="A",
-            ttl=60,
-            value=",".join(servers_ips),
-        )
+        for nmd in servers:
+            tf.cloudflare_record[nmd.tfid + "-" + svc] = CloudflareRecord(
+                zone_id="f05cf5af25ffab8e186f43cfea099628",
+                name="{}.service.{}".format(svc, region + cluster_name),
+                type="A",
+                ttl=60,
+                value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
+            )
 
 
 CLUSTERS = [
