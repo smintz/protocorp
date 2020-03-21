@@ -184,6 +184,7 @@ listener "tcp" {
                 owner="vault",
                 group="vault",
                 mode="0755",
+                b64_escape=True,
             ),
             Systemd(
                 "vault",

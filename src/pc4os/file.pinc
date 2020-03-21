@@ -14,7 +14,7 @@ def File(
     owner="root",
     group="root",
     mode="0644",
-    b64_escape=True,
+    b64_escape=False,
 ):
     """
     File generates a file on the filesystem path
