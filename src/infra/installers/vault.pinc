@@ -54,7 +54,7 @@ unseal_vault() {
   while vault_is_sealed; do
     _key=$(cat $KEYS_FILE | jq -r ".keys[${COUNTER}]")
     COUNTER=$((${COUNTER}+1))
-    curl -s $VAULT_ADDR/v1/sys/unseal -X PUT -d "{\"key\":\"${_key}\"}"
+    curl -s $VAULT_ADDR/v1/sys/unseal -X PUT -d "{\\"key\\":\\"${_key}\\"}"
   done
 }
 
