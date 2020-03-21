@@ -223,12 +223,29 @@ def Cluster(
     if servers_count not in [3, 5, 7]:
         fail("servers_count must be one of 3, 5 or 7 (got: %d)" % servers_count)
 
-    for i in range(index + 0, index + servers_count):
-        nmd = server_name_metadata.create("server", i, region, cluster_name)
+    servers = [
+        server_name_metadata.create("server", i, region, cluster_name)
+        for i in range(index + 0, index + servers_count)
+    ]
+    clients = [
+        server_name_metadata.create("client", i, region, cluster_name)
+        for i in range(index + 0, index + clients_count)
+    ]
+
+    for nmd in servers + clients:
         create_device(tf, nmd, provider)
-    for i in range(index + 0, index + clients_count):
-        nmd = server_name_metadata.create("client", i, region, cluster_name)
-        create_device(tf, nmd, provider)
+
+    servers_ips = [
+        "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid for nmd in servers
+    ]
+    for svc in ["consul", "nomad", "vault"]:
+        tf.cloudflare_record[svc] = CloudflareRecord(
+            zone_id="f05cf5af25ffab8e186f43cfea099628",
+            name="{}.service.{}".format(svc, region + cluster_name),
+            type="A",
+            ttl=60,
+            value=",".join(servers_ips),
+        )
 
 
 CLUSTERS = [
@@ -238,6 +255,6 @@ CLUSTERS = [
         region="ams3",
         cluster_name="c01",
         servers_count=3,
-        index=0,
+        index=3,
     )
 ]
