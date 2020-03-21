@@ -4,9 +4,18 @@ file.pinc
 
 load("component.pinc", "Component", "String")
 load("command.pinc", "Command")
+load("encoding/base64.star", "base64")
 
 
-def File(path, content=None, download=None, owner="root", group="root", mode="0644"):
+def File(
+    path,
+    content=None,
+    download=None,
+    owner="root",
+    group="root",
+    mode="0644",
+    b64_escape=True,
+):
     """
     File generates a file on the filesystem path
 
@@ -17,6 +26,7 @@ def File(path, content=None, download=None, owner="root", group="root", mode="06
         owner: owner of the file
         group: group of the file
         mode: mode of the file
+        b64_escape: should the content be escaped while in transit?
     Returns:
         A file component
     """
@@ -27,12 +37,16 @@ def File(path, content=None, download=None, owner="root", group="root", mode="06
     if download:
         f = Command("curl", "-L", download, "-o", path)
     if content:
+        b64_command = "cat"
+        if b64_escape:
+            content = base64.encode(content)
+            b64_command = "base64 -d"
         f = String(
             """\
-cat <<FILE_CONTENT | tee {path}
+cat <<FILE_CONTENT | {b64_command} | tee {path}
 {content}
 FILE_CONTENT""".format(
-                path=path, content=content
+                path=path, content=content, b64_command=b64_command
             )
         )
 
