@@ -36,6 +36,12 @@ CONSUL_JOIN_ARGS = {
     "google": "",
     # Will support more providers later
 }
+CONSUL_JOIN_WAN_ARGS = {
+    "digitalocean": "provider=digitalocean api_token={token} tag_name=server",
+    "google": "",
+    # Will support more providers later
+}
+
 
 TOKENS = {"digitalocean": "${var.digitalocean_token}", "google": ""}
 
@@ -155,6 +161,11 @@ advertise {
                         dc=nmd.region, token=TOKENS[provider]
                     )
                 ],
+                join_wan=[
+                    CONSUL_JOIN_WAN_ARGS[provider].format(
+                        dc=nmd.region, token=TOKENS[provider]
+                    )
+                ],
                 ca=ca,
             ),
             Vault(nmd, ca=ca),
@@ -257,5 +268,13 @@ CLUSTERS = [
         cluster_name="c01",
         servers_count=3,
         index=3,
-    )
+    ),
+    Cluster(
+        tf.resource,
+        "digitalocean",
+        region="fra1",
+        cluster_name="c01",
+        servers_count=3,
+        index=0,
+    ),
 ]
