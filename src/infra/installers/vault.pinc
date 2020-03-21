@@ -170,8 +170,11 @@ listener "tcp" {
                     group="vault",
                 ),
                 File(
-                    "/etc/vault.d./tls/consul_encrypt.key",
+                    "/etc/vault.d/tls/consul_encrypt.key",
                     "${%s}" % ca.server_cert("consul-encrypt").private_key,
+                    owner="vault",
+                    group="vault",
+                    mode="0600",
                 ),
             ]
         )
