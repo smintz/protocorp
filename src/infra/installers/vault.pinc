@@ -21,7 +21,7 @@ VAULT_POST_START_SCRIPT = """\
 # 2.2. Unseal vault
 
 export VAULT_ADDR=https://127.0.0.1:8200
-export KEYS_FILE=/etc/vault.d/tls/vault_keys.json
+export KEYS_FILE=/tmp/vault_keys.json
 
 vault_is_initialized() {
   curl -s $VAULT_ADDR/v1/sys/init | jq -e .initialized > /dev/null
