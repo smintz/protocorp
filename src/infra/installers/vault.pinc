@@ -45,10 +45,10 @@ vault_root_login() {
 
 unseal_vault() {
   if jq -e "(.keys | length) > 0" $KEYS_FILE; then
-    echo hi > /dev/null
+    consul kv put vault_init @<(openssl aes-256-cbc -a -salt -in ${KEYS_FILE} -kfile /etc/vault.d/tls/consul_encrypt.key)
   else
     echo "Missing keys in $KEYS_FILE"
-    exit 1
+    consul kv get vault_init | openssl aes-256-cbc -d -a -kfile /etc/vault.d/tls/consul_encrypt.key > ${KEYS_FILE}
   fi
   COUNTER=0
   while vault_is_sealed; do
@@ -168,6 +168,10 @@ listener "tcp" {
                     "${%s}" % pki.certificate,
                     owner="vault",
                     group="vault",
+                ),
+                File(
+                    "/etc/vault.d./tls/consul_encrypt.key",
+                    "${%s}" % ca.server_cert("consul-encrypt").private_key,
                 ),
             ]
         )
