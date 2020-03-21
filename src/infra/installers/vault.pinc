@@ -52,9 +52,9 @@ unseal_vault() {
   fi
   COUNTER=0
   while vault_is_sealed; do
-    _key=$(cat $KEYS_FILE | jq -r ".keys[$COUNTER]")
-    COUNTER=$(($COUNTER+1))
-    curl -s $VAULT_ADDR/v1/sys/unseal -X PUT -d "{\"key\":\"$_key\"}"
+    _key=$(cat $KEYS_FILE | jq -r ".keys[${COUNTER}]")
+    COUNTER=$((${COUNTER}+1))
+    curl -s $VAULT_ADDR/v1/sys/unseal -X PUT -d "{\"key\":\"${_key}\"}"
   done
 }
 
@@ -64,9 +64,9 @@ vault_is_up() {
 
 wait_for_vault_server() {
   TIMEOUT_SECONDS=${1:-60}
-  TIMEOUT_TIME=$(( $TIMEOUT_SECONDS + $(date +%s) ))
+  TIMEOUT_TIME=$(( ${TIMEOUT_SECONDS} + $(date +%s) ))
   until vault_is_up; do
-    [ $(date +%s) -lt $TIMEOUT_TIME ] || exit 2
+    [ $(date +%s) -lt ${TIMEOUT_TIME} ] || exit 2
     sleep 1
   done
 }
@@ -74,7 +74,7 @@ wait_for_vault_server() {
 main() {
   wait_for_vault_server
   vault_is_initialized || initialize_vault
-  unseal_vault
+  unseal_vault || exit 0
   vault_root_login
 }
 
