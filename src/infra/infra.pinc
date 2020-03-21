@@ -261,20 +261,20 @@ def Cluster(
 
 
 CLUSTERS = [
-    Cluster(
-        tf.resource,
-        "digitalocean",
-        region="ams3",
-        cluster_name="c01",
-        servers_count=3,
-        index=3,
-    ),
-    Cluster(
-        tf.resource,
-        "digitalocean",
-        region="fra1",
-        cluster_name="c01",
-        servers_count=3,
-        index=0,
-    ),
+    # Cluster(
+    #     tf.resource,
+    #     "digitalocean",
+    #     region="ams3",
+    #     cluster_name="c01",
+    #     servers_count=3,
+    #     index=3,
+    # ),
+    # Cluster(
+    #     tf.resource,
+    #     "digitalocean",
+    #     region="fra1",
+    #     cluster_name="c01",
+    #     servers_count=3,
+    #     index=0,
+    # ),
 ]
