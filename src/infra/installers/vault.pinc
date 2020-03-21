@@ -155,7 +155,7 @@ listener "tcp" {
         vault_config = vault_config + vault_tls_config
         setup.extend(
             [
-                Directory("/etc/vault.d/tls"),
+                Directory("/etc/vault.d/tls", mode="700", owner="vault", group="vault"),
                 File(
                     "/etc/vault.d/tls/key.pem",
                     "${%s}" % pki.private_key,
