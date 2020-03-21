@@ -256,6 +256,6 @@ CLUSTERS = [
         region="ams3",
         cluster_name="c01",
         servers_count=3,
-        index=2,
+        index=3,
     )
 ]
