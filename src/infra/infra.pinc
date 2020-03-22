@@ -2,6 +2,7 @@
 """
 This is the entrypoint of the terraform file.
 """
+load("cluster.proto", "Cluster", "Tier")
 load("/terraform/terraform.proto", "Terraform")
 load(
     "/terraform/digitalocean-resources.proto",
@@ -28,24 +29,32 @@ CLIENTS = 0
 
 CONSUL_DOMAIN = "pco.nf"
 
+# Providers
+DIGITALOCEAN = str(Cluster.Providers.DIGITALOCEAN)
+
 tf = Terraform(resource=Terraform.Resources())
 ca = CA(tf.resource)
 tf.resource.random_id["consul_encrypt"] = RandomId(byte_length=16)
 tf.resource.random_id["nomad_encrypt"] = RandomId(byte_length=16)
-provider = "digitalocean"
+provider = DIGITALOCEAN
 CONSUL_JOIN_ARGS = {
-    "digitalocean": "provider=digitalocean api_token={token} region={dc} tag_name=server",
-    "google": "",
+    DIGITALOCEAN: "provider=digitalocean api_token={token} region={dc} tag_name=server",
     # Will support more providers later
 }
 CONSUL_JOIN_WAN_ARGS = {
-    "digitalocean": "provider=digitalocean api_token={token} tag_name=server",
-    "google": "",
+    DIGITALOCEAN: "provider=digitalocean api_token={token} tag_name=server",
     # Will support more providers later
 }
 
 
-TOKENS = {"digitalocean": "${var.digitalocean_token}", "google": ""}
+TOKENS = {DIGITALOCEAN: "${var.digitalocean_token}"}
+
+
+def get_cluster_name(cluster_number):
+    if cluster_number < 10:
+        return "c0" + str(cluster_number)
+    else:
+        return "c" + str(cluster_number)
 
 
 def set_ssh_keys(tf, provider):
@@ -60,7 +69,7 @@ def set_ssh_keys(tf, provider):
         key_counter = 0
         for key in e.ssh_keys:
             key_name = "%s-%d" % (e.unix_name, key_counter)
-            if provider == "digitalocean":
+            if provider == DIGITALOCEAN:
                 tf.digitalocean_ssh_key[key_name] = DigitaloceanSshKey(
                     name=key_name, public_key=key
                 )
@@ -143,6 +152,16 @@ def create_gcp_vm(tf, nmd, user_data=""):
 
 
 def DeviceUserData(role, nmd, provider):
+    """
+    DeviceUserData will generate a userdata script for installing the instances
+
+    Args:
+        role: the role of the instance
+        nmd: server name metadata factory
+        provider: enum value
+    Returns:
+        DeviceUserData component
+    """
     nomad_config = """\
 advertise {
     http = "{{GetPublicIP}}"
@@ -150,6 +169,11 @@ advertise {
     serf = "{{GetPublicIP}}"
 }
 """
+
+    if role == "server":
+        vault = Vault(nmd, ca=ca)
+    else:
+        vault = String("")
 
     def render():
         return [
@@ -163,14 +187,14 @@ advertise {
                         dc=nmd.region, token=TOKENS[provider]
                     )
                 ],
-                join_wan=[
-                    CONSUL_JOIN_WAN_ARGS[provider].format(
-                        dc=nmd.region, token=TOKENS[provider]
-                    )
-                ],
+                # join_wan=[
+                #     CONSUL_JOIN_WAN_ARGS[provider].format(
+                #         dc=nmd.region, token=TOKENS[provider]
+                #     )
+                # ],
                 ca=ca,
             ),
-            Vault(nmd, ca=ca),
+            vault,
             Docker(),
             Nomad(role, nmd, ca=ca, additional_config=nomad_config),
         ]
@@ -190,7 +214,7 @@ def create_device(tf, nmd, provider):
 
     user_data = compile(DeviceUserData(nmd.role, nmd, provider))
 
-    if provider == "digitalocean":
+    if provider == DIGITALOCEAN:
         tf.digitalocean_droplet[nmd.tfid] = create_droplet(tf, nmd, user_data)
         tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
             zone_id="f05cf5af25ffab8e186f43cfea099628",
@@ -210,38 +234,35 @@ def create_device(tf, nmd, provider):
         )
 
 
-def Cluster(
-    tf, provider, region, cluster_name="c01", index=0, servers_count=0, clients_count=0
-):
+def ProvisionCluster(tf, cluster):
     """
     Cluster will generate a cluster of servers
 
     Args:
-        tf:
-        provider:
-        region:
-        cluster_name:
-        index:
-        servers_count:
-        clients_count:
+        tf: a resource instance
+        cluster: a Cluster instance
     """
-    if index < 0:
-        fail("index must by positive (got: %d)" % index)
+    cluster_name = get_cluster_name(cluster.cluster_number)
+    index = 3
 
-    if servers_count not in [3, 5, 7]:
-        fail("servers_count must be one of 3, 5 or 7 (got: %d)" % servers_count)
+    if cluster.servers_count not in [3, 5, 7]:
+        fail("servers_count must be one of 3, 5 or 7 (got: %d)" % cluster.servers_count)
 
     servers = [
-        server_name_metadata.create("server", i, region, cluster_name)
-        for i in range(index + 0, index + servers_count)
+        server_name_metadata.create("server", i, cluster.region, cluster_name)
+        for i in range(index + 0, index + cluster.servers_count)
     ]
-    clients = [
-        server_name_metadata.create("client", i, region, cluster_name)
-        for i in range(index + 0, index + clients_count)
-    ]
+    clients = []
+    for t in cluster.tiers:
+        clients.extend(
+            [
+                server_name_metadata.create(t.name, i, cluster.region, cluster_name)
+                for i in range(index + 0, index + t.count)
+            ]
+        )
 
     for nmd in servers + clients:
-        create_device(tf, nmd, provider)
+        create_device(tf, nmd, str(cluster.provider))
 
     servers_ips = [
         "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid for nmd in servers
@@ -250,7 +271,7 @@ def Cluster(
         for nmd in servers:
             tf.cloudflare_record[nmd.tfid + "-" + svc] = CloudflareRecord(
                 zone_id="f05cf5af25ffab8e186f43cfea099628",
-                name="{}.service.{}".format(svc, region + cluster_name),
+                name="{}.service.{}".format(svc, cluster.region + cluster_name),
                 type="A",
                 ttl=120,
                 value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
@@ -259,19 +280,13 @@ def Cluster(
 
 CLUSTERS = [
     Cluster(
-        tf.resource,
-        "digitalocean",
+        provider=Cluster.Providers.DIGITALOCEAN,
         region="ams3",
-        cluster_name="c01",
+        cluster_number=1,
         servers_count=3,
-        index=0,
-    ),
-    Cluster(
-        tf.resource,
-        "digitalocean",
-        region="fra1",
-        cluster_name="c01",
-        servers_count=3,
-        index=0,
-    ),
+        tiers=[Tier(name="general", count=2)],
+    )
 ]
+
+for c in CLUSTERS:
+    ProvisionCluster(tf.resource, c)

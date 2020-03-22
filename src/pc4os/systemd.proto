@@ -218,6 +218,7 @@ message Service {
     string NoNewPrivileges = 51;
     uint32 StartLimitInterval = 52;
     string LimitMEMLOCK = 53;
+    string EnvironmentFile = 54;
 }
 message Install {
     string WantedBy = 1;
