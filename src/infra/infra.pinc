@@ -28,6 +28,8 @@ SERVERS = 3
 CLIENTS = 0
 
 CONSUL_DOMAIN = "pco.nf"
+CF_PROTOCONF_COM_ID = "0280c074462b8ec6ff40f9b1790f7af3"
+CF_PCO_NF_ID = "f05cf5af25ffab8e186f43cfea099628"
 
 # Providers
 DIGITALOCEAN = str(Cluster.Providers.DIGITALOCEAN)
@@ -187,11 +189,12 @@ advertise {
                         dc=nmd.region, token=TOKENS[provider]
                     )
                 ],
-                # join_wan=[
-                #     CONSUL_JOIN_WAN_ARGS[provider].format(
-                #         dc=nmd.region, token=TOKENS[provider]
-                #     )
-                # ],
+                join_wan=[
+                    CONSUL_JOIN_WAN_ARGS[provider].format(
+                        dc=nmd.region, token=TOKENS[provider]
+                    ),
+                    "wan.protoconf.com",
+                ],
                 ca=ca,
             ),
             vault,
@@ -217,7 +220,7 @@ def create_device(tf, nmd, provider):
     if provider == DIGITALOCEAN:
         tf.digitalocean_droplet[nmd.tfid] = create_droplet(tf, nmd, user_data)
         tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
-            zone_id="f05cf5af25ffab8e186f43cfea099628",
+            zone_id=CF_PCO_NF_ID,
             name="{}.node.{}".format(nmd.hostname, nmd.dc),
             type="A",
             value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
@@ -226,7 +229,7 @@ def create_device(tf, nmd, provider):
     if provider == "google":
         tf.google_compute_instance[nmd.tfid] = create_gcp_vm(nmd.role, nmd, user_data)
         tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
-            zone_id="f05cf5af25ffab8e186f43cfea099628",
+            zone_id=CF_PCO_NF_ID,
             name="{}.node.{}".format(nmd.hostname, nmd.dc),
             type="A",
             value="${google_compute_instance.%s.network_interface.0.network_ip}"
@@ -243,7 +246,7 @@ def ProvisionCluster(tf, cluster):
         cluster: a Cluster instance
     """
     cluster_name = get_cluster_name(cluster.cluster_number)
-    index = 3
+    index = 0
 
     if cluster.servers_count not in [3, 5, 7]:
         fail("servers_count must be one of 3, 5 or 7 (got: %d)" % cluster.servers_count)
@@ -264,18 +267,24 @@ def ProvisionCluster(tf, cluster):
     for nmd in servers + clients:
         create_device(tf, nmd, str(cluster.provider))
 
-    servers_ips = [
-        "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid for nmd in servers
-    ]
     for svc in ["consul", "nomad", "vault"]:
         for nmd in servers:
             tf.cloudflare_record[nmd.tfid + "-" + svc] = CloudflareRecord(
-                zone_id="f05cf5af25ffab8e186f43cfea099628",
+                zone_id=CF_PCO_NF_ID,
                 name="{}.service.{}".format(svc, cluster.region + cluster_name),
                 type="A",
                 ttl=120,
                 value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
             )
+
+    for nmd in servers:
+        tf.cloudflare_record[nmd.tfid + "-wan"] = CloudflareRecord(
+            zone_id=CF_PROTOCONF_COM_ID,
+            name="wan",
+            type="A",
+            ttl=120,
+            value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
+        )
 
 
 CLUSTERS = [
@@ -285,7 +294,14 @@ CLUSTERS = [
         cluster_number=1,
         servers_count=3,
         tiers=[Tier(name="general", count=2)],
-    )
+    ),
+    Cluster(
+        provider=Cluster.Providers.DIGITALOCEAN,
+        region="lon1",
+        cluster_number=1,
+        servers_count=3,
+        tiers=[Tier(name="general", count=2)],
+    ),
 ]
 
 for c in CLUSTERS:
