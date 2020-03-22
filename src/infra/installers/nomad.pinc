@@ -8,6 +8,8 @@ load("/pc4os/command.pinc", "Command")
 load("/pc4os/systemd.pinc", "Systemd")
 load("/pc4os/systemd.proto", "Service")
 
+NOMAD_VERSION = "0.10.4"
+
 SERVER_CONFIG = """\
 server {
   enabled = true
@@ -17,12 +19,137 @@ server {
 """
 
 CLIENT_CONFIG = """\
-client {
+client {{
   enabled = true
+  node_class = "{role}"
+  meta {{
+      tier = "{role}"
+  }}
+  options {{
+      driver.raw_exec.enabled = 1
+      docker.privileged.enabled = true
+  }}
+}}
+
+telemetry {{
+    publish_allocation_metrics = true
+    publish_node_metrics = true
+    prometheus_metrics = true
+}}
+"""
+
+VAULT_CONFIG = """\
+vault {{
+    enabled = true
+    address = "https://vault.service.{domain}:8200"
+    create_from_role = "nomad-cluster"
+    ca_file = "/usr/local/share/ca-certificates/protoconf.crt"
+    cert_file = "/etc/nomad.d/tls/cert.pem"
+    key_file = "/etc/nomad.d/tls/key.pem"
+}}
+"""
+
+VAULT_NOMAD_CLUSTER_ROLE = """\
+{
+  "disallowed_policies": "nomad-server",
+  "explicit_max_ttl": 0,
+  "name": "nomad-cluster",
+  "orphan": true,
+  "period": 259200,
+  "renewable": true
 }
 """
 
-NOMAD_VERSION = "0.10.4"
+VAULT_NOMAD_SERVER_POLICY = """\
+# Allow creating tokens under "nomad-cluster" role. The role name should be
+# updated if "nomad-cluster" is not used.
+path "auth/token/create/nomad-cluster" {
+  capabilities = ["update"]
+}
+
+# Allow looking up "nomad-cluster" role. The role name should be updated if
+# "nomad-cluster" is not used.
+path "auth/token/roles/nomad-cluster" {
+  capabilities = ["read"]
+}
+
+# Allow looking up the token passed to Nomad to validate the token has the
+# proper capabilities. This is provided by the "default" policy.
+path "auth/token/lookup-self" {
+  capabilities = ["read"]
+}
+
+# Allow looking up incoming tokens to validate they have permissions to access
+# the tokens they are requesting. This is only required if
+# `allow_unauthenticated` is set to false.
+path "auth/token/lookup" {
+  capabilities = ["update"]
+}
+
+# Allow revoking tokens that should no longer exist. This allows revoking
+# tokens for dead tasks.
+path "auth/token/revoke-accessor" {
+  capabilities = ["update"]
+}
+
+# Allow checking the capabilities of our own token. This is used to validate the
+# token upon startup.
+path "sys/capabilities-self" {
+  capabilities = ["update"]
+}
+
+# Allow our own token to be renewed.
+path "auth/token/renew-self" {
+  capabilities = ["update"]
+}
+"""
+
+NOMAD_PRE_EXEC_SCRIPT = """\
+#!/bin/bash
+
+set -e
+
+# This script will:
+# 1. Validate vault is running (either locally or globally)
+# 2. Retrive the root token from consul
+# 3. Install role and policy for nomad
+# 4. Create a new token for nomad server and will write it to the env file
+
+validate_vault(){{
+    export VAULT_ADDR=https://127.0.0.1:8200
+    if curl -s $VAULT_ADDR/v1/sys/health > /dev/null; then
+        return
+    export VAULT_ADDR=https://vault.service.{domain}:8200
+    if curl -s $VAULT_ADDR/v1/sys/health > /dev/null; then
+        return
+
+    echo "Vault is not running properly"
+    exit 1
+}}
+
+get_root_token(){{
+    export VAULT_TOKEN=$(consul kv get vault_init | openssl aes-256-cbc -d -a -kfile /etc/vault.d/tls/consul_encrypt.key | jq -r '.auth.client_token')
+}}
+
+install_role_and_policy(){{
+    vault policy write nomad-server /etc/nomad.d/files/nomad-server-policy.hcl
+    vault write /auth/token/roles/nomad-cluster @/etc/nomad.d/files/nomad-cluster-role.json
+}}
+
+write_token_to_env_file() {{
+    nomad_token=$(vault token create -policy nomad-server  -orphan  -format=json| jq -r '.auth.client_token')
+    echo "VAULT_TOKEN=${{nomad_token}}" | tee /etc/nomad.d/env
+}}
+
+main(){{
+    validate_vault
+    get_root_token
+    install_role_and_policy
+    write_token_to_env_file
+}}
+
+main
+"""
 
 
 def NomadInstall(version):
@@ -66,11 +193,48 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
         NomadInstall(version),
         File("/etc/nomad.d/nomad.hcl", content="\n".join(['data_dir = "/opt/nomad"'])),
         File("/etc/nomad.d/datacenter.hcl", 'datacenter = "{}"'.format(dc)),
-        File("/etc/nomad.d/client.hcl", content=CLIENT_CONFIG),
+        File("/etc/nomad.d/client.hcl", content=CLIENT_CONFIG.format(role=role)),
+        File("/etc/nomad.d/vault.hcl", content=VAULT_CONFIG.format(domain=nf.domain)),
     ]
 
+    service = Service(
+        ExecReload="/bin/kill -HUP $MAINPID",
+        ExecStart="/usr/local/bin/nomad agent -config /etc/nomad.d",
+        KillMode="process",
+        KillSignal="SIGINT",
+        LimitNOFILE="infinity",
+        LimitNPROC="infinity",
+        Restart="on-failure",
+        RestartSec="2",
+        StartLimitBurst=3,
+        StartLimitIntervalSec=10,
+        TasksMax="infinity",
+    )
+
     if role == "server":
-        setup.append(File("/etc/nomad.d/server.hcl", content=SERVER_CONFIG))
+        setup.extend(
+            [
+                File("/etc/nomad.d/server.hcl", content=SERVER_CONFIG),
+                Directory("/etc/nomad.d/files"),
+                Directory("/etc/nomad.d/scripts"),
+                File(
+                    "/etc/nomad.d/files/nomad-server-policy.hcl",
+                    content=VAULT_NOMAD_SERVER_POLICY,
+                ),
+                File(
+                    "/etc/nomad.d/files/nomad-cluster-role.json",
+                    content=VAULT_NOMAD_CLUSTER_ROLE,
+                ),
+                File(
+                    "/etc/nomad.d/scripts/before_nomad.sh",
+                    content=NOMAD_PRE_EXEC_SCRIPT.format(domain=nf.domain),
+                    mode="0755",
+                    b64_escape=True,
+                ),
+            ]
+        )
+        service.EnvironmentFile = "/etc/nomad.d/env"
+        service.ExecStartPre = "/etc/nomad.d/scripts/before_nomad.sh"
 
     if ca:
         pki = ca.server_cert(
@@ -114,24 +278,7 @@ tls {
             File("/etc/nomad.d/99-additional-configs.hcl", content=additional_config)
         )
 
-    setup.append(
-        Systemd(
-            "nomad",
-            Service(
-                ExecReload="/bin/kill -HUP $MAINPID",
-                ExecStart="/usr/local/bin/nomad agent -config /etc/nomad.d",
-                KillMode="process",
-                KillSignal="SIGINT",
-                LimitNOFILE="infinity",
-                LimitNPROC="infinity",
-                Restart="on-failure",
-                RestartSec="2",
-                StartLimitBurst=3,
-                StartLimitIntervalSec=10,
-                TasksMax="infinity",
-            ),
-        )
-    )
+    setup.append(Systemd("nomad", service))
 
     def render():
         return setup
