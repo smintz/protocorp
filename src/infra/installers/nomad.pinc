@@ -18,6 +18,7 @@ server {
 }
 """
 
+# Note: escape curly brackets
 CLIENT_CONFIG = """\
 client {{
   enabled = true
@@ -38,6 +39,7 @@ telemetry {{
 }}
 """
 
+# Note: escape curly brackets
 VAULT_CONFIG = """\
 vault {{
     enabled = true
@@ -104,6 +106,8 @@ path "auth/token/renew-self" {
 }
 """
 
+
+# Note: escape curly brackets
 NOMAD_PRE_EXEC_SCRIPT = """\
 #!/bin/bash
 
@@ -119,16 +123,18 @@ validate_vault(){{
     export VAULT_ADDR=https://127.0.0.1:8200
     if curl -s $VAULT_ADDR/v1/sys/health > /dev/null; then
         return
+    fi
     export VAULT_ADDR=https://vault.service.{domain}:8200
     if curl -s $VAULT_ADDR/v1/sys/health > /dev/null; then
         return
+    fi
 
     echo "Vault is not running properly"
     exit 1
 }}
 
 get_root_token(){{
-    export VAULT_TOKEN=$(consul kv get vault_init | openssl aes-256-cbc -d -a -kfile /etc/vault.d/tls/consul_encrypt.key | jq -r '.auth.client_token')
+    export VAULT_TOKEN=$(consul kv get vault_init | openssl aes-256-cbc -d -a -kfile /etc/vault.d/tls/consul_encrypt.key | jq -r '.root_token')
 }}
 
 install_role_and_policy(){{
