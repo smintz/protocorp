@@ -23,7 +23,7 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 0
+COUNTER = 3
 SERVERS = 3
 CLIENTS = 0
 
@@ -246,7 +246,7 @@ def ProvisionCluster(tf, cluster):
         cluster: a Cluster instance
     """
     cluster_name = get_cluster_name(cluster.cluster_number)
-    index = 0
+    index = COUNTER
 
     if cluster.servers_count not in [3, 5, 7]:
         fail("servers_count must be one of 3, 5 or 7 (got: %d)" % cluster.servers_count)

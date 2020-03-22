@@ -237,6 +237,7 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
                     mode="0755",
                     b64_escape=True,
                 ),
+                Command("/etc/nomad.d/scripts/before_nomad.sh"),
             ]
         )
         service.EnvironmentFile = "/etc/nomad.d/env"
