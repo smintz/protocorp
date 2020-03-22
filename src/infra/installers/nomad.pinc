@@ -12,7 +12,7 @@ SERVER_CONFIG = """\
 server {
   enabled = true
   bootstrap_expect = 3
-  encrypt = "${random_id.nomad_encrypt.b64}"
+  encrypt = "${random_id.nomad_encrypt.b64_std}"
 }
 """
 
