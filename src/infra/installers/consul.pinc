@@ -182,6 +182,7 @@ ports {
     https = 8501
     dns = 53
 }
+encrypt = "${random_id.consul_encrypt.b64}"
 recursors = ["127.0.0.53"]
 """,
                 ),

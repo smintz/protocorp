@@ -9,7 +9,7 @@ load(
     "DigitaloceanSshKey",
 )
 load("/terraform/cloudflare-resources.proto", "CloudflareRecord")
-load("/terraform/random-resources.proto", "RandomPet")
+load("/terraform/random-resources.proto", "RandomPet", "RandomId")
 load("/terraform/google-data.proto", "GoogleComputeInstance")
 load("/terraform/meta.proto", "Lifecycle")
 load("installers/base.pinc", "Base")
@@ -30,6 +30,8 @@ CONSUL_DOMAIN = "pco.nf"
 
 tf = Terraform(resource=Terraform.Resources())
 ca = CA(tf.resource)
+tf.resource.random_id["consul_encrypt"] = RandomId(byte_length=16)
+tf.resource.random_id["nomad_encrypt"] = RandomId(byte_length=16)
 provider = "digitalocean"
 CONSUL_JOIN_ARGS = {
     "digitalocean": "provider=digitalocean api_token={token} region={dc} tag_name=server",
@@ -170,12 +172,7 @@ advertise {
             ),
             Vault(nmd, ca=ca),
             Docker(),
-            Nomad(
-                role,
-                nmd,
-                # ca=ca,
-                additional_config=nomad_config,
-            ),
+            Nomad(role, nmd, ca=ca, additional_config=nomad_config),
         ]
 
     return Component("DeviceUserData", render)
@@ -261,20 +258,20 @@ def Cluster(
 
 
 CLUSTERS = [
-    # Cluster(
-    #     tf.resource,
-    #     "digitalocean",
-    #     region="ams3",
-    #     cluster_name="c01",
-    #     servers_count=3,
-    #     index=3,
-    # ),
-    # Cluster(
-    #     tf.resource,
-    #     "digitalocean",
-    #     region="fra1",
-    #     cluster_name="c01",
-    #     servers_count=3,
-    #     index=0,
-    # ),
+    Cluster(
+        tf.resource,
+        "digitalocean",
+        region="ams3",
+        cluster_name="c01",
+        servers_count=3,
+        index=0,
+    ),
+    Cluster(
+        tf.resource,
+        "digitalocean",
+        region="fra1",
+        cluster_name="c01",
+        servers_count=3,
+        index=0,
+    ),
 ]
