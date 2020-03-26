@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+
+message Tier {
+    string name = 1;
+
+    // class represent the type of instance should be used by the provider (e.g t1.small, c5.xlarge)
+    string class = 2;
+    uint32 count = 3;
+}
+
+message Cluster {
+    Providers provider = 1;
+    string region = 2;
+    uint32 cluster_number = 3;
+    uint32 servers_count = 4;
+    repeated Tier tiers = 5;    
+    enum Providers {
+        NONE = 0;
+        AWS = 1;
+        AZURE = 2;
+        DIGITALOCEAN = 3;
+        GOOGLE = 4;
+        PACKET = 5;
+    }
+}

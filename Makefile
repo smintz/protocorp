@@ -12,4 +12,4 @@ init:
 	terraform init tf/infra
 
 gen:
-	pc4tf generate
+	protoconf import terraform
