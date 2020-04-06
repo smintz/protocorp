@@ -1,0 +1,110 @@
+"""
+nomad jobs
+"""
+load(
+    "/executor/exec_config.proto", "Config", "WatcherConfig", "Action", "ActionTypeHttp"
+)
+load("/nomad/v0.10.4/api.pinc", "NOMAD_PROTO")
+load(
+    "/nomad/v0.10.4/api.proto",
+    "Job",
+    "NetworkResource",
+    "Port",
+    "RegisterJobRequest",
+    "Resources",
+    "Task",
+    "TaskGroup",
+    "Template",
+)
+load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
+load("/google/protobuf/struct.proto", "Value", "ListValue")
+
+datacenters = [
+    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
+]
+
+executor = Config(items=[])
+
+output = {"apply": executor}
+
+
+def register_job(job):
+    output[job.ID] = RegisterJobRequest(Job=job)
+    e = WatcherConfig(
+        path="jobs/jobs/" + job.ID,
+        proto_file="nomad/v0.10.4/api.proto",
+        actions=[
+            Action(
+                http=ActionTypeHttp(
+                    uri="https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+                    method="POST",
+                )
+            )
+        ],
+    )
+    executor.items.append(e)
+
+
+PROTOCONF_AGENT = Task(
+    Name="protoconf-agent",
+    Driver="docker",
+    Resources=Resources(
+        Networks=[NetworkResource(ReservedPorts=[Port(Label="agent", Value=4300)])]
+    ),
+    Config={
+        "image": Value(string_value="protoconf/agent:v0.1.1-beta6.0"),
+        "network_mode": Value(string_value="host"),
+        "args": Value(
+            list_value=ListValue(
+                values=[
+                    Value(string_value="-store=consul"),
+                    Value(string_value="-prefix=production/"),
+                    # Value(string_value="-store-address=http://169.254.1.1:8500"),
+                ]
+            )
+        ),
+    },
+)
+
+PROTOCONF_EXEC = Task(
+    Name="protoconf-exec",
+    Driver="docker",
+    Templates=[
+        Template(
+            # SourcePath="src/nomad/v0.10.4/api.proto",
+            EmbeddedTmpl=NOMAD_PROTO,
+            DestPath="local/nomad/v0.10.4/api.proto",
+        )
+    ],
+    Config={
+        "image": Value(string_value="protoconf/protoconf:v0.1.1-beta6.0"),
+        "network_mode": Value(string_value="host"),
+        "volumes": Value(
+            list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
+        ),
+        "args": Value(
+            list_value=ListValue(
+                values=[
+                    Value(string_value="exec"),
+                    Value(string_value="-config=jobs/jobs/apply"),
+                    Value(string_value="-proto_dir=/local"),
+                ]
+            )
+        ),
+    },
+)
+
+agent = Job(
+    Name="jobs-executor",
+    ID="jobs-executor",
+    Datacenters=datacenters,
+    TaskGroups=[
+        TaskGroup(Name="agent", Count=1, Tasks=[PROTOCONF_EXEC, PROTOCONF_AGENT])
+    ],
+)
+
+register_job(agent)
+
+
+def main():
+    return output
