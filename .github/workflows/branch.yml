@@ -16,6 +16,8 @@ jobs:
       run: |
         echo ${CONSUL_CAPATH}
         cat ${CONSUL_CAPATH}
+        apt-get update && apt-get install -y curl
+        curl -v --cacert ${CONSUL_CAPATH} https://consul.service.ams3c01.pco.nf:8501/
     - name: insert ams3c01
       uses: protoconf/protoconf-actions@master
       env:
