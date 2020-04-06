@@ -1,0 +1,30 @@
+on:
+  push:
+    branches-ignore:
+      - master
+
+name: Protoconf insert to branch
+jobs:
+  checks:
+    name: production
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: insert ams3c01
+      uses: protoconf/protoconf-actions@master
+        env:
+          CONSUL_CAPATH: ${GITHUB_WORKSPACE}/src/infra/protoconf_ca.crt
+      with:
+        store_type: consul
+        store_address: https://consul.service.ams3c01.pco.nf:8501
+        prefix: ${{ github.ref }}
+        changes_only: false
+    - name: insert lon1c01
+      uses: protoconf/protoconf-actions@master
+        env:
+          CONSUL_CAPATH: ${GITHUB_WORKSPACE}/src/infra/protoconf_ca.crt
+      with:
+        store_type: consul
+        store_address: https://consul.service.lon1c01.pco.nf:8501
+        prefix: ${{ github.ref }}
+        changes_only: false
