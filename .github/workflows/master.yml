@@ -15,7 +15,7 @@ jobs:
       - name: insert ams3c01
         uses: protoconf/protoconf-actions@master
         env:
-          CONSUL_CAPATH: ${GITHUB_WORKSPACE}/src/infra/protoconf_ca.crt
+          CONSUL_CAPATH: "src/infra/protoconf_ca.crt"
         with:
           store_type: consul
           store_address: https://consul.service.ams3c01.pco.nf:8501
@@ -25,7 +25,7 @@ jobs:
       - name: insert lon1c01
         uses: protoconf/protoconf-actions@master
         env:
-          CONSUL_CAPATH: ${GITHUB_WORKSPACE}/src/infra/protoconf_ca.crt
+          CONSUL_CAPATH: "src/infra/protoconf_ca.crt"
         with:
           store_type: consul
           store_address: https://consul.service.lon1c01.pco.nf:8501
