@@ -2031,18 +2031,22 @@ message GoogleComputeForwardingRule {
   //if port or portRange are set.
   bool all_ports = 1 [json_name = "all_ports"];
 
+  //If true, clients can access ILB from all regions.
+  //Otherwise only allows from the local region the ILB is located at.
+  bool allow_global_access = 2 [json_name = "allow_global_access"];
+
   //A BackendService to receive the matched traffic. This is used only
   //for INTERNAL load balancing.
-  string backend_service = 2 [json_name = "backend_service"];
+  string backend_service = 3 [json_name = "backend_service"];
 
   //Creation timestamp in RFC3339 text format.
-  string creation_timestamp = 3 [json_name = "creation_timestamp"];
+  string creation_timestamp = 4 [json_name = "creation_timestamp"];
 
   //An optional description of this resource. Provide this property when
   //you create the resource.
-  string description = 4;
+  string description = 5;
 
-  string id = 5;
+  string id = 6;
 
   //The IP address that this forwarding rule is serving on behalf of.
   //
@@ -2068,16 +2072,16 @@ message GoogleComputeForwardingRule {
   //instead, Terraform requires this to specifically be an IP address to
   //avoid needing to fetching the IP address from resource paths on refresh
   //or unnecessary diffs.
-  string ip_address = 6 [json_name = "ip_address"];
+  string ip_address = 7 [json_name = "ip_address"];
 
   //The IP protocol to which this rule applies. Valid options are TCP,
   //UDP, ESP, AH, SCTP or ICMP.
   //
   //When the load balancing scheme is INTERNAL, only TCP and UDP are
   //valid.
-  string ip_protocol = 7 [json_name = "ip_protocol"];
+  string ip_protocol = 8 [json_name = "ip_protocol"];
 
-  string ip_version = 8 [json_name = "ip_version"];
+  string ip_version = 9 [json_name = "ip_version"];
 
   //This signifies what the ForwardingRule will be used for and can be
   //EXTERNAL, INTERNAL, or INTERNAL_MANAGED. EXTERNAL is used for Classic
@@ -2086,7 +2090,7 @@ message GoogleComputeForwardingRule {
   //INTERNAL is used for protocol forwarding to VMs from an internal IP address,
   //and internal TCP/UDP load balancers.
   //INTERNAL_MANAGED is used for internal HTTP(S) load balancers.
-  string load_balancing_scheme = 9 [json_name = "load_balancing_scheme"];
+  string load_balancing_scheme = 10 [json_name = "load_balancing_scheme"];
 
   //Name of the resource; provided by the client when the resource is
   //created. The name must be 1-63 characters long, and comply with
@@ -2095,18 +2099,18 @@ message GoogleComputeForwardingRule {
   //first character must be a lowercase letter, and all following
   //characters must be a dash, lowercase letter, or digit, except the last
   //character, which cannot be a dash.
-  string name = 10;
+  string name = 11;
 
   //For internal load balancing, this field identifies the network that
   //the load balanced IP should belong to for this Forwarding Rule. If
   //this field is not specified, the default network will be used.
   //This field is only used for INTERNAL load balancing.
-  string network = 11;
+  string network = 12;
 
   //The networking tier used for configuring this address. This field can
   //take the following values: PREMIUM or STANDARD. If this field is not
   //specified, it is assumed to be PREMIUM.
-  string network_tier = 12 [json_name = "network_tier"];
+  string network_tier = 13 [json_name = "network_tier"];
 
   //This field is used along with the target field for TargetHttpProxy,
   //TargetHttpsProxy, TargetSslProxy, TargetTcpProxy, TargetVpnGateway,
@@ -2127,7 +2131,7 @@ message GoogleComputeForwardingRule {
   //* TargetSslProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995,
   //                  1883, 5222
   //* TargetVpnGateway: 500, 4500
-  string port_range = 13 [json_name = "port_range"];
+  string port_range = 14 [json_name = "port_range"];
 
   //This field is used along with the backend_service field for internal
   //load balancing.
@@ -2138,15 +2142,15 @@ message GoogleComputeForwardingRule {
   //forwarding rule.
   //
   //You may specify a maximum of up to 5 ports.
-  repeated string ports = 14;
+  repeated string ports = 15;
 
-  string project = 15;
+  string project = 16;
 
   //A reference to the region where the regional forwarding rule resides.
   //This field is not applicable to global forwarding rules.
-  string region = 16;
+  string region = 17;
 
-  string self_link = 17 [json_name = "self_link"];
+  string self_link = 18 [json_name = "self_link"];
 
   //An optional prefix to the service name for this Forwarding Rule.
   //If specified, will be the first label of the fully qualified service
@@ -2160,11 +2164,11 @@ message GoogleComputeForwardingRule {
   //character, which cannot be a dash.
   //
   //This field is only used for INTERNAL load balancing.
-  string service_label = 18 [json_name = "service_label"];
+  string service_label = 19 [json_name = "service_label"];
 
   //The internal fully qualified service name for this Forwarding Rule.
   //This field is only used for INTERNAL load balancing.
-  string service_name = 19 [json_name = "service_name"];
+  string service_name = 20 [json_name = "service_name"];
 
   //The subnetwork that the load balanced IP should belong to for this
   //Forwarding Rule.  This field is only used for INTERNAL load balancing.
@@ -2172,23 +2176,23 @@ message GoogleComputeForwardingRule {
   //If the network specified is in auto subnet mode, this field is
   //optional. However, if the network is in custom subnet mode, a
   //subnetwork must be specified.
-  string subnetwork = 20;
+  string subnetwork = 21;
 
   //The URL of the target resource to receive the matched traffic.
   //The target must live in the same region as the forwarding rule.
   //The forwarded traffic must be of a type appropriate to the target
   //object.
-  string target = 21;
+  string target = 22;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 22;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 23;
 
-  int32 count = 23;
+  int32 count = 24;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 24;
+  terraform.meta.MetaFields.ForEachEntry for_each = 25;
 
-  string provider = 25;
+  string provider = 26;
 
-  terraform.meta.Lifecycle lifecycle = 26;
+  terraform.meta.Lifecycle lifecycle = 27;
 }
 
 //GoogleComputeGlobalAddress version is 0
@@ -2621,76 +2625,7 @@ message GoogleComputeInstance {
 
   string cpu_platform = 3 [json_name = "cpu_platform"];
 
-  bool deletion_protection = 4 [json_name = "deletion_protection"];
-
-  string description = 5;
-
-  string desired_status = 6 [json_name = "desired_status"];
-
-  bool enable_display = 7 [json_name = "enable_display"];
-
-  repeated GuestAccelerator guest_accelerator = 8 [json_name = "guest_accelerator"];
-
-  string hostname = 9;
-
-  string id = 10;
-
-  string instance_id = 11 [json_name = "instance_id"];
-
-  string label_fingerprint = 12 [json_name = "label_fingerprint"];
-
-  map<string, string> labels = 13;
-
-  string machine_type = 14 [json_name = "machine_type"];
-
-  map<string, string> metadata = 15;
-
-  string metadata_fingerprint = 16 [json_name = "metadata_fingerprint"];
-
-  string metadata_startup_script = 17 [json_name = "metadata_startup_script"];
-
-  string min_cpu_platform = 18 [json_name = "min_cpu_platform"];
-
-  string name = 19;
-
-  string project = 20;
-
-  string self_link = 21 [json_name = "self_link"];
-
-  repeated string tags = 22;
-
-  string tags_fingerprint = 23 [json_name = "tags_fingerprint"];
-
-  string zone = 24;
-
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 25;
-
-  int32 count = 26;
-
-  terraform.meta.MetaFields.ForEachEntry for_each = 27;
-
-  string provider = 28;
-
-  terraform.meta.Lifecycle lifecycle = 29;
-
-  message GuestAccelerator {
-    //count: number
-    int64 count = 1;
-
-    //type: string
-    string type = 2;
-  }
-}
-
-//GoogleComputeInstanceFromTemplate version is 0
-message GoogleComputeInstanceFromTemplate {
-  bool allow_stopping_for_update = 1 [json_name = "allow_stopping_for_update"];
-
-  repeated AttachedDisk attached_disk = 2 [json_name = "attached_disk"];
-
-  bool can_ip_forward = 3 [json_name = "can_ip_forward"];
-
-  string cpu_platform = 4 [json_name = "cpu_platform"];
+  string current_status = 4 [json_name = "current_status"];
 
   bool deletion_protection = 5 [json_name = "deletion_protection"];
 
@@ -2726,29 +2661,102 @@ message GoogleComputeInstanceFromTemplate {
 
   string project = 21;
 
-  repeated ScratchDisk scratch_disk = 22 [json_name = "scratch_disk"];
+  string self_link = 22 [json_name = "self_link"];
 
-  string self_link = 23 [json_name = "self_link"];
+  repeated string tags = 23;
 
-  repeated ServiceAccount service_account = 24 [json_name = "service_account"];
+  string tags_fingerprint = 24 [json_name = "tags_fingerprint"];
 
-  string source_instance_template = 25 [json_name = "source_instance_template"];
+  string zone = 25;
 
-  repeated string tags = 26;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 26;
 
-  string tags_fingerprint = 27 [json_name = "tags_fingerprint"];
+  int32 count = 27;
 
-  string zone = 28;
+  terraform.meta.MetaFields.ForEachEntry for_each = 28;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 29;
+  string provider = 29;
 
-  int32 count = 30;
+  terraform.meta.Lifecycle lifecycle = 30;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 31;
+  message GuestAccelerator {
+    //count: number
+    int64 count = 1;
 
-  string provider = 32;
+    //type: string
+    string type = 2;
+  }
+}
 
-  terraform.meta.Lifecycle lifecycle = 33;
+//GoogleComputeInstanceFromTemplate version is 0
+message GoogleComputeInstanceFromTemplate {
+  bool allow_stopping_for_update = 1 [json_name = "allow_stopping_for_update"];
+
+  repeated AttachedDisk attached_disk = 2 [json_name = "attached_disk"];
+
+  bool can_ip_forward = 3 [json_name = "can_ip_forward"];
+
+  string cpu_platform = 4 [json_name = "cpu_platform"];
+
+  string current_status = 5 [json_name = "current_status"];
+
+  bool deletion_protection = 6 [json_name = "deletion_protection"];
+
+  string description = 7;
+
+  string desired_status = 8 [json_name = "desired_status"];
+
+  bool enable_display = 9 [json_name = "enable_display"];
+
+  repeated GuestAccelerator guest_accelerator = 10 [json_name = "guest_accelerator"];
+
+  string hostname = 11;
+
+  string id = 12;
+
+  string instance_id = 13 [json_name = "instance_id"];
+
+  string label_fingerprint = 14 [json_name = "label_fingerprint"];
+
+  map<string, string> labels = 15;
+
+  string machine_type = 16 [json_name = "machine_type"];
+
+  map<string, string> metadata = 17;
+
+  string metadata_fingerprint = 18 [json_name = "metadata_fingerprint"];
+
+  string metadata_startup_script = 19 [json_name = "metadata_startup_script"];
+
+  string min_cpu_platform = 20 [json_name = "min_cpu_platform"];
+
+  string name = 21;
+
+  string project = 22;
+
+  repeated ScratchDisk scratch_disk = 23 [json_name = "scratch_disk"];
+
+  string self_link = 24 [json_name = "self_link"];
+
+  repeated ServiceAccount service_account = 25 [json_name = "service_account"];
+
+  string source_instance_template = 26 [json_name = "source_instance_template"];
+
+  repeated string tags = 27;
+
+  string tags_fingerprint = 28 [json_name = "tags_fingerprint"];
+
+  string zone = 29;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 30;
+
+  int32 count = 31;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 32;
+
+  string provider = 33;
+
+  terraform.meta.Lifecycle lifecycle = 34;
 
   message AttachedDisk {
     //device_name: string
@@ -3782,6 +3790,60 @@ message GoogleComputeRegionInstanceGroupManager {
   string provider = 19;
 
   terraform.meta.Lifecycle lifecycle = 20;
+}
+
+//GoogleComputeRegionSslCertificate version is 0
+message GoogleComputeRegionSslCertificate {
+  //The certificate in PEM format.
+  //The certificate chain must be no greater than 5 certs long.
+  //The chain must include at least one intermediate cert.
+  string certificate = 1;
+
+  //The unique identifier for the resource.
+  int64 certificate_id = 2 [json_name = "certificate_id"];
+
+  //Creation timestamp in RFC3339 text format.
+  string creation_timestamp = 3 [json_name = "creation_timestamp"];
+
+  //An optional description of this resource.
+  string description = 4;
+
+  string id = 5;
+
+  //Name of the resource. Provided by the client when the resource is
+  //created. The name must be 1-63 characters long, and comply with
+  //RFC1035. Specifically, the name must be 1-63 characters long and match
+  //the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the
+  //first character must be a lowercase letter, and all following
+  //characters must be a dash, lowercase letter, or digit, except the last
+  //character, which cannot be a dash.
+  //
+  //
+  //These are in the same namespace as the managed SSL certificates.
+  string name = 6;
+
+  string name_prefix = 7 [json_name = "name_prefix"];
+
+  //The write-only private key in PEM format.
+  string private_key = 8 [json_name = "private_key"];
+
+  string project = 9;
+
+  //The Region in which the created regional ssl certificate should reside.
+  //If it is not provided, the provider region is used.
+  string region = 10;
+
+  string self_link = 11 [json_name = "self_link"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
 }
 
 //GoogleComputeReservation version is 0
@@ -8149,84 +8211,89 @@ message GoogleRedisInstance {
   //will be used.
   string authorized_network = 2 [json_name = "authorized_network"];
 
+  //The connection mode of the Redis instance. Can be either
+  //'DIRECT_PEERING' or 'PRIVATE_SERVICE_ACCESS'. The default
+  //connect mode if not provided is 'DIRECT_PEERING'.
+  string connect_mode = 3 [json_name = "connect_mode"];
+
   //The time the instance was created in RFC3339 UTC "Zulu" format,
   //accurate to nanoseconds.
-  string create_time = 3 [json_name = "create_time"];
+  string create_time = 4 [json_name = "create_time"];
 
   //The current zone where the Redis endpoint is placed.
   //For Basic Tier instances, this will always be the same as the
   //[locationId] provided by the user at creation time. For Standard Tier
   //instances, this can be either [locationId] or [alternativeLocationId]
   //and can change after a failover event.
-  string current_location_id = 4 [json_name = "current_location_id"];
+  string current_location_id = 5 [json_name = "current_location_id"];
 
   //An arbitrary and optional user-provided name for the instance.
-  string display_name = 5 [json_name = "display_name"];
+  string display_name = 6 [json_name = "display_name"];
 
   //Hostname or IP address of the exposed Redis endpoint used by clients
   //to connect to the service.
-  string host = 6;
+  string host = 7;
 
-  string id = 7;
+  string id = 8;
 
   //Resource labels to represent user provided metadata.
-  map<string, string> labels = 8;
+  map<string, string> labels = 9;
 
   //The zone where the instance will be provisioned. If not provided,
   //the service will choose a zone for the instance. For STANDARD_HA tier,
   //instances will be created across two zones for protection against
   //zonal failures. If [alternativeLocationId] is also provided, it must
   //be different from [locationId].
-  string location_id = 9 [json_name = "location_id"];
+  string location_id = 10 [json_name = "location_id"];
 
   //Redis memory size in GiB.
-  int64 memory_size_gb = 10 [json_name = "memory_size_gb"];
+  int64 memory_size_gb = 11 [json_name = "memory_size_gb"];
 
   //The ID of the instance or a fully qualified identifier for the instance.
-  string name = 11;
+  string name = 12;
 
   //The port number of the exposed Redis endpoint.
-  int64 port = 12;
+  int64 port = 13;
 
-  string project = 13;
+  string project = 14;
 
   //Redis configuration parameters, according to http://redis.io/topics/config.
   //Please check Memorystore documentation for the list of supported parameters:
   //https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance.FIELDS.redis_configs
-  map<string, string> redis_configs = 14;
+  map<string, string> redis_configs = 15;
 
   //The version of Redis software. If not provided, latest supported
   //version will be used. Currently, the supported values are:
   //
   //- REDIS_4_0 for Redis 4.0 compatibility
   //- REDIS_3_2 for Redis 3.2 compatibility
-  string redis_version = 15 [json_name = "redis_version"];
+  string redis_version = 16 [json_name = "redis_version"];
 
   //The name of the Redis region of the instance.
-  string region = 16;
+  string region = 17;
 
   //The CIDR range of internal addresses that are reserved for this
   //instance. If not provided, the service will choose an unused /29
   //block, for example, 10.0.0.0/29 or 192.168.0.0/29. Ranges must be
   //unique and non-overlapping with existing subnets in an authorized
   //network.
-  string reserved_ip_range = 17 [json_name = "reserved_ip_range"];
+  string reserved_ip_range = 18 [json_name = "reserved_ip_range"];
 
   //The service tier of the instance. Must be one of these values:
   //
   //- BASIC: standalone instance
   //- STANDARD_HA: highly available primary/replica instances
-  string tier = 18;
+  string tier = 19;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 19;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
 
-  int32 count = 20;
+  int32 count = 21;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 21;
+  terraform.meta.MetaFields.ForEachEntry for_each = 22;
 
-  string provider = 22;
+  string provider = 23;
 
-  terraform.meta.Lifecycle lifecycle = 23;
+  terraform.meta.Lifecycle lifecycle = 24;
 }
 
 //GoogleResourceManagerLien version is 0

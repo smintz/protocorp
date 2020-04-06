@@ -1,0 +1,258 @@
+syntax = "proto3";
+
+package terraform.nomad.resources;
+
+import "terraform/meta.proto";
+
+//NomadAclPolicy version is 0
+message NomadAclPolicy {
+  //Description for this policy.
+  string description = 1;
+
+  string id = 2;
+
+  //Unique name for this policy.
+  string name = 3;
+
+  //HCL or JSON representation of the rules to enforce on this policy. Use file() to specify a file as input.
+  string rules_hcl = 4 [json_name = "rules_hcl"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//NomadAclToken version is 0
+message NomadAclToken {
+  //Nomad-generated ID for this token.
+  string accessor_id = 1 [json_name = "accessor_id"];
+
+  //The timestamp the token was created.
+  string create_time = 2 [json_name = "create_time"];
+
+  //Whether the token should be replicated to all regions or not.
+  bool global = 3;
+
+  string id = 4;
+
+  //Human-readable name for this token.
+  string name = 5;
+
+  //The ACL policies to associate with the token, if it's a 'client' type.
+  repeated string policies = 6;
+
+  //The value that grants access to Nomad.
+  string secret_id = 7 [json_name = "secret_id"];
+
+  //The type of token to create, 'client' or 'management'.
+  string type = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//NomadJob version is 0
+message NomadJob {
+  //The IDs for allocations associated with this job.
+  repeated string allocation_ids = 1 [json_name = "allocation_ids"];
+
+  //The target datacenters for the job, as derived from the jobspec.
+  repeated string datacenters = 2;
+
+  //If detach = false, the ID for the deployment associated with the last job create/update, if one exists.
+  string deployment_id = 3 [json_name = "deployment_id"];
+
+  //If detach = false, the status for the deployment associated with the last job create/update, if one exists.
+  string deployment_status = 4 [json_name = "deployment_status"];
+
+  //If true, the job will be deregistered on destroy.
+  bool deregister_on_destroy = 5 [json_name = "deregister_on_destroy"];
+
+  //If true, the job will be deregistered when the job ID changes.
+  bool deregister_on_id_change = 6 [json_name = "deregister_on_id_change"];
+
+  //If true, the provider will return immediately after creating or updating, instead of monitoring.
+  bool detach = 7;
+
+  string id = 8;
+
+  //Job specification. If you want to point to a file use the file() function.
+  string jobspec = 9;
+
+  //If true, the `jobspec` will be parsed as json instead of HCL.
+  bool json = 10;
+
+  //Integer that increments for each change. Used to detect any changes between plan and apply.
+  string modify_index = 11 [json_name = "modify_index"];
+
+  //The name of the job, as derived from the jobspec.
+  string name = 12;
+
+  //The namespace of the job, as derived from the jobspec.
+  string namespace = 13;
+
+  //Override any soft-mandatory Sentinel policies that fail.
+  bool policy_override = 14 [json_name = "policy_override"];
+
+  //The target region for the job, as derived from the jobspec.
+  string region = 15;
+
+  repeated TaskGroups task_groups = 16 [json_name = "task_groups"];
+
+  //The type of the job, as derived from the jobspec.
+  string type = 17;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+
+  int32 count = 19;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+
+  string provider = 21;
+
+  terraform.meta.Lifecycle lifecycle = 22;
+
+  message TaskGroups {
+    //count: number
+    int64 count = 1;
+
+    //meta: map of string
+    map<string, string> meta = 2;
+
+    //name: string
+    string name = 3;
+
+    //task: list of object
+    repeated Task task = 4;
+
+    //volumes: list of object
+    repeated Volumes volumes = 5;
+
+    message Task {
+      //driver: string
+      string driver = 1;
+
+      //meta: map of string
+      map<string, string> meta = 2;
+
+      //name: string
+      string name = 3;
+
+      //volume_mounts: list of object
+      repeated VolumeMounts volume_mounts = 4 [json_name = "volume_mounts"];
+
+      message VolumeMounts {
+        //destination: string
+        string destination = 1;
+
+        //read_only: bool
+        bool read_only = 2 [json_name = "read_only"];
+
+        //volume: string
+        string volume = 3;
+      }
+    }
+
+    message Volumes {
+      //name: string
+      string name = 1;
+
+      //read_only: bool
+      bool read_only = 2 [json_name = "read_only"];
+
+      //source: string
+      string source = 3;
+
+      //type: string
+      string type = 4;
+    }
+  }
+}
+
+//NomadNamespace version is 0
+message NomadNamespace {
+  //Description for this namespace.
+  string description = 1;
+
+  string id = 2;
+
+  //Unique name for this namespace.
+  string name = 3;
+
+  //Quota to set for this namespace.
+  string quota = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//NomadQuotaSpecification version is 0
+message NomadQuotaSpecification {
+  //Description for this quota specification.
+  string description = 1;
+
+  string id = 2;
+
+  //Unique name for this quota specification.
+  string name = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//NomadSentinelPolicy version is 0
+message NomadSentinelPolicy {
+  //Description for this policy.
+  string description = 1;
+
+  //Specifies the enforcement level of the policy.
+  string enforcement_level = 2 [json_name = "enforcement_level"];
+
+  string id = 3;
+
+  //Unique name for this policy.
+  string name = 4;
+
+  //The Sentinel policy.
+  string policy = 5;
+
+  //Specifies the scope for this policy. Only 'submit-job' is currently supported.
+  string scope = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}

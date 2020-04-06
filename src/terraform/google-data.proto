@@ -615,67 +615,69 @@ message GoogleComputeInstance {
 
   string cpu_platform = 5 [json_name = "cpu_platform"];
 
-  bool deletion_protection = 6 [json_name = "deletion_protection"];
+  string current_status = 6 [json_name = "current_status"];
 
-  string description = 7;
+  bool deletion_protection = 7 [json_name = "deletion_protection"];
 
-  string desired_status = 8 [json_name = "desired_status"];
+  string description = 8;
 
-  bool enable_display = 9 [json_name = "enable_display"];
+  string desired_status = 9 [json_name = "desired_status"];
 
-  repeated GuestAccelerator guest_accelerator = 10 [json_name = "guest_accelerator"];
+  bool enable_display = 10 [json_name = "enable_display"];
 
-  string hostname = 11;
+  repeated GuestAccelerator guest_accelerator = 11 [json_name = "guest_accelerator"];
 
-  string id = 12;
+  string hostname = 12;
 
-  string instance_id = 13 [json_name = "instance_id"];
+  string id = 13;
 
-  string label_fingerprint = 14 [json_name = "label_fingerprint"];
+  string instance_id = 14 [json_name = "instance_id"];
 
-  map<string, string> labels = 15;
+  string label_fingerprint = 15 [json_name = "label_fingerprint"];
 
-  string machine_type = 16 [json_name = "machine_type"];
+  map<string, string> labels = 16;
 
-  map<string, string> metadata = 17;
+  string machine_type = 17 [json_name = "machine_type"];
 
-  string metadata_fingerprint = 18 [json_name = "metadata_fingerprint"];
+  map<string, string> metadata = 18;
 
-  string metadata_startup_script = 19 [json_name = "metadata_startup_script"];
+  string metadata_fingerprint = 19 [json_name = "metadata_fingerprint"];
 
-  string min_cpu_platform = 20 [json_name = "min_cpu_platform"];
+  string metadata_startup_script = 20 [json_name = "metadata_startup_script"];
 
-  string name = 21;
+  string min_cpu_platform = 21 [json_name = "min_cpu_platform"];
 
-  repeated NetworkInterface network_interface = 22 [json_name = "network_interface"];
+  string name = 22;
 
-  string project = 23;
+  repeated NetworkInterface network_interface = 23 [json_name = "network_interface"];
 
-  repeated Scheduling scheduling = 24;
+  string project = 24;
 
-  repeated ScratchDisk scratch_disk = 25 [json_name = "scratch_disk"];
+  repeated Scheduling scheduling = 25;
 
-  string self_link = 26 [json_name = "self_link"];
+  repeated ScratchDisk scratch_disk = 26 [json_name = "scratch_disk"];
 
-  repeated ServiceAccount service_account = 27 [json_name = "service_account"];
+  string self_link = 27 [json_name = "self_link"];
 
-  repeated ShieldedInstanceConfig shielded_instance_config = 28 [json_name = "shielded_instance_config"];
+  repeated ServiceAccount service_account = 28 [json_name = "service_account"];
 
-  repeated string tags = 29;
+  repeated ShieldedInstanceConfig shielded_instance_config = 29 [json_name = "shielded_instance_config"];
 
-  string tags_fingerprint = 30 [json_name = "tags_fingerprint"];
+  repeated string tags = 30;
 
-  string zone = 31;
+  string tags_fingerprint = 31 [json_name = "tags_fingerprint"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 32;
+  string zone = 32;
 
-  int32 count = 33;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 33;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 34;
+  int32 count = 34;
 
-  string provider = 35;
+  terraform.meta.MetaFields.ForEachEntry for_each = 35;
 
-  terraform.meta.Lifecycle lifecycle = 36;
+  string provider = 36;
+
+  terraform.meta.Lifecycle lifecycle = 37;
 
   message AttachedDisk {
     //device_name: string
@@ -876,6 +878,31 @@ message GoogleComputeInstanceGroup {
     //port: number
     int64 port = 2;
   }
+}
+
+//GoogleComputeInstanceSerialPort version is 0
+message GoogleComputeInstanceSerialPort {
+  string contents = 1;
+
+  string id = 2;
+
+  string instance = 3;
+
+  int64 port = 4;
+
+  string project = 5;
+
+  string zone = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
 }
 
 //GoogleComputeLbIpRanges version is 0
@@ -1709,8 +1736,11 @@ message GoogleContainerCluster {
     //node_count: number
     int64 node_count = 9 [json_name = "node_count"];
 
+    //upgrade_settings: list of object
+    repeated UpgradeSettings upgrade_settings = 10 [json_name = "upgrade_settings"];
+
     //version: string
-    string version = 10;
+    string version = 11;
 
     message Autoscaling {
       //max_node_count: number
@@ -1816,6 +1846,14 @@ message GoogleContainerCluster {
         //node_metadata: string
         string node_metadata = 1 [json_name = "node_metadata"];
       }
+    }
+
+    message UpgradeSettings {
+      //max_surge: number
+      int64 max_surge = 1 [json_name = "max_surge"];
+
+      //max_unavailable: number
+      int64 max_unavailable = 2 [json_name = "max_unavailable"];
     }
   }
 

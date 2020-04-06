@@ -243,21 +243,23 @@ message DigitaloceanDatabaseUser {
 
   string id = 2;
 
-  string name = 3;
+  string mysql_auth_plugin = 3 [json_name = "mysql_auth_plugin"];
 
-  string password = 4;
+  string name = 4;
 
-  string role = 5;
+  string password = 5;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+  string role = 6;
 
-  int32 count = 7;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+  int32 count = 8;
 
-  string provider = 9;
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
 
-  terraform.meta.Lifecycle lifecycle = 10;
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
 }
 
 //DigitaloceanDomain version is 0
@@ -528,29 +530,31 @@ message DigitaloceanKubernetesNodePool {
 
   string id = 4;
 
-  int64 max_nodes = 5 [json_name = "max_nodes"];
+  map<string, string> labels = 5;
 
-  int64 min_nodes = 6 [json_name = "min_nodes"];
+  int64 max_nodes = 6 [json_name = "max_nodes"];
 
-  string name = 7;
+  int64 min_nodes = 7 [json_name = "min_nodes"];
 
-  int64 node_count = 8 [json_name = "node_count"];
+  string name = 8;
 
-  repeated Nodes nodes = 9;
+  int64 node_count = 9 [json_name = "node_count"];
 
-  string size = 10;
+  repeated Nodes nodes = 10;
 
-  repeated string tags = 11;
+  string size = 11;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+  repeated string tags = 12;
 
-  int32 count = 13;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+  int32 count = 14;
 
-  string provider = 15;
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
 
-  terraform.meta.Lifecycle lifecycle = 16;
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
 
   message Nodes {
     //created_at: string
@@ -622,33 +626,56 @@ message DigitaloceanProject {
 
   string id = 4;
 
+  bool is_default = 5 [json_name = "is_default"];
+
   //the human-readable name for the project
-  string name = 5;
+  string name = 6;
 
   //the id of the project owner.
-  int64 owner_id = 6 [json_name = "owner_id"];
+  int64 owner_id = 7 [json_name = "owner_id"];
 
   //the unique universal identifier of the project owner.
-  string owner_uuid = 7 [json_name = "owner_uuid"];
+  string owner_uuid = 8 [json_name = "owner_uuid"];
 
   //the purpose of the project
-  string purpose = 8;
+  string purpose = 9;
 
   //the resources associated with the project
-  repeated string resources = 9;
+  repeated string resources = 10;
 
   //the date and time when the project was last updated, (ISO8601)
-  string updated_at = 10 [json_name = "updated_at"];
+  string updated_at = 11 [json_name = "updated_at"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
 
-  int32 count = 12;
+  int32 count = 13;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
 
-  string provider = 14;
+  string provider = 15;
 
-  terraform.meta.Lifecycle lifecycle = 15;
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//DigitaloceanProjectResources version is 0
+message DigitaloceanProjectResources {
+  string id = 1;
+
+  //project ID
+  string project = 2;
+
+  //the resources associated with the project
+  repeated string resources = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
 }
 
 //DigitaloceanRecord version is 0

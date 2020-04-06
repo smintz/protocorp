@@ -1,0 +1,275 @@
+syntax = "proto3";
+
+package terraform.nomad.data;
+
+import "terraform/meta.proto";
+
+//NomadAclPolicy version is 0
+message NomadAclPolicy {
+  //Description
+  string description = 1;
+
+  string id = 2;
+
+  //Name
+  string name = 3;
+
+  //ACL Rules in HCL format
+  string rules = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//NomadAclToken version is 0
+message NomadAclToken {
+  //Non-sensitive identifier for this token.
+  string accessor_id = 1 [json_name = "accessor_id"];
+
+  //Date and time the token was created.
+  string create_time = 2 [json_name = "create_time"];
+
+  //Whether the token is replicated to all regions, or if it will only be used in the region it was created.
+  bool global = 3;
+
+  string id = 4;
+
+  //Human-friendly name of the ACL token.
+  string name = 5;
+
+  //List of policy names associated with this token.
+  repeated string policies = 6;
+
+  //The token value itself.
+  string secret_id = 7 [json_name = "secret_id"];
+
+  //The type of the token.
+  string type = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//NomadDeployments version is 0
+message NomadDeployments {
+  //Deployments
+  map<string, string> deployments = 1;
+
+  string id = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//NomadJob version is 0
+message NomadJob {
+  //Job All At Once
+  bool all_at_once = 1 [json_name = "all_at_once"];
+
+  //Job Constraints
+  repeated Constraints constraints = 2;
+
+  //Create Index
+  int64 create_index = 3 [json_name = "create_index"];
+
+  //Job Datacenters
+  repeated string datacenters = 4;
+
+  string id = 5;
+
+  //Job ID
+  string job_id = 6 [json_name = "job_id"];
+
+  //Job Modify Index
+  int64 job_modify_index = 7 [json_name = "job_modify_index"];
+
+  //Modify Index
+  int64 modify_index = 8 [json_name = "modify_index"];
+
+  //Job Name
+  string name = 9;
+
+  //Job Namespace
+  string namespace = 10;
+
+  //Job Parent ID
+  string parent_id = 11 [json_name = "parent_id"];
+
+  //Job Periodic Configuration
+  repeated PeriodicConfig periodic_config = 12 [json_name = "periodic_config"];
+
+  //Job Priority
+  int64 priority = 13;
+
+  //Job Region
+  string region = 14;
+
+  //Job Stable
+  bool stable = 15;
+
+  //Deployment Status
+  string status = 16;
+
+  //Deployment Status Description
+  string status_description = 17 [json_name = "status_description"];
+
+  //Job Stopped
+  bool stop = 18;
+
+  //Job Submit Time
+  int64 submit_time = 19 [json_name = "submit_time"];
+
+  //Job Task Groups
+  repeated TaskGroups task_groups = 20 [json_name = "task_groups"];
+
+  //Job Type
+  string type = 21;
+
+  //Job Update Policy
+  repeated UpdateStrategy update_strategy = 22 [json_name = "update_strategy"];
+
+  //Job Version
+  int64 version = 23;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 24;
+
+  int32 count = 25;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 26;
+
+  string provider = 27;
+
+  terraform.meta.Lifecycle lifecycle = 28;
+
+  message Constraints {
+    //ltarget: string
+    string ltarget = 1;
+
+    //operand: string
+    string operand = 2;
+
+    //rtarget: string
+    string rtarget = 3;
+  }
+
+  message PeriodicConfig {
+    //enabled: bool
+    bool enabled = 1;
+
+    //prohibit_overlap: bool
+    bool prohibit_overlap = 2 [json_name = "prohibit_overlap"];
+
+    //spec: string
+    string spec = 3;
+
+    //spec_type: string
+    string spec_type = 4 [json_name = "spec_type"];
+
+    //timezone: string
+    string timezone = 5;
+  }
+
+  message TaskGroups {
+    //constraints: map of string
+    map<string, string> constraints = 1;
+
+    //count: number
+    int64 count = 2;
+
+    //ephemeral_disk: map of string
+    map<string, string> ephemeral_disk = 3;
+
+    //migrate_strategy: map of string
+    map<string, string> migrate_strategy = 4;
+
+    //name: string
+    string name = 5;
+
+    //reschedule_policy: map of string
+    map<string, string> reschedule_policy = 6;
+
+    //restart_policy: map of string
+    map<string, string> restart_policy = 7;
+
+    //update_strategy: map of string
+    map<string, string> update_strategy = 8;
+  }
+
+  message UpdateStrategy {
+    //auto_revert: bool
+    bool auto_revert = 1 [json_name = "auto_revert"];
+
+    //canary: number
+    int64 canary = 2;
+
+    //health_check: string
+    string health_check = 3 [json_name = "health_check"];
+
+    //healthy_deadline: string
+    string healthy_deadline = 4 [json_name = "healthy_deadline"];
+
+    //max_parallel: number
+    int64 max_parallel = 5 [json_name = "max_parallel"];
+
+    //min_healthy_time: string
+    string min_healthy_time = 6 [json_name = "min_healthy_time"];
+
+    //stagger: string
+    string stagger = 7;
+  }
+}
+
+//NomadNamespaces version is 0
+message NomadNamespaces {
+  string id = 1;
+
+  repeated string namespaces = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//NomadRegions version is 0
+message NomadRegions {
+  string id = 1;
+
+  repeated string regions = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}

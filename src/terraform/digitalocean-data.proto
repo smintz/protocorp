@@ -306,41 +306,119 @@ message DigitaloceanFloatingIp {
 
 //DigitaloceanImage version is 0
 message DigitaloceanImage {
-  //distribution of the OS of the image
-  string distribution = 1;
+  string created = 1;
 
-  string id = 2;
+  //distribution of the OS of the image
+  string distribution = 2;
+
+  //error message associated with the image
+  string error_message = 3 [json_name = "error_message"];
+
+  //id of the image
+  int64 id = 4;
 
   //slug or id of the image
-  string image = 3;
+  string image = 5;
 
   //minimum disk size required by the image
-  int64 min_disk_size = 4 [json_name = "min_disk_size"];
+  int64 min_disk_size = 6 [json_name = "min_disk_size"];
 
   //name of the image
-  string name = 5;
+  string name = 7;
 
   //Is the image private or non-private
-  bool private = 6;
+  bool private = 8;
 
   //list of the regions that the image is available in
-  repeated string regions = 7;
+  repeated string regions = 9;
+
+  //size in GB of the image
+  int64 size_gigabytes = 10 [json_name = "size_gigabytes"];
 
   //slug of the image
-  string slug = 8;
+  string slug = 11;
+
+  string source = 12;
+
+  //status of the image
+  string status = 13;
+
+  //tags applied to the image
+  repeated string tags = 14;
 
   //type of the image
-  string type = 9;
+  string type = 15;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
 
-  int32 count = 11;
+  int32 count = 17;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+  terraform.meta.MetaFields.ForEachEntry for_each = 18;
 
-  string provider = 13;
+  string provider = 19;
 
-  terraform.meta.Lifecycle lifecycle = 14;
+  terraform.meta.Lifecycle lifecycle = 20;
+}
+
+//DigitaloceanImages version is 0
+message DigitaloceanImages {
+  string id = 1;
+
+  repeated Images images = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+
+  message Images {
+    //created: string
+    string created = 1;
+
+    //distribution: string
+    string distribution = 2;
+
+    //error_message: string
+    string error_message = 3 [json_name = "error_message"];
+
+    //id: number
+    int64 id = 4;
+
+    //image: string
+    string image = 5;
+
+    //min_disk_size: number
+    int64 min_disk_size = 6 [json_name = "min_disk_size"];
+
+    //name: string
+    string name = 7;
+
+    //private: bool
+    bool private = 8;
+
+    //regions: set of string
+    repeated string regions = 9;
+
+    //size_gigabytes: number
+    int64 size_gigabytes = 10 [json_name = "size_gigabytes"];
+
+    //slug: string
+    string slug = 11;
+
+    //status: string
+    string status = 12;
+
+    //tags: set of string
+    repeated string tags = 13;
+
+    //type: string
+    string type = 14;
+  }
 }
 
 //DigitaloceanKubernetesCluster version is 0
@@ -416,26 +494,29 @@ message DigitaloceanKubernetesCluster {
     //id: string
     string id = 3;
 
+    //labels: map of string
+    map<string, string> labels = 4;
+
     //max_nodes: number
-    int64 max_nodes = 4 [json_name = "max_nodes"];
+    int64 max_nodes = 5 [json_name = "max_nodes"];
 
     //min_nodes: number
-    int64 min_nodes = 5 [json_name = "min_nodes"];
+    int64 min_nodes = 6 [json_name = "min_nodes"];
 
     //name: string
-    string name = 6;
+    string name = 7;
 
     //node_count: number
-    int64 node_count = 7 [json_name = "node_count"];
+    int64 node_count = 8 [json_name = "node_count"];
 
     //nodes: list of object
-    repeated Nodes nodes = 8;
+    repeated Nodes nodes = 9;
 
     //size: string
-    string size = 9;
+    string size = 10;
 
     //tags: set of string
-    repeated string tags = 10;
+    repeated string tags = 11;
 
     message Nodes {
       //created_at: string
@@ -588,6 +669,95 @@ message DigitaloceanLoadbalancer {
   }
 }
 
+//DigitaloceanProject version is 0
+message DigitaloceanProject {
+  //the date and time when the project was created, (ISO8601)
+  string created_at = 1 [json_name = "created_at"];
+
+  string description = 2;
+
+  string environment = 3;
+
+  string id = 4;
+
+  bool is_default = 5 [json_name = "is_default"];
+
+  string name = 6;
+
+  int64 owner_id = 7 [json_name = "owner_id"];
+
+  string owner_uuid = 8 [json_name = "owner_uuid"];
+
+  string purpose = 9;
+
+  repeated string resources = 10;
+
+  //the date and time when the project was last updated, (ISO8601)
+  string updated_at = 11 [json_name = "updated_at"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//DigitaloceanProjects version is 0
+message DigitaloceanProjects {
+  string id = 1;
+
+  repeated Projects projects = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+
+  message Projects {
+    //created_at: string
+    string created_at = 1 [json_name = "created_at"];
+
+    //description: string
+    string description = 2;
+
+    //environment: string
+    string environment = 3;
+
+    //id: string
+    string id = 4;
+
+    //is_default: bool
+    bool is_default = 5 [json_name = "is_default"];
+
+    //name: string
+    string name = 6;
+
+    //owner_id: number
+    int64 owner_id = 7 [json_name = "owner_id"];
+
+    //owner_uuid: string
+    string owner_uuid = 8 [json_name = "owner_uuid"];
+
+    //purpose: string
+    string purpose = 9;
+
+    //resources: set of string
+    repeated string resources = 10;
+
+    //updated_at: string
+    string updated_at = 11 [json_name = "updated_at"];
+  }
+}
+
 //DigitaloceanRecord version is 0
 message DigitaloceanRecord {
   //name record data
@@ -633,11 +803,69 @@ message DigitaloceanRecord {
   terraform.meta.Lifecycle lifecycle = 16;
 }
 
+//DigitaloceanRegion version is 0
+message DigitaloceanRegion {
+  bool available = 1;
+
+  repeated string features = 2;
+
+  string id = 3;
+
+  string name = 4;
+
+  repeated string sizes = 5;
+
+  string slug = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//DigitaloceanRegions version is 0
+message DigitaloceanRegions {
+  string id = 1;
+
+  repeated Regions regions = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+
+  message Regions {
+    //available: bool
+    bool available = 1;
+
+    //features: set of string
+    repeated string features = 2;
+
+    //name: string
+    string name = 3;
+
+    //sizes: set of string
+    repeated string sizes = 4;
+
+    //slug: string
+    string slug = 5;
+  }
+}
+
 //DigitaloceanSizes version is 0
 message DigitaloceanSizes {
   string id = 1;
 
-  //List of filtered digital ocean sizes.
   repeated Sizes sizes = 2;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
