@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: validate ca
+      env:
+        CONSUL_CAPATH: "src/infra/protoconf_ca.crt"
+      run: |
+        echo ${CONSUL_CAPATH}
+        cat ${CONSUL_CAPATH}
     - name: insert ams3c01
       uses: protoconf/protoconf-actions@master
       env:
