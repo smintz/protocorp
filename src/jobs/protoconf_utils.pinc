@@ -1,0 +1,61 @@
+"""
+utils for protoconf based nomad jobs
+"""
+load(
+    "/nomad/v0.10.4/api.proto",
+    "NetworkResource",
+    "Port",
+    "Resources",
+    "Task",
+    "Template",
+)
+load("/google/protobuf/struct.proto", "Value", "ListValue")
+
+PROTOCONF_VERSION = "v0.1.1-beta6.0"
+
+PROTOCONF_AGENT = Task(
+    Name="protoconf-agent",
+    Driver="docker",
+    Resources=Resources(
+        Networks=[NetworkResource(ReservedPorts=[Port(Label="agent", Value=4300)])]
+    ),
+    Config={
+        "image": Value(string_value="protoconf/agent:" + PROTOCONF_VERSION),
+        "network_mode": Value(string_value="host"),
+        "args": Value(
+            list_value=ListValue(
+                values=[
+                    Value(string_value="-store=consul"),
+                    Value(string_value="-prefix=production/"),
+                ]
+            )
+        ),
+    },
+)
+
+
+def ProtoconfExecTask(config, templates={}):
+    return Task(
+        Name="protoconf-exec",
+        Driver="docker",
+        Templates=[
+            Template(EmbeddedTmpl=templates[key], DestPath="local/" + key)
+            for key in templates.keys()
+        ],
+        Config={
+            "image": Value(string_value="protoconf/protoconf:v0.1.1-beta6.0"),
+            "network_mode": Value(string_value="host"),
+            "volumes": Value(
+                list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
+            ),
+            "args": Value(
+                list_value=ListValue(
+                    values=[
+                        Value(string_value="exec"),
+                        Value(string_value="-config=" + config),
+                        Value(string_value="-proto_dir=/local"),
+                    ]
+                )
+            ),
+        },
+    )
