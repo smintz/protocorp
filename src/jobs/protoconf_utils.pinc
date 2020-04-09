@@ -43,7 +43,7 @@ def ProtoconfExecTask(config, templates={}):
             for key in templates.keys()
         ],
         Config={
-            "image": Value(string_value="protoconf/protoconf:v0.1.1-beta6.0"),
+            "image": Value(string_value="protoconf/protoconf:" + PROTOCONF_VERSION),
             "network_mode": Value(string_value="host"),
             "volumes": Value(
                 list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
