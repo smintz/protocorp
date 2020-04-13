@@ -1,0 +1,37 @@
+"""
+"""
+load(
+    "/executor/exec_config.proto",
+    "Config",
+    "WatcherConfig",
+    "Action",
+    "ActionTypeWriteToFile",
+)
+
+inserter_config = Config(
+    items=[
+        WatcherConfig(
+            path="jobs/protoconf-insert/webhook",
+            proto_file="webhook/hook.proto",
+            actions=[
+                Action(
+                    file=ActionTypeWriteToFile(
+                        path="/alloc/tmp/hooks.json",
+                        serializer=Config.Serializer.JSON,
+                        header="[",
+                        footer="]",
+                    )
+                ),
+                Action(
+                    file=ActionTypeWriteToFile(
+                        path="/alloc/tmp/hooks.yaml", serializer=Config.Serializer.YAML
+                    )
+                ),
+            ],
+        )
+    ]
+)
+
+
+def main():
+    return inserter_config

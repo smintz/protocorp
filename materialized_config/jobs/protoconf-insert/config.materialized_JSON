@@ -1,0 +1,28 @@
+{
+  "protoFile": "executor/exec_config.proto",
+  "value": {
+    "@type": "type.googleapis.com/exec_config.Config",
+    "items": [
+      {
+        "path": "jobs/protoconf-insert/webhook",
+        "protoFile": "webhook/hook.proto",
+        "actions": [
+          {
+            "file": {
+              "path": "/alloc/tmp/hooks.json",
+              "header": "[",
+              "footer": "]",
+              "serializer": "JSON"
+            }
+          },
+          {
+            "file": {
+              "path": "/alloc/tmp/hooks.yaml",
+              "serializer": "YAML"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

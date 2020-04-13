@@ -1,0 +1,88 @@
+"""
+"""
+load("/webhook/hook-proto.pinc", "HOOK_PROTO")
+load(
+    "/nomad/v0.10.4/api.proto",
+    "NetworkResource",
+    "Port",
+    "Resources",
+    "Task",
+    "Template",
+    "Job",
+    "TaskGroup",
+    "Service",
+    "ServiceCheck",
+)
+load("insertion-script.pinc", "PROTOCONF_INSERT_SCRIPT")
+load("/google/protobuf/struct.proto", "Value", "ListValue")
+load("/jobs/protoconf_utils.pinc", "ProtoconfExecTask")
+load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
+
+datacenters = [
+    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
+]
+
+WEBHOOK_TASK = Task(
+    Name="webhook",
+    Driver="docker",
+    Resources=Resources(
+        Networks=[
+            NetworkResource(ReservedPorts=[Port(Label="webhook", Value=9000, To=9000)])
+        ]
+    ),
+    Templates=[
+        Template(
+            DestPath="local/insertion-script.sh",
+            EmbeddedTmpl=PROTOCONF_INSERT_SCRIPT,
+            Perms="0755",
+        ),
+        Template(DestPath="alloc/tmp/hooks.json", EmbeddedTmpl="[]"),
+    ],
+    Services=[
+        Service(
+            Id="webhooks",
+            Name="webhooks",
+            Tags=["urlprefix-/"],
+            PortLabel="webhook",
+            Checks=[
+                # ServiceCheck(
+                #     Type="http",
+                #     Path="/",
+                #     Interval=10 * 1000000000,
+                #     Timeout=2 * 1000000000,
+                # )
+            ],
+        )
+    ],
+    Config={
+        "image": Value(string_value="almir/webhook:2.6.11"),
+        "args": Value(
+            list_value=ListValue(
+                values=[
+                    Value(string_value="-verbose"),
+                    Value(string_value="-hooks=/alloc/tmp/hooks.json"),
+                    Value(string_value="-hotreload"),
+                ]
+            )
+        ),
+    },
+)
+
+INSERTER = Job(
+    Name="protoconf-inserter",
+    ID="protoconf-inserter",
+    Datacenters=datacenters,
+    TaskGroups=[
+        TaskGroup(
+            Name="agent",
+            Count=1,
+            Tasks=[
+                ProtoconfExecTask(
+                    "jobs/protoconf-insert/config", {"webhook/hook.proto": HOOK_PROTO}
+                ),
+                WEBHOOK_TASK,
+                # PROTOCONF_AGENT,
+            ],
+        )
+    ],
+)

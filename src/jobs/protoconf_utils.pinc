@@ -8,12 +8,19 @@ load(
     "Resources",
     "Task",
     "Template",
+    "Job",
+    "TaskGroup",
 )
 load("/google/protobuf/struct.proto", "Value", "ListValue")
+load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
 
-PROTOCONF_VERSION = "v0.1.1-beta6.0"
+datacenters = [
+    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
+]
 
-PROTOCONF_AGENT = Task(
+PROTOCONF_VERSION = "v0.1.1-beta9.0"
+
+PROTOCONF_AGENT_TASK = Task(
     Name="protoconf-agent",
     Driver="docker",
     Resources=Resources(
@@ -22,15 +29,27 @@ PROTOCONF_AGENT = Task(
     Config={
         "image": Value(string_value="protoconf/agent:" + PROTOCONF_VERSION),
         "network_mode": Value(string_value="host"),
+        "volumes": Value(
+            list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
+        ),
         "args": Value(
             list_value=ListValue(
                 values=[
                     Value(string_value="-store=consul"),
+                    Value(string_value="-store-address=http://127.0.0.1:8500"),
                     Value(string_value="-prefix=production/"),
                 ]
             )
         ),
     },
+)
+
+PROTOCONF_AGENT_JOB = Job(
+    Name="protoconf-agent",
+    ID="protoconf-agent",
+    Datacenters=datacenters,
+    Type="system",
+    TaskGroups=[TaskGroup(Name="agent", Count=1, Tasks=[PROTOCONF_AGENT_TASK])],
 )
 
 

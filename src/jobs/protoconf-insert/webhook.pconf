@@ -1,0 +1,8 @@
+"""
+"""
+load("/webhook/hooks.pinc", "GithubHook")
+
+
+def main():
+    return GithubHook("protoconf-insert", "/local/insertion-script.sh", "hellosecret")
+

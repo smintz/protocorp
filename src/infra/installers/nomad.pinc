@@ -39,7 +39,7 @@ telemetry {{
 }}
 
 consul {{
-    address = "http://127.0.0.1:8500"
+    address = "127.0.0.1:8500"
 }}
 """
 

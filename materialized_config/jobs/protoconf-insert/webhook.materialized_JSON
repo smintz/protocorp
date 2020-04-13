@@ -1,0 +1,65 @@
+{
+  "protoFile": "webhook/hook.proto",
+  "value": {
+    "@type": "type.googleapis.com/hook.Hook",
+    "execute-command": "/local/insertion-script.sh",
+    "id": "protoconf-insert",
+    "pass-arguments-to-command": [
+      {
+        "source": "payload",
+        "name": "head_commit.id"
+      },
+      {
+        "source": "payload",
+        "name": "pusher.name"
+      },
+      {
+        "source": "payload",
+        "name": "pusher.email"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "payload",
+        "name": "event.before",
+        "envname": "BEFORE_COMMIT"
+      },
+      {
+        "source": "payload",
+        "name": "event.after",
+        "envname": "AFTER_COMMIT"
+      }
+    ],
+    "response-headers": [
+      {
+        "name": "Access-Control-Allow-Origin",
+        "value": "*"
+      }
+    ],
+    "response-message": "OK",
+    "trigger-rule": {
+      "and": [
+        {
+          "match": {
+            "type": "payload-hash-sha1",
+            "secret": "hellosecret",
+            "parameter": {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        },
+        {
+          "match": {
+            "type": "value",
+            "value": "refs/heads/master",
+            "parameter": {
+              "source": "payload",
+              "name": "ref"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

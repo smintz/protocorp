@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package hook;
+
+option go_package = "github.com/adnanh/webhook/hook";
+
+message Hook {
+  string id = 1;
+
+  string ExecuteCommand = 2 [json_name = "execute-command"];
+
+  string CommandWorkingDirectory = 3 [json_name = "command-working-directory"];
+
+  string ResponseMessage = 4 [json_name = "response-message"];
+
+  repeated Header ResponseHeaders = 5 [json_name = "response-headers"];
+
+  bool CaptureCommandOutput = 6 [json_name = "include-command-output-in-response"];
+
+  bool CaptureCommandOutputOnError = 7 [json_name = "include-command-output-in-response-on-error"];
+
+  repeated Argument PassEnvironmentToCommand = 8 [json_name = "pass-environment-to-command"];
+
+  repeated Argument PassArgumentsToCommand = 9 [json_name = "pass-arguments-to-command"];
+
+  repeated Argument PassFileToCommand = 10 [json_name = "pass-file-to-command"];
+
+  repeated Argument JSONStringParameters = 11 [json_name = "parse-parameters-as-json"];
+
+  Rules TriggerRule = 12 [json_name = "trigger-rule"];
+
+  int32 TriggerRuleMismatchHttpResponseCode = 13 [json_name = "trigger-rule-mismatch-http-response-code"];
+
+  string IncomingPayloadContentType = 14 [json_name = "incoming-payload-content-type"];
+
+  int32 SuccessHttpResponseCode = 15 [json_name = "success-http-response-code"];
+}
+
+message Header {
+  string name = 1;
+
+  string value = 2;
+}
+
+message Argument {
+  string source = 1;
+
+  string name = 2;
+
+  string envname = 3;
+
+  bool base64decode = 4;
+}
+
+message Rules {
+  repeated Rules And = 1 [json_name = "and" ];
+
+  repeated Rules or = 2;
+
+  NotRule not = 3;
+
+  MatchRule match = 4;
+}
+
+message NotRule {
+  repeated Rules and = 1;
+
+  repeated Rules or = 2;
+
+  NotRule not = 3;
+
+  MatchRule match = 4;
+}
+
+message MatchRule {
+  string type = 1;
+
+  string regex = 2;
+
+  string secret = 3;
+
+  string value = 4;
+
+  Argument parameter = 5;
+
+  string IPRange = 6 [json_name = "ip-range"];
+}

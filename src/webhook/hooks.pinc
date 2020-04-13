@@ -1,0 +1,38 @@
+load("hook.proto", "Hook", "Argument", "Header", "Rules", "MatchRule")
+
+
+def GithubHook(hook_id, command, secret, ref="refs/heads/master"):
+    return Hook(
+        id=hook_id,
+        ExecuteCommand=command,
+        ResponseMessage="OK",
+        ResponseHeaders=[Header(name="Access-Control-Allow-Origin", value="*")],
+        PassEnvironmentToCommand=[
+            Argument(envname="BEFORE_COMMIT", source="payload", name="event.before"),
+            Argument(envname="AFTER_COMMIT", source="payload", name="event.after"),
+        ],
+        PassArgumentsToCommand=[
+            Argument(source="payload", name="head_commit.id"),
+            Argument(source="payload", name="pusher.name"),
+            Argument(source="payload", name="pusher.email"),
+        ],
+        TriggerRule=Rules(
+            And=[
+                Rules(
+                    match=MatchRule(
+                        type="payload-hash-sha1",
+                        secret=secret,
+                        parameter=Argument(source="header", name="X-Hub-Signature"),
+                    )
+                ),
+                Rules(
+                    match=MatchRule(
+                        type="value",
+                        value=ref,
+                        parameter=Argument(source="payload", name="ref"),
+                    )
+                ),
+            ]
+        ),
+    )
+

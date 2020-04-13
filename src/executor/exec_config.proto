@@ -32,17 +32,22 @@ message WatcherConfig {
 
 message ActionTypeWriteToFile {
     string path = 1;
+    string mode = 2;
+    string owner = 3;
+    string group = 4;
+    string header = 5;
+    string footer = 6;
     oneof output {
-        string template = 2;
-        Config.Serializer serializer = 3;
-
+        string template = 16;
+        Config.Serializer serializer = 17;
     }
 }
 
 message ActionTypeHttp {
     string uri = 1;
     string method = 2;
-    Config.Serializer serializer = 3;
+    map<string, string> headers = 3;
+    Config.Serializer serializer = 16;
 }
 
 message ActionTypeRestart {
@@ -96,4 +101,8 @@ message Action {
     }
     repeated Action then = 5;
     repeated Action on_error = 6;
+
+    google.protobuf.Duration kill_timeout = 17;
+    google.protobuf.Duration splay = 18;
+    google.protobuf.Duration timeout = 19;
 }
