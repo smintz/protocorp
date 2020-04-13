@@ -45,12 +45,12 @@ WEBHOOK_TASK = Task(
             Tags=["urlprefix-/"],
             PortLabel="webhook",
             Checks=[
-                # ServiceCheck(
-                #     Type="http",
-                #     Path="/",
-                #     Interval=10 * 1000000000,
-                #     Timeout=2 * 1000000000,
-                # )
+                ServiceCheck(
+                    Type="http",
+                    Path="/",
+                    Interval=10 * 1000000000,
+                    Timeout=2 * 1000000000,
+                )
             ],
         )
     ],
@@ -75,7 +75,7 @@ INSERTER = Job(
     TaskGroups=[
         TaskGroup(
             Name="agent",
-            Count=1,
+            Count=3,
             Tasks=[
                 ProtoconfExecTask(
                     "jobs/protoconf-insert/config", {"webhook/hook.proto": HOOK_PROTO}

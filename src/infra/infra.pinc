@@ -23,7 +23,7 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 6
+COUNTER = 0
 SERVERS = 3
 CLIENTS = 0
 
@@ -111,7 +111,8 @@ def create_droplet(tf, nmd, user_data=""):
         name=nmd.hostname,
         image="ubuntu-18-04-x64",
         region=nmd.region,
-        size="s-1vcpu-1gb",
+        # size="s-1vcpu-1gb",
+        size="s-2vcpu-4gb",
         ssh_keys=[
             "${digitalocean_ssh_key.%s.id}" % keyname
             for keyname in tf.digitalocean_ssh_key.keys()
@@ -293,15 +294,17 @@ CLUSTERS = [
         region="ams3",
         cluster_number=1,
         servers_count=3,
-        tiers=[Tier(name="general", count=2)],
+        tiers=[
+            # Tier(name="general", count=2)
+        ],
     ),
-    Cluster(
-        provider=Cluster.Providers.DIGITALOCEAN,
-        region="lon1",
-        cluster_number=1,
-        servers_count=3,
-        tiers=[Tier(name="general", count=2)],
-    ),
+    # Cluster(
+    #     provider=Cluster.Providers.DIGITALOCEAN,
+    #     region="lon1",
+    #     cluster_number=1,
+    #     servers_count=3,
+    #     tiers=[Tier(name="general", count=2)],
+    # ),
 ]
 
 for c in CLUSTERS:
