@@ -37,6 +37,10 @@ telemetry {{
     publish_node_metrics = true
     prometheus_metrics = true
 }}
+
+consul {{
+    address = "http://127.0.0.1:8500"
+}}
 """
 
 # Note: escape curly brackets
