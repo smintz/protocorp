@@ -51,7 +51,7 @@
                   "Id": "webhooks",
                   "Name": "webhooks",
                   "Tags": [
-                    "urlprefix-/"
+                    "urlprefix-webhooks.service.ams3c01.pco.nf/"
                   ],
                   "PortLabel": "webhook",
                   "Checks": [

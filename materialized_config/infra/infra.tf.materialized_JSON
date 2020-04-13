@@ -24,6 +24,13 @@
           "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
           "zone_id": "f05cf5af25ffab8e186f43cfea099628"
         },
+        "server-0-ams3-c01-star": {
+          "name": "*.service.ams3c01",
+          "ttl": 120,
+          "type": "A",
+          "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
         "server-0-ams3-c01-vault": {
           "name": "vault.service.ams3c01",
           "ttl": 120,
@@ -58,6 +65,13 @@
           "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
           "zone_id": "f05cf5af25ffab8e186f43cfea099628"
         },
+        "server-1-ams3-c01-star": {
+          "name": "*.service.ams3c01",
+          "ttl": 120,
+          "type": "A",
+          "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
         "server-1-ams3-c01-vault": {
           "name": "vault.service.ams3c01",
           "ttl": 120,
@@ -87,6 +101,13 @@
         },
         "server-2-ams3-c01-nomad": {
           "name": "nomad.service.ams3c01",
+          "ttl": 120,
+          "type": "A",
+          "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
+          "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        },
+        "server-2-ams3-c01-star": {
+          "name": "*.service.ams3c01",
           "ttl": 120,
           "type": "A",
           "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",

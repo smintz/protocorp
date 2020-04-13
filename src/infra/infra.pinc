@@ -267,6 +267,13 @@ def ProvisionCluster(tf, cluster):
 
     for nmd in servers + clients:
         create_device(tf, nmd, str(cluster.provider))
+        tf.cloudflare_record[nmd.tfid + "-" + "star"] = CloudflareRecord(
+            zone_id=CF_PCO_NF_ID,
+            name="{}.service.{}".format("*", cluster.region + cluster_name),
+            type="A",
+            ttl=120,
+            value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
+        )
 
     for svc in ["consul", "nomad", "vault"]:
         for nmd in servers:

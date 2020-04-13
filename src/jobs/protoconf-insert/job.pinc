@@ -42,7 +42,7 @@ WEBHOOK_TASK = Task(
         Service(
             Id="webhooks",
             Name="webhooks",
-            Tags=["urlprefix-/"],
+            Tags=["urlprefix-webhooks.service.%s.pco.nf/" % dc for dc in datacenters],
             PortLabel="webhook",
             Checks=[
                 ServiceCheck(
