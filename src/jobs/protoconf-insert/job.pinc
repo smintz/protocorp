@@ -42,13 +42,15 @@ WEBHOOK_TASK = Task(
         Service(
             Id="webhooks",
             Name="webhooks",
-            Tags=["urlprefix-webhooks.service.%s.pco.nf/" % dc for dc in datacenters],
+            Tags=[
+                "urlprefix-webhooks.service.%s.pco.nf:9999/" % dc for dc in datacenters
+            ],
             PortLabel="webhook",
             Checks=[
                 ServiceCheck(
                     Type="http",
                     Path="/",
-                    Interval=10 * 1000000000,
+                    Interval=13 * 1000000000,
                     Timeout=2 * 1000000000,
                 )
             ],
@@ -59,7 +61,7 @@ WEBHOOK_TASK = Task(
         "args": Value(
             list_value=ListValue(
                 values=[
-                    Value(string_value="-verbose"),
+                    # Value(string_value="-verbose"),
                     Value(string_value="-hooks=/alloc/tmp/hooks.json"),
                     Value(string_value="-hotreload"),
                 ]

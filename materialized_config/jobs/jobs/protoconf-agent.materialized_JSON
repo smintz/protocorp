@@ -23,7 +23,7 @@
                   "-store-address=http://127.0.0.1:8500",
                   "-prefix=production/"
                 ],
-                "image": "protoconf/agent:v0.1.1-beta9.0",
+                "image": "protoconf/agent:v0.1.1-beta10.0",
                 "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"

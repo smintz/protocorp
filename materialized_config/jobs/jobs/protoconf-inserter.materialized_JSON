@@ -22,7 +22,7 @@
                   "-config=jobs/protoconf-insert/config",
                   "-proto_dir=/local"
                 ],
-                "image": "protoconf/protoconf:v0.1.1-beta9.0",
+                "image": "protoconf/protoconf:v0.1.1-beta10.0",
                 "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"
@@ -40,7 +40,6 @@
               "Driver": "docker",
               "Config": {
                 "args": [
-                  "-verbose",
                   "-hooks=/alloc/tmp/hooks.json",
                   "-hotreload"
                 ],
@@ -51,14 +50,14 @@
                   "Id": "webhooks",
                   "Name": "webhooks",
                   "Tags": [
-                    "urlprefix-webhooks.service.ams3c01.pco.nf/"
+                    "urlprefix-webhooks.service.ams3c01.pco.nf:9999/"
                   ],
                   "PortLabel": "webhook",
                   "Checks": [
                     {
                       "Type": "http",
                       "Path": "/",
-                      "Interval": 10000000000,
+                      "Interval": 13000000000,
                       "Timeout": 2000000000
                     }
                   ]
