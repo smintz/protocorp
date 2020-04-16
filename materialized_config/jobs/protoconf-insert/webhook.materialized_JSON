@@ -16,6 +16,10 @@
       {
         "source": "payload",
         "name": "pusher.email"
+      },
+      {
+        "source": "payload",
+        "name": "repository.clone_url"
       }
     ],
     "pass-environment-to-command": [
@@ -28,6 +32,11 @@
         "source": "payload",
         "name": "after",
         "envname": "AFTER_COMMIT"
+      },
+      {
+        "source": "payload",
+        "name": "repository.clone_url",
+        "envname": "GIT_REPO"
       }
     ],
     "response-headers": [

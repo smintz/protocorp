@@ -13,6 +13,7 @@ load(
     "Service",
     "ServiceCheck",
     "CheckRestart",
+    "Vault",
 )
 load("insertion-script.pinc", "PROTOCONF_INSERT_SCRIPT")
 load("/google/protobuf/struct.proto", "Value", "ListValue")
@@ -37,6 +38,11 @@ WEBHOOK_TASK = Task(
             EmbeddedTmpl=PROTOCONF_INSERT_SCRIPT,
             Perms="0755",
         ),
+        Template(
+            DestPath="local/git-creds",
+            EmbeddedTmpl="""{{with secret "kv/github-creds"}}{{.Data.url}}{{end}}""",
+            Perms="0600",
+        ),
         Template(DestPath="/alloc/tmp/hooks.json", EmbeddedTmpl="[]"),
     ],
     Services=[
@@ -54,7 +60,7 @@ WEBHOOK_TASK = Task(
                 ServiceCheck(
                     Type="http",
                     Path="/hooks/protoconf-insert",
-                    Interval=5 * 1000000000,
+                    Interval=10 * 1000000000,
                     Timeout=2 * 1000000000,
                     CheckRestart=CheckRestart(Limit=5),
                 )
@@ -74,6 +80,7 @@ WEBHOOK_TASK = Task(
             )
         ),
     },
+    Vault=Vault(Policies=["github-policy"]),
 )
 
 INSERTER = Job(

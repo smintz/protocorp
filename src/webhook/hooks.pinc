@@ -13,11 +13,13 @@ def GithubHook(hook_id, command, secret, ref="refs/heads/master"):
         PassEnvironmentToCommand=[
             Argument(envname="BEFORE_COMMIT", source="payload", name="before"),
             Argument(envname="AFTER_COMMIT", source="payload", name="after"),
+            Argument(envname="GIT_REPO", source="payload", name="repository.clone_url"),
         ],
         PassArgumentsToCommand=[
             Argument(source="payload", name="head_commit.id"),
             Argument(source="payload", name="pusher.name"),
             Argument(source="payload", name="pusher.email"),
+            Argument(source="payload", name="repository.clone_url"),
         ],
         TriggerRule=Rules(
             And=[
