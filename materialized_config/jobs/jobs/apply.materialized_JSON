@@ -50,6 +50,18 @@
             }
           }
         ]
+      },
+      {
+        "path": "jobs/jobs/example",
+        "protoFile": "nomad/v0.10.4/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
       }
     ]
   }

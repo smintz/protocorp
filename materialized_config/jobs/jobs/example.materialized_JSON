@@ -1,0 +1,28 @@
+{
+  "protoFile": "nomad/v0.10.4/api.proto",
+  "value": {
+    "@type": "type.googleapis.com/api.RegisterJobRequest",
+    "Job": {
+      "ID": "example",
+      "Name": "example",
+      "Datacenters": [
+        "ams3c01"
+      ],
+      "TaskGroups": [
+        {
+          "Name": "cache",
+          "Count": 1,
+          "Tasks": [
+            {
+              "Name": "redis",
+              "Driver": "docker",
+              "Config": {
+                "image": "redis:latest"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

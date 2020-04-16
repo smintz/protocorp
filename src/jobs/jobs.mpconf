@@ -4,8 +4,9 @@ nomad jobs
 load(
     "/executor/exec_config.proto", "Config", "WatcherConfig", "Action", "ActionTypeHttp"
 )
+load("/google/protobuf/struct.proto", "Value")
 load("/nomad/v0.10.4/api.pinc", "NOMAD_PROTO")
-load("/nomad/v0.10.4/api.proto", "Job", "RegisterJobRequest", "TaskGroup")
+load("/nomad/v0.10.4/api.proto", "Job", "RegisterJobRequest", "TaskGroup", "Task")
 load("protoconf_utils.pinc", "PROTOCONF_AGENT_JOB", "ProtoconfExecTask")
 load("/jobs/protoconf-insert/job.pinc", "INSERTER")
 load("fabio.nomad.pinc", "FABIO_JOB")
@@ -57,10 +58,29 @@ agent = Job(
     ],
 )
 
+example = Job(
+    Name="example",
+    ID="example",
+    Datacenters=datacenters,
+    TaskGroups=[
+        TaskGroup(
+            Name="cache",
+            Count=1,
+            Tasks=[
+                Task(
+                    Name="redis",
+                    Driver="docker",
+                    Config={"image": Value(string_value="redis:latest")},
+                )
+            ],
+        )
+    ],
+)
 register_job(agent)
 register_job(INSERTER)
 register_job(PROTOCONF_AGENT_JOB)
 register_job(FABIO_JOB)
+register_job(example)
 
 
 def main():
