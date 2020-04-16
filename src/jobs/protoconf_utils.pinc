@@ -10,6 +10,7 @@ load(
     "Template",
     "Job",
     "TaskGroup",
+    "Vault",
 )
 load("/google/protobuf/struct.proto", "Value", "ListValue")
 load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
@@ -50,6 +51,82 @@ PROTOCONF_AGENT_JOB = Job(
     Datacenters=datacenters,
     Type="system",
     TaskGroups=[TaskGroup(Name="agent", Count=1, Tasks=[PROTOCONF_AGENT_TASK])],
+)
+
+
+PROTOCONF_SERVER_PRE_SH = """\
+#!/bin/bash
+set -e
+set -x
+
+PROTOCONF_ROOT="/local/protocorp"
+
+git config --global credential.helper "store /local/github-creds"
+mkdir -p ${PROTOCONF_ROOT}
+git clone https://github.com/smintz/protocorp.git ${PROTOCONF_ROOT} || git -C ${PROTOCONF_ROOT} fetch -a
+git -C reset --hard origin/master
+"""
+
+PROTOCONF_SERVER_POST_SH = """\
+#!/bin/bash
+set -e
+set -x
+
+PROTOCONF_ROOT="/local/protocorp"
+
+git config --global credential.helper "store /local/github-creds"
+USER=$(echo -n $1 | cut -d: -f1)
+protoconf compile ${PROTOCONF_ROOT}
+git -C "${PROTOCONF_ROOT}" add 
+git -C "${PROTOCONF_ROOT}" commit -m "Mutated with API" --author "$USER"
+git -C "${PROTOCONF_ROOT}" push "https://$1@github.com/protoconf/protoconf_example.git" master
+"""
+PROTOCONF_SERVER_TASK = Task(
+    Name="protoconf-server",
+    Driver="docker",
+    Resources=Resources(
+        Networks=[NetworkResource(ReservedPorts=[Port(Label="server", Value=4301)])]
+    ),
+    Vault=Vault(Policies=["github-policy"]),
+    Templates=[
+        Template(
+            EmbeddedTmpl="""{{with secret "kv/github-creds}}{{.Value.url}}{{end}}""",
+            DestPath="local/github-creds",
+        ),
+        Template(
+            EmbeddedTmpl=PROTOCONF_SERVER_PRE_SH, DestPath="local/pre.sh", Perms="0755"
+        ),
+        Template(
+            EmbeddedTmpl=PROTOCONF_SERVER_POST_SH,
+            DestPath="local/post.sh",
+            Perms="0755",
+        ),
+    ],
+    Config={
+        "image": Value(string_value="smintz/webhook:latest"),
+        "network_mode": Value(string_value="host"),
+        "volumes": Value(
+            list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
+        ),
+        "command": Value(string_value="protoconf"),
+        "args": Value(
+            list_value=ListValue(
+                values=[
+                    Value(string_value="serve"),
+                    Value(string_value="-pre=/local/pre.sh"),
+                    Value(string_value="-post=/local/pre.sh"),
+                    Value(string_value="/local/protocorp"),
+                ]
+            )
+        ),
+    },
+)
+
+PROTOCONF_SERVER_JOB = Job(
+    Name="protoconf-server",
+    ID="protoconf-server",
+    Datacenters=datacenters,
+    TaskGroups=[TaskGroup(Name="server", Count=1, Tasks=[PROTOCONF_SERVER_TASK])],
 )
 
 

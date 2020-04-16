@@ -7,7 +7,12 @@ load(
 load("/google/protobuf/struct.proto", "Value")
 load("/nomad/v0.10.4/api.pinc", "NOMAD_PROTO")
 load("/nomad/v0.10.4/api.proto", "Job", "RegisterJobRequest", "TaskGroup", "Task")
-load("protoconf_utils.pinc", "PROTOCONF_AGENT_JOB", "ProtoconfExecTask")
+load(
+    "protoconf_utils.pinc",
+    "PROTOCONF_AGENT_JOB",
+    "ProtoconfExecTask",
+    "PROTOCONF_SERVER_JOB",
+)
 load("/jobs/protoconf-insert/job.pinc", "INSERTER")
 load("fabio.nomad.pinc", "FABIO_JOB")
 load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name", "CONSUL_DOMAIN")
@@ -79,6 +84,7 @@ example = Job(
 register_job(agent)
 register_job(INSERTER)
 register_job(PROTOCONF_AGENT_JOB)
+register_job(PROTOCONF_SERVER_JOB)
 register_job(FABIO_JOB)
 register_job(example)
 
