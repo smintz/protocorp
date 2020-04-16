@@ -5,36 +5,36 @@
         "name": "${random_pet.server-3-ams3-c01.id}.node.ams3c01",
         "type": "A",
         "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-3-ams3-c01-consul": {
         "name": "consul.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-3-ams3-c01-nomad": {
         "name": "nomad.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-3-ams3-c01-star": {
         "name": "*.service.ams3c01",
         "proxied": true,
-        "ttl": 120,
+        "ttl": 1,
         "type": "A",
         "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-3-ams3-c01-vault": {
         "name": "vault.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-3-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-3-ams3-c01-wan": {
         "name": "wan",
@@ -47,36 +47,36 @@
         "name": "${random_pet.server-4-ams3-c01.id}.node.ams3c01",
         "type": "A",
         "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-4-ams3-c01-consul": {
         "name": "consul.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-4-ams3-c01-nomad": {
         "name": "nomad.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-4-ams3-c01-star": {
         "name": "*.service.ams3c01",
         "proxied": true,
-        "ttl": 120,
+        "ttl": 1,
         "type": "A",
         "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-4-ams3-c01-vault": {
         "name": "vault.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-4-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-4-ams3-c01-wan": {
         "name": "wan",
@@ -89,36 +89,36 @@
         "name": "${random_pet.server-5-ams3-c01.id}.node.ams3c01",
         "type": "A",
         "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-5-ams3-c01-consul": {
         "name": "consul.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-5-ams3-c01-nomad": {
         "name": "nomad.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-5-ams3-c01-star": {
         "name": "*.service.ams3c01",
         "proxied": true,
-        "ttl": 120,
+        "ttl": 1,
         "type": "A",
         "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-5-ams3-c01-vault": {
         "name": "vault.service.ams3c01",
         "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-5-ams3-c01.ipv4_address}",
-        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+        "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
       },
       "server-5-ams3-c01-wan": {
         "name": "wan",
