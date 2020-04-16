@@ -50,7 +50,7 @@
               "Templates": [
                 {
                   "DestPath": "local/github-creds",
-                  "EmbeddedTmpl": "{{with secret \"kv/github-creds}}{{.Value.url}}{{end}}"
+                  "EmbeddedTmpl": "{{with secret \"kv/github-creds\"}\"}{{.Value.url}}{{end}}"
                 },
                 {
                   "DestPath": "local/pre.sh",

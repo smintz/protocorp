@@ -90,7 +90,7 @@ PROTOCONF_SERVER_TASK = Task(
     Vault=Vault(Policies=["github-policy"]),
     Templates=[
         Template(
-            EmbeddedTmpl="""{{with secret "kv/github-creds}}{{.Value.url}}{{end}}""",
+            EmbeddedTmpl="""{{with secret "kv/github-creds"}"}{{.Value.url}}{{end}}""",
             DestPath="local/github-creds",
         ),
         Template(
