@@ -22,11 +22,11 @@ inserter_config = Config(
                         footer="]",
                     )
                 ),
-                Action(
-                    file=ActionTypeWriteToFile(
-                        path="/alloc/tmp/hooks.yaml", serializer=Config.Serializer.YAML
-                    )
-                ),
+                # Action(
+                #     file=ActionTypeWriteToFile(
+                #         path="/alloc/tmp/hooks.yaml", serializer=Config.Serializer.YAML
+                #     )
+                # ),
             ],
         )
     ]

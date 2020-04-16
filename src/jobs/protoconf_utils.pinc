@@ -18,7 +18,7 @@ datacenters = [
     "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
 ]
 
-PROTOCONF_VERSION = "v0.1.1-beta10.0"
+PROTOCONF_VERSION = "v0.1.1-beta11.0"
 
 PROTOCONF_AGENT_TASK = Task(
     Name="protoconf-agent",

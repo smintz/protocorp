@@ -22,7 +22,7 @@
                   "-config=jobs/protoconf-insert/config",
                   "-proto_dir=/local"
                 ],
-                "image": "protoconf/protoconf:v0.1.1-beta10.0",
+                "image": "protoconf/protoconf:v0.1.1-beta11.0",
                 "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"

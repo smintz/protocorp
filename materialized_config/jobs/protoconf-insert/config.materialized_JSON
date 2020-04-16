@@ -14,12 +14,6 @@
               "footer": "]",
               "serializer": "JSON"
             }
-          },
-          {
-            "file": {
-              "path": "/alloc/tmp/hooks.yaml",
-              "serializer": "YAML"
-            }
           }
         ]
       }
