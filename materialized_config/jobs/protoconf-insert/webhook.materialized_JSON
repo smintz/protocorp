@@ -21,12 +21,12 @@
     "pass-environment-to-command": [
       {
         "source": "payload",
-        "name": "event.before",
+        "name": "before",
         "envname": "BEFORE_COMMIT"
       },
       {
         "source": "payload",
-        "name": "event.after",
+        "name": "after",
         "envname": "AFTER_COMMIT"
       }
     ],

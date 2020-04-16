@@ -9,7 +9,7 @@ load("/nomad/v0.10.4/api.proto", "Job", "RegisterJobRequest", "TaskGroup")
 load("protoconf_utils.pinc", "PROTOCONF_AGENT_JOB", "ProtoconfExecTask")
 load("/jobs/protoconf-insert/job.pinc", "INSERTER")
 load("fabio.nomad.pinc", "FABIO_JOB")
-load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
+load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name", "CONSUL_DOMAIN")
 
 datacenters = [
     "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
@@ -28,7 +28,9 @@ def register_job(job):
         actions=[
             Action(
                 http=ActionTypeHttp(
-                    uri="https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+                    uri="https://nomad.service.ams3c01.{domain}:4646/v1/jobs".format(
+                        domain=CONSUL_DOMAIN
+                    ),
                     method="POST",
                 )
             )

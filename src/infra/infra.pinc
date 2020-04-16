@@ -23,11 +23,12 @@ load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
 
-COUNTER = 0
+COUNTER = 3
 SERVERS = 3
 CLIENTS = 0
 
-CONSUL_DOMAIN = "pco.nf"
+# CONSUL_DOMAIN = "pco.nf"
+CONSUL_DOMAIN = "protoconf.sh"
 CF_PROTOCONF_COM_ID = "0280c074462b8ec6ff40f9b1790f7af3"
 CF_PCO_NF_ID = "f05cf5af25ffab8e186f43cfea099628"
 
@@ -273,6 +274,7 @@ def ProvisionCluster(tf, cluster):
             type="A",
             ttl=120,
             value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
+            proxied=True,
         )
 
     for svc in ["consul", "nomad", "vault"]:

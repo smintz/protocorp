@@ -12,11 +12,12 @@ load(
     "TaskGroup",
     "Service",
     "ServiceCheck",
+    "CheckRestart",
 )
 load("insertion-script.pinc", "PROTOCONF_INSERT_SCRIPT")
 load("/google/protobuf/struct.proto", "Value", "ListValue")
 load("/jobs/protoconf_utils.pinc", "ProtoconfExecTask")
-load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
+load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name", "CONSUL_DOMAIN")
 
 datacenters = [
     "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
@@ -36,32 +37,37 @@ WEBHOOK_TASK = Task(
             EmbeddedTmpl=PROTOCONF_INSERT_SCRIPT,
             Perms="0755",
         ),
-        Template(DestPath="alloc/tmp/hooks.json", EmbeddedTmpl="[]"),
+        Template(DestPath="/alloc/tmp/hooks.json", EmbeddedTmpl="[]"),
     ],
     Services=[
         Service(
             Id="webhooks",
             Name="webhooks",
             Tags=[
-                "urlprefix-webhooks.service.%s.pco.nf:9999/" % dc for dc in datacenters
+                "urlprefix-webhooks.service.{dc}.{domain}:9999/".format(
+                    dc=dc, domain=CONSUL_DOMAIN
+                )
+                for dc in datacenters
             ],
             PortLabel="webhook",
             Checks=[
                 ServiceCheck(
                     Type="http",
-                    Path="/",
-                    Interval=13 * 1000000000,
+                    Path="/hooks/protoconf-insert",
+                    Interval=5 * 1000000000,
                     Timeout=2 * 1000000000,
+                    CheckRestart=CheckRestart(Limit=5),
                 )
             ],
         )
     ],
     Config={
-        "image": Value(string_value="almir/webhook:2.6.11"),
+        "image": Value(string_value="smintz/webhook:latest"),
+        "network_mode": Value(string_value="host"),
         "args": Value(
             list_value=ListValue(
                 values=[
-                    # Value(string_value="-verbose"),
+                    Value(string_value="-verbose"),
                     Value(string_value="-hooks=/alloc/tmp/hooks.json"),
                     Value(string_value="-hotreload"),
                 ]
@@ -77,7 +83,7 @@ INSERTER = Job(
     TaskGroups=[
         TaskGroup(
             Name="agent",
-            Count=3,
+            Count=1,
             Tasks=[
                 ProtoconfExecTask(
                     "jobs/protoconf-insert/config", {"webhook/hook.proto": HOOK_PROTO}

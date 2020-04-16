@@ -11,7 +11,7 @@
       "TaskGroups": [
         {
           "Name": "agent",
-          "Count": 3,
+          "Count": 1,
           "Tasks": [
             {
               "Name": "protoconf-exec",
@@ -40,25 +40,30 @@
               "Driver": "docker",
               "Config": {
                 "args": [
+                  "-verbose",
                   "-hooks=/alloc/tmp/hooks.json",
                   "-hotreload"
                 ],
-                "image": "almir/webhook:2.6.11"
+                "image": "smintz/webhook:latest",
+                "network_mode": "host"
               },
               "Services": [
                 {
                   "Id": "webhooks",
                   "Name": "webhooks",
                   "Tags": [
-                    "urlprefix-webhooks.service.ams3c01.pco.nf:9999/"
+                    "urlprefix-webhooks.service.ams3c01.protoconf.sh:9999/"
                   ],
                   "PortLabel": "webhook",
                   "Checks": [
                     {
                       "Type": "http",
-                      "Path": "/",
-                      "Interval": 13000000000,
-                      "Timeout": 2000000000
+                      "Path": "/hooks/protoconf-insert",
+                      "Interval": 5000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
                     }
                   ]
                 }
@@ -79,11 +84,11 @@
               "Templates": [
                 {
                   "DestPath": "local/insertion-script.sh",
-                  "EmbeddedTmpl": "#!/usr/bin/env bash\nset -e\nset -x\n\nif [ -z \"${STORE_ADDRESS}\" ]; then\n  echo \"STORE_ADDRESS is unset\"\n  exit 1\nfi\n\necho \"VARS: $*\"\nSTORE_TYPE=$1\nPREFIX=$(basename $2)\nSHOULD_DELETE=$3\nCHANGES_ONLY=$4\nBULK_SIZE=$5\n\nexport GIT_TERMINAL_PROMPT=0\n\nif [ \"${CHANGES_ONLY}\" == \"true\" ]; then\n  CONFIGS_TO_INSERT=$(git diff --name-only --diff-filter=ACMR ${AFTER_COMMIT:-HEAD} ${BEFORE_COMMIT:-HEAD~1} | sed -n 's/^materialized_config\\///p')\nelse\n  CONFIGS_TO_INSERT=$(find . -name *.materialized_JSON | sed -n 's/^.\\/materialized_config\\///p')\nfi\nif [ -z \"$CONFIGS_TO_INSERT\" ]; then\n    exit 0\nfi\nDELETE=\"\"\nif [ \"${SHOULD_DELETE}\" == \"true\" ]; then\n  DELETE=\"-d\"\nfi\n\necho $CONFIGS_TO_INSERT | xargs -n${BULK_SIZE} /protoconf insert   -store \"${STORE_TYPE}\"   -store-address \"${STORE_ADDRESS}\"   -prefix \"${PREFIX}/\"   ${DELETE}   \"$GITHUB_WORKSPACE\"\n",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\n#if [ -z \"${STORE_ADDRESS}\" ]; then\n#  echo \"STORE_ADDRESS is unset\"\n#  exit 1\n#fi\n\necho \"VARS: $*\"\nSTORE_TYPE=consul\nSTORE_ADDRESS=\"http://127.0.0.1:8500\"\nPREFIX=\"production/\"\nSHOULD_DELETE=\"false\"\nCHANGES_ONLY=\"false\"\nBULK_SIZE=\"10\"\n\nexport GIT_TERMINAL_PROMPT=0\ngit clone \nif [ \"${CHANGES_ONLY}\" == \"true\" ]; then\n  CONFIGS_TO_INSERT=$(git diff --name-only --diff-filter=ACMR ${AFTER_COMMIT:-HEAD} ${BEFORE_COMMIT:-HEAD~1} | sed -n 's/^materialized_config\\///p')\nelse\n  CONFIGS_TO_INSERT=$(find . -name *.materialized_JSON | sed -n 's/^.\\/materialized_config\\///p')\nfi\nif [ -z \"$CONFIGS_TO_INSERT\" ]; then\n    exit 0\nfi\nDELETE=\"\"\nif [ \"${SHOULD_DELETE}\" == \"true\" ]; then\n  DELETE=\"-d\"\nfi\n\necho $CONFIGS_TO_INSERT | xargs -n${BULK_SIZE} /protoconf insert   -store \"${STORE_TYPE}\"   -store-address \"${STORE_ADDRESS}\"   -prefix \"${PREFIX}/\"   ${DELETE}   \"$GITHUB_WORKSPACE\"\n",
                   "Perms": "0755"
                 },
                 {
-                  "DestPath": "alloc/tmp/hooks.json",
+                  "DestPath": "/alloc/tmp/hooks.json",
                   "EmbeddedTmpl": "[]"
                 }
               ]

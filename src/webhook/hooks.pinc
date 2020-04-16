@@ -1,3 +1,6 @@
+"""
+webhook
+"""
 load("hook.proto", "Hook", "Argument", "Header", "Rules", "MatchRule")
 
 
@@ -8,8 +11,8 @@ def GithubHook(hook_id, command, secret, ref="refs/heads/master"):
         ResponseMessage="OK",
         ResponseHeaders=[Header(name="Access-Control-Allow-Origin", value="*")],
         PassEnvironmentToCommand=[
-            Argument(envname="BEFORE_COMMIT", source="payload", name="event.before"),
-            Argument(envname="AFTER_COMMIT", source="payload", name="event.after"),
+            Argument(envname="BEFORE_COMMIT", source="payload", name="before"),
+            Argument(envname="AFTER_COMMIT", source="payload", name="after"),
         ],
         PassArgumentsToCommand=[
             Argument(source="payload", name="head_commit.id"),
