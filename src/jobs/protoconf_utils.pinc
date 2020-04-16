@@ -108,7 +108,7 @@ PROTOCONF_SERVER_TASK = Task(
         "volumes": Value(
             list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
         ),
-        "command": Value(string_value="protoconf"),
+        "entrypoint": Value(string_value="protoconf"),
         "args": Value(
             list_value=ListValue(
                 values=[

@@ -23,7 +23,7 @@
                   "-post=/local/pre.sh",
                   "/local/protocorp"
                 ],
-                "command": "protoconf",
+                "entrypoint": "protoconf",
                 "image": "smintz/webhook:latest",
                 "network_mode": "host",
                 "volumes": [
