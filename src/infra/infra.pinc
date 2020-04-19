@@ -22,8 +22,9 @@ load("ca.pinc", "CA")
 load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
+load("mutable:infra/counter", counter="value")
 
-COUNTER = 3
+COUNTER = counter.global_counter
 SERVERS = 3
 CLIENTS = 0
 
