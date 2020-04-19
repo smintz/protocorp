@@ -1,4 +1,4 @@
-compile: changelog
+compile:
 	protoconf compile .
 	cd tf/infra && $(MAKE) compile
 
@@ -13,6 +13,3 @@ init:
 
 gen:
 	protoconf import terraform
-
-changelog:
-	git-chglog $(git describe --tags $(git rev-list --tags --max-count=1)) --o README.md
