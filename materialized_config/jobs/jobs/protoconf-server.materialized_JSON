@@ -50,12 +50,12 @@
                 },
                 {
                   "DestPath": "local/entrypoint.sh",
-                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nmkdir -p ${PROTOCONF_ROOT}\ngit clone https://github.com/smintz/protocorp.git ${PROTOCONF_ROOT} || git -C ${PROTOCONF_ROOT} fetch -a\ngit -C reset --hard origin/master\nexec protoconf serve -pre=/local/pre.sh -post=/local/pre.sh /local/protocorp\n",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nmkdir -p ${PROTOCONF_ROOT}\ngit clone https://github.com/smintz/protocorp.git ${PROTOCONF_ROOT} || git -C ${PROTOCONF_ROOT} fetch -a\ngit -C \"${PROTOCONF_ROOT}\" reset --hard origin/master\nexec protoconf serve -pre=/local/pre.sh -post=/local/pre.sh /local/protocorp\n",
                   "Perms": "0755"
                 },
                 {
                   "DestPath": "local/pre.sh",
-                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nmkdir -p ${PROTOCONF_ROOT}\ngit clone https://github.com/smintz/protocorp.git ${PROTOCONF_ROOT} || git -C ${PROTOCONF_ROOT} fetch -a\ngit -C reset --hard origin/master\n",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nmkdir -p ${PROTOCONF_ROOT}\ngit clone https://github.com/smintz/protocorp.git ${PROTOCONF_ROOT} || git -C ${PROTOCONF_ROOT} fetch -a\ngit -C \"${PROTOCONF_ROOT}\" reset --hard origin/master\n",
                   "Perms": "0755"
                 },
                 {

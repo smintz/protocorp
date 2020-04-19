@@ -69,7 +69,7 @@ PROTOCONF_SERVER_PRE_SH = (
     + """\
 mkdir -p ${PROTOCONF_ROOT}
 git clone https://github.com/smintz/protocorp.git ${PROTOCONF_ROOT} || git -C ${PROTOCONF_ROOT} fetch -a
-git -C reset --hard origin/master
+git -C "${PROTOCONF_ROOT}" reset --hard origin/master
 """
 )
 
