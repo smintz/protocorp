@@ -7,7 +7,6 @@ load(
     "Action",
     "ActionTypeWriteToFile",
 )
-load("job.pinc", "job")
 
 inserter_config = Config(
     items=[
@@ -22,12 +21,7 @@ inserter_config = Config(
                         header="[",
                         footer="]",
                     )
-                ),
-                # Action(
-                #     file=ActionTypeWriteToFile(
-                #         path="/alloc/tmp/hooks.yaml", serializer=Config.Serializer.YAML
-                #     )
-                # ),
+                )
             ],
         )
     ]

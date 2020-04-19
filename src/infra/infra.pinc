@@ -285,7 +285,6 @@ def ProvisionCluster(tf, cluster):
                 type="A",
                 ttl=1,
                 value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
-                proxied=True,
             )
 
     for nmd in servers:
@@ -304,9 +303,7 @@ CLUSTERS = [
         region="ams3",
         cluster_number=1,
         servers_count=3,
-        tiers=[
-            # Tier(name="general", count=2)
-        ],
+        tiers=[Tier(name="general", count=0)],
     ),
     # Cluster(
     #     provider=Cluster.Providers.DIGITALOCEAN,

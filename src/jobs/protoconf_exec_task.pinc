@@ -7,6 +7,15 @@ load("/nomad/v0.10.4/api.proto", "Template")
 
 
 def ProtoconfExecTask(config, templates={}):
+    """
+    ProtoconfExecTask returns a task to be used with `protoconf exec`
+
+    Args:
+        config: path of the protoconf config to watch
+        templates: dict contains the pathname of the protofile and its content
+    Returns:
+        a task
+    """
     task = NewTask("protoconf-exec")
     task.SetImage("protoconf/protoconf:" + PROTOCONF_VERSION)
     task.task.Templates = [

@@ -15,6 +15,14 @@ load(
 
 
 def value(v):
+    """
+    value gets a variable and returns is as a wkt `Value`
+
+    Args:
+        v: a variable
+    Returns:
+        Value()
+    """
     if type(v) == "string":
         return Value(string_value=v)
     if type(v) == "int":
@@ -32,7 +40,16 @@ DEFAULT_TASK_DRIVER = "docker"
 
 
 def NewTask(name, image=None):
-    localTask = Task(
+    """
+    NewTask create a new task helper
+
+    Args:
+        name: name of the task
+        image: name of the image to be used
+    Returns:
+        a struct conains helper functions
+    """
+    local_task = Task(
         Name=name,
         Vault=Vault(Policies=["default"]),
         Resources=Resources(
@@ -41,19 +58,19 @@ def NewTask(name, image=None):
     )
 
     def setConfig(key, v):
-        localTask.Config[key] = value(v)
+        local_task.Config[key] = value(v)
 
     def setImage(imageName):
-        if localTask.Driver == "":
-            localTask.Driver = DEFAULT_TASK_DRIVER
-        if localTask.Driver not in ["docker", "rkt"]:
+        if local_task.Driver == "":
+            local_task.Driver = DEFAULT_TASK_DRIVER
+        if local_task.Driver not in ["docker", "rkt"]:
             fail("task driver does not support images")
 
         setConfig("image", imageName)
-        # localTask.Config["image"] = Value(string_value=imageName)
+        # local_task.Config["image"] = Value(string_value=imageName)
 
     def newPort(label, to=None, reserve=None):
-        network = localTask.Resources.Networks[0]
+        network = local_task.Resources.Networks[0]
         for n in network.ReservedPorts + network.DynamicPorts:
             if label == n.Label:
                 return n
@@ -75,18 +92,18 @@ def NewTask(name, image=None):
         port = newPort(label, to, reserve)
 
         service = Service(Name=name, PortLabel=port.Label, Tags=tags, Checks=checks)
-        localTask.Services.append(service)
+        local_task.Services.append(service)
         return service
 
     def addVaultPolicies(*policies):
         for p in policies:
-            localTask.Vault.Policies.append(p)
+            local_task.Vault.Policies.append(p)
 
     if image:
         setImage(image)
 
     return struct(
-        task=localTask,
+        task=local_task,
         SetImage=setImage,
         AddVaultPolicies=addVaultPolicies,
         NewPort=newPort,

@@ -1,3 +1,6 @@
+"""
+fabio
+"""
 load(
     "/nomad/v0.10.4/api.proto",
     "NetworkResource",
@@ -6,7 +9,6 @@ load(
     "Task",
     "Job",
     "TaskGroup",
-    "Service",
 )
 load("/google/protobuf/struct.proto", "Value", "ListValue")
 load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")

@@ -20,6 +20,16 @@ def JobRegistry(
     config_root="jobs/jobs",
     cluster_address="https://127.0.0.1:4646",
 ):
+    """
+    JobRegistry
+
+    Args:
+        executor_name: the name of the task that executes the jobs (must be globally uniq)
+        config_root: the basedir of the mpconf file initiates the JobRegistry instance
+        cluster_address: the address of the nomad cluster
+    Returns:
+        A struct contains the output for mpconf and the register_job function
+    """
     executor = Config(items=[])
 
     output = {"apply": executor}

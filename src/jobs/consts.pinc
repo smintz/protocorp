@@ -1,2 +1,5 @@
+"""
+consts
+"""
 PROTOCONF_VERSION = "v0.1.1-beta12.0"
 

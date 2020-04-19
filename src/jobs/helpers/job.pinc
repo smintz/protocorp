@@ -26,17 +26,17 @@ def NewJob(name, dc=datacenters, region="global", type="service", priority=75):
     Returns:
         A struct of functions
     """
-    localJob = Job(
+    local_job = Job(
         Name=name, ID=name, Datacenters=dc, Region=region, Type=type, Priority=priority
     )
 
     def addTaskGroup(taskGroupName=DEFAULT_GROUP_NAME):
-        localGroup = TaskGroup(Name=taskGroupName, Tasks=[], Count=1)
-        localJob.TaskGroups.append(localGroup)
-        return localGroup
+        local_group = TaskGroup(Name=taskGroupName, Tasks=[], Count=1)
+        local_job.TaskGroups.append(local_group)
+        return local_group
 
     def getOrCreateTaskGroup(group=DEFAULT_GROUP_NAME):
-        arr = [g for g in localJob.TaskGroups if g.Name == group]
+        arr = [g for g in local_job.TaskGroups if g.Name == group]
         if len(arr) < 1:
             return addTaskGroup(group)
         else:
@@ -56,7 +56,7 @@ def NewJob(name, dc=datacenters, region="global", type="service", priority=75):
         return task
 
     return struct(
-        job=localJob,
+        job=local_job,
         AddTaskGroup=addTaskGroup,
         getOrCreateTaskGroup=getOrCreateTaskGroup,
         SetCount=setCount,

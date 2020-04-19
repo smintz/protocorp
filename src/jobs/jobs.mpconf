@@ -1,3 +1,6 @@
+"""
+jobs registry
+"""
 load("helpers/registry.pinc", "JobRegistry")
 load("/jobs/protoconf-insert/job.pinc", INSERTER="job")
 load("fabio.nomad.pinc", "FABIO_JOB")
