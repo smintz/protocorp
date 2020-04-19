@@ -92,7 +92,7 @@ git -C "${PROTOCONF_ROOT}" push
 PROTOCONF_SERVER_ENTRYPOINT_SH = (
     PROTOCONF_SERVER_PRE_SH
     + """\
-exec protoconf serve -pre=/local/pre.sh -post=/local/pre.sh /local/protocorp
+exec protoconf serve -pre=/local/pre.sh -post=/local/post.sh /local/protocorp
 """
 )
 
