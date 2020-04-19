@@ -77,11 +77,13 @@ PROTOCONF_SERVER_POST_SH = (
     PROTOCONF_SERVER_SCRIPT_HEADER
     + """\
 USER=$(echo -n $1 | cut -d: -f1)
+git config --global user.name "$USER"
+git config --global user.email "$USER@protoconf.com"
 protoconf compile ${PROTOCONF_ROOT}
 git -C "${PROTOCONF_ROOT}" add ${PROTOCONF_ROOT}
 
 
-git -C "${PROTOCONF_ROOT}" commit -m "Mutated with API" --author "$USER"
+git -C "${PROTOCONF_ROOT}" commit -m "Mutated with API"
 git -C "${PROTOCONF_ROOT}" push
 """
 )
