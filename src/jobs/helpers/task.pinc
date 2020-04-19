@@ -34,7 +34,7 @@ DEFAULT_TASK_DRIVER = "docker"
 def NewTask(name, image=None):
     localTask = Task(
         Name=name,
-        Vault=Vault(),
+        Vault=Vault(Policies=["default"]),
         Resources=Resources(
             Networks=[NetworkResource(ReservedPorts=[], DynamicPorts=[])]
         ),

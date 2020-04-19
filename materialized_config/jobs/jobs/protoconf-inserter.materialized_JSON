@@ -36,7 +36,11 @@
                   {}
                 ]
               },
-              "Vault": {},
+              "Vault": {
+                "Policies": [
+                  "default"
+                ]
+              },
               "Templates": [
                 {
                   "DestPath": "local/webhook/hook.proto",
@@ -90,6 +94,7 @@
               },
               "Vault": {
                 "Policies": [
+                  "default",
                   "github-policy"
                 ]
               },
