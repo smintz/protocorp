@@ -26,5 +26,5 @@ message Cluster {
 }
 
 message Counters {
-    uint32 global = 1;
+    uint32 global_counter = 1;
 }
