@@ -61,7 +61,7 @@ set -x
 
 PROTOCONF_ROOT="/local/protocorp"
 
-git config --global credential.helper "store /local/github-creds"
+git config --global credential.helper "store --file=/local/github-creds"
 """
 
 PROTOCONF_SERVER_PRE_SH = (
