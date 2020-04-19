@@ -80,7 +80,7 @@ USER=$(echo -n $1 | cut -d: -f1)
 protoconf compile ${PROTOCONF_ROOT}
 git -C "${PROTOCONF_ROOT}" add 
 git -C "${PROTOCONF_ROOT}" commit -m "Mutated with API" --author "$USER"
-git -C "${PROTOCONF_ROOT}" push "https://$1@github.com/protoconf/protoconf_example.git" master
+git -C "${PROTOCONF_ROOT}" push
 """
 )
 
