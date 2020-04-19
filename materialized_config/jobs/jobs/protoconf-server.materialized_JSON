@@ -60,7 +60,7 @@
                 },
                 {
                   "DestPath": "local/post.sh",
-                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nUSER=$(echo -n $1 | cut -d: -f1)\nprotoconf compile ${PROTOCONF_ROOT}\ngit -C \"${PROTOCONF_ROOT}\" add .\ngit -C \"${PROTOCONF_ROOT}\" commit -m \"Mutated with API\" --author \"$USER\"\ngit -C \"${PROTOCONF_ROOT}\" push\n",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nUSER=$(echo -n $1 | cut -d: -f1)\nprotoconf compile ${PROTOCONF_ROOT}\ngit -C \"${PROTOCONF_ROOT}\" add ${PROTOCONF_ROOT}\n\n\ngit -C \"${PROTOCONF_ROOT}\" commit -m \"Mutated with API\" --author \"$USER\"\ngit -C \"${PROTOCONF_ROOT}\" push\n",
                   "Perms": "0755"
                 }
               ]
