@@ -24,3 +24,7 @@ message Cluster {
         PACKET = 5;
     }
 }
+
+message Counters {
+    uint32 global = 1;
+}
