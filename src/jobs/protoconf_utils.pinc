@@ -12,14 +12,15 @@ load(
     "TaskGroup",
     "Vault",
 )
+load("helpers/job.pinc", "NewJob")
 load("/google/protobuf/struct.proto", "Value", "ListValue")
+load("consts.pinc", "PROTOCONF_VERSION")
 load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
 
 datacenters = [
     "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
 ]
 
-PROTOCONF_VERSION = "v0.1.1-beta12.0"
 
 PROTOCONF_AGENT_TASK = Task(
     Name="protoconf-agent",
@@ -45,13 +46,13 @@ PROTOCONF_AGENT_TASK = Task(
     },
 )
 
-PROTOCONF_AGENT_JOB = Job(
-    Name="protoconf-agent",
-    ID="protoconf-agent",
-    Datacenters=datacenters,
-    Type="system",
-    TaskGroups=[TaskGroup(Name="agent", Count=1, Tasks=[PROTOCONF_AGENT_TASK])],
-)
+PROTOCONF_AGENT_JOB = NewJob("protoconf-agent", type="system")
+task = PROTOCONF_AGENT_JOB.NewTask("protoconf-agent")
+task.SetImage("protoconf/agent:" + PROTOCONF_VERSION)
+task.NewPort("agent", reserve=4300)
+task.SetConfig("network_mode", "host")
+task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
+task.SetConfig("args", ["-prefix=production/"])
 
 
 PROTOCONF_SERVER_PRE_SH = """\
@@ -131,29 +132,3 @@ PROTOCONF_SERVER_JOB = Job(
     TaskGroups=[TaskGroup(Name="server", Count=1, Tasks=[PROTOCONF_SERVER_TASK])],
 )
 
-
-def ProtoconfExecTask(config, templates={}):
-    return Task(
-        Name="protoconf-exec",
-        Driver="docker",
-        Templates=[
-            Template(EmbeddedTmpl=templates[key], DestPath="local/" + key)
-            for key in templates.keys()
-        ],
-        Config={
-            "image": Value(string_value="protoconf/protoconf:" + PROTOCONF_VERSION),
-            "network_mode": Value(string_value="host"),
-            "volumes": Value(
-                list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
-            ),
-            "args": Value(
-                list_value=ListValue(
-                    values=[
-                        Value(string_value="exec"),
-                        Value(string_value="-config=" + config),
-                        Value(string_value="-proto_dir=/local"),
-                    ]
-                )
-            ),
-        },
-    )

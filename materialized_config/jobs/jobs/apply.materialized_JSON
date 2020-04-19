@@ -9,19 +9,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
-        "path": "jobs/jobs/protoconf-inserter",
-        "protoFile": "nomad/v0.10.4/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://127.0.0.1:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -33,7 +21,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://127.0.0.1:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -45,7 +33,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://127.0.0.1:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -57,19 +45,19 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://127.0.0.1:4646/v1/jobs",
               "method": "POST"
             }
           }
         ]
       },
       {
-        "path": "jobs/jobs/example",
+        "path": "jobs/jobs/protoconf-inserter",
         "protoFile": "nomad/v0.10.4/api.proto",
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://127.0.0.1:4646/v1/jobs",
               "method": "POST"
             }
           }

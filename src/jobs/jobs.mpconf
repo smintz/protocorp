@@ -1,93 +1,14 @@
-"""
-nomad jobs
-"""
-load(
-    "/executor/exec_config.proto", "Config", "WatcherConfig", "Action", "ActionTypeHttp"
-)
-load("/google/protobuf/struct.proto", "Value")
-load("/nomad/v0.10.4/api.pinc", "NOMAD_PROTO")
-load("/nomad/v0.10.4/api.proto", "Job", "RegisterJobRequest", "TaskGroup", "Task")
-load(
-    "protoconf_utils.pinc",
-    "PROTOCONF_AGENT_JOB",
-    "ProtoconfExecTask",
-    "PROTOCONF_SERVER_JOB",
-)
-load("/jobs/protoconf-insert/job.pinc", "INSERTER")
+load("helpers/registry.pinc", "JobRegistry")
+load("/jobs/protoconf-insert/job.pinc", INSERTER="job")
 load("fabio.nomad.pinc", "FABIO_JOB")
-load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name", "CONSUL_DOMAIN")
+load("protoconf_utils.pinc", "PROTOCONF_AGENT_JOB", "PROTOCONF_SERVER_JOB")
 
-datacenters = [
-    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
-]
-
-executor = Config(items=[])
-
-output = {"apply": executor}
-
-
-def register_job(job):
-    output[job.ID] = RegisterJobRequest(Job=job)
-    e = WatcherConfig(
-        path="jobs/jobs/" + job.ID,
-        proto_file="nomad/v0.10.4/api.proto",
-        actions=[
-            Action(
-                http=ActionTypeHttp(
-                    uri="https://nomad.service.ams3c01.{domain}:4646/v1/jobs".format(
-                        domain=CONSUL_DOMAIN
-                    ),
-                    method="POST",
-                )
-            )
-        ],
-    )
-    executor.items.append(e)
-
-
-agent = Job(
-    Name="jobs-executor",
-    ID="jobs-executor",
-    Datacenters=datacenters,
-    TaskGroups=[
-        TaskGroup(
-            Name="agent",
-            Count=1,
-            Tasks=[
-                ProtoconfExecTask(
-                    "jobs/jobs/apply", {"nomad/v0.10.4/api.proto": NOMAD_PROTO}
-                ),
-                # PROTOCONF_AGENT,
-            ],
-        )
-    ],
-)
-
-example = Job(
-    Name="example",
-    ID="example",
-    Datacenters=datacenters,
-    TaskGroups=[
-        TaskGroup(
-            Name="cache",
-            Count=1,
-            Tasks=[
-                Task(
-                    Name="redis",
-                    Driver="docker",
-                    Config={"image": Value(string_value="redis:latest")},
-                )
-            ],
-        )
-    ],
-)
-register_job(agent)
-register_job(INSERTER)
-register_job(PROTOCONF_AGENT_JOB)
-register_job(PROTOCONF_SERVER_JOB)
-register_job(FABIO_JOB)
-register_job(example)
+REGISTRY = JobRegistry()
+REGISTRY.register_job(PROTOCONF_AGENT_JOB.job)
+REGISTRY.register_job(PROTOCONF_SERVER_JOB)
+REGISTRY.register_job(FABIO_JOB)
+REGISTRY.register_job(INSERTER.job)
 
 
 def main():
-    return output
+    return REGISTRY.output

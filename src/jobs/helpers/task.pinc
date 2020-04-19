@@ -1,0 +1,96 @@
+"""
+Task Helper
+"""
+
+load("/google/protobuf/struct.proto", "Value", "ListValue")
+load(
+    "/nomad/v0.10.4/api.proto",
+    "Task",
+    "Vault",
+    "Resources",
+    "NetworkResource",
+    "Port",
+    "Service",
+)
+
+
+def value(v):
+    if type(v) == "string":
+        return Value(string_value=v)
+    if type(v) == "int":
+        return Value(number_value=float(v))
+    if type(v) == "double":
+        return Value(number_value=v)
+    if type(v) == "bool":
+        return Value(bool_value=v)
+    if type(v) == "list":
+        return Value(list_value=ListValue(values=[value(i) for i in v]))
+    return None
+
+
+DEFAULT_TASK_DRIVER = "docker"
+
+
+def NewTask(name, image=None):
+    localTask = Task(
+        Name=name,
+        Vault=Vault(),
+        Resources=Resources(
+            Networks=[NetworkResource(ReservedPorts=[], DynamicPorts=[])]
+        ),
+    )
+
+    def setConfig(key, v):
+        localTask.Config[key] = value(v)
+
+    def setImage(imageName):
+        if localTask.Driver == "":
+            localTask.Driver = DEFAULT_TASK_DRIVER
+        if localTask.Driver not in ["docker", "rkt"]:
+            fail("task driver does not support images")
+
+        setConfig("image", imageName)
+        # localTask.Config["image"] = Value(string_value=imageName)
+
+    def newPort(label, to=None, reserve=None):
+        network = localTask.Resources.Networks[0]
+        for n in network.ReservedPorts + network.DynamicPorts:
+            if label == n.Label:
+                return n
+
+        port = Port(Label=label)
+        if to:
+            port.To = to
+        if reserve:
+            port.Value = reserve
+            network.ReservedPorts.append(port)
+        else:
+            network.DynamicPorts.append(port)
+        return port
+
+    def newService(name, to=None, reserve=None, tags=[], checks=[], label=None):
+        if not label:
+            label = name
+
+        port = newPort(label, to, reserve)
+
+        service = Service(Name=name, PortLabel=port.Label, Tags=tags, Checks=checks)
+        localTask.Services.append(service)
+        return service
+
+    def addVaultPolicies(*policies):
+        for p in policies:
+            localTask.Vault.Policies.append(p)
+
+    if image:
+        setImage(image)
+
+    return struct(
+        task=localTask,
+        SetImage=setImage,
+        AddVaultPolicies=addVaultPolicies,
+        NewPort=newPort,
+        NewService=newService,
+        SetConfig=setConfig,
+        Value=value,
+    )

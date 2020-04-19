@@ -3,14 +3,17 @@
   "value": {
     "@type": "type.googleapis.com/api.RegisterJobRequest",
     "Job": {
+      "Region": "global",
       "ID": "jobs-executor",
       "Name": "jobs-executor",
+      "Type": "service",
+      "Priority": 75,
       "Datacenters": [
         "ams3c01"
       ],
       "TaskGroups": [
         {
-          "Name": "agent",
+          "Name": "default",
           "Count": 1,
           "Tasks": [
             {
@@ -28,6 +31,12 @@
                   "/etc/ssl:/etc/ssl"
                 ]
               },
+              "Resources": {
+                "Networks": [
+                  {}
+                ]
+              },
+              "Vault": {},
               "Templates": [
                 {
                   "DestPath": "local/nomad/v0.10.4/api.proto",

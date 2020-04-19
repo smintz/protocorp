@@ -3,8 +3,11 @@
   "value": {
     "@type": "type.googleapis.com/api.RegisterJobRequest",
     "Job": {
+      "Region": "global",
       "ID": "example",
       "Name": "example",
+      "Type": "service",
+      "Priority": 75,
       "Datacenters": [
         "ams3c01"
       ],
@@ -18,7 +21,13 @@
               "Driver": "docker",
               "Config": {
                 "image": "redis:latest"
-              }
+              },
+              "Resources": {
+                "Networks": [
+                  {}
+                ]
+              },
+              "Vault": {}
             }
           ]
         }

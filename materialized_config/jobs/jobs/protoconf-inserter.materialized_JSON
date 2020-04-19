@@ -3,14 +3,17 @@
   "value": {
     "@type": "type.googleapis.com/api.RegisterJobRequest",
     "Job": {
+      "Region": "global",
       "ID": "protoconf-inserter",
       "Name": "protoconf-inserter",
+      "Type": "service",
+      "Priority": 75,
       "Datacenters": [
         "ams3c01"
       ],
       "TaskGroups": [
         {
-          "Name": "agent",
+          "Name": "default",
           "Count": 1,
           "Tasks": [
             {
@@ -28,6 +31,12 @@
                   "/etc/ssl:/etc/ssl"
                 ]
               },
+              "Resources": {
+                "Networks": [
+                  {}
+                ]
+              },
+              "Vault": {},
               "Templates": [
                 {
                   "DestPath": "local/webhook/hook.proto",
@@ -49,12 +58,11 @@
               },
               "Services": [
                 {
-                  "Id": "webhooks",
                   "Name": "webhooks",
                   "Tags": [
                     "urlprefix-webhooks.service.ams3c01.protoconf.sh:9999/"
                   ],
-                  "PortLabel": "webhook",
+                  "PortLabel": "webhooks",
                   "Checks": [
                     {
                       "Type": "http",
@@ -73,9 +81,8 @@
                   {
                     "ReservedPorts": [
                       {
-                        "Label": "webhook",
-                        "Value": 9000,
-                        "To": 9000
+                        "Label": "webhooks",
+                        "Value": 9000
                       }
                     ]
                   }

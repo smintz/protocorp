@@ -1,103 +1,56 @@
 """
 """
 load("/webhook/hook-proto.pinc", "HOOK_PROTO")
-load(
-    "/nomad/v0.10.4/api.proto",
-    "NetworkResource",
-    "Port",
-    "Resources",
-    "Task",
-    "Template",
-    "Job",
-    "TaskGroup",
-    "Service",
-    "ServiceCheck",
-    "CheckRestart",
-    "Vault",
-)
+load("/nomad/v0.10.4/api.proto", "Template", "ServiceCheck", "CheckRestart")
+load("/jobs/helpers/job.pinc", "NewJob")
 load("insertion-script.pinc", "PROTOCONF_INSERT_SCRIPT")
-load("/google/protobuf/struct.proto", "Value", "ListValue")
-load("/jobs/protoconf_utils.pinc", "ProtoconfExecTask")
-load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name", "CONSUL_DOMAIN")
+load("/jobs/protoconf_exec_task.pinc", "ProtoconfExecTask")
+load("/infra/infra.pinc", "CONSUL_DOMAIN")
 
-datacenters = [
-    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
-]
 
-WEBHOOK_TASK = Task(
-    Name="webhook",
-    Driver="docker",
-    Resources=Resources(
-        Networks=[
-            NetworkResource(ReservedPorts=[Port(Label="webhook", Value=9000, To=9000)])
-        ]
+job = NewJob("protoconf-inserter")
+job.AddTask(
+    ProtoconfExecTask(
+        "jobs/protoconf-insert/config", {"webhook/hook.proto": HOOK_PROTO}
+    )
+)
+webhook_task = job.NewTask("webhook")
+webhook_task.SetImage("smintz/webhook:latest")
+webhook_task.SetConfig("network_mode", "host")
+webhook_task.SetConfig(
+    "args", ["-verbose", "-hooks=/alloc/tmp/hooks.json", "-hotreload"]
+)
+webhook_task.AddVaultPolicies("github-policy")
+webhook_task.NewService(
+    "webhooks",
+    reserve=9000,
+    tags=[
+        "urlprefix-webhooks.service.{dc}.{domain}:9999/".format(
+            dc=dc, domain=CONSUL_DOMAIN
+        )
+        for dc in job.job.Datacenters
+    ],
+    checks=[
+        ServiceCheck(
+            Type="http",
+            Path="/hooks/protoconf-insert",
+            Interval=10 * 1000000000,
+            Timeout=2 * 1000000000,
+            CheckRestart=CheckRestart(Limit=5),
+        )
+    ],
+)
+
+webhook_task.task.Templates = [
+    Template(
+        DestPath="local/insertion-script.sh",
+        EmbeddedTmpl=PROTOCONF_INSERT_SCRIPT,
+        Perms="0755",
     ),
-    Templates=[
-        Template(
-            DestPath="local/insertion-script.sh",
-            EmbeddedTmpl=PROTOCONF_INSERT_SCRIPT,
-            Perms="0755",
-        ),
-        Template(
-            DestPath="local/git-creds",
-            EmbeddedTmpl="""{{with secret "kv/github-creds"}}{{.Data.url}}{{end}}""",
-            Perms="0600",
-        ),
-        Template(DestPath="/alloc/tmp/hooks.json", EmbeddedTmpl="[]"),
-    ],
-    Services=[
-        Service(
-            Id="webhooks",
-            Name="webhooks",
-            Tags=[
-                "urlprefix-webhooks.service.{dc}.{domain}:9999/".format(
-                    dc=dc, domain=CONSUL_DOMAIN
-                )
-                for dc in datacenters
-            ],
-            PortLabel="webhook",
-            Checks=[
-                ServiceCheck(
-                    Type="http",
-                    Path="/hooks/protoconf-insert",
-                    Interval=10 * 1000000000,
-                    Timeout=2 * 1000000000,
-                    CheckRestart=CheckRestart(Limit=5),
-                )
-            ],
-        )
-    ],
-    Config={
-        "image": Value(string_value="smintz/webhook:latest"),
-        "network_mode": Value(string_value="host"),
-        "args": Value(
-            list_value=ListValue(
-                values=[
-                    Value(string_value="-verbose"),
-                    Value(string_value="-hooks=/alloc/tmp/hooks.json"),
-                    Value(string_value="-hotreload"),
-                ]
-            )
-        ),
-    },
-    Vault=Vault(Policies=["github-policy"]),
-)
-
-INSERTER = Job(
-    Name="protoconf-inserter",
-    ID="protoconf-inserter",
-    Datacenters=datacenters,
-    TaskGroups=[
-        TaskGroup(
-            Name="agent",
-            Count=1,
-            Tasks=[
-                ProtoconfExecTask(
-                    "jobs/protoconf-insert/config", {"webhook/hook.proto": HOOK_PROTO}
-                ),
-                WEBHOOK_TASK,
-                # PROTOCONF_AGENT,
-            ],
-        )
-    ],
-)
+    Template(
+        DestPath="local/git-creds",
+        EmbeddedTmpl="""{{with secret "kv/github-creds"}}{{.Data.url}}{{end}}""",
+        Perms="0600",
+    ),
+    Template(DestPath="/alloc/tmp/hooks.json", EmbeddedTmpl="[]"),
+]

@@ -1,0 +1,54 @@
+"""
+nomad jobs
+"""
+load(
+    "/executor/exec_config.proto", "Config", "WatcherConfig", "Action", "ActionTypeHttp"
+)
+load("/nomad/v0.10.4/api.proto", "RegisterJobRequest")
+load("/nomad/v0.10.4/api.pinc", "NOMAD_PROTO")
+load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
+load("../protoconf_exec_task.pinc", "ProtoconfExecTask")
+load("job.pinc", "NewJob")
+
+datacenters = [
+    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
+]
+
+
+def JobRegistry(
+    executor_name="jobs-executor",
+    config_root="jobs/jobs",
+    cluster_address="https://127.0.0.1:4646",
+):
+    executor = Config(items=[])
+
+    output = {"apply": executor}
+
+    def register_job(job):
+        output[job.ID] = RegisterJobRequest(Job=job)
+        e = WatcherConfig(
+            path="/".join([config_root, job.ID]),
+            proto_file="nomad/v0.10.4/api.proto",
+            actions=[
+                Action(
+                    http=ActionTypeHttp(uri=cluster_address + "/v1/jobs", method="POST")
+                )
+            ],
+        )
+        executor.items.append(e)
+
+    def newJob(*args, **kwargs):
+        j = NewJob(*args, **kwargs)
+        register_job(j.job)
+        return j
+
+    executor_job = NewJob(executor_name)
+    executor_job.AddTask(
+        ProtoconfExecTask(
+            "/".join([config_root, "apply"]), {"nomad/v0.10.4/api.proto": NOMAD_PROTO}
+        )
+    )
+    register_job(executor_job.job)
+
+    return struct(output=output, register_job=register_job, NewJob=newJob)
+
