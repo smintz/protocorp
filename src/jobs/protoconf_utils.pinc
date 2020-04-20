@@ -78,6 +78,9 @@ PROTOCONF_SERVER_POST_SH = (
     + """\
 USER=$(echo -n $1 | cut -d: -f1)
 USER=${USER:-smintz}
+SUBJECT=$(echo -n $1 | cut -d: -f2)
+SUBJECT=${SUBJECT:-Mutated with API}
+
 git config --global user.name "$USER"
 git config --global user.email "$USER@protoconf.com"
 cd ${PROTOCONF_ROOT}
@@ -85,7 +88,7 @@ make
 git -C "${PROTOCONF_ROOT}" add ${PROTOCONF_ROOT}
 
 
-git -C "${PROTOCONF_ROOT}" commit -m "Mutated with API"
+git -C "${PROTOCONF_ROOT}" commit -m "${SUBJECT}"
 git -C "${PROTOCONF_ROOT}" push
 """
 )
