@@ -23,7 +23,7 @@
                 "args": [
                   "-prefix=production/"
                 ],
-                "image": "protoconf/agent:v0.1.1-beta12.0",
+                "image": "protoconf/agent:v0.1.1",
                 "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"

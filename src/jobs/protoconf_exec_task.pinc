@@ -2,7 +2,7 @@
 ProtoconfExecTask
 """
 load("helpers/task.pinc", "NewTask")
-load("consts.pinc", "PROTOCONF_VERSION")
+load("consts.pinc", PROTOCONF_VERSION="PROTOCONF_V_VERSION")
 load("/nomad/v0.10.4/api.proto", "Template")
 
 

@@ -1,0 +1,31 @@
+"""
+docker.pinc
+"""
+load("/pc4os/component.pinc", "Component")
+load("/pc4os/command.pinc", "Command")
+load("/jobs/consts.pinc", "PROTOCONF_VERSION")
+
+
+def ProtoconfBinary(version=PROTOCONF_VERSION):
+    def render():
+        return [
+            Command(
+                "curl",
+                "-fsSL",
+                "https://github.com/protoconf/protoconf/releases/download/{version}/protoconf-linux-{version}.tar.gz".format(
+                    version=version
+                ),
+                "-O",
+                "/tmp/protoconf-linux-{version}.tar.gz".format(version=version),
+            ),
+            Command(
+                "tar",
+                "-xvf",
+                "/tmp/protoconf-linux-{version}.tar.gz".format(version=version),
+                "-C",
+                "/usr/local/bin",
+            ),
+        ]
+
+    return Component("ProtoconfBinary", render)
+

@@ -25,7 +25,7 @@
                   "-config=jobs/local/apply",
                   "-proto_dir=/local"
                 ],
-                "image": "protoconf/protoconf:v0.1.1-beta12.0",
+                "image": "protoconf/protoconf:v0.1.1",
                 "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"

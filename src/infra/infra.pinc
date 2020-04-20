@@ -18,6 +18,7 @@ load("installers/docker.pinc", "Docker")
 load("installers/consul.pinc", "Consul")
 load("installers/vault.pinc", "Vault")
 load("installers/nomad.pinc", "Nomad")
+load("installers/protoconf_binary.pinc", "ProtoconfBinary")
 load("ca.pinc", "CA")
 load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
@@ -204,6 +205,7 @@ advertise {
             vault,
             Docker(),
             Nomad(role, nmd, ca=ca, additional_config=nomad_config),
+            ProtoconfBinary(),
         ]
 
     return Component("DeviceUserData", render)
