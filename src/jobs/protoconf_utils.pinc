@@ -80,7 +80,8 @@ USER=$(echo -n $1 | cut -d: -f1)
 USER=${USER:-smintz}
 git config --global user.name "$USER"
 git config --global user.email "$USER@protoconf.com"
-protoconf compile ${PROTOCONF_ROOT}
+cd ${PROTOCONF_ROOT}
+make
 git -C "${PROTOCONF_ROOT}" add ${PROTOCONF_ROOT}
 
 
