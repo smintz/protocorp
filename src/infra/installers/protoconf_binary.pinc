@@ -15,7 +15,7 @@ def ProtoconfBinary(version=PROTOCONF_VERSION):
                 "https://github.com/protoconf/protoconf/releases/download/{version}/protoconf-linux-{version}.tar.gz".format(
                     version=version
                 ),
-                "-O",
+                "-o",
                 "/tmp/protoconf-linux-{version}.tar.gz".format(version=version),
             ),
             Command(
