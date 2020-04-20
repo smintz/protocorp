@@ -1,19 +1,8 @@
 """
 utils for protoconf based nomad jobs
 """
-load(
-    "/nomad/v0.10.4/api.proto",
-    "NetworkResource",
-    "Port",
-    "Resources",
-    "Task",
-    "Template",
-    "Job",
-    "TaskGroup",
-    "Vault",
-)
+load("/nomad/v0.10.4/api.proto", "Template", "ServiceCheck")
 load("helpers/job.pinc", "NewJob")
-load("/google/protobuf/struct.proto", "Value", "ListValue")
 load("consts.pinc", "PROTOCONF_VERSION")
 load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
 
@@ -21,30 +10,6 @@ datacenters = [
     "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
 ]
 
-
-PROTOCONF_AGENT_TASK = Task(
-    Name="protoconf-agent",
-    Driver="docker",
-    Resources=Resources(
-        Networks=[NetworkResource(ReservedPorts=[Port(Label="agent", Value=4300)])]
-    ),
-    Config={
-        "image": Value(string_value="protoconf/agent:" + PROTOCONF_VERSION),
-        "network_mode": Value(string_value="host"),
-        "volumes": Value(
-            list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
-        ),
-        "args": Value(
-            list_value=ListValue(
-                values=[
-                    Value(string_value="-store=consul"),
-                    Value(string_value="-store-address=http://127.0.0.1:8500"),
-                    Value(string_value="-prefix=production/"),
-                ]
-            )
-        ),
-    },
-)
 
 PROTOCONF_AGENT_JOB = NewJob("protoconf-agent", type="system")
 task = PROTOCONF_AGENT_JOB.NewTask("protoconf-agent")
@@ -100,48 +65,29 @@ exec protoconf serve -pre=/local/pre.sh -post=/local/post.sh /local/protocorp
 """
 )
 
-PROTOCONF_SERVER_TASK = Task(
-    Name="protoconf-server",
-    Driver="docker",
-    Resources=Resources(
-        Networks=[NetworkResource(ReservedPorts=[Port(Label="server", Value=4301)])]
+
+PROTOCONF_SERVER_JOB = NewJob("protoconf-server")
+mutate = PROTOCONF_SERVER_JOB.NewTask("protoconf-server")
+mutate.task.Templates = [
+    Template(
+        EmbeddedTmpl="""{{with secret "kv/github-creds"}}{{.Data.url}}{{end}}""",
+        DestPath="local/github-creds",
     ),
-    Vault=Vault(Policies=["github-policy"]),
-    Templates=[
-        Template(
-            EmbeddedTmpl="""{{with secret "kv/github-creds"}}{{.Data.url}}{{end}}""",
-            DestPath="local/github-creds",
-        ),
-        Template(
-            EmbeddedTmpl=PROTOCONF_SERVER_ENTRYPOINT_SH,
-            DestPath="local/entrypoint.sh",
-            Perms="0755",
-        ),
-        Template(
-            EmbeddedTmpl=PROTOCONF_SERVER_PRE_SH, DestPath="local/pre.sh", Perms="0755"
-        ),
-        Template(
-            EmbeddedTmpl=PROTOCONF_SERVER_POST_SH,
-            DestPath="local/post.sh",
-            Perms="0755",
-        ),
-    ],
-    Config={
-        "image": Value(string_value="smintz/webhook:latest"),
-        "network_mode": Value(string_value="host"),
-        "volumes": Value(
-            list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
-        ),
-        "entrypoint": Value(
-            list_value=ListValue(values=[Value(string_value="/local/entrypoint.sh")])
-        ),
-    },
-)
-
-PROTOCONF_SERVER_JOB = Job(
-    Name="protoconf-server",
-    ID="protoconf-server",
-    Datacenters=datacenters,
-    TaskGroups=[TaskGroup(Name="server", Count=1, Tasks=[PROTOCONF_SERVER_TASK])],
-)
-
+    Template(
+        EmbeddedTmpl=PROTOCONF_SERVER_ENTRYPOINT_SH,
+        DestPath="local/entrypoint.sh",
+        Perms="0755",
+    ),
+    Template(
+        EmbeddedTmpl=PROTOCONF_SERVER_PRE_SH, DestPath="local/pre.sh", Perms="0755"
+    ),
+    Template(
+        EmbeddedTmpl=PROTOCONF_SERVER_POST_SH, DestPath="local/post.sh", Perms="0755"
+    ),
+]
+mutate.SetImage("smintz/webhook:latest")
+mutate.SetConfig("network_mode", "host")
+mutate.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
+mutate.SetConfig("entrypoint", ["/local/entrypoint.sh"])
+mutate.AddVaultPolicies("github-policy")
+mutate.NewService("mutate", reserve=4301, checks=[ServiceCheck(Type="tcp")])

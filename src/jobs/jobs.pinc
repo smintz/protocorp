@@ -1,7 +1,6 @@
 """
 jobs registry
 """
-load("helpers/registry.pinc", "JobRegistry")
 load("/jobs/protoconf-insert/job.pinc", INSERTER="job")
 load("fabio.nomad.pinc", "FABIO_JOB")
 load("protoconf_utils.pinc", "PROTOCONF_AGENT_JOB", "PROTOCONF_SERVER_JOB")
@@ -9,7 +8,7 @@ load("protoconf_utils.pinc", "PROTOCONF_AGENT_JOB", "PROTOCONF_SERVER_JOB")
 
 def populate(reg):
     reg.register_job(PROTOCONF_AGENT_JOB.job)
-    reg.register_job(PROTOCONF_SERVER_JOB)
+    reg.register_job(PROTOCONF_SERVER_JOB.job)
     reg.register_job(FABIO_JOB)
     reg.register_job(INSERTER.job)
 
