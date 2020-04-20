@@ -1,0 +1,49 @@
+{
+  "protoFile": "nomad/v0.10.4/api.proto",
+  "value": {
+    "@type": "type.googleapis.com/api.RegisterJobRequest",
+    "Job": {
+      "ID": "fabio",
+      "Name": "fabio",
+      "Type": "system",
+      "Datacenters": [
+        "ams3c01"
+      ],
+      "TaskGroups": [
+        {
+          "Name": "fabio",
+          "Count": 1,
+          "Tasks": [
+            {
+              "Name": "fabio",
+              "Driver": "docker",
+              "Config": {
+                "image": "fabiolb/fabio",
+                "network_mode": "host",
+                "volumes": [
+                  "/etc/ssl:/etc/ssl"
+                ]
+              },
+              "Resources": {
+                "Networks": [
+                  {
+                    "ReservedPorts": [
+                      {
+                        "Label": "lb",
+                        "Value": 9999
+                      },
+                      {
+                        "Label": "ui",
+                        "Value": 9998
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

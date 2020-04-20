@@ -1,0 +1,126 @@
+{
+  "protoFile": "nomad/v0.10.4/api.proto",
+  "value": {
+    "@type": "type.googleapis.com/api.RegisterJobRequest",
+    "Job": {
+      "Region": "global",
+      "ID": "protoconf-inserter",
+      "Name": "protoconf-inserter",
+      "Type": "service",
+      "Priority": 75,
+      "Datacenters": [
+        "ams3c01"
+      ],
+      "TaskGroups": [
+        {
+          "Name": "default",
+          "Count": 1,
+          "Tasks": [
+            {
+              "Name": "protoconf-exec",
+              "Driver": "docker",
+              "Config": {
+                "args": [
+                  "exec",
+                  "-config=jobs/protoconf-insert/config",
+                  "-proto_dir=/local"
+                ],
+                "image": "protoconf/protoconf:v0.1.1-beta12.0",
+                "network_mode": "host",
+                "volumes": [
+                  "/etc/ssl:/etc/ssl"
+                ]
+              },
+              "Resources": {
+                "Networks": [
+                  {}
+                ]
+              },
+              "Vault": {
+                "Policies": [
+                  "default"
+                ]
+              },
+              "Templates": [
+                {
+                  "DestPath": "local/webhook/hook.proto",
+                  "EmbeddedTmpl": "syntax = \"proto3\";\n\npackage hook;\n\noption go_package = \"github.com/adnanh/webhook/hook\";\n\nmessage Hook {\n  string id = 1;\n\n  string ExecuteCommand = 2 [json_name = \"execute-command\"];\n\n  string CommandWorkingDirectory = 3 [json_name = \"command-working-directory\"];\n\n  string ResponseMessage = 4 [json_name = \"response-message\"];\n\n  repeated Header ResponseHeaders = 5 [json_name = \"response-headers\"];\n\n  bool CaptureCommandOutput = 6 [json_name = \"include-command-output-in-response\"];\n\n  bool CaptureCommandOutputOnError = 7 [json_name = \"include-command-output-in-response-on-error\"];\n\n  repeated Argument PassEnvironmentToCommand = 8 [json_name = \"pass-environment-to-command\"];\n\n  repeated Argument PassArgumentsToCommand = 9 [json_name = \"pass-arguments-to-command\"];\n\n  repeated Argument PassFileToCommand = 10 [json_name = \"pass-file-to-command\"];\n\n  repeated Argument JSONStringParameters = 11 [json_name = \"parse-parameters-as-json\"];\n\n  Rules TriggerRule = 12 [json_name = \"trigger-rule\"];\n\n  int32 TriggerRuleMismatchHttpResponseCode = 13 [json_name = \"trigger-rule-mismatch-http-response-code\"];\n\n  string IncomingPayloadContentType = 14 [json_name = \"incoming-payload-content-type\"];\n\n  int32 SuccessHttpResponseCode = 15 [json_name = \"success-http-response-code\"];\n}\n\nmessage Header {\n  string name = 1;\n\n  string value = 2;\n}\n\nmessage Argument {\n  string source = 1;\n\n  string name = 2;\n\n  string envname = 3;\n\n  bool base64decode = 4;\n}\n\nmessage Rules {\n  repeated Rules and = 1;\n\n  repeated Rules or = 2;\n\n  NotRule not = 3;\n\n  MatchRule match = 4;\n}\n\nmessage NotRule {\n  repeated Rules And = 1 [json_name = \"and\"];\n\n  repeated Rules or = 2;\n\n  NotRule not = 3;\n\n  MatchRule match = 4;\n}\n\nmessage MatchRule {\n  string type = 1;\n\n  string regex = 2;\n\n  string secret = 3;\n\n  string value = 4;\n\n  Argument parameter = 5;\n\n  string IPRange = 6 [json_name = \"ip-range\"];\n}\n"
+                }
+              ]
+            },
+            {
+              "Name": "webhook",
+              "Driver": "docker",
+              "Config": {
+                "args": [
+                  "-verbose",
+                  "-hooks=/alloc/tmp/hooks.json",
+                  "-hotreload"
+                ],
+                "image": "smintz/webhook:latest",
+                "network_mode": "host",
+                "volumes": [
+                  "/etc/ssl:/etc/ssl"
+                ]
+              },
+              "Services": [
+                {
+                  "Name": "webhooks",
+                  "Tags": [
+                    "urlprefix-webhooks.service.ams3c01.protoconf.sh:9999/"
+                  ],
+                  "PortLabel": "webhooks",
+                  "Checks": [
+                    {
+                      "Type": "http",
+                      "Path": "/hooks/protoconf-insert",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ]
+                }
+              ],
+              "Resources": {
+                "Networks": [
+                  {
+                    "ReservedPorts": [
+                      {
+                        "Label": "webhooks",
+                        "Value": 9000
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Vault": {
+                "Policies": [
+                  "default",
+                  "github-policy"
+                ]
+              },
+              "Templates": [
+                {
+                  "DestPath": "local/insertion-script.sh",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\n#if [ -z \"${STORE_ADDRESS}\" ]; then\n#  echo \"STORE_ADDRESS is unset\"\n#  exit 1\n#fi\n\necho \"VARS: $*\"\nSTORE_TYPE=consul\nSTORE_ADDRESS=\"http://127.0.0.1:8500\"\nPREFIX=\"production\"\nSHOULD_DELETE=\"false\"\nCHANGES_ONLY=\"false\"\nBULK_SIZE=\"10\"\n\nexport GIT_TERMINAL_PROMPT=0\ngit config --global credential.helper \"store --file=/local/git-creds\"\nmkdir -p /tmp/repo\ngit clone $GIT_REPO /tmp/repo || cd /tmp/repo\ncd /tmp/repo\ngit fetch -a\ngit reset --hard $AFTER_COMMIT\nif [ \"${CHANGES_ONLY}\" == \"true\" ]; then\n  CONFIGS_TO_INSERT=$(git diff --name-only --diff-filter=ACMR ${AFTER_COMMIT:-HEAD} ${BEFORE_COMMIT:-HEAD~1} | sed -n 's/^materialized_config\\///p')\nelse\n  CONFIGS_TO_INSERT=$(find . -name *.materialized_JSON | sed -n 's/^.\\/materialized_config\\///p')\nfi\nif [ -z \"$CONFIGS_TO_INSERT\" ]; then\n    exit 0\nfi\nDELETE=\"\"\nif [ \"${SHOULD_DELETE}\" == \"true\" ]; then\n  DELETE=\"-d\"\nfi\n\necho $CONFIGS_TO_INSERT | xargs -n${BULK_SIZE} protoconf insert   -store \"${STORE_TYPE}\"   -store-address \"${STORE_ADDRESS}\"   -prefix \"${PREFIX}/\"   ${DELETE}   \"$GITHUB_WORKSPACE\"\n",
+                  "Perms": "0755"
+                },
+                {
+                  "DestPath": "local/git-creds",
+                  "EmbeddedTmpl": "{{with secret \"kv/github-creds\"}}{{.Data.url}}{{end}}",
+                  "Perms": "0600"
+                },
+                {
+                  "DestPath": "/alloc/tmp/hooks.json",
+                  "EmbeddedTmpl": "[]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -4,60 +4,60 @@
     "@type": "type.googleapis.com/exec_config.Config",
     "items": [
       {
-        "path": "jobs/jobs/jobs-executor",
+        "path": "jobs/local/local-job-executor",
         "protoFile": "nomad/v0.10.4/api.proto",
         "actions": [
           {
             "http": {
-              "uri": "https://127.0.0.1:4646/v1/jobs",
+              "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
             }
           }
         ]
       },
       {
-        "path": "jobs/jobs/protoconf-agent",
+        "path": "jobs/local/protoconf-agent",
         "protoFile": "nomad/v0.10.4/api.proto",
         "actions": [
           {
             "http": {
-              "uri": "https://127.0.0.1:4646/v1/jobs",
+              "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
             }
           }
         ]
       },
       {
-        "path": "jobs/jobs/protoconf-server",
+        "path": "jobs/local/protoconf-server",
         "protoFile": "nomad/v0.10.4/api.proto",
         "actions": [
           {
             "http": {
-              "uri": "https://127.0.0.1:4646/v1/jobs",
+              "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
             }
           }
         ]
       },
       {
-        "path": "jobs/jobs/fabio",
+        "path": "jobs/local/fabio",
         "protoFile": "nomad/v0.10.4/api.proto",
         "actions": [
           {
             "http": {
-              "uri": "https://127.0.0.1:4646/v1/jobs",
+              "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
             }
           }
         ]
       },
       {
-        "path": "jobs/jobs/protoconf-inserter",
+        "path": "jobs/local/protoconf-inserter",
         "protoFile": "nomad/v0.10.4/api.proto",
         "actions": [
           {
             "http": {
-              "uri": "https://127.0.0.1:4646/v1/jobs",
+              "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
             }
           }

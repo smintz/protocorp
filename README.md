@@ -1,4 +1,25 @@
-# (2020-04-19)
+# (2020-04-20)
+
+### Bug Fixes
+
+- **insert:** subject can contains delimiter ([10037d8](https://github.com/smintz/protocorp/commit/10037d89a0cc03682688e5a115f8489e3aa65958))
+- **serve:** config git user and email ([f3ca032](https://github.com/smintz/protocorp/commit/f3ca032182cb5a20365e478a0367542970618d36))
+- **serve:** git add . ([dbcf957](https://github.com/smintz/protocorp/commit/dbcf95767e82f4e91c82db2a44ca12477e604b2c))
+- **serve:** git add PROTOCONF_ROOT ([bda00a5](https://github.com/smintz/protocorp/commit/bda00a514da31920f084091e64ccd445acfb983d))
+- **serve:** git push to origin ([25b2e0d](https://github.com/smintz/protocorp/commit/25b2e0d5d6b301b4514cd1d49c117a3439ae6f69))
+- **serve:** git reset syntax ([63f4e96](https://github.com/smintz/protocorp/commit/63f4e960b511b328b67b86f0302d66ea62871890))
+- **serve:** install make to docker image ([e4577b9](https://github.com/smintz/protocorp/commit/e4577b99a779881fc3ceed2fc7b949833036bceb))
+- **serve:** run the correct script ([cdacd48](https://github.com/smintz/protocorp/commit/cdacd48dcaa27afa79b3b4fe15f40e2672bbe505))
+- **serve:** start server after clone workspace ([f11bc70](https://github.com/smintz/protocorp/commit/f11bc70c359f79de35fcbdead53a627641c52428))
+- **serve:** store credential.helper syntax ([cbce465](https://github.com/smintz/protocorp/commit/cbce465f6838e294d6049c0a89a9e0fde929dbf7))
+- **webhook:** attach /etc/ssl volume ([b5dc7b7](https://github.com/smintz/protocorp/commit/b5dc7b7f52d2b2b8ef524aa99cf5392235505276))
+- global is a reserved word ([a46c762](https://github.com/smintz/protocorp/commit/a46c7623beccc811f086b1f16130214fe61cf73e))
+- **serve:** set default git user to smintz ([4d1c640](https://github.com/smintz/protocorp/commit/4d1c6407f1614ba86e1713cfb2e52143caecf9c4))
+
+### Features
+
+- **infra:** use mutable counter ([33273a2](https://github.com/smintz/protocorp/commit/33273a2f060ac0b5f47f09723b1509a679886bab))
+- **serve:** allow setting subject through metadata ([5002b45](https://github.com/smintz/protocorp/commit/5002b456f0793efa6206d1523650fd885a58560c))
 
 # [0.1.0](https://github.com/smintz/protocorp/compare/13946a06855080d51b3f9527009b2ef8c04ee05c...0.1.0) (2020-04-19)
 

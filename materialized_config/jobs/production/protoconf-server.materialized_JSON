@@ -1,0 +1,73 @@
+{
+  "protoFile": "nomad/v0.10.4/api.proto",
+  "value": {
+    "@type": "type.googleapis.com/api.RegisterJobRequest",
+    "Job": {
+      "ID": "protoconf-server",
+      "Name": "protoconf-server",
+      "Datacenters": [
+        "ams3c01"
+      ],
+      "TaskGroups": [
+        {
+          "Name": "server",
+          "Count": 1,
+          "Tasks": [
+            {
+              "Name": "protoconf-server",
+              "Driver": "docker",
+              "Config": {
+                "entrypoint": [
+                  "/local/entrypoint.sh"
+                ],
+                "image": "smintz/webhook:latest",
+                "network_mode": "host",
+                "volumes": [
+                  "/etc/ssl:/etc/ssl"
+                ]
+              },
+              "Resources": {
+                "Networks": [
+                  {
+                    "ReservedPorts": [
+                      {
+                        "Label": "server",
+                        "Value": 4301
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Vault": {
+                "Policies": [
+                  "github-policy"
+                ]
+              },
+              "Templates": [
+                {
+                  "DestPath": "local/github-creds",
+                  "EmbeddedTmpl": "{{with secret \"kv/github-creds\"}}{{.Data.url}}{{end}}"
+                },
+                {
+                  "DestPath": "local/entrypoint.sh",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nmkdir -p ${PROTOCONF_ROOT}\ngit clone https://github.com/smintz/protocorp.git ${PROTOCONF_ROOT} || git -C ${PROTOCONF_ROOT} fetch -a\ngit -C \"${PROTOCONF_ROOT}\" reset --hard origin/master\nexec protoconf serve -pre=/local/pre.sh -post=/local/post.sh /local/protocorp\n",
+                  "Perms": "0755"
+                },
+                {
+                  "DestPath": "local/pre.sh",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nmkdir -p ${PROTOCONF_ROOT}\ngit clone https://github.com/smintz/protocorp.git ${PROTOCONF_ROOT} || git -C ${PROTOCONF_ROOT} fetch -a\ngit -C \"${PROTOCONF_ROOT}\" reset --hard origin/master\n",
+                  "Perms": "0755"
+                },
+                {
+                  "DestPath": "local/post.sh",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nUSER=$(echo -n $1 | cut -d: -f1)\nUSER=${USER:-smintz}\nSUBJECT=$(echo -n $1 | cut -d: -f2-)\nSUBJECT=${SUBJECT:-Mutated with API}\n\ngit config --global user.name \"$USER\"\ngit config --global user.email \"$USER@protoconf.com\"\ncd ${PROTOCONF_ROOT}\nmake\ngit -C \"${PROTOCONF_ROOT}\" add ${PROTOCONF_ROOT}\n\n\ngit -C \"${PROTOCONF_ROOT}\" commit -m \"${SUBJECT}\"\ngit -C \"${PROTOCONF_ROOT}\" push\n",
+                  "Perms": "0755"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
