@@ -78,7 +78,7 @@ PROTOCONF_SERVER_POST_SH = (
     + """\
 USER=$(echo -n $1 | cut -d: -f1)
 USER=${USER:-smintz}
-SUBJECT=$(echo -n $1 | cut -d: -f2)
+SUBJECT=$(echo -n $1 | cut -d: -f2-)
 SUBJECT=${SUBJECT:-Mutated with API}
 
 git config --global user.name "$USER"
