@@ -17,6 +17,7 @@ job.AddTask(
 webhook_task = job.NewTask("webhook")
 webhook_task.SetImage("smintz/webhook:latest")
 webhook_task.SetConfig("network_mode", "host")
+webhook_task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
 webhook_task.SetConfig(
     "args", ["-verbose", "-hooks=/alloc/tmp/hooks.json", "-hotreload"]
 )
