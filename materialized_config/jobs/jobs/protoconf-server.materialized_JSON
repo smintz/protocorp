@@ -60,7 +60,7 @@
                 },
                 {
                   "DestPath": "local/post.sh",
-                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nUSER=$(echo -n $1 | cut -d: -f1)\nUSER=${USER:-smintz}\ngit config --global user.name \"$USER\"\ngit config --global user.email \"$USER@protoconf.com\"\ncd ${PROTOCONF_ROOT}\nmake validate\ngit -C \"${PROTOCONF_ROOT}\" add ${PROTOCONF_ROOT}\n\n\ngit -C \"${PROTOCONF_ROOT}\" commit -m \"Mutated with API\"\ngit -C \"${PROTOCONF_ROOT}\" push\n",
+                  "EmbeddedTmpl": "#!/bin/bash\nset -e\nset -x\n\nPROTOCONF_ROOT=\"/local/protocorp\"\n\ngit config --global credential.helper \"store --file=/local/github-creds\"\nUSER=$(echo -n $1 | cut -d: -f1)\nUSER=${USER:-smintz}\ngit config --global user.name \"$USER\"\ngit config --global user.email \"$USER@protoconf.com\"\ncd ${PROTOCONF_ROOT}\nmake\ngit -C \"${PROTOCONF_ROOT}\" add ${PROTOCONF_ROOT}\n\n\ngit -C \"${PROTOCONF_ROOT}\" commit -m \"Mutated with API\"\ngit -C \"${PROTOCONF_ROOT}\" push\n",
                   "Perms": "0755"
                 }
               ]
