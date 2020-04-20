@@ -90,4 +90,8 @@ mutate.SetConfig("network_mode", "host")
 mutate.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
 mutate.SetConfig("entrypoint", ["/local/entrypoint.sh"])
 mutate.AddVaultPolicies("github-policy")
-mutate.NewService("mutate", reserve=4301, checks=[ServiceCheck(Type="tcp")])
+mutate.NewService(
+    "mutate",
+    reserve=4301,
+    checks=[ServiceCheck(Type="tcp", Interval=10 * 1000000000, Timeout=2 * 1000000000)],
+)
