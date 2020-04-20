@@ -2,6 +2,6 @@
   "protoFile": "infra/cluster.proto",
   "value": {
     "@type": "type.googleapis.com/Counters",
-    "globalCounter": 2
+    "globalCounter": 1
   }
 }
