@@ -308,13 +308,13 @@ CLUSTERS = [
         servers_count=3,
         tiers=[Tier(name="general", count=0)],
     ),
-    # Cluster(
-    #     provider=Cluster.Providers.DIGITALOCEAN,
-    #     region="lon1",
-    #     cluster_number=1,
-    #     servers_count=3,
-    #     tiers=[Tier(name="general", count=2)],
-    # ),
+    Cluster(
+        provider=Cluster.Providers.DIGITALOCEAN,
+        region="lon1",
+        cluster_number=1,
+        servers_count=3,
+        tiers=[Tier(name="general", count=0)],
+    ),
 ]
 
 for c in CLUSTERS:

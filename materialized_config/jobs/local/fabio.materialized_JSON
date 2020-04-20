@@ -7,7 +7,8 @@
       "Name": "fabio",
       "Type": "system",
       "Datacenters": [
-        "ams3c01"
+        "ams3c01",
+        "lon1c01"
       ],
       "TaskGroups": [
         {
