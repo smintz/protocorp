@@ -3,28 +3,22 @@ docker.pinc
 """
 load("/pc4os/component.pinc", "Component")
 load("/pc4os/command.pinc", "Command")
+load("/pc4os/file.pinc", "File")
 load("/jobs/consts.pinc", "PROTOCONF_VERSION")
 
 
 def ProtoconfBinary(version=PROTOCONF_VERSION):
+    download_file = "/tmp/protoconf-{version}.tar.gz".format(version=version)
+
     def render():
         return [
-            Command(
-                "curl",
-                "-fsSL",
-                "https://github.com/protoconf/protoconf/releases/download/{version}/protoconf-linux-{version}.tar.gz".format(
+            File(
+                download_file,
+                download="https://github.com/protoconf/protoconf/releases/download/{version}/protoconf-linux-{version}.tar.gz".format(
                     version=version
                 ),
-                "-o",
-                "/tmp/protoconf-linux-{version}.tar.gz".format(version=version),
             ),
-            Command(
-                "tar",
-                "-xvf",
-                "/tmp/protoconf-linux-{version}.tar.gz".format(version=version),
-                "-C",
-                "/usr/local/bin",
-            ),
+            Command("tar", "-xvf", download_file, "-C", "/usr/local/bin"),
         ]
 
     return Component("ProtoconfBinary", render)

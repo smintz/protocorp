@@ -125,7 +125,7 @@ def create_droplet(tf, nmd, user_data=""):
         private_networking=True,
         user_data=user_data,
     )
-    if nmd.id > 0:
+    if nmd.id > COUNTER:
         droplet.lifecycle = Lifecycle(
             ignore_changes=["user_data"], create_before_destroy=True
         )
@@ -151,7 +151,7 @@ def create_gcp_vm(tf, nmd, user_data=""):
         ],
         network_interface=[GoogleComputeInstance.NetworkInterface(network="default")],
     )
-    if nmd.id > 0:
+    if nmd.id > COUNTER:
         vm.lifecycle = Lifecycle(
             ignore_changes=["metadata_startup_script"], create_before_destroy=True
         )
