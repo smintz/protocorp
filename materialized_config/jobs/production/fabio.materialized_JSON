@@ -6,9 +6,6 @@
       "ID": "fabio",
       "Name": "fabio",
       "Type": "system",
-      "Datacenters": [
-        "ams3c01"
-      ],
       "TaskGroups": [
         {
           "Name": "fabio",
