@@ -101,7 +101,7 @@ def Consul(
     Returns:
         Installation and configuration script for the consul agent.
     """
-    dc = nf.dc
+    dc = nf.datacenter
 
     setup = [
         ConsulInstall(version),
@@ -142,7 +142,7 @@ def Consul(
                 nf.hostname,
                 nf.fqdn,
                 "consul.service.{}".format(nf.domain),
-                "consul.service.{}.{}".format(nf.dc, nf.domain),
+                "consul.service.{}.{}".format(nf.datacenter, nf.domain),
                 "localhost",
             ],
             ip_addresses=["127.0.0.1"],

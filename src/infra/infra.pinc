@@ -23,6 +23,8 @@ load("ca.pinc", "CA")
 load("/employees/employees.pinc", "EMPLOYEES")
 load("/pc4os/pc4os.pinc", "compile")
 load("/pc4os/component.pinc", "Component", "String")
+load("servermetadata.proto", "ServerMetadata")
+load("providers/digitalocean.pinc", "DigitalOceanCluster")
 load("mutable:infra/counter", counter="value")
 
 COUNTER = counter.global_counter
@@ -92,9 +94,9 @@ def ServerNameMetadata(tf):
         hostname = "${random_pet.%s.id}" % tfid
         dc = region + cluster
         fqdn = "{}.node.{}.{}".format(hostname, dc, CONSUL_DOMAIN)
-        return struct(
-            cluster=cluster,
-            dc=dc,
+        return ServerMetadata(
+            cluster_name=cluster,
+            datacenter=dc,
             domain=CONSUL_DOMAIN,
             fqdn=fqdn,
             hostname=hostname,
@@ -108,54 +110,6 @@ def ServerNameMetadata(tf):
 
 
 server_name_metadata = ServerNameMetadata(tf.resource)
-
-
-def create_droplet(tf, nmd, user_data=""):
-    droplet = DigitaloceanDroplet(
-        name=nmd.hostname,
-        image="ubuntu-18-04-x64",
-        region=nmd.region,
-        # size="s-1vcpu-1gb",
-        size="s-2vcpu-4gb",
-        ssh_keys=[
-            "${digitalocean_ssh_key.%s.id}" % keyname
-            for keyname in tf.digitalocean_ssh_key.keys()
-        ],
-        tags=[nmd.role, nmd.cluster],
-        private_networking=True,
-        user_data=user_data,
-    )
-    if nmd.id > COUNTER:
-        droplet.lifecycle = Lifecycle(
-            ignore_changes=["user_data"], create_before_destroy=True
-        )
-    return droplet
-
-
-def create_gcp_vm(tf, nmd, user_data=""):
-    vm = GoogleComputeInstance(
-        name=nmd.hostname,
-        machine_type="f1-micro",
-        zone=nmd.region + "-a",
-        labels={"role": nmd.role, "cluster": nmd.cluster},
-        tags=[nmd.role, nmd.cluster],
-        metadata_startup_script=user_data,
-        boot_disk=[
-            GoogleComputeInstance.BootDisk(
-                initialize_params=[
-                    GoogleComputeInstance.BootDisk.InitializeParams(
-                        image="ubuntu-os-cloud/ubuntu-1804-lts"
-                    )
-                ]
-            )
-        ],
-        network_interface=[GoogleComputeInstance.NetworkInterface(network="default")],
-    )
-    if nmd.id > COUNTER:
-        vm.lifecycle = Lifecycle(
-            ignore_changes=["metadata_startup_script"], create_before_destroy=True
-        )
-    return vm
 
 
 def DeviceUserData(role, nmd, provider):
@@ -211,36 +165,38 @@ advertise {
     return Component("DeviceUserData", render)
 
 
-def create_device(tf, nmd, provider):
+def create_device(tf, nmd, cluster):
     """
     create_device adds devices and their "pet" names to the terraform object
 
     Args:
         tf: The terraform protobuf object
         nmd: Node Metadata
-        provider: The cloud provider to use
+        cluster: the cluster configuration
     """
+    provider = str(cluster.provider)
 
     user_data = compile(DeviceUserData(nmd.role, nmd, provider))
 
     if provider == DIGITALOCEAN:
-        tf.digitalocean_droplet[nmd.tfid] = create_droplet(tf, nmd, user_data)
+        DigitalOceanCluster(tf, cluster).CreateInstance(nmd, user_data)
+        # tf.digitalocean_droplet[nmd.tfid] = create_droplet(tf, nmd, user_data)
         tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
             zone_id=CF_PCO_NF_ID,
-            name="{}.node.{}".format(nmd.hostname, nmd.dc),
+            name="{}.node.{}".format(nmd.hostname, nmd.datacenter),
             type="A",
             value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
         )
 
-    if provider == "google":
-        tf.google_compute_instance[nmd.tfid] = create_gcp_vm(nmd.role, nmd, user_data)
-        tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
-            zone_id=CF_PCO_NF_ID,
-            name="{}.node.{}".format(nmd.hostname, nmd.dc),
-            type="A",
-            value="${google_compute_instance.%s.network_interface.0.network_ip}"
-            % nmd.tfid,
-        )
+    # if provider == "google":
+    #     tf.google_compute_instance[nmd.tfid] = create_gcp_vm(nmd.role, nmd, user_data)
+    #     tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
+    #         zone_id=CF_PCO_NF_ID,
+    #         name="{}.node.{}".format(nmd.hostname, nmd.datacenter),
+    #         type="A",
+    #         value="${google_compute_instance.%s.network_interface.0.network_ip}"
+    #         % nmd.tfid,
+    #     )
 
 
 def ProvisionCluster(tf, cluster):
@@ -254,13 +210,13 @@ def ProvisionCluster(tf, cluster):
     cluster_name = get_cluster_name(cluster.cluster_number)
     index = COUNTER
 
-    if cluster.servers_count not in [3, 5, 7]:
-        fail("servers_count must be one of 3, 5 or 7 (got: %d)" % cluster.servers_count)
+    # if cluster.servers_count not in [3, 5, 7]:
+    #     fail("servers_count must be one of 3, 5 or 7 (got: %d)" % cluster.servers_count)
 
-    servers = [
-        server_name_metadata.create("server", i, cluster.region, cluster_name)
-        for i in range(index + 0, index + cluster.servers_count)
-    ]
+    # servers = [
+    #     server_name_metadata.create("server", i, cluster.region, cluster_name)
+    #     for i in range(index + 0, index + cluster.servers_count)
+    # ]
     clients = []
     for t in cluster.tiers:
         clients.extend(
@@ -270,8 +226,9 @@ def ProvisionCluster(tf, cluster):
             ]
         )
 
-    for nmd in servers + clients:
-        create_device(tf, nmd, str(cluster.provider))
+    for nmd in clients:
+        create_device(tf, nmd, cluster)
+
         tf.cloudflare_record[nmd.tfid + "-" + "star"] = CloudflareRecord(
             zone_id=CF_PCO_NF_ID,
             name="{}.service.{}".format("*", cluster.region + cluster_name),
@@ -280,8 +237,9 @@ def ProvisionCluster(tf, cluster):
             value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
         )
 
-    for svc in ["consul", "nomad", "vault"]:
-        for nmd in servers:
+    servers = [nmd for nmd in clients if nmd.role == "server"]
+    for nmd in servers:
+        for svc in ["consul", "nomad", "vault"]:
             tf.cloudflare_record[nmd.tfid + "-" + svc] = CloudflareRecord(
                 zone_id=CF_PCO_NF_ID,
                 name="{}.service.{}".format(svc, cluster.region + cluster_name),
@@ -290,7 +248,6 @@ def ProvisionCluster(tf, cluster):
                 value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
             )
 
-    for nmd in servers:
         tf.cloudflare_record[nmd.tfid + "-wan"] = CloudflareRecord(
             zone_id=CF_PROTOCONF_COM_ID,
             name="wan",
@@ -305,15 +262,13 @@ CLUSTERS = [
         provider=Cluster.Providers.DIGITALOCEAN,
         region="ams3",
         cluster_number=1,
-        servers_count=3,
-        tiers=[Tier(name="general", count=0)],
+        tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
     ),
     Cluster(
         provider=Cluster.Providers.DIGITALOCEAN,
         region="lon1",
         cluster_number=1,
-        servers_count=3,
-        tiers=[Tier(name="general", count=0)],
+        tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
     ),
 ]
 

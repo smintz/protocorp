@@ -198,7 +198,7 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
     Returns:
         a Nomad component
     """
-    dc = nf.dc
+    dc = nf.datacenter
     setup = [
         NomadInstall(version),
         File("/etc/nomad.d/nomad.hcl", content="\n".join(['data_dir = "/opt/nomad"'])),
@@ -255,7 +255,7 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
                 nf.hostname,
                 nf.fqdn,
                 "nomad.service.{}".format(nf.domain),
-                "nomad.service.{}.{}".format(nf.dc, nf.domain),
+                "nomad.service.{}.{}".format(nf.datacenter, nf.domain),
                 "server.global.nomad",
                 "localhost",
             ],

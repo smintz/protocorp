@@ -1,11 +1,12 @@
 syntax = "proto3";
 
-
+// A Tier is a group of servers used for a specific purpose 
 message Tier {
     string name = 1;
 
-    // class represent the type of instance should be used by the provider (e.g t1.small, c5.xlarge)
-    string class = 2;
+    // instance_type represents the type of instance should be used by the provider (e.g t1.small, c5.xlarge)
+    // TODO: implement in code
+    string instance_type = 2;
     uint32 count = 3;
 }
 
@@ -25,6 +26,7 @@ message Cluster {
     }
 }
 
+// Counters are used to make changes via the mutation api
 message Counters {
     uint32 global_counter = 1;
 }

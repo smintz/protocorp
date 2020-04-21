@@ -147,7 +147,7 @@ listener "tcp" {
                 nmd.hostname,
                 nmd.fqdn,
                 "vault.service.{}".format(nmd.domain),
-                "vault.service.{}.{}".format(nmd.dc, nmd.domain),
+                "vault.service.{}.{}".format(nmd.datacenter, nmd.domain),
                 "localhost",
             ],
             ip_addresses=["127.0.0.1"],
