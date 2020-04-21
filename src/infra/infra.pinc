@@ -4,15 +4,9 @@ This is the entrypoint of the terraform file.
 """
 load("cluster.proto", "Cluster", "Tier")
 load("/terraform/terraform.proto", "Terraform")
-load(
-    "/terraform/digitalocean-resources.proto",
-    "DigitaloceanDroplet",
-    "DigitaloceanSshKey",
-)
+load("/terraform/digitalocean-resources.proto", "DigitaloceanSshKey")
 load("/terraform/cloudflare-resources.proto", "CloudflareRecord")
 load("/terraform/random-resources.proto", "RandomPet", "RandomId")
-load("/terraform/google-data.proto", "GoogleComputeInstance")
-load("/terraform/meta.proto", "Lifecycle")
 load("installers/base.pinc", "Base")
 load("installers/docker.pinc", "Docker")
 load("installers/consul.pinc", "Consul")
