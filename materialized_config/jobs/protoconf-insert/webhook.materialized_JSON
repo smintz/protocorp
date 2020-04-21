@@ -4,6 +4,8 @@
     "@type": "type.googleapis.com/hook.Hook",
     "execute-command": "/local/insertion-script.sh",
     "id": "protoconf-insert",
+    "include-command-output-in-response": true,
+    "include-command-output-in-response-on-error": true,
     "pass-arguments-to-command": [
       {
         "source": "payload",

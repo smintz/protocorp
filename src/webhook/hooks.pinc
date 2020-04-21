@@ -10,6 +10,8 @@ def GithubHook(hook_id, command, secret, ref="refs/heads/master"):
         ExecuteCommand=command,
         ResponseMessage="OK",
         ResponseHeaders=[Header(name="Access-Control-Allow-Origin", value="*")],
+        CaptureCommandOutput=True,
+        CaptureCommandOutputOnError=True,
         PassEnvironmentToCommand=[
             Argument(envname="BEFORE_COMMIT", source="payload", name="before"),
             Argument(envname="AFTER_COMMIT", source="payload", name="after"),
