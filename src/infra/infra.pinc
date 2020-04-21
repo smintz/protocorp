@@ -258,12 +258,12 @@ CLUSTERS = [
         cluster_number=1,
         tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
     ),
-    Cluster(
-        provider=Cluster.Providers.DIGITALOCEAN,
-        region="lon1",
-        cluster_number=1,
-        tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
-    ),
+    #     Cluster(
+    #         provider=Cluster.Providers.DIGITALOCEAN,
+    #         region="lon1",
+    #         cluster_number=1,
+    #         tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
+    #     ),
 ]
 
 for c in CLUSTERS:

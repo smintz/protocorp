@@ -9,8 +9,7 @@
       "Type": "service",
       "Priority": 75,
       "Datacenters": [
-        "ams3c01",
-        "lon1c01"
+        "ams3c01"
       ],
       "TaskGroups": [
         {
