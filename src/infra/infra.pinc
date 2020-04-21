@@ -182,16 +182,6 @@ def create_device(tf, nmd, cluster):
             value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
         )
 
-    # if provider == "google":
-    #     tf.google_compute_instance[nmd.tfid] = create_gcp_vm(nmd.role, nmd, user_data)
-    #     tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
-    #         zone_id=CF_PCO_NF_ID,
-    #         name="{}.node.{}".format(nmd.hostname, nmd.datacenter),
-    #         type="A",
-    #         value="${google_compute_instance.%s.network_interface.0.network_ip}"
-    #         % nmd.tfid,
-    #     )
-
 
 def ProvisionCluster(tf, cluster):
     """
@@ -204,13 +194,10 @@ def ProvisionCluster(tf, cluster):
     cluster_name = get_cluster_name(cluster.cluster_number)
     index = COUNTER
 
-    # if cluster.servers_count not in [3, 5, 7]:
-    #     fail("servers_count must be one of 3, 5 or 7 (got: %d)" % cluster.servers_count)
+    servers_tier = [tier for tier in cluster.tiers if tier.name == "server"][0]
+    if servers_tier.count not in [3, 5, 7]:
+        fail("servers_count must be one of 3, 5 or 7 (got: %d)" % cluster.servers_count)
 
-    # servers = [
-    #     server_name_metadata.create("server", i, cluster.region, cluster_name)
-    #     for i in range(index + 0, index + cluster.servers_count)
-    # ]
     clients = []
     for t in cluster.tiers:
         clients.extend(
@@ -257,13 +244,7 @@ CLUSTERS = [
         region="ams3",
         cluster_number=1,
         tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
-    ),
-    #     Cluster(
-    #         provider=Cluster.Providers.DIGITALOCEAN,
-    #         region="lon1",
-    #         cluster_number=1,
-    #         tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
-    #     ),
+    )
 ]
 
 for c in CLUSTERS:
