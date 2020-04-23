@@ -1,0 +1,6307 @@
+syntax = "proto3";
+
+package terraform.aws.data;
+
+import "terraform/meta.proto";
+
+//AwsAcmCertificate version is 0
+message AwsAcmCertificate {
+  string arn = 1;
+
+  string domain = 2;
+
+  string id = 3;
+
+  repeated string key_types = 4 [json_name = "key_types"];
+
+  bool most_recent = 5 [json_name = "most_recent"];
+
+  repeated string statuses = 6;
+
+  repeated string types = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsAcmpcaCertificateAuthority version is 0
+message AwsAcmpcaCertificateAuthority {
+  string arn = 1;
+
+  string certificate = 2;
+
+  string certificate_chain = 3 [json_name = "certificate_chain"];
+
+  string certificate_signing_request = 4 [json_name = "certificate_signing_request"];
+
+  string id = 5;
+
+  string not_after = 6 [json_name = "not_after"];
+
+  string not_before = 7 [json_name = "not_before"];
+
+  string serial = 8;
+
+  string status = 9;
+
+  map<string, string> tags = 10;
+
+  string type = 11;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//AwsAlb version is 0
+message AwsAlb {
+  repeated AccessLogs access_logs = 1 [json_name = "access_logs"];
+
+  string arn = 2;
+
+  string arn_suffix = 3 [json_name = "arn_suffix"];
+
+  string dns_name = 4 [json_name = "dns_name"];
+
+  bool drop_invalid_header_fields = 5 [json_name = "drop_invalid_header_fields"];
+
+  bool enable_deletion_protection = 6 [json_name = "enable_deletion_protection"];
+
+  string id = 7;
+
+  int64 idle_timeout = 8 [json_name = "idle_timeout"];
+
+  bool internal = 9;
+
+  string load_balancer_type = 10 [json_name = "load_balancer_type"];
+
+  string name = 11;
+
+  repeated string security_groups = 12 [json_name = "security_groups"];
+
+  repeated SubnetMapping subnet_mapping = 13 [json_name = "subnet_mapping"];
+
+  repeated string subnets = 14;
+
+  map<string, string> tags = 15;
+
+  string vpc_id = 16 [json_name = "vpc_id"];
+
+  string zone_id = 17 [json_name = "zone_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+
+  int32 count = 19;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+
+  string provider = 21;
+
+  terraform.meta.Lifecycle lifecycle = 22;
+
+  message AccessLogs {
+    //bucket: string
+    string bucket = 1;
+
+    //enabled: bool
+    bool enabled = 2;
+
+    //prefix: string
+    string prefix = 3;
+  }
+
+  message SubnetMapping {
+    //allocation_id: string
+    string allocation_id = 1 [json_name = "allocation_id"];
+
+    //subnet_id: string
+    string subnet_id = 2 [json_name = "subnet_id"];
+  }
+}
+
+//AwsAlbListener version is 0
+message AwsAlbListener {
+  string arn = 1;
+
+  string certificate_arn = 2 [json_name = "certificate_arn"];
+
+  repeated DefaultAction default_action = 3 [json_name = "default_action"];
+
+  string id = 4;
+
+  string load_balancer_arn = 5 [json_name = "load_balancer_arn"];
+
+  int64 port = 6;
+
+  string protocol = 7;
+
+  string ssl_policy = 8 [json_name = "ssl_policy"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+
+  message DefaultAction {
+    //authenticate_cognito: list of object
+    repeated AuthenticateCognito authenticate_cognito = 1 [json_name = "authenticate_cognito"];
+
+    //authenticate_oidc: list of object
+    repeated AuthenticateOidc authenticate_oidc = 2 [json_name = "authenticate_oidc"];
+
+    //fixed_response: list of object
+    repeated FixedResponse fixed_response = 3 [json_name = "fixed_response"];
+
+    //order: number
+    int64 order = 4;
+
+    //redirect: list of object
+    repeated Redirect redirect = 5;
+
+    //target_group_arn: string
+    string target_group_arn = 6 [json_name = "target_group_arn"];
+
+    //type: string
+    string type = 7;
+
+    message AuthenticateCognito {
+      //authentication_request_extra_params: map of string
+      map<string, string> authentication_request_extra_params = 1;
+
+      //on_unauthenticated_request: string
+      string on_unauthenticated_request = 2 [json_name = "on_unauthenticated_request"];
+
+      //scope: string
+      string scope = 3;
+
+      //session_cookie_name: string
+      string session_cookie_name = 4 [json_name = "session_cookie_name"];
+
+      //session_timeout: number
+      int64 session_timeout = 5 [json_name = "session_timeout"];
+
+      //user_pool_arn: string
+      string user_pool_arn = 6 [json_name = "user_pool_arn"];
+
+      //user_pool_client_id: string
+      string user_pool_client_id = 7 [json_name = "user_pool_client_id"];
+
+      //user_pool_domain: string
+      string user_pool_domain = 8 [json_name = "user_pool_domain"];
+    }
+
+    message AuthenticateOidc {
+      //authentication_request_extra_params: map of string
+      map<string, string> authentication_request_extra_params = 1;
+
+      //authorization_endpoint: string
+      string authorization_endpoint = 2 [json_name = "authorization_endpoint"];
+
+      //client_id: string
+      string client_id = 3 [json_name = "client_id"];
+
+      //client_secret: string
+      string client_secret = 4 [json_name = "client_secret"];
+
+      //issuer: string
+      string issuer = 5;
+
+      //on_unauthenticated_request: string
+      string on_unauthenticated_request = 6 [json_name = "on_unauthenticated_request"];
+
+      //scope: string
+      string scope = 7;
+
+      //session_cookie_name: string
+      string session_cookie_name = 8 [json_name = "session_cookie_name"];
+
+      //session_timeout: number
+      int64 session_timeout = 9 [json_name = "session_timeout"];
+
+      //token_endpoint: string
+      string token_endpoint = 10 [json_name = "token_endpoint"];
+
+      //user_info_endpoint: string
+      string user_info_endpoint = 11 [json_name = "user_info_endpoint"];
+    }
+
+    message FixedResponse {
+      //content_type: string
+      string content_type = 1 [json_name = "content_type"];
+
+      //message_body: string
+      string message_body = 2 [json_name = "message_body"];
+
+      //status_code: string
+      string status_code = 3 [json_name = "status_code"];
+    }
+
+    message Redirect {
+      //host: string
+      string host = 1;
+
+      //path: string
+      string path = 2;
+
+      //port: string
+      string port = 3;
+
+      //protocol: string
+      string protocol = 4;
+
+      //query: string
+      string query = 5;
+
+      //status_code: string
+      string status_code = 6 [json_name = "status_code"];
+    }
+  }
+}
+
+//AwsAlbTargetGroup version is 0
+message AwsAlbTargetGroup {
+  string arn = 1;
+
+  string arn_suffix = 2 [json_name = "arn_suffix"];
+
+  int64 deregistration_delay = 3 [json_name = "deregistration_delay"];
+
+  repeated HealthCheck health_check = 4 [json_name = "health_check"];
+
+  string id = 5;
+
+  bool lambda_multi_value_headers_enabled = 6 [json_name = "lambda_multi_value_headers_enabled"];
+
+  string name = 7;
+
+  int64 port = 8;
+
+  string protocol = 9;
+
+  bool proxy_protocol_v2 = 10 [json_name = "proxy_protocol_v2"];
+
+  int64 slow_start = 11 [json_name = "slow_start"];
+
+  repeated Stickiness stickiness = 12;
+
+  map<string, string> tags = 13;
+
+  string target_type = 14 [json_name = "target_type"];
+
+  string vpc_id = 15 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
+
+  int32 count = 17;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 18;
+
+  string provider = 19;
+
+  terraform.meta.Lifecycle lifecycle = 20;
+
+  message HealthCheck {
+    //enabled: bool
+    bool enabled = 1;
+
+    //healthy_threshold: number
+    int64 healthy_threshold = 2 [json_name = "healthy_threshold"];
+
+    //interval: number
+    int64 interval = 3;
+
+    //matcher: string
+    string matcher = 4;
+
+    //path: string
+    string path = 5;
+
+    //port: string
+    string port = 6;
+
+    //protocol: string
+    string protocol = 7;
+
+    //timeout: number
+    int64 timeout = 8;
+
+    //unhealthy_threshold: number
+    int64 unhealthy_threshold = 9 [json_name = "unhealthy_threshold"];
+  }
+
+  message Stickiness {
+    //cookie_duration: number
+    int64 cookie_duration = 1 [json_name = "cookie_duration"];
+
+    //enabled: bool
+    bool enabled = 2;
+
+    //type: string
+    string type = 3;
+  }
+}
+
+//AwsAmi version is 0
+message AwsAmi {
+  string architecture = 1;
+
+  repeated BlockDeviceMappings block_device_mappings = 2 [json_name = "block_device_mappings"];
+
+  string creation_date = 3 [json_name = "creation_date"];
+
+  string description = 4;
+
+  repeated string executable_users = 5 [json_name = "executable_users"];
+
+  string hypervisor = 6;
+
+  string id = 7;
+
+  string image_id = 8 [json_name = "image_id"];
+
+  string image_location = 9 [json_name = "image_location"];
+
+  string image_owner_alias = 10 [json_name = "image_owner_alias"];
+
+  string image_type = 11 [json_name = "image_type"];
+
+  string kernel_id = 12 [json_name = "kernel_id"];
+
+  bool most_recent = 13 [json_name = "most_recent"];
+
+  string name = 14;
+
+  string name_regex = 15 [json_name = "name_regex"];
+
+  string owner_id = 16 [json_name = "owner_id"];
+
+  repeated string owners = 17;
+
+  string platform = 18;
+
+  repeated ProductCodes product_codes = 19 [json_name = "product_codes"];
+
+  bool public = 20;
+
+  string ramdisk_id = 21 [json_name = "ramdisk_id"];
+
+  string root_device_name = 22 [json_name = "root_device_name"];
+
+  string root_device_type = 23 [json_name = "root_device_type"];
+
+  string root_snapshot_id = 24 [json_name = "root_snapshot_id"];
+
+  string sriov_net_support = 25 [json_name = "sriov_net_support"];
+
+  string state = 26;
+
+  map<string, string> state_reason = 27;
+
+  map<string, string> tags = 28;
+
+  string virtualization_type = 29 [json_name = "virtualization_type"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 30;
+
+  int32 count = 31;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 32;
+
+  string provider = 33;
+
+  terraform.meta.Lifecycle lifecycle = 34;
+
+  message BlockDeviceMappings {
+    //device_name: string
+    string device_name = 1 [json_name = "device_name"];
+
+    //ebs: map of string
+    map<string, string> ebs = 2;
+
+    //no_device: string
+    string no_device = 3 [json_name = "no_device"];
+
+    //virtual_name: string
+    string virtual_name = 4 [json_name = "virtual_name"];
+  }
+
+  message ProductCodes {
+    //product_code_id: string
+    string product_code_id = 1 [json_name = "product_code_id"];
+
+    //product_code_type: string
+    string product_code_type = 2 [json_name = "product_code_type"];
+  }
+}
+
+//AwsAmiIds version is 0
+message AwsAmiIds {
+  repeated string executable_users = 1 [json_name = "executable_users"];
+
+  string id = 2;
+
+  repeated string ids = 3;
+
+  string name_regex = 4 [json_name = "name_regex"];
+
+  repeated string owners = 5;
+
+  bool sort_ascending = 6 [json_name = "sort_ascending"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsApiGatewayApiKey version is 0
+message AwsApiGatewayApiKey {
+  string created_date = 1 [json_name = "created_date"];
+
+  string description = 2;
+
+  bool enabled = 3;
+
+  string id = 4;
+
+  string last_updated_date = 5 [json_name = "last_updated_date"];
+
+  string name = 6;
+
+  map<string, string> tags = 7;
+
+  string value = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsApiGatewayResource version is 0
+message AwsApiGatewayResource {
+  string id = 1;
+
+  string parent_id = 2 [json_name = "parent_id"];
+
+  string path = 3;
+
+  string path_part = 4 [json_name = "path_part"];
+
+  string rest_api_id = 5 [json_name = "rest_api_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//AwsApiGatewayRestApi version is 0
+message AwsApiGatewayRestApi {
+  string api_key_source = 1 [json_name = "api_key_source"];
+
+  string arn = 2;
+
+  repeated string binary_media_types = 3 [json_name = "binary_media_types"];
+
+  string description = 4;
+
+  repeated EndpointConfiguration endpoint_configuration = 5 [json_name = "endpoint_configuration"];
+
+  string execution_arn = 6 [json_name = "execution_arn"];
+
+  string id = 7;
+
+  int64 minimum_compression_size = 8 [json_name = "minimum_compression_size"];
+
+  string name = 9;
+
+  string policy = 10;
+
+  string root_resource_id = 11 [json_name = "root_resource_id"];
+
+  map<string, string> tags = 12;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+
+  int32 count = 14;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+
+  message EndpointConfiguration {
+    //types: list of string
+    repeated string types = 1;
+
+    //vpc_endpoint_ids: list of string
+    repeated string vpc_endpoint_ids = 2 [json_name = "vpc_endpoint_ids"];
+  }
+}
+
+//AwsApiGatewayVpcLink version is 0
+message AwsApiGatewayVpcLink {
+  string description = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string status = 4;
+
+  string status_message = 5 [json_name = "status_message"];
+
+  map<string, string> tags = 6;
+
+  repeated string target_arns = 7 [json_name = "target_arns"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsArn version is 0
+message AwsArn {
+  string account = 1;
+
+  string arn = 2;
+
+  string id = 3;
+
+  string partition = 4;
+
+  string region = 5;
+
+  string resource = 6;
+
+  string service = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsAutoscalingGroup version is 0
+message AwsAutoscalingGroup {
+  string arn = 1;
+
+  repeated string availability_zones = 2 [json_name = "availability_zones"];
+
+  int64 default_cooldown = 3 [json_name = "default_cooldown"];
+
+  int64 desired_capacity = 4 [json_name = "desired_capacity"];
+
+  int64 health_check_grace_period = 5 [json_name = "health_check_grace_period"];
+
+  string health_check_type = 6 [json_name = "health_check_type"];
+
+  string id = 7;
+
+  string launch_configuration = 8 [json_name = "launch_configuration"];
+
+  repeated string load_balancers = 9 [json_name = "load_balancers"];
+
+  int64 max_size = 10 [json_name = "max_size"];
+
+  int64 min_size = 11 [json_name = "min_size"];
+
+  string name = 12;
+
+  bool new_instances_protected_from_scale_in = 13 [json_name = "new_instances_protected_from_scale_in"];
+
+  string placement_group = 14 [json_name = "placement_group"];
+
+  string service_linked_role_arn = 15 [json_name = "service_linked_role_arn"];
+
+  string status = 16;
+
+  repeated string target_group_arns = 17 [json_name = "target_group_arns"];
+
+  repeated string termination_policies = 18 [json_name = "termination_policies"];
+
+  string vpc_zone_identifier = 19 [json_name = "vpc_zone_identifier"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
+
+  int32 count = 21;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 22;
+
+  string provider = 23;
+
+  terraform.meta.Lifecycle lifecycle = 24;
+}
+
+//AwsAutoscalingGroups version is 0
+message AwsAutoscalingGroups {
+  repeated string arns = 1;
+
+  string id = 2;
+
+  repeated string names = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsAvailabilityZone version is 0
+message AwsAvailabilityZone {
+  bool all_availability_zones = 1 [json_name = "all_availability_zones"];
+
+  string group_name = 2 [json_name = "group_name"];
+
+  string id = 3;
+
+  string name = 4;
+
+  string name_suffix = 5 [json_name = "name_suffix"];
+
+  string network_border_group = 6 [json_name = "network_border_group"];
+
+  string opt_in_status = 7 [json_name = "opt_in_status"];
+
+  string region = 8;
+
+  string state = 9;
+
+  string zone_id = 10 [json_name = "zone_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//AwsAvailabilityZones version is 0
+message AwsAvailabilityZones {
+  bool all_availability_zones = 1 [json_name = "all_availability_zones"];
+
+  repeated string blacklisted_names = 2 [json_name = "blacklisted_names"];
+
+  repeated string blacklisted_zone_ids = 3 [json_name = "blacklisted_zone_ids"];
+
+  repeated string group_names = 4 [json_name = "group_names"];
+
+  string id = 5;
+
+  repeated string names = 6;
+
+  string state = 7;
+
+  repeated string zone_ids = 8 [json_name = "zone_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsBatchComputeEnvironment version is 0
+message AwsBatchComputeEnvironment {
+  string arn = 1;
+
+  string compute_environment_name = 2 [json_name = "compute_environment_name"];
+
+  string ecs_cluster_arn = 3 [json_name = "ecs_cluster_arn"];
+
+  string id = 4;
+
+  string service_role = 5 [json_name = "service_role"];
+
+  string state = 6;
+
+  string status = 7;
+
+  string status_reason = 8 [json_name = "status_reason"];
+
+  string type = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//AwsBatchJobQueue version is 0
+message AwsBatchJobQueue {
+  string arn = 1;
+
+  repeated ComputeEnvironmentOrder compute_environment_order = 2 [json_name = "compute_environment_order"];
+
+  string id = 3;
+
+  string name = 4;
+
+  int64 priority = 5;
+
+  string state = 6;
+
+  string status = 7;
+
+  string status_reason = 8 [json_name = "status_reason"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+
+  message ComputeEnvironmentOrder {
+    //compute_environment: string
+    string compute_environment = 1 [json_name = "compute_environment"];
+
+    //order: number
+    int64 order = 2;
+  }
+}
+
+//AwsBillingServiceAccount version is 0
+message AwsBillingServiceAccount {
+  string arn = 1;
+
+  string id = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsCallerIdentity version is 0
+message AwsCallerIdentity {
+  string account_id = 1 [json_name = "account_id"];
+
+  string arn = 2;
+
+  string id = 3;
+
+  string user_id = 4 [json_name = "user_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsCanonicalUserId version is 0
+message AwsCanonicalUserId {
+  string display_name = 1 [json_name = "display_name"];
+
+  string id = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsCloudformationExport version is 0
+message AwsCloudformationExport {
+  string exporting_stack_id = 1 [json_name = "exporting_stack_id"];
+
+  string id = 2;
+
+  string name = 3;
+
+  string value = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsCloudformationStack version is 0
+message AwsCloudformationStack {
+  repeated string capabilities = 1;
+
+  string description = 2;
+
+  bool disable_rollback = 3 [json_name = "disable_rollback"];
+
+  string iam_role_arn = 4 [json_name = "iam_role_arn"];
+
+  string id = 5;
+
+  string name = 6;
+
+  repeated string notification_arns = 7 [json_name = "notification_arns"];
+
+  map<string, string> outputs = 8;
+
+  map<string, string> parameters = 9;
+
+  map<string, string> tags = 10;
+
+  string template_body = 11 [json_name = "template_body"];
+
+  int64 timeout_in_minutes = 12 [json_name = "timeout_in_minutes"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+
+  int32 count = 14;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+}
+
+//AwsCloudfrontDistribution version is 0
+message AwsCloudfrontDistribution {
+  string arn = 1;
+
+  string domain_name = 2 [json_name = "domain_name"];
+
+  bool enabled = 3;
+
+  string etag = 4;
+
+  string hosted_zone_id = 5 [json_name = "hosted_zone_id"];
+
+  string id = 6;
+
+  int64 in_progress_validation_batches = 7 [json_name = "in_progress_validation_batches"];
+
+  string last_modified_time = 8 [json_name = "last_modified_time"];
+
+  string status = 9;
+
+  map<string, string> tags = 10;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//AwsCloudhsmV2Cluster version is 0
+message AwsCloudhsmV2Cluster {
+  repeated ClusterCertificates cluster_certificates = 1 [json_name = "cluster_certificates"];
+
+  string cluster_id = 2 [json_name = "cluster_id"];
+
+  string cluster_state = 3 [json_name = "cluster_state"];
+
+  string id = 4;
+
+  string security_group_id = 5 [json_name = "security_group_id"];
+
+  repeated string subnet_ids = 6 [json_name = "subnet_ids"];
+
+  string vpc_id = 7 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message ClusterCertificates {
+    //aws_hardware_certificate: string
+    string aws_hardware_certificate = 1 [json_name = "aws_hardware_certificate"];
+
+    //cluster_certificate: string
+    string cluster_certificate = 2 [json_name = "cluster_certificate"];
+
+    //cluster_csr: string
+    string cluster_csr = 3 [json_name = "cluster_csr"];
+
+    //hsm_certificate: string
+    string hsm_certificate = 4 [json_name = "hsm_certificate"];
+
+    //manufacturer_hardware_certificate: string
+    string manufacturer_hardware_certificate = 5 [json_name = "manufacturer_hardware_certificate"];
+  }
+}
+
+//AwsCloudtrailServiceAccount version is 0
+message AwsCloudtrailServiceAccount {
+  string arn = 1;
+
+  string id = 2;
+
+  string region = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsCloudwatchLogGroup version is 0
+message AwsCloudwatchLogGroup {
+  string arn = 1;
+
+  int64 creation_time = 2 [json_name = "creation_time"];
+
+  string id = 3;
+
+  string kms_key_id = 4 [json_name = "kms_key_id"];
+
+  string name = 5;
+
+  int64 retention_in_days = 6 [json_name = "retention_in_days"];
+
+  map<string, string> tags = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsCodecommitRepository version is 0
+message AwsCodecommitRepository {
+  string arn = 1;
+
+  string clone_url_http = 2 [json_name = "clone_url_http"];
+
+  string clone_url_ssh = 3 [json_name = "clone_url_ssh"];
+
+  string id = 4;
+
+  string repository_id = 5 [json_name = "repository_id"];
+
+  string repository_name = 6 [json_name = "repository_name"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsCognitoUserPools version is 0
+message AwsCognitoUserPools {
+  repeated string arns = 1;
+
+  string id = 2;
+
+  repeated string ids = 3;
+
+  string name = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsCurReportDefinition version is 0
+message AwsCurReportDefinition {
+  repeated string additional_artifacts = 1 [json_name = "additional_artifacts"];
+
+  repeated string additional_schema_elements = 2 [json_name = "additional_schema_elements"];
+
+  string compression = 3;
+
+  string format = 4;
+
+  string id = 5;
+
+  string report_name = 6 [json_name = "report_name"];
+
+  string s3_bucket = 7 [json_name = "s3_bucket"];
+
+  string s3_prefix = 8 [json_name = "s3_prefix"];
+
+  string s3_region = 9 [json_name = "s3_region"];
+
+  string time_unit = 10 [json_name = "time_unit"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//AwsCustomerGateway version is 0
+message AwsCustomerGateway {
+  int64 bgp_asn = 1 [json_name = "bgp_asn"];
+
+  string id = 2;
+
+  string ip_address = 3 [json_name = "ip_address"];
+
+  map<string, string> tags = 4;
+
+  string type = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//AwsDbClusterSnapshot version is 0
+message AwsDbClusterSnapshot {
+  int64 allocated_storage = 1 [json_name = "allocated_storage"];
+
+  repeated string availability_zones = 2 [json_name = "availability_zones"];
+
+  string db_cluster_identifier = 3 [json_name = "db_cluster_identifier"];
+
+  string db_cluster_snapshot_arn = 4 [json_name = "db_cluster_snapshot_arn"];
+
+  string db_cluster_snapshot_identifier = 5 [json_name = "db_cluster_snapshot_identifier"];
+
+  string engine = 6;
+
+  string engine_version = 7 [json_name = "engine_version"];
+
+  string id = 8;
+
+  bool include_public = 9 [json_name = "include_public"];
+
+  bool include_shared = 10 [json_name = "include_shared"];
+
+  string kms_key_id = 11 [json_name = "kms_key_id"];
+
+  string license_model = 12 [json_name = "license_model"];
+
+  bool most_recent = 13 [json_name = "most_recent"];
+
+  int64 port = 14;
+
+  string snapshot_create_time = 15 [json_name = "snapshot_create_time"];
+
+  string snapshot_type = 16 [json_name = "snapshot_type"];
+
+  string source_db_cluster_snapshot_arn = 17 [json_name = "source_db_cluster_snapshot_arn"];
+
+  string status = 18;
+
+  bool storage_encrypted = 19 [json_name = "storage_encrypted"];
+
+  map<string, string> tags = 20;
+
+  string vpc_id = 21 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 22;
+
+  int32 count = 23;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 24;
+
+  string provider = 25;
+
+  terraform.meta.Lifecycle lifecycle = 26;
+}
+
+//AwsDbEventCategories version is 0
+message AwsDbEventCategories {
+  repeated string event_categories = 1 [json_name = "event_categories"];
+
+  string id = 2;
+
+  string source_type = 3 [json_name = "source_type"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsDbInstance version is 0
+message AwsDbInstance {
+  string address = 1;
+
+  int64 allocated_storage = 2 [json_name = "allocated_storage"];
+
+  bool auto_minor_version_upgrade = 3 [json_name = "auto_minor_version_upgrade"];
+
+  string availability_zone = 4 [json_name = "availability_zone"];
+
+  int64 backup_retention_period = 5 [json_name = "backup_retention_period"];
+
+  string ca_cert_identifier = 6 [json_name = "ca_cert_identifier"];
+
+  string db_cluster_identifier = 7 [json_name = "db_cluster_identifier"];
+
+  string db_instance_arn = 8 [json_name = "db_instance_arn"];
+
+  string db_instance_class = 9 [json_name = "db_instance_class"];
+
+  string db_instance_identifier = 10 [json_name = "db_instance_identifier"];
+
+  int64 db_instance_port = 11 [json_name = "db_instance_port"];
+
+  string db_name = 12 [json_name = "db_name"];
+
+  repeated string db_parameter_groups = 13 [json_name = "db_parameter_groups"];
+
+  repeated string db_security_groups = 14 [json_name = "db_security_groups"];
+
+  string db_subnet_group = 15 [json_name = "db_subnet_group"];
+
+  repeated string enabled_cloudwatch_logs_exports = 16 [json_name = "enabled_cloudwatch_logs_exports"];
+
+  string endpoint = 17;
+
+  string engine = 18;
+
+  string engine_version = 19 [json_name = "engine_version"];
+
+  string hosted_zone_id = 20 [json_name = "hosted_zone_id"];
+
+  string id = 21;
+
+  int64 iops = 22;
+
+  string kms_key_id = 23 [json_name = "kms_key_id"];
+
+  string license_model = 24 [json_name = "license_model"];
+
+  string master_username = 25 [json_name = "master_username"];
+
+  int64 monitoring_interval = 26 [json_name = "monitoring_interval"];
+
+  string monitoring_role_arn = 27 [json_name = "monitoring_role_arn"];
+
+  bool multi_az = 28 [json_name = "multi_az"];
+
+  repeated string option_group_memberships = 29 [json_name = "option_group_memberships"];
+
+  int64 port = 30;
+
+  string preferred_backup_window = 31 [json_name = "preferred_backup_window"];
+
+  string preferred_maintenance_window = 32 [json_name = "preferred_maintenance_window"];
+
+  bool publicly_accessible = 33 [json_name = "publicly_accessible"];
+
+  string replicate_source_db = 34 [json_name = "replicate_source_db"];
+
+  string resource_id = 35 [json_name = "resource_id"];
+
+  bool storage_encrypted = 36 [json_name = "storage_encrypted"];
+
+  string storage_type = 37 [json_name = "storage_type"];
+
+  map<string, string> tags = 38;
+
+  string timezone = 39;
+
+  repeated string vpc_security_groups = 40 [json_name = "vpc_security_groups"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 41;
+
+  int32 count = 42;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 43;
+
+  string provider = 44;
+
+  terraform.meta.Lifecycle lifecycle = 45;
+}
+
+//AwsDbSnapshot version is 0
+message AwsDbSnapshot {
+  int64 allocated_storage = 1 [json_name = "allocated_storage"];
+
+  string availability_zone = 2 [json_name = "availability_zone"];
+
+  string db_instance_identifier = 3 [json_name = "db_instance_identifier"];
+
+  string db_snapshot_arn = 4 [json_name = "db_snapshot_arn"];
+
+  string db_snapshot_identifier = 5 [json_name = "db_snapshot_identifier"];
+
+  bool encrypted = 6;
+
+  string engine = 7;
+
+  string engine_version = 8 [json_name = "engine_version"];
+
+  string id = 9;
+
+  bool include_public = 10 [json_name = "include_public"];
+
+  bool include_shared = 11 [json_name = "include_shared"];
+
+  int64 iops = 12;
+
+  string kms_key_id = 13 [json_name = "kms_key_id"];
+
+  string license_model = 14 [json_name = "license_model"];
+
+  bool most_recent = 15 [json_name = "most_recent"];
+
+  string option_group_name = 16 [json_name = "option_group_name"];
+
+  int64 port = 17;
+
+  string snapshot_create_time = 18 [json_name = "snapshot_create_time"];
+
+  string snapshot_type = 19 [json_name = "snapshot_type"];
+
+  string source_db_snapshot_identifier = 20 [json_name = "source_db_snapshot_identifier"];
+
+  string source_region = 21 [json_name = "source_region"];
+
+  string status = 22;
+
+  string storage_type = 23 [json_name = "storage_type"];
+
+  string vpc_id = 24 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 25;
+
+  int32 count = 26;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 27;
+
+  string provider = 28;
+
+  terraform.meta.Lifecycle lifecycle = 29;
+}
+
+//AwsDirectoryServiceDirectory version is 0
+message AwsDirectoryServiceDirectory {
+  string access_url = 1 [json_name = "access_url"];
+
+  string alias = 2;
+
+  repeated ConnectSettings connect_settings = 3 [json_name = "connect_settings"];
+
+  string description = 4;
+
+  string directory_id = 5 [json_name = "directory_id"];
+
+  repeated string dns_ip_addresses = 6 [json_name = "dns_ip_addresses"];
+
+  string edition = 7;
+
+  bool enable_sso = 8 [json_name = "enable_sso"];
+
+  string id = 9;
+
+  string name = 10;
+
+  string security_group_id = 11 [json_name = "security_group_id"];
+
+  string short_name = 12 [json_name = "short_name"];
+
+  string size = 13;
+
+  map<string, string> tags = 14;
+
+  string type = 15;
+
+  repeated VpcSettings vpc_settings = 16 [json_name = "vpc_settings"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
+
+  int32 count = 18;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 19;
+
+  string provider = 20;
+
+  terraform.meta.Lifecycle lifecycle = 21;
+
+  message ConnectSettings {
+    //customer_dns_ips: set of string
+    repeated string customer_dns_ips = 1 [json_name = "customer_dns_ips"];
+
+    //customer_username: string
+    string customer_username = 2 [json_name = "customer_username"];
+
+    //subnet_ids: set of string
+    repeated string subnet_ids = 3 [json_name = "subnet_ids"];
+
+    //vpc_id: string
+    string vpc_id = 4 [json_name = "vpc_id"];
+  }
+
+  message VpcSettings {
+    //subnet_ids: set of string
+    repeated string subnet_ids = 1 [json_name = "subnet_ids"];
+
+    //vpc_id: string
+    string vpc_id = 2 [json_name = "vpc_id"];
+  }
+}
+
+//AwsDxGateway version is 0
+message AwsDxGateway {
+  string amazon_side_asn = 1 [json_name = "amazon_side_asn"];
+
+  string id = 2;
+
+  string name = 3;
+
+  string owner_account_id = 4 [json_name = "owner_account_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsDynamodbTable version is 0
+message AwsDynamodbTable {
+  string arn = 1;
+
+  repeated Attribute attribute = 2;
+
+  string billing_mode = 3 [json_name = "billing_mode"];
+
+  repeated GlobalSecondaryIndex global_secondary_index = 4 [json_name = "global_secondary_index"];
+
+  string hash_key = 5 [json_name = "hash_key"];
+
+  string id = 6;
+
+  repeated LocalSecondaryIndex local_secondary_index = 7 [json_name = "local_secondary_index"];
+
+  string name = 8;
+
+  repeated PointInTimeRecovery point_in_time_recovery = 9 [json_name = "point_in_time_recovery"];
+
+  string range_key = 10 [json_name = "range_key"];
+
+  int64 read_capacity = 11 [json_name = "read_capacity"];
+
+  repeated Replica replica = 12;
+
+  string stream_arn = 13 [json_name = "stream_arn"];
+
+  bool stream_enabled = 14 [json_name = "stream_enabled"];
+
+  string stream_label = 15 [json_name = "stream_label"];
+
+  string stream_view_type = 16 [json_name = "stream_view_type"];
+
+  map<string, string> tags = 17;
+
+  repeated Ttl ttl = 18;
+
+  int64 write_capacity = 19 [json_name = "write_capacity"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
+
+  int32 count = 21;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 22;
+
+  string provider = 23;
+
+  terraform.meta.Lifecycle lifecycle = 24;
+
+  message Attribute {
+    //name: string
+    string name = 1;
+
+    //type: string
+    string type = 2;
+  }
+
+  message GlobalSecondaryIndex {
+    //hash_key: string
+    string hash_key = 1 [json_name = "hash_key"];
+
+    //name: string
+    string name = 2;
+
+    //non_key_attributes: list of string
+    repeated string non_key_attributes = 3 [json_name = "non_key_attributes"];
+
+    //projection_type: string
+    string projection_type = 4 [json_name = "projection_type"];
+
+    //range_key: string
+    string range_key = 5 [json_name = "range_key"];
+
+    //read_capacity: number
+    int64 read_capacity = 6 [json_name = "read_capacity"];
+
+    //write_capacity: number
+    int64 write_capacity = 7 [json_name = "write_capacity"];
+  }
+
+  message LocalSecondaryIndex {
+    //name: string
+    string name = 1;
+
+    //non_key_attributes: list of string
+    repeated string non_key_attributes = 2 [json_name = "non_key_attributes"];
+
+    //projection_type: string
+    string projection_type = 3 [json_name = "projection_type"];
+
+    //range_key: string
+    string range_key = 4 [json_name = "range_key"];
+  }
+
+  message PointInTimeRecovery {
+    //enabled: bool
+    bool enabled = 1;
+  }
+
+  message Replica {
+    //region_name: string
+    string region_name = 1 [json_name = "region_name"];
+  }
+
+  message Ttl {
+    //attribute_name: string
+    string attribute_name = 1 [json_name = "attribute_name"];
+
+    //enabled: bool
+    bool enabled = 2;
+  }
+}
+
+//AwsEbsDefaultKmsKey version is 0
+message AwsEbsDefaultKmsKey {
+  string id = 1;
+
+  string key_arn = 2 [json_name = "key_arn"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsEbsEncryptionByDefault version is 0
+message AwsEbsEncryptionByDefault {
+  bool enabled = 1;
+
+  string id = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsEbsSnapshot version is 0
+message AwsEbsSnapshot {
+  string data_encryption_key_id = 1 [json_name = "data_encryption_key_id"];
+
+  string description = 2;
+
+  bool encrypted = 3;
+
+  string id = 4;
+
+  string kms_key_id = 5 [json_name = "kms_key_id"];
+
+  bool most_recent = 6 [json_name = "most_recent"];
+
+  string owner_alias = 7 [json_name = "owner_alias"];
+
+  string owner_id = 8 [json_name = "owner_id"];
+
+  repeated string owners = 9;
+
+  repeated string restorable_by_user_ids = 10 [json_name = "restorable_by_user_ids"];
+
+  string snapshot_id = 11 [json_name = "snapshot_id"];
+
+  repeated string snapshot_ids = 12 [json_name = "snapshot_ids"];
+
+  string state = 13;
+
+  map<string, string> tags = 14;
+
+  string volume_id = 15 [json_name = "volume_id"];
+
+  int64 volume_size = 16 [json_name = "volume_size"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
+
+  int32 count = 18;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 19;
+
+  string provider = 20;
+
+  terraform.meta.Lifecycle lifecycle = 21;
+}
+
+//AwsEbsSnapshotIds version is 0
+message AwsEbsSnapshotIds {
+  string id = 1;
+
+  repeated string ids = 2;
+
+  repeated string owners = 3;
+
+  repeated string restorable_by_user_ids = 4 [json_name = "restorable_by_user_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsEbsVolume version is 0
+message AwsEbsVolume {
+  string arn = 1;
+
+  string availability_zone = 2 [json_name = "availability_zone"];
+
+  bool encrypted = 3;
+
+  string id = 4;
+
+  int64 iops = 5;
+
+  string kms_key_id = 6 [json_name = "kms_key_id"];
+
+  bool most_recent = 7 [json_name = "most_recent"];
+
+  int64 size = 8;
+
+  string snapshot_id = 9 [json_name = "snapshot_id"];
+
+  map<string, string> tags = 10;
+
+  string volume_id = 11 [json_name = "volume_id"];
+
+  string volume_type = 12 [json_name = "volume_type"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+
+  int32 count = 14;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+}
+
+//AwsEc2InstanceTypeOffering version is 0
+message AwsEc2InstanceTypeOffering {
+  string id = 1;
+
+  string instance_type = 2 [json_name = "instance_type"];
+
+  string location_type = 3 [json_name = "location_type"];
+
+  repeated string preferred_instance_types = 4 [json_name = "preferred_instance_types"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsEc2InstanceTypeOfferings version is 0
+message AwsEc2InstanceTypeOfferings {
+  string id = 1;
+
+  repeated string instance_types = 2 [json_name = "instance_types"];
+
+  string location_type = 3 [json_name = "location_type"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsEc2TransitGateway version is 0
+message AwsEc2TransitGateway {
+  int64 amazon_side_asn = 1 [json_name = "amazon_side_asn"];
+
+  string arn = 2;
+
+  string association_default_route_table_id = 3 [json_name = "association_default_route_table_id"];
+
+  string auto_accept_shared_attachments = 4 [json_name = "auto_accept_shared_attachments"];
+
+  string default_route_table_association = 5 [json_name = "default_route_table_association"];
+
+  string default_route_table_propagation = 6 [json_name = "default_route_table_propagation"];
+
+  string description = 7;
+
+  string dns_support = 8 [json_name = "dns_support"];
+
+  string id = 9;
+
+  string owner_id = 10 [json_name = "owner_id"];
+
+  string propagation_default_route_table_id = 11 [json_name = "propagation_default_route_table_id"];
+
+  map<string, string> tags = 12;
+
+  string vpn_ecmp_support = 13 [json_name = "vpn_ecmp_support"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//AwsEc2TransitGatewayDxGatewayAttachment version is 0
+message AwsEc2TransitGatewayDxGatewayAttachment {
+  string dx_gateway_id = 1 [json_name = "dx_gateway_id"];
+
+  string id = 2;
+
+  map<string, string> tags = 3;
+
+  string transit_gateway_id = 4 [json_name = "transit_gateway_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsEc2TransitGatewayRouteTable version is 0
+message AwsEc2TransitGatewayRouteTable {
+  bool default_association_route_table = 1 [json_name = "default_association_route_table"];
+
+  bool default_propagation_route_table = 2 [json_name = "default_propagation_route_table"];
+
+  string id = 3;
+
+  map<string, string> tags = 4;
+
+  string transit_gateway_id = 5 [json_name = "transit_gateway_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//AwsEc2TransitGatewayVpcAttachment version is 0
+message AwsEc2TransitGatewayVpcAttachment {
+  string dns_support = 1 [json_name = "dns_support"];
+
+  string id = 2;
+
+  string ipv6_support = 3 [json_name = "ipv6_support"];
+
+  repeated string subnet_ids = 4 [json_name = "subnet_ids"];
+
+  map<string, string> tags = 5;
+
+  string transit_gateway_id = 6 [json_name = "transit_gateway_id"];
+
+  string vpc_id = 7 [json_name = "vpc_id"];
+
+  string vpc_owner_id = 8 [json_name = "vpc_owner_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsEc2TransitGatewayVpnAttachment version is 0
+message AwsEc2TransitGatewayVpnAttachment {
+  string id = 1;
+
+  map<string, string> tags = 2;
+
+  string transit_gateway_id = 3 [json_name = "transit_gateway_id"];
+
+  string vpn_connection_id = 4 [json_name = "vpn_connection_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsEcrImage version is 0
+message AwsEcrImage {
+  string id = 1;
+
+  string image_digest = 2 [json_name = "image_digest"];
+
+  int64 image_pushed_at = 3 [json_name = "image_pushed_at"];
+
+  int64 image_size_in_bytes = 4 [json_name = "image_size_in_bytes"];
+
+  string image_tag = 5 [json_name = "image_tag"];
+
+  repeated string image_tags = 6 [json_name = "image_tags"];
+
+  string registry_id = 7 [json_name = "registry_id"];
+
+  string repository_name = 8 [json_name = "repository_name"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsEcrRepository version is 0
+message AwsEcrRepository {
+  string arn = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string registry_id = 4 [json_name = "registry_id"];
+
+  string repository_url = 5 [json_name = "repository_url"];
+
+  map<string, string> tags = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsEcsCluster version is 0
+message AwsEcsCluster {
+  string arn = 1;
+
+  string cluster_name = 2 [json_name = "cluster_name"];
+
+  string id = 3;
+
+  int64 pending_tasks_count = 4 [json_name = "pending_tasks_count"];
+
+  int64 registered_container_instances_count = 5 [json_name = "registered_container_instances_count"];
+
+  int64 running_tasks_count = 6 [json_name = "running_tasks_count"];
+
+  repeated Setting setting = 7;
+
+  string status = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+
+  message Setting {
+    //name: string
+    string name = 1;
+
+    //value: string
+    string value = 2;
+  }
+}
+
+//AwsEcsContainerDefinition version is 0
+message AwsEcsContainerDefinition {
+  string container_name = 1 [json_name = "container_name"];
+
+  int64 cpu = 2;
+
+  bool disable_networking = 3 [json_name = "disable_networking"];
+
+  map<string, string> docker_labels = 4;
+
+  map<string, string> environment = 5;
+
+  string id = 6;
+
+  string image = 7;
+
+  string image_digest = 8 [json_name = "image_digest"];
+
+  int64 memory = 9;
+
+  int64 memory_reservation = 10 [json_name = "memory_reservation"];
+
+  string task_definition = 11 [json_name = "task_definition"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//AwsEcsService version is 0
+message AwsEcsService {
+  string arn = 1;
+
+  string cluster_arn = 2 [json_name = "cluster_arn"];
+
+  int64 desired_count = 3 [json_name = "desired_count"];
+
+  string id = 4;
+
+  string launch_type = 5 [json_name = "launch_type"];
+
+  string scheduling_strategy = 6 [json_name = "scheduling_strategy"];
+
+  string service_name = 7 [json_name = "service_name"];
+
+  string task_definition = 8 [json_name = "task_definition"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsEcsTaskDefinition version is 0
+message AwsEcsTaskDefinition {
+  string family = 1;
+
+  string id = 2;
+
+  string network_mode = 3 [json_name = "network_mode"];
+
+  int64 revision = 4;
+
+  string status = 5;
+
+  string task_definition = 6 [json_name = "task_definition"];
+
+  string task_role_arn = 7 [json_name = "task_role_arn"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsEfsFileSystem version is 0
+message AwsEfsFileSystem {
+  string arn = 1;
+
+  string creation_token = 2 [json_name = "creation_token"];
+
+  string dns_name = 3 [json_name = "dns_name"];
+
+  bool encrypted = 4;
+
+  string file_system_id = 5 [json_name = "file_system_id"];
+
+  string id = 6;
+
+  string kms_key_id = 7 [json_name = "kms_key_id"];
+
+  repeated LifecyclePolicy lifecycle_policy = 8 [json_name = "lifecycle_policy"];
+
+  string performance_mode = 9 [json_name = "performance_mode"];
+
+  int64 provisioned_throughput_in_mibps = 10 [json_name = "provisioned_throughput_in_mibps"];
+
+  map<string, string> tags = 11;
+
+  string throughput_mode = 12 [json_name = "throughput_mode"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+
+  int32 count = 14;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+
+  message LifecyclePolicy {
+    //transition_to_ia: string
+    string transition_to_ia = 1 [json_name = "transition_to_ia"];
+  }
+}
+
+//AwsEfsMountTarget version is 0
+message AwsEfsMountTarget {
+  string dns_name = 1 [json_name = "dns_name"];
+
+  string file_system_arn = 2 [json_name = "file_system_arn"];
+
+  string file_system_id = 3 [json_name = "file_system_id"];
+
+  string id = 4;
+
+  string ip_address = 5 [json_name = "ip_address"];
+
+  string mount_target_id = 6 [json_name = "mount_target_id"];
+
+  string network_interface_id = 7 [json_name = "network_interface_id"];
+
+  repeated string security_groups = 8 [json_name = "security_groups"];
+
+  string subnet_id = 9 [json_name = "subnet_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//AwsEip version is 0
+message AwsEip {
+  string association_id = 1 [json_name = "association_id"];
+
+  string domain = 2;
+
+  string id = 3;
+
+  string instance_id = 4 [json_name = "instance_id"];
+
+  string network_interface_id = 5 [json_name = "network_interface_id"];
+
+  string network_interface_owner_id = 6 [json_name = "network_interface_owner_id"];
+
+  string private_dns = 7 [json_name = "private_dns"];
+
+  string private_ip = 8 [json_name = "private_ip"];
+
+  string public_dns = 9 [json_name = "public_dns"];
+
+  string public_ip = 10 [json_name = "public_ip"];
+
+  string public_ipv4_pool = 11 [json_name = "public_ipv4_pool"];
+
+  map<string, string> tags = 12;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+
+  int32 count = 14;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+}
+
+//AwsEksCluster version is 0
+message AwsEksCluster {
+  string arn = 1;
+
+  repeated CertificateAuthority certificate_authority = 2 [json_name = "certificate_authority"];
+
+  string created_at = 3 [json_name = "created_at"];
+
+  repeated string enabled_cluster_log_types = 4 [json_name = "enabled_cluster_log_types"];
+
+  string endpoint = 5;
+
+  string id = 6;
+
+  repeated Identity identity = 7;
+
+  string name = 8;
+
+  string platform_version = 9 [json_name = "platform_version"];
+
+  string role_arn = 10 [json_name = "role_arn"];
+
+  string status = 11;
+
+  map<string, string> tags = 12;
+
+  string version = 13;
+
+  repeated VpcConfig vpc_config = 14 [json_name = "vpc_config"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
+
+  int32 count = 16;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
+
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
+
+  message CertificateAuthority {
+    //data: string
+    string data = 1;
+  }
+
+  message Identity {
+    //oidc: list of object
+    repeated Oidc oidc = 1;
+
+    message Oidc {
+      //issuer: string
+      string issuer = 1;
+    }
+  }
+
+  message VpcConfig {
+    //cluster_security_group_id: string
+    string cluster_security_group_id = 1 [json_name = "cluster_security_group_id"];
+
+    //endpoint_private_access: bool
+    bool endpoint_private_access = 2 [json_name = "endpoint_private_access"];
+
+    //endpoint_public_access: bool
+    bool endpoint_public_access = 3 [json_name = "endpoint_public_access"];
+
+    //public_access_cidrs: set of string
+    repeated string public_access_cidrs = 4 [json_name = "public_access_cidrs"];
+
+    //security_group_ids: set of string
+    repeated string security_group_ids = 5 [json_name = "security_group_ids"];
+
+    //subnet_ids: set of string
+    repeated string subnet_ids = 6 [json_name = "subnet_ids"];
+
+    //vpc_id: string
+    string vpc_id = 7 [json_name = "vpc_id"];
+  }
+}
+
+//AwsEksClusterAuth version is 0
+message AwsEksClusterAuth {
+  string id = 1;
+
+  string name = 2;
+
+  string token = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsElasticBeanstalkApplication version is 0
+message AwsElasticBeanstalkApplication {
+  repeated AppversionLifecycle appversion_lifecycle = 1 [json_name = "appversion_lifecycle"];
+
+  string arn = 2;
+
+  string description = 3;
+
+  string id = 4;
+
+  string name = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message AppversionLifecycle {
+    //delete_source_from_s3: bool
+    bool delete_source_from_s3 = 1 [json_name = "delete_source_from_s3"];
+
+    //max_age_in_days: number
+    int64 max_age_in_days = 2 [json_name = "max_age_in_days"];
+
+    //max_count: number
+    int64 max_count = 3 [json_name = "max_count"];
+
+    //service_role: string
+    string service_role = 4 [json_name = "service_role"];
+  }
+}
+
+//AwsElasticBeanstalkHostedZone version is 0
+message AwsElasticBeanstalkHostedZone {
+  string id = 1;
+
+  string region = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsElasticBeanstalkSolutionStack version is 0
+message AwsElasticBeanstalkSolutionStack {
+  string id = 1;
+
+  bool most_recent = 2 [json_name = "most_recent"];
+
+  string name = 3;
+
+  string name_regex = 4 [json_name = "name_regex"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsElasticacheCluster version is 0
+message AwsElasticacheCluster {
+  string arn = 1;
+
+  string availability_zone = 2 [json_name = "availability_zone"];
+
+  repeated CacheNodes cache_nodes = 3 [json_name = "cache_nodes"];
+
+  string cluster_address = 4 [json_name = "cluster_address"];
+
+  string cluster_id = 5 [json_name = "cluster_id"];
+
+  string configuration_endpoint = 6 [json_name = "configuration_endpoint"];
+
+  string engine = 7;
+
+  string engine_version = 8 [json_name = "engine_version"];
+
+  string id = 9;
+
+  string maintenance_window = 10 [json_name = "maintenance_window"];
+
+  string node_type = 11 [json_name = "node_type"];
+
+  string notification_topic_arn = 12 [json_name = "notification_topic_arn"];
+
+  int64 num_cache_nodes = 13 [json_name = "num_cache_nodes"];
+
+  string parameter_group_name = 14 [json_name = "parameter_group_name"];
+
+  int64 port = 15;
+
+  string replication_group_id = 16 [json_name = "replication_group_id"];
+
+  repeated string security_group_ids = 17 [json_name = "security_group_ids"];
+
+  repeated string security_group_names = 18 [json_name = "security_group_names"];
+
+  int64 snapshot_retention_limit = 19 [json_name = "snapshot_retention_limit"];
+
+  string snapshot_window = 20 [json_name = "snapshot_window"];
+
+  string subnet_group_name = 21 [json_name = "subnet_group_name"];
+
+  map<string, string> tags = 22;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 23;
+
+  int32 count = 24;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 25;
+
+  string provider = 26;
+
+  terraform.meta.Lifecycle lifecycle = 27;
+
+  message CacheNodes {
+    //address: string
+    string address = 1;
+
+    //availability_zone: string
+    string availability_zone = 2 [json_name = "availability_zone"];
+
+    //id: string
+    string id = 3;
+
+    //port: number
+    int64 port = 4;
+  }
+}
+
+//AwsElasticacheReplicationGroup version is 0
+message AwsElasticacheReplicationGroup {
+  bool auth_token_enabled = 1 [json_name = "auth_token_enabled"];
+
+  bool automatic_failover_enabled = 2 [json_name = "automatic_failover_enabled"];
+
+  string configuration_endpoint_address = 3 [json_name = "configuration_endpoint_address"];
+
+  string id = 4;
+
+  repeated string member_clusters = 5 [json_name = "member_clusters"];
+
+  string node_type = 6 [json_name = "node_type"];
+
+  int64 number_cache_clusters = 7 [json_name = "number_cache_clusters"];
+
+  int64 port = 8;
+
+  string primary_endpoint_address = 9 [json_name = "primary_endpoint_address"];
+
+  string replication_group_description = 10 [json_name = "replication_group_description"];
+
+  string replication_group_id = 11 [json_name = "replication_group_id"];
+
+  int64 snapshot_retention_limit = 12 [json_name = "snapshot_retention_limit"];
+
+  string snapshot_window = 13 [json_name = "snapshot_window"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//AwsElasticsearchDomain version is 0
+message AwsElasticsearchDomain {
+  string access_policies = 1 [json_name = "access_policies"];
+
+  map<string, string> advanced_options = 2;
+
+  string arn = 3;
+
+  repeated ClusterConfig cluster_config = 4 [json_name = "cluster_config"];
+
+  repeated CognitoOptions cognito_options = 5 [json_name = "cognito_options"];
+
+  bool created = 6;
+
+  bool deleted = 7;
+
+  string domain_id = 8 [json_name = "domain_id"];
+
+  string domain_name = 9 [json_name = "domain_name"];
+
+  repeated EbsOptions ebs_options = 10 [json_name = "ebs_options"];
+
+  string elasticsearch_version = 11 [json_name = "elasticsearch_version"];
+
+  repeated EncryptionAtRest encryption_at_rest = 12 [json_name = "encryption_at_rest"];
+
+  string endpoint = 13;
+
+  string id = 14;
+
+  string kibana_endpoint = 15 [json_name = "kibana_endpoint"];
+
+  repeated LogPublishingOptions log_publishing_options = 16 [json_name = "log_publishing_options"];
+
+  repeated NodeToNodeEncryption node_to_node_encryption = 17 [json_name = "node_to_node_encryption"];
+
+  string processing = 18;
+
+  repeated SnapshotOptions snapshot_options = 19 [json_name = "snapshot_options"];
+
+  map<string, string> tags = 20;
+
+  repeated VpcOptions vpc_options = 21 [json_name = "vpc_options"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 22;
+
+  int32 count = 23;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 24;
+
+  string provider = 25;
+
+  terraform.meta.Lifecycle lifecycle = 26;
+
+  message ClusterConfig {
+    //dedicated_master_count: number
+    int64 dedicated_master_count = 1 [json_name = "dedicated_master_count"];
+
+    //dedicated_master_enabled: bool
+    bool dedicated_master_enabled = 2 [json_name = "dedicated_master_enabled"];
+
+    //dedicated_master_type: string
+    string dedicated_master_type = 3 [json_name = "dedicated_master_type"];
+
+    //instance_count: number
+    int64 instance_count = 4 [json_name = "instance_count"];
+
+    //instance_type: string
+    string instance_type = 5 [json_name = "instance_type"];
+
+    //zone_awareness_config: list of object
+    repeated ZoneAwarenessConfig zone_awareness_config = 6 [json_name = "zone_awareness_config"];
+
+    //zone_awareness_enabled: bool
+    bool zone_awareness_enabled = 7 [json_name = "zone_awareness_enabled"];
+
+    message ZoneAwarenessConfig {
+      //availability_zone_count: number
+      int64 availability_zone_count = 1 [json_name = "availability_zone_count"];
+    }
+  }
+
+  message CognitoOptions {
+    //enabled: bool
+    bool enabled = 1;
+
+    //identity_pool_id: string
+    string identity_pool_id = 2 [json_name = "identity_pool_id"];
+
+    //role_arn: string
+    string role_arn = 3 [json_name = "role_arn"];
+
+    //user_pool_id: string
+    string user_pool_id = 4 [json_name = "user_pool_id"];
+  }
+
+  message EbsOptions {
+    //ebs_enabled: bool
+    bool ebs_enabled = 1 [json_name = "ebs_enabled"];
+
+    //iops: number
+    int64 iops = 2;
+
+    //volume_size: number
+    int64 volume_size = 3 [json_name = "volume_size"];
+
+    //volume_type: string
+    string volume_type = 4 [json_name = "volume_type"];
+  }
+
+  message EncryptionAtRest {
+    //enabled: bool
+    bool enabled = 1;
+
+    //kms_key_id: string
+    string kms_key_id = 2 [json_name = "kms_key_id"];
+  }
+
+  message LogPublishingOptions {
+    //cloudwatch_log_group_arn: string
+    string cloudwatch_log_group_arn = 1 [json_name = "cloudwatch_log_group_arn"];
+
+    //enabled: bool
+    bool enabled = 2;
+
+    //log_type: string
+    string log_type = 3 [json_name = "log_type"];
+  }
+
+  message NodeToNodeEncryption {
+    //enabled: bool
+    bool enabled = 1;
+  }
+
+  message SnapshotOptions {
+    //automated_snapshot_start_hour: number
+    int64 automated_snapshot_start_hour = 1 [json_name = "automated_snapshot_start_hour"];
+  }
+
+  message VpcOptions {
+    //availability_zones: set of string
+    repeated string availability_zones = 1 [json_name = "availability_zones"];
+
+    //security_group_ids: set of string
+    repeated string security_group_ids = 2 [json_name = "security_group_ids"];
+
+    //subnet_ids: set of string
+    repeated string subnet_ids = 3 [json_name = "subnet_ids"];
+
+    //vpc_id: string
+    string vpc_id = 4 [json_name = "vpc_id"];
+  }
+}
+
+//AwsElb version is 0
+message AwsElb {
+  repeated AccessLogs access_logs = 1 [json_name = "access_logs"];
+
+  string arn = 2;
+
+  repeated string availability_zones = 3 [json_name = "availability_zones"];
+
+  bool connection_draining = 4 [json_name = "connection_draining"];
+
+  int64 connection_draining_timeout = 5 [json_name = "connection_draining_timeout"];
+
+  bool cross_zone_load_balancing = 6 [json_name = "cross_zone_load_balancing"];
+
+  string dns_name = 7 [json_name = "dns_name"];
+
+  repeated HealthCheck health_check = 8 [json_name = "health_check"];
+
+  string id = 9;
+
+  int64 idle_timeout = 10 [json_name = "idle_timeout"];
+
+  repeated string instances = 11;
+
+  bool internal = 12;
+
+  repeated Listener listener = 13;
+
+  string name = 14;
+
+  repeated string security_groups = 15 [json_name = "security_groups"];
+
+  string source_security_group = 16 [json_name = "source_security_group"];
+
+  string source_security_group_id = 17 [json_name = "source_security_group_id"];
+
+  repeated string subnets = 18;
+
+  map<string, string> tags = 19;
+
+  string zone_id = 20 [json_name = "zone_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 21;
+
+  int32 count = 22;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 23;
+
+  string provider = 24;
+
+  terraform.meta.Lifecycle lifecycle = 25;
+
+  message AccessLogs {
+    //bucket: string
+    string bucket = 1;
+
+    //bucket_prefix: string
+    string bucket_prefix = 2 [json_name = "bucket_prefix"];
+
+    //enabled: bool
+    bool enabled = 3;
+
+    //interval: number
+    int64 interval = 4;
+  }
+
+  message HealthCheck {
+    //healthy_threshold: number
+    int64 healthy_threshold = 1 [json_name = "healthy_threshold"];
+
+    //interval: number
+    int64 interval = 2;
+
+    //target: string
+    string target = 3;
+
+    //timeout: number
+    int64 timeout = 4;
+
+    //unhealthy_threshold: number
+    int64 unhealthy_threshold = 5 [json_name = "unhealthy_threshold"];
+  }
+
+  message Listener {
+    //instance_port: number
+    int64 instance_port = 1 [json_name = "instance_port"];
+
+    //instance_protocol: string
+    string instance_protocol = 2 [json_name = "instance_protocol"];
+
+    //lb_port: number
+    int64 lb_port = 3 [json_name = "lb_port"];
+
+    //lb_protocol: string
+    string lb_protocol = 4 [json_name = "lb_protocol"];
+
+    //ssl_certificate_id: string
+    string ssl_certificate_id = 5 [json_name = "ssl_certificate_id"];
+  }
+}
+
+//AwsElbHostedZoneId version is 0
+message AwsElbHostedZoneId {
+  string id = 1;
+
+  string region = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsElbServiceAccount version is 0
+message AwsElbServiceAccount {
+  string arn = 1;
+
+  string id = 2;
+
+  string region = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsGlueScript version is 0
+message AwsGlueScript {
+  string id = 1;
+
+  string language = 2;
+
+  string python_script = 3 [json_name = "python_script"];
+
+  string scala_code = 4 [json_name = "scala_code"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsGuarddutyDetector version is 0
+message AwsGuarddutyDetector {
+  string finding_publishing_frequency = 1 [json_name = "finding_publishing_frequency"];
+
+  string id = 2;
+
+  string service_role_arn = 3 [json_name = "service_role_arn"];
+
+  string status = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsIamAccountAlias version is 0
+message AwsIamAccountAlias {
+  string account_alias = 1 [json_name = "account_alias"];
+
+  string id = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsIamGroup version is 0
+message AwsIamGroup {
+  string arn = 1;
+
+  string group_id = 2 [json_name = "group_id"];
+
+  string group_name = 3 [json_name = "group_name"];
+
+  string id = 4;
+
+  string path = 5;
+
+  repeated Users users = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+
+  message Users {
+    //arn: string
+    string arn = 1;
+
+    //path: string
+    string path = 2;
+
+    //user_id: string
+    string user_id = 3 [json_name = "user_id"];
+
+    //user_name: string
+    string user_name = 4 [json_name = "user_name"];
+  }
+}
+
+//AwsIamInstanceProfile version is 0
+message AwsIamInstanceProfile {
+  string arn = 1;
+
+  string create_date = 2 [json_name = "create_date"];
+
+  string id = 3;
+
+  string name = 4;
+
+  string path = 5;
+
+  string role_arn = 6 [json_name = "role_arn"];
+
+  string role_id = 7 [json_name = "role_id"];
+
+  string role_name = 8 [json_name = "role_name"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsIamPolicy version is 0
+message AwsIamPolicy {
+  string arn = 1;
+
+  string description = 2;
+
+  string id = 3;
+
+  string name = 4;
+
+  string path = 5;
+
+  string policy = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsIamPolicyDocument version is 0
+message AwsIamPolicyDocument {
+  string id = 1;
+
+  string json = 2;
+
+  string override_json = 3 [json_name = "override_json"];
+
+  string policy_id = 4 [json_name = "policy_id"];
+
+  string source_json = 5 [json_name = "source_json"];
+
+  string version = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsIamRole version is 0
+message AwsIamRole {
+  string arn = 1;
+
+  string assume_role_policy = 2 [json_name = "assume_role_policy"];
+
+  string assume_role_policy_document = 3 [json_name = "assume_role_policy_document"];
+
+  string create_date = 4 [json_name = "create_date"];
+
+  string description = 5;
+
+  string id = 6;
+
+  int64 max_session_duration = 7 [json_name = "max_session_duration"];
+
+  string name = 8;
+
+  string path = 9;
+
+  string permissions_boundary = 10 [json_name = "permissions_boundary"];
+
+  string role_id = 11 [json_name = "role_id"];
+
+  string role_name = 12 [json_name = "role_name"];
+
+  map<string, string> tags = 13;
+
+  string unique_id = 14 [json_name = "unique_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
+
+  int32 count = 16;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
+
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
+}
+
+//AwsIamServerCertificate version is 0
+message AwsIamServerCertificate {
+  string arn = 1;
+
+  string certificate_body = 2 [json_name = "certificate_body"];
+
+  string certificate_chain = 3 [json_name = "certificate_chain"];
+
+  string expiration_date = 4 [json_name = "expiration_date"];
+
+  string id = 5;
+
+  bool latest = 6;
+
+  string name = 7;
+
+  string name_prefix = 8 [json_name = "name_prefix"];
+
+  string path = 9;
+
+  string path_prefix = 10 [json_name = "path_prefix"];
+
+  string upload_date = 11 [json_name = "upload_date"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//AwsIamUser version is 0
+message AwsIamUser {
+  string arn = 1;
+
+  string id = 2;
+
+  string path = 3;
+
+  string permissions_boundary = 4 [json_name = "permissions_boundary"];
+
+  string user_id = 5 [json_name = "user_id"];
+
+  string user_name = 6 [json_name = "user_name"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsInspectorRulesPackages version is 0
+message AwsInspectorRulesPackages {
+  repeated string arns = 1;
+
+  string id = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsInstance version is 0
+message AwsInstance {
+  string ami = 1;
+
+  string arn = 2;
+
+  bool associate_public_ip_address = 3 [json_name = "associate_public_ip_address"];
+
+  string availability_zone = 4 [json_name = "availability_zone"];
+
+  repeated CreditSpecification credit_specification = 5 [json_name = "credit_specification"];
+
+  bool disable_api_termination = 6 [json_name = "disable_api_termination"];
+
+  repeated EbsBlockDevice ebs_block_device = 7 [json_name = "ebs_block_device"];
+
+  bool ebs_optimized = 8 [json_name = "ebs_optimized"];
+
+  repeated EphemeralBlockDevice ephemeral_block_device = 9 [json_name = "ephemeral_block_device"];
+
+  bool get_password_data = 10 [json_name = "get_password_data"];
+
+  bool get_user_data = 11 [json_name = "get_user_data"];
+
+  string host_id = 12 [json_name = "host_id"];
+
+  string iam_instance_profile = 13 [json_name = "iam_instance_profile"];
+
+  string id = 14;
+
+  string instance_id = 15 [json_name = "instance_id"];
+
+  string instance_state = 16 [json_name = "instance_state"];
+
+  map<string, string> instance_tags = 17;
+
+  string instance_type = 18 [json_name = "instance_type"];
+
+  string key_name = 19 [json_name = "key_name"];
+
+  repeated MetadataOptions metadata_options = 20 [json_name = "metadata_options"];
+
+  bool monitoring = 21;
+
+  string network_interface_id = 22 [json_name = "network_interface_id"];
+
+  string password_data = 23 [json_name = "password_data"];
+
+  string placement_group = 24 [json_name = "placement_group"];
+
+  string private_dns = 25 [json_name = "private_dns"];
+
+  string private_ip = 26 [json_name = "private_ip"];
+
+  string public_dns = 27 [json_name = "public_dns"];
+
+  string public_ip = 28 [json_name = "public_ip"];
+
+  repeated RootBlockDevice root_block_device = 29 [json_name = "root_block_device"];
+
+  repeated string security_groups = 30 [json_name = "security_groups"];
+
+  bool source_dest_check = 31 [json_name = "source_dest_check"];
+
+  string subnet_id = 32 [json_name = "subnet_id"];
+
+  map<string, string> tags = 33;
+
+  string tenancy = 34;
+
+  string user_data = 35 [json_name = "user_data"];
+
+  string user_data_base64 = 36 [json_name = "user_data_base64"];
+
+  repeated string vpc_security_group_ids = 37 [json_name = "vpc_security_group_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 38;
+
+  int32 count = 39;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 40;
+
+  string provider = 41;
+
+  terraform.meta.Lifecycle lifecycle = 42;
+
+  message CreditSpecification {
+    //cpu_credits: string
+    string cpu_credits = 1 [json_name = "cpu_credits"];
+  }
+
+  message EbsBlockDevice {
+    //delete_on_termination: bool
+    bool delete_on_termination = 1 [json_name = "delete_on_termination"];
+
+    //device_name: string
+    string device_name = 2 [json_name = "device_name"];
+
+    //encrypted: bool
+    bool encrypted = 3;
+
+    //iops: number
+    int64 iops = 4;
+
+    //kms_key_id: string
+    string kms_key_id = 5 [json_name = "kms_key_id"];
+
+    //snapshot_id: string
+    string snapshot_id = 6 [json_name = "snapshot_id"];
+
+    //volume_id: string
+    string volume_id = 7 [json_name = "volume_id"];
+
+    //volume_size: number
+    int64 volume_size = 8 [json_name = "volume_size"];
+
+    //volume_type: string
+    string volume_type = 9 [json_name = "volume_type"];
+  }
+
+  message EphemeralBlockDevice {
+    //device_name: string
+    string device_name = 1 [json_name = "device_name"];
+
+    //no_device: bool
+    bool no_device = 2 [json_name = "no_device"];
+
+    //virtual_name: string
+    string virtual_name = 3 [json_name = "virtual_name"];
+  }
+
+  message MetadataOptions {
+    //http_endpoint: string
+    string http_endpoint = 1 [json_name = "http_endpoint"];
+
+    //http_put_response_hop_limit: number
+    int64 http_put_response_hop_limit = 2 [json_name = "http_put_response_hop_limit"];
+
+    //http_tokens: string
+    string http_tokens = 3 [json_name = "http_tokens"];
+  }
+
+  message RootBlockDevice {
+    //delete_on_termination: bool
+    bool delete_on_termination = 1 [json_name = "delete_on_termination"];
+
+    //device_name: string
+    string device_name = 2 [json_name = "device_name"];
+
+    //encrypted: bool
+    bool encrypted = 3;
+
+    //iops: number
+    int64 iops = 4;
+
+    //kms_key_id: string
+    string kms_key_id = 5 [json_name = "kms_key_id"];
+
+    //volume_id: string
+    string volume_id = 6 [json_name = "volume_id"];
+
+    //volume_size: number
+    int64 volume_size = 7 [json_name = "volume_size"];
+
+    //volume_type: string
+    string volume_type = 8 [json_name = "volume_type"];
+  }
+}
+
+//AwsInstances version is 0
+message AwsInstances {
+  string id = 1;
+
+  repeated string ids = 2;
+
+  repeated string instance_state_names = 3 [json_name = "instance_state_names"];
+
+  map<string, string> instance_tags = 4;
+
+  repeated string private_ips = 5 [json_name = "private_ips"];
+
+  repeated string public_ips = 6 [json_name = "public_ips"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsInternetGateway version is 0
+message AwsInternetGateway {
+  repeated Attachments attachments = 1;
+
+  string id = 2;
+
+  string internet_gateway_id = 3 [json_name = "internet_gateway_id"];
+
+  string owner_id = 4 [json_name = "owner_id"];
+
+  map<string, string> tags = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Attachments {
+    //state: string
+    string state = 1;
+
+    //vpc_id: string
+    string vpc_id = 2 [json_name = "vpc_id"];
+  }
+}
+
+//AwsIotEndpoint version is 0
+message AwsIotEndpoint {
+  string endpoint_address = 1 [json_name = "endpoint_address"];
+
+  string endpoint_type = 2 [json_name = "endpoint_type"];
+
+  string id = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsIpRanges version is 0
+message AwsIpRanges {
+  repeated string cidr_blocks = 1 [json_name = "cidr_blocks"];
+
+  string create_date = 2 [json_name = "create_date"];
+
+  string id = 3;
+
+  repeated string ipv6_cidr_blocks = 4 [json_name = "ipv6_cidr_blocks"];
+
+  repeated string regions = 5;
+
+  repeated string services = 6;
+
+  int64 sync_token = 7 [json_name = "sync_token"];
+
+  string url = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsKinesisStream version is 0
+message AwsKinesisStream {
+  string arn = 1;
+
+  repeated string closed_shards = 2 [json_name = "closed_shards"];
+
+  int64 creation_timestamp = 3 [json_name = "creation_timestamp"];
+
+  string id = 4;
+
+  string name = 5;
+
+  repeated string open_shards = 6 [json_name = "open_shards"];
+
+  int64 retention_period = 7 [json_name = "retention_period"];
+
+  repeated string shard_level_metrics = 8 [json_name = "shard_level_metrics"];
+
+  string status = 9;
+
+  map<string, string> tags = 10;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//AwsKmsAlias version is 0
+message AwsKmsAlias {
+  string arn = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string target_key_arn = 4 [json_name = "target_key_arn"];
+
+  string target_key_id = 5 [json_name = "target_key_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//AwsKmsCiphertext version is 0
+message AwsKmsCiphertext {
+  string ciphertext_blob = 1 [json_name = "ciphertext_blob"];
+
+  map<string, string> context = 2;
+
+  string id = 3;
+
+  string key_id = 4 [json_name = "key_id"];
+
+  string plaintext = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//AwsKmsKey version is 0
+message AwsKmsKey {
+  string arn = 1;
+
+  string aws_account_id = 2 [json_name = "aws_account_id"];
+
+  string creation_date = 3 [json_name = "creation_date"];
+
+  string customer_master_key_spec = 4 [json_name = "customer_master_key_spec"];
+
+  string deletion_date = 5 [json_name = "deletion_date"];
+
+  string description = 6;
+
+  bool enabled = 7;
+
+  string expiration_model = 8 [json_name = "expiration_model"];
+
+  repeated string grant_tokens = 9 [json_name = "grant_tokens"];
+
+  string id = 10;
+
+  string key_id = 11 [json_name = "key_id"];
+
+  string key_manager = 12 [json_name = "key_manager"];
+
+  string key_state = 13 [json_name = "key_state"];
+
+  string key_usage = 14 [json_name = "key_usage"];
+
+  string origin = 15;
+
+  string valid_to = 16 [json_name = "valid_to"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
+
+  int32 count = 18;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 19;
+
+  string provider = 20;
+
+  terraform.meta.Lifecycle lifecycle = 21;
+}
+
+//AwsKmsSecret version is 0
+message AwsKmsSecret {
+  string id = 1;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 2;
+
+  int32 count = 3;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 4;
+
+  string provider = 5;
+
+  terraform.meta.Lifecycle lifecycle = 6;
+}
+
+//AwsKmsSecrets version is 0
+message AwsKmsSecrets {
+  string id = 1;
+
+  map<string, string> plaintext = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsLambdaAlias version is 0
+message AwsLambdaAlias {
+  string arn = 1;
+
+  string description = 2;
+
+  string function_name = 3 [json_name = "function_name"];
+
+  string function_version = 4 [json_name = "function_version"];
+
+  string id = 5;
+
+  string invoke_arn = 6 [json_name = "invoke_arn"];
+
+  string name = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsLambdaFunction version is 0
+message AwsLambdaFunction {
+  string arn = 1;
+
+  repeated DeadLetterConfig dead_letter_config = 2 [json_name = "dead_letter_config"];
+
+  string description = 3;
+
+  repeated Environment environment = 4;
+
+  string function_name = 5 [json_name = "function_name"];
+
+  string handler = 6;
+
+  string id = 7;
+
+  string invoke_arn = 8 [json_name = "invoke_arn"];
+
+  string kms_key_arn = 9 [json_name = "kms_key_arn"];
+
+  string last_modified = 10 [json_name = "last_modified"];
+
+  repeated string layers = 11;
+
+  int64 memory_size = 12 [json_name = "memory_size"];
+
+  string qualified_arn = 13 [json_name = "qualified_arn"];
+
+  string qualifier = 14;
+
+  int64 reserved_concurrent_executions = 15 [json_name = "reserved_concurrent_executions"];
+
+  string role = 16;
+
+  string runtime = 17;
+
+  string source_code_hash = 18 [json_name = "source_code_hash"];
+
+  int64 source_code_size = 19 [json_name = "source_code_size"];
+
+  map<string, string> tags = 20;
+
+  int64 timeout = 21;
+
+  repeated TracingConfig tracing_config = 22 [json_name = "tracing_config"];
+
+  string version = 23;
+
+  repeated VpcConfig vpc_config = 24 [json_name = "vpc_config"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 25;
+
+  int32 count = 26;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 27;
+
+  string provider = 28;
+
+  terraform.meta.Lifecycle lifecycle = 29;
+
+  message DeadLetterConfig {
+    //target_arn: string
+    string target_arn = 1 [json_name = "target_arn"];
+  }
+
+  message Environment {
+    //variables: map of string
+    map<string, string> variables = 1;
+  }
+
+  message TracingConfig {
+    //mode: string
+    string mode = 1;
+  }
+
+  message VpcConfig {
+    //security_group_ids: set of string
+    repeated string security_group_ids = 1 [json_name = "security_group_ids"];
+
+    //subnet_ids: set of string
+    repeated string subnet_ids = 2 [json_name = "subnet_ids"];
+
+    //vpc_id: string
+    string vpc_id = 3 [json_name = "vpc_id"];
+  }
+}
+
+//AwsLambdaInvocation version is 0
+message AwsLambdaInvocation {
+  string function_name = 1 [json_name = "function_name"];
+
+  string id = 2;
+
+  string input = 3;
+
+  string qualifier = 4;
+
+  string result = 5;
+
+  map<string, string> result_map = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsLambdaLayerVersion version is 0
+message AwsLambdaLayerVersion {
+  string arn = 1;
+
+  string compatible_runtime = 2 [json_name = "compatible_runtime"];
+
+  repeated string compatible_runtimes = 3 [json_name = "compatible_runtimes"];
+
+  string created_date = 4 [json_name = "created_date"];
+
+  string description = 5;
+
+  string id = 6;
+
+  string layer_arn = 7 [json_name = "layer_arn"];
+
+  string layer_name = 8 [json_name = "layer_name"];
+
+  string license_info = 9 [json_name = "license_info"];
+
+  string source_code_hash = 10 [json_name = "source_code_hash"];
+
+  int64 source_code_size = 11 [json_name = "source_code_size"];
+
+  int64 version = 12;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+
+  int32 count = 14;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+}
+
+//AwsLaunchConfiguration version is 0
+message AwsLaunchConfiguration {
+  string arn = 1;
+
+  bool associate_public_ip_address = 2 [json_name = "associate_public_ip_address"];
+
+  repeated EbsBlockDevice ebs_block_device = 3 [json_name = "ebs_block_device"];
+
+  bool ebs_optimized = 4 [json_name = "ebs_optimized"];
+
+  bool enable_monitoring = 5 [json_name = "enable_monitoring"];
+
+  repeated EphemeralBlockDevice ephemeral_block_device = 6 [json_name = "ephemeral_block_device"];
+
+  string iam_instance_profile = 7 [json_name = "iam_instance_profile"];
+
+  string id = 8;
+
+  string image_id = 9 [json_name = "image_id"];
+
+  string instance_type = 10 [json_name = "instance_type"];
+
+  string key_name = 11 [json_name = "key_name"];
+
+  string name = 12;
+
+  string placement_tenancy = 13 [json_name = "placement_tenancy"];
+
+  repeated RootBlockDevice root_block_device = 14 [json_name = "root_block_device"];
+
+  repeated string security_groups = 15 [json_name = "security_groups"];
+
+  string spot_price = 16 [json_name = "spot_price"];
+
+  string user_data = 17 [json_name = "user_data"];
+
+  string vpc_classic_link_id = 18 [json_name = "vpc_classic_link_id"];
+
+  repeated string vpc_classic_link_security_groups = 19 [json_name = "vpc_classic_link_security_groups"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
+
+  int32 count = 21;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 22;
+
+  string provider = 23;
+
+  terraform.meta.Lifecycle lifecycle = 24;
+
+  message EbsBlockDevice {
+    //delete_on_termination: bool
+    bool delete_on_termination = 1 [json_name = "delete_on_termination"];
+
+    //device_name: string
+    string device_name = 2 [json_name = "device_name"];
+
+    //encrypted: bool
+    bool encrypted = 3;
+
+    //iops: number
+    int64 iops = 4;
+
+    //snapshot_id: string
+    string snapshot_id = 5 [json_name = "snapshot_id"];
+
+    //volume_size: number
+    int64 volume_size = 6 [json_name = "volume_size"];
+
+    //volume_type: string
+    string volume_type = 7 [json_name = "volume_type"];
+  }
+
+  message EphemeralBlockDevice {
+    //device_name: string
+    string device_name = 1 [json_name = "device_name"];
+
+    //virtual_name: string
+    string virtual_name = 2 [json_name = "virtual_name"];
+  }
+
+  message RootBlockDevice {
+    //delete_on_termination: bool
+    bool delete_on_termination = 1 [json_name = "delete_on_termination"];
+
+    //encrypted: bool
+    bool encrypted = 2;
+
+    //iops: number
+    int64 iops = 3;
+
+    //volume_size: number
+    int64 volume_size = 4 [json_name = "volume_size"];
+
+    //volume_type: string
+    string volume_type = 5 [json_name = "volume_type"];
+  }
+}
+
+//AwsLaunchTemplate version is 0
+message AwsLaunchTemplate {
+  string arn = 1;
+
+  repeated BlockDeviceMappings block_device_mappings = 2 [json_name = "block_device_mappings"];
+
+  repeated CreditSpecification credit_specification = 3 [json_name = "credit_specification"];
+
+  int64 default_version = 4 [json_name = "default_version"];
+
+  string description = 5;
+
+  bool disable_api_termination = 6 [json_name = "disable_api_termination"];
+
+  string ebs_optimized = 7 [json_name = "ebs_optimized"];
+
+  repeated ElasticGpuSpecifications elastic_gpu_specifications = 8 [json_name = "elastic_gpu_specifications"];
+
+  repeated HibernationOptions hibernation_options = 9 [json_name = "hibernation_options"];
+
+  repeated IamInstanceProfile iam_instance_profile = 10 [json_name = "iam_instance_profile"];
+
+  string id = 11;
+
+  string image_id = 12 [json_name = "image_id"];
+
+  string instance_initiated_shutdown_behavior = 13 [json_name = "instance_initiated_shutdown_behavior"];
+
+  repeated InstanceMarketOptions instance_market_options = 14 [json_name = "instance_market_options"];
+
+  string instance_type = 15 [json_name = "instance_type"];
+
+  string kernel_id = 16 [json_name = "kernel_id"];
+
+  string key_name = 17 [json_name = "key_name"];
+
+  int64 latest_version = 18 [json_name = "latest_version"];
+
+  repeated MetadataOptions metadata_options = 19 [json_name = "metadata_options"];
+
+  repeated Monitoring monitoring = 20;
+
+  string name = 21;
+
+  repeated NetworkInterfaces network_interfaces = 22 [json_name = "network_interfaces"];
+
+  repeated Placement placement = 23;
+
+  string ram_disk_id = 24 [json_name = "ram_disk_id"];
+
+  repeated string security_group_names = 25 [json_name = "security_group_names"];
+
+  repeated TagSpecifications tag_specifications = 26 [json_name = "tag_specifications"];
+
+  map<string, string> tags = 27;
+
+  string user_data = 28 [json_name = "user_data"];
+
+  repeated string vpc_security_group_ids = 29 [json_name = "vpc_security_group_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 30;
+
+  int32 count = 31;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 32;
+
+  string provider = 33;
+
+  terraform.meta.Lifecycle lifecycle = 34;
+
+  message BlockDeviceMappings {
+    //device_name: string
+    string device_name = 1 [json_name = "device_name"];
+
+    //ebs: list of object
+    repeated Ebs ebs = 2;
+
+    //no_device: string
+    string no_device = 3 [json_name = "no_device"];
+
+    //virtual_name: string
+    string virtual_name = 4 [json_name = "virtual_name"];
+
+    message Ebs {
+      //delete_on_termination: string
+      string delete_on_termination = 1 [json_name = "delete_on_termination"];
+
+      //encrypted: string
+      string encrypted = 2;
+
+      //iops: number
+      int64 iops = 3;
+
+      //kms_key_id: string
+      string kms_key_id = 4 [json_name = "kms_key_id"];
+
+      //snapshot_id: string
+      string snapshot_id = 5 [json_name = "snapshot_id"];
+
+      //volume_size: number
+      int64 volume_size = 6 [json_name = "volume_size"];
+
+      //volume_type: string
+      string volume_type = 7 [json_name = "volume_type"];
+    }
+  }
+
+  message CreditSpecification {
+    //cpu_credits: string
+    string cpu_credits = 1 [json_name = "cpu_credits"];
+  }
+
+  message ElasticGpuSpecifications {
+    //type: string
+    string type = 1;
+  }
+
+  message HibernationOptions {
+    //configured: bool
+    bool configured = 1;
+  }
+
+  message IamInstanceProfile {
+    //arn: string
+    string arn = 1;
+
+    //name: string
+    string name = 2;
+  }
+
+  message InstanceMarketOptions {
+    //market_type: string
+    string market_type = 1 [json_name = "market_type"];
+
+    //spot_options: list of object
+    repeated SpotOptions spot_options = 2 [json_name = "spot_options"];
+
+    message SpotOptions {
+      //block_duration_minutes: number
+      int64 block_duration_minutes = 1 [json_name = "block_duration_minutes"];
+
+      //instance_interruption_behavior: string
+      string instance_interruption_behavior = 2 [json_name = "instance_interruption_behavior"];
+
+      //max_price: string
+      string max_price = 3 [json_name = "max_price"];
+
+      //spot_instance_type: string
+      string spot_instance_type = 4 [json_name = "spot_instance_type"];
+
+      //valid_until: string
+      string valid_until = 5 [json_name = "valid_until"];
+    }
+  }
+
+  message MetadataOptions {
+    //http_endpoint: string
+    string http_endpoint = 1 [json_name = "http_endpoint"];
+
+    //http_put_response_hop_limit: number
+    int64 http_put_response_hop_limit = 2 [json_name = "http_put_response_hop_limit"];
+
+    //http_tokens: string
+    string http_tokens = 3 [json_name = "http_tokens"];
+  }
+
+  message Monitoring {
+    //enabled: bool
+    bool enabled = 1;
+  }
+
+  message NetworkInterfaces {
+    //associate_public_ip_address: bool
+    bool associate_public_ip_address = 1 [json_name = "associate_public_ip_address"];
+
+    //delete_on_termination: bool
+    bool delete_on_termination = 2 [json_name = "delete_on_termination"];
+
+    //description: string
+    string description = 3;
+
+    //device_index: number
+    int64 device_index = 4 [json_name = "device_index"];
+
+    //ipv4_address_count: number
+    int64 ipv4_address_count = 5 [json_name = "ipv4_address_count"];
+
+    //ipv4_addresses: set of string
+    repeated string ipv4_addresses = 6 [json_name = "ipv4_addresses"];
+
+    //ipv6_address_count: number
+    int64 ipv6_address_count = 7 [json_name = "ipv6_address_count"];
+
+    //ipv6_addresses: set of string
+    repeated string ipv6_addresses = 8 [json_name = "ipv6_addresses"];
+
+    //network_interface_id: string
+    string network_interface_id = 9 [json_name = "network_interface_id"];
+
+    //private_ip_address: string
+    string private_ip_address = 10 [json_name = "private_ip_address"];
+
+    //security_groups: set of string
+    repeated string security_groups = 11 [json_name = "security_groups"];
+
+    //subnet_id: string
+    string subnet_id = 12 [json_name = "subnet_id"];
+  }
+
+  message Placement {
+    //affinity: string
+    string affinity = 1;
+
+    //availability_zone: string
+    string availability_zone = 2 [json_name = "availability_zone"];
+
+    //group_name: string
+    string group_name = 3 [json_name = "group_name"];
+
+    //host_id: string
+    string host_id = 4 [json_name = "host_id"];
+
+    //spread_domain: string
+    string spread_domain = 5 [json_name = "spread_domain"];
+
+    //tenancy: string
+    string tenancy = 6;
+  }
+
+  message TagSpecifications {
+    //resource_type: string
+    string resource_type = 1 [json_name = "resource_type"];
+
+    //tags: map of string
+    map<string, string> tags = 2;
+  }
+}
+
+//AwsLb version is 0
+message AwsLb {
+  repeated AccessLogs access_logs = 1 [json_name = "access_logs"];
+
+  string arn = 2;
+
+  string arn_suffix = 3 [json_name = "arn_suffix"];
+
+  string dns_name = 4 [json_name = "dns_name"];
+
+  bool drop_invalid_header_fields = 5 [json_name = "drop_invalid_header_fields"];
+
+  bool enable_deletion_protection = 6 [json_name = "enable_deletion_protection"];
+
+  string id = 7;
+
+  int64 idle_timeout = 8 [json_name = "idle_timeout"];
+
+  bool internal = 9;
+
+  string load_balancer_type = 10 [json_name = "load_balancer_type"];
+
+  string name = 11;
+
+  repeated string security_groups = 12 [json_name = "security_groups"];
+
+  repeated SubnetMapping subnet_mapping = 13 [json_name = "subnet_mapping"];
+
+  repeated string subnets = 14;
+
+  map<string, string> tags = 15;
+
+  string vpc_id = 16 [json_name = "vpc_id"];
+
+  string zone_id = 17 [json_name = "zone_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+
+  int32 count = 19;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+
+  string provider = 21;
+
+  terraform.meta.Lifecycle lifecycle = 22;
+
+  message AccessLogs {
+    //bucket: string
+    string bucket = 1;
+
+    //enabled: bool
+    bool enabled = 2;
+
+    //prefix: string
+    string prefix = 3;
+  }
+
+  message SubnetMapping {
+    //allocation_id: string
+    string allocation_id = 1 [json_name = "allocation_id"];
+
+    //subnet_id: string
+    string subnet_id = 2 [json_name = "subnet_id"];
+  }
+}
+
+//AwsLbListener version is 0
+message AwsLbListener {
+  string arn = 1;
+
+  string certificate_arn = 2 [json_name = "certificate_arn"];
+
+  repeated DefaultAction default_action = 3 [json_name = "default_action"];
+
+  string id = 4;
+
+  string load_balancer_arn = 5 [json_name = "load_balancer_arn"];
+
+  int64 port = 6;
+
+  string protocol = 7;
+
+  string ssl_policy = 8 [json_name = "ssl_policy"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+
+  message DefaultAction {
+    //authenticate_cognito: list of object
+    repeated AuthenticateCognito authenticate_cognito = 1 [json_name = "authenticate_cognito"];
+
+    //authenticate_oidc: list of object
+    repeated AuthenticateOidc authenticate_oidc = 2 [json_name = "authenticate_oidc"];
+
+    //fixed_response: list of object
+    repeated FixedResponse fixed_response = 3 [json_name = "fixed_response"];
+
+    //order: number
+    int64 order = 4;
+
+    //redirect: list of object
+    repeated Redirect redirect = 5;
+
+    //target_group_arn: string
+    string target_group_arn = 6 [json_name = "target_group_arn"];
+
+    //type: string
+    string type = 7;
+
+    message AuthenticateCognito {
+      //authentication_request_extra_params: map of string
+      map<string, string> authentication_request_extra_params = 1;
+
+      //on_unauthenticated_request: string
+      string on_unauthenticated_request = 2 [json_name = "on_unauthenticated_request"];
+
+      //scope: string
+      string scope = 3;
+
+      //session_cookie_name: string
+      string session_cookie_name = 4 [json_name = "session_cookie_name"];
+
+      //session_timeout: number
+      int64 session_timeout = 5 [json_name = "session_timeout"];
+
+      //user_pool_arn: string
+      string user_pool_arn = 6 [json_name = "user_pool_arn"];
+
+      //user_pool_client_id: string
+      string user_pool_client_id = 7 [json_name = "user_pool_client_id"];
+
+      //user_pool_domain: string
+      string user_pool_domain = 8 [json_name = "user_pool_domain"];
+    }
+
+    message AuthenticateOidc {
+      //authentication_request_extra_params: map of string
+      map<string, string> authentication_request_extra_params = 1;
+
+      //authorization_endpoint: string
+      string authorization_endpoint = 2 [json_name = "authorization_endpoint"];
+
+      //client_id: string
+      string client_id = 3 [json_name = "client_id"];
+
+      //client_secret: string
+      string client_secret = 4 [json_name = "client_secret"];
+
+      //issuer: string
+      string issuer = 5;
+
+      //on_unauthenticated_request: string
+      string on_unauthenticated_request = 6 [json_name = "on_unauthenticated_request"];
+
+      //scope: string
+      string scope = 7;
+
+      //session_cookie_name: string
+      string session_cookie_name = 8 [json_name = "session_cookie_name"];
+
+      //session_timeout: number
+      int64 session_timeout = 9 [json_name = "session_timeout"];
+
+      //token_endpoint: string
+      string token_endpoint = 10 [json_name = "token_endpoint"];
+
+      //user_info_endpoint: string
+      string user_info_endpoint = 11 [json_name = "user_info_endpoint"];
+    }
+
+    message FixedResponse {
+      //content_type: string
+      string content_type = 1 [json_name = "content_type"];
+
+      //message_body: string
+      string message_body = 2 [json_name = "message_body"];
+
+      //status_code: string
+      string status_code = 3 [json_name = "status_code"];
+    }
+
+    message Redirect {
+      //host: string
+      string host = 1;
+
+      //path: string
+      string path = 2;
+
+      //port: string
+      string port = 3;
+
+      //protocol: string
+      string protocol = 4;
+
+      //query: string
+      string query = 5;
+
+      //status_code: string
+      string status_code = 6 [json_name = "status_code"];
+    }
+  }
+}
+
+//AwsLbTargetGroup version is 0
+message AwsLbTargetGroup {
+  string arn = 1;
+
+  string arn_suffix = 2 [json_name = "arn_suffix"];
+
+  int64 deregistration_delay = 3 [json_name = "deregistration_delay"];
+
+  repeated HealthCheck health_check = 4 [json_name = "health_check"];
+
+  string id = 5;
+
+  bool lambda_multi_value_headers_enabled = 6 [json_name = "lambda_multi_value_headers_enabled"];
+
+  string name = 7;
+
+  int64 port = 8;
+
+  string protocol = 9;
+
+  bool proxy_protocol_v2 = 10 [json_name = "proxy_protocol_v2"];
+
+  int64 slow_start = 11 [json_name = "slow_start"];
+
+  repeated Stickiness stickiness = 12;
+
+  map<string, string> tags = 13;
+
+  string target_type = 14 [json_name = "target_type"];
+
+  string vpc_id = 15 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
+
+  int32 count = 17;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 18;
+
+  string provider = 19;
+
+  terraform.meta.Lifecycle lifecycle = 20;
+
+  message HealthCheck {
+    //enabled: bool
+    bool enabled = 1;
+
+    //healthy_threshold: number
+    int64 healthy_threshold = 2 [json_name = "healthy_threshold"];
+
+    //interval: number
+    int64 interval = 3;
+
+    //matcher: string
+    string matcher = 4;
+
+    //path: string
+    string path = 5;
+
+    //port: string
+    string port = 6;
+
+    //protocol: string
+    string protocol = 7;
+
+    //timeout: number
+    int64 timeout = 8;
+
+    //unhealthy_threshold: number
+    int64 unhealthy_threshold = 9 [json_name = "unhealthy_threshold"];
+  }
+
+  message Stickiness {
+    //cookie_duration: number
+    int64 cookie_duration = 1 [json_name = "cookie_duration"];
+
+    //enabled: bool
+    bool enabled = 2;
+
+    //type: string
+    string type = 3;
+  }
+}
+
+//AwsMqBroker version is 0
+message AwsMqBroker {
+  string arn = 1;
+
+  bool auto_minor_version_upgrade = 2 [json_name = "auto_minor_version_upgrade"];
+
+  string broker_id = 3 [json_name = "broker_id"];
+
+  string broker_name = 4 [json_name = "broker_name"];
+
+  repeated Configuration configuration = 5;
+
+  string deployment_mode = 6 [json_name = "deployment_mode"];
+
+  repeated EncryptionOptions encryption_options = 7 [json_name = "encryption_options"];
+
+  string engine_type = 8 [json_name = "engine_type"];
+
+  string engine_version = 9 [json_name = "engine_version"];
+
+  string host_instance_type = 10 [json_name = "host_instance_type"];
+
+  string id = 11;
+
+  repeated Instances instances = 12;
+
+  repeated MaintenanceWindowStartTime maintenance_window_start_time = 13 [json_name = "maintenance_window_start_time"];
+
+  bool publicly_accessible = 14 [json_name = "publicly_accessible"];
+
+  repeated string security_groups = 15 [json_name = "security_groups"];
+
+  repeated string subnet_ids = 16 [json_name = "subnet_ids"];
+
+  map<string, string> tags = 17;
+
+  repeated User user = 18;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 19;
+
+  int32 count = 20;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 21;
+
+  string provider = 22;
+
+  terraform.meta.Lifecycle lifecycle = 23;
+
+  message Configuration {
+    //id: string
+    string id = 1;
+
+    //revision: number
+    int64 revision = 2;
+  }
+
+  message EncryptionOptions {
+    //kms_key_id: string
+    string kms_key_id = 1 [json_name = "kms_key_id"];
+
+    //use_aws_owned_key: bool
+    bool use_aws_owned_key = 2 [json_name = "use_aws_owned_key"];
+  }
+
+  message Instances {
+    //console_url: string
+    string console_url = 1 [json_name = "console_url"];
+
+    //endpoints: list of string
+    repeated string endpoints = 2;
+
+    //ip_address: string
+    string ip_address = 3 [json_name = "ip_address"];
+  }
+
+  message MaintenanceWindowStartTime {
+    //day_of_week: string
+    string day_of_week = 1 [json_name = "day_of_week"];
+
+    //time_of_day: string
+    string time_of_day = 2 [json_name = "time_of_day"];
+
+    //time_zone: string
+    string time_zone = 3 [json_name = "time_zone"];
+  }
+
+  message User {
+    //console_access: bool
+    bool console_access = 1 [json_name = "console_access"];
+
+    //groups: set of string
+    repeated string groups = 2;
+
+    //username: string
+    string username = 3;
+  }
+}
+
+//AwsMskCluster version is 0
+message AwsMskCluster {
+  string arn = 1;
+
+  string bootstrap_brokers = 2 [json_name = "bootstrap_brokers"];
+
+  string bootstrap_brokers_tls = 3 [json_name = "bootstrap_brokers_tls"];
+
+  string cluster_name = 4 [json_name = "cluster_name"];
+
+  string id = 5;
+
+  string kafka_version = 6 [json_name = "kafka_version"];
+
+  int64 number_of_broker_nodes = 7 [json_name = "number_of_broker_nodes"];
+
+  map<string, string> tags = 8;
+
+  string zookeeper_connect_string = 9 [json_name = "zookeeper_connect_string"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//AwsMskConfiguration version is 0
+message AwsMskConfiguration {
+  string arn = 1;
+
+  string description = 2;
+
+  string id = 3;
+
+  repeated string kafka_versions = 4 [json_name = "kafka_versions"];
+
+  int64 latest_revision = 5 [json_name = "latest_revision"];
+
+  string name = 6;
+
+  string server_properties = 7 [json_name = "server_properties"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsNatGateway version is 0
+message AwsNatGateway {
+  string allocation_id = 1 [json_name = "allocation_id"];
+
+  string id = 2;
+
+  string network_interface_id = 3 [json_name = "network_interface_id"];
+
+  string private_ip = 4 [json_name = "private_ip"];
+
+  string public_ip = 5 [json_name = "public_ip"];
+
+  string state = 6;
+
+  string subnet_id = 7 [json_name = "subnet_id"];
+
+  map<string, string> tags = 8;
+
+  string vpc_id = 9 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//AwsNetworkAcls version is 0
+message AwsNetworkAcls {
+  string id = 1;
+
+  repeated string ids = 2;
+
+  map<string, string> tags = 3;
+
+  string vpc_id = 4 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsNetworkInterface version is 0
+message AwsNetworkInterface {
+  repeated Association association = 1;
+
+  repeated Attachment attachment = 2;
+
+  string availability_zone = 3 [json_name = "availability_zone"];
+
+  string description = 4;
+
+  string id = 5;
+
+  string interface_type = 6 [json_name = "interface_type"];
+
+  repeated string ipv6_addresses = 7 [json_name = "ipv6_addresses"];
+
+  string mac_address = 8 [json_name = "mac_address"];
+
+  string owner_id = 9 [json_name = "owner_id"];
+
+  string private_dns_name = 10 [json_name = "private_dns_name"];
+
+  string private_ip = 11 [json_name = "private_ip"];
+
+  repeated string private_ips = 12 [json_name = "private_ips"];
+
+  string requester_id = 13 [json_name = "requester_id"];
+
+  repeated string security_groups = 14 [json_name = "security_groups"];
+
+  string subnet_id = 15 [json_name = "subnet_id"];
+
+  map<string, string> tags = 16;
+
+  string vpc_id = 17 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+
+  int32 count = 19;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+
+  string provider = 21;
+
+  terraform.meta.Lifecycle lifecycle = 22;
+
+  message Association {
+    //allocation_id: string
+    string allocation_id = 1 [json_name = "allocation_id"];
+
+    //association_id: string
+    string association_id = 2 [json_name = "association_id"];
+
+    //ip_owner_id: string
+    string ip_owner_id = 3 [json_name = "ip_owner_id"];
+
+    //public_dns_name: string
+    string public_dns_name = 4 [json_name = "public_dns_name"];
+
+    //public_ip: string
+    string public_ip = 5 [json_name = "public_ip"];
+  }
+
+  message Attachment {
+    //attachment_id: string
+    string attachment_id = 1 [json_name = "attachment_id"];
+
+    //device_index: number
+    int64 device_index = 2 [json_name = "device_index"];
+
+    //instance_id: string
+    string instance_id = 3 [json_name = "instance_id"];
+
+    //instance_owner_id: string
+    string instance_owner_id = 4 [json_name = "instance_owner_id"];
+  }
+}
+
+//AwsNetworkInterfaces version is 0
+message AwsNetworkInterfaces {
+  string id = 1;
+
+  repeated string ids = 2;
+
+  map<string, string> tags = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsOrganizationsOrganization version is 0
+message AwsOrganizationsOrganization {
+  repeated Accounts accounts = 1;
+
+  string arn = 2;
+
+  repeated string aws_service_access_principals = 3 [json_name = "aws_service_access_principals"];
+
+  repeated string enabled_policy_types = 4 [json_name = "enabled_policy_types"];
+
+  string feature_set = 5 [json_name = "feature_set"];
+
+  string id = 6;
+
+  string master_account_arn = 7 [json_name = "master_account_arn"];
+
+  string master_account_email = 8 [json_name = "master_account_email"];
+
+  string master_account_id = 9 [json_name = "master_account_id"];
+
+  repeated NonMasterAccounts non_master_accounts = 10 [json_name = "non_master_accounts"];
+
+  repeated Roots roots = 11;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+
+  message Accounts {
+    //arn: string
+    string arn = 1;
+
+    //email: string
+    string email = 2;
+
+    //id: string
+    string id = 3;
+
+    //name: string
+    string name = 4;
+
+    //status: string
+    string status = 5;
+  }
+
+  message NonMasterAccounts {
+    //arn: string
+    string arn = 1;
+
+    //email: string
+    string email = 2;
+
+    //id: string
+    string id = 3;
+
+    //name: string
+    string name = 4;
+
+    //status: string
+    string status = 5;
+  }
+
+  message Roots {
+    //arn: string
+    string arn = 1;
+
+    //id: string
+    string id = 2;
+
+    //name: string
+    string name = 3;
+
+    //policy_types: list of object
+    repeated PolicyTypes policy_types = 4 [json_name = "policy_types"];
+
+    message PolicyTypes {
+      //status: string
+      string status = 1;
+
+      //type: string
+      string type = 2;
+    }
+  }
+}
+
+//AwsOrganizationsOrganizationalUnits version is 0
+message AwsOrganizationsOrganizationalUnits {
+  repeated Children children = 1;
+
+  string id = 2;
+
+  string parent_id = 3 [json_name = "parent_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+
+  message Children {
+    //arn: string
+    string arn = 1;
+
+    //id: string
+    string id = 2;
+
+    //name: string
+    string name = 3;
+  }
+}
+
+//AwsPartition version is 0
+message AwsPartition {
+  string dns_suffix = 1 [json_name = "dns_suffix"];
+
+  string id = 2;
+
+  string partition = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsPrefixList version is 0
+message AwsPrefixList {
+  repeated string cidr_blocks = 1 [json_name = "cidr_blocks"];
+
+  string id = 2;
+
+  string name = 3;
+
+  string prefix_list_id = 4 [json_name = "prefix_list_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsPricingProduct version is 0
+message AwsPricingProduct {
+  string id = 1;
+
+  string result = 2;
+
+  string service_code = 3 [json_name = "service_code"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsQldbLedger version is 0
+message AwsQldbLedger {
+  string arn = 1;
+
+  bool deletion_protection = 2 [json_name = "deletion_protection"];
+
+  string id = 3;
+
+  string name = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsRamResourceShare version is 0
+message AwsRamResourceShare {
+  string arn = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string resource_owner = 4 [json_name = "resource_owner"];
+
+  string status = 5;
+
+  map<string, string> tags = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsRdsCluster version is 0
+message AwsRdsCluster {
+  string arn = 1;
+
+  repeated string availability_zones = 2 [json_name = "availability_zones"];
+
+  int64 backup_retention_period = 3 [json_name = "backup_retention_period"];
+
+  string cluster_identifier = 4 [json_name = "cluster_identifier"];
+
+  repeated string cluster_members = 5 [json_name = "cluster_members"];
+
+  string cluster_resource_id = 6 [json_name = "cluster_resource_id"];
+
+  string database_name = 7 [json_name = "database_name"];
+
+  string db_cluster_parameter_group_name = 8 [json_name = "db_cluster_parameter_group_name"];
+
+  string db_subnet_group_name = 9 [json_name = "db_subnet_group_name"];
+
+  repeated string enabled_cloudwatch_logs_exports = 10 [json_name = "enabled_cloudwatch_logs_exports"];
+
+  string endpoint = 11;
+
+  string engine = 12;
+
+  string engine_version = 13 [json_name = "engine_version"];
+
+  string final_snapshot_identifier = 14 [json_name = "final_snapshot_identifier"];
+
+  string hosted_zone_id = 15 [json_name = "hosted_zone_id"];
+
+  bool iam_database_authentication_enabled = 16 [json_name = "iam_database_authentication_enabled"];
+
+  repeated string iam_roles = 17 [json_name = "iam_roles"];
+
+  string id = 18;
+
+  string kms_key_id = 19 [json_name = "kms_key_id"];
+
+  string master_username = 20 [json_name = "master_username"];
+
+  int64 port = 21;
+
+  string preferred_backup_window = 22 [json_name = "preferred_backup_window"];
+
+  string preferred_maintenance_window = 23 [json_name = "preferred_maintenance_window"];
+
+  string reader_endpoint = 24 [json_name = "reader_endpoint"];
+
+  string replication_source_identifier = 25 [json_name = "replication_source_identifier"];
+
+  bool storage_encrypted = 26 [json_name = "storage_encrypted"];
+
+  map<string, string> tags = 27;
+
+  repeated string vpc_security_group_ids = 28 [json_name = "vpc_security_group_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 29;
+
+  int32 count = 30;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 31;
+
+  string provider = 32;
+
+  terraform.meta.Lifecycle lifecycle = 33;
+}
+
+//AwsRedshiftCluster version is 0
+message AwsRedshiftCluster {
+  bool allow_version_upgrade = 1 [json_name = "allow_version_upgrade"];
+
+  int64 automated_snapshot_retention_period = 2 [json_name = "automated_snapshot_retention_period"];
+
+  string availability_zone = 3 [json_name = "availability_zone"];
+
+  string bucket_name = 4 [json_name = "bucket_name"];
+
+  string cluster_identifier = 5 [json_name = "cluster_identifier"];
+
+  string cluster_parameter_group_name = 6 [json_name = "cluster_parameter_group_name"];
+
+  string cluster_public_key = 7 [json_name = "cluster_public_key"];
+
+  string cluster_revision_number = 8 [json_name = "cluster_revision_number"];
+
+  repeated string cluster_security_groups = 9 [json_name = "cluster_security_groups"];
+
+  string cluster_subnet_group_name = 10 [json_name = "cluster_subnet_group_name"];
+
+  string cluster_type = 11 [json_name = "cluster_type"];
+
+  string cluster_version = 12 [json_name = "cluster_version"];
+
+  string database_name = 13 [json_name = "database_name"];
+
+  string elastic_ip = 14 [json_name = "elastic_ip"];
+
+  bool enable_logging = 15 [json_name = "enable_logging"];
+
+  bool encrypted = 16;
+
+  string endpoint = 17;
+
+  bool enhanced_vpc_routing = 18 [json_name = "enhanced_vpc_routing"];
+
+  repeated string iam_roles = 19 [json_name = "iam_roles"];
+
+  string id = 20;
+
+  string kms_key_id = 21 [json_name = "kms_key_id"];
+
+  string master_username = 22 [json_name = "master_username"];
+
+  string node_type = 23 [json_name = "node_type"];
+
+  int64 number_of_nodes = 24 [json_name = "number_of_nodes"];
+
+  int64 port = 25;
+
+  string preferred_maintenance_window = 26 [json_name = "preferred_maintenance_window"];
+
+  bool publicly_accessible = 27 [json_name = "publicly_accessible"];
+
+  string s3_key_prefix = 28 [json_name = "s3_key_prefix"];
+
+  map<string, string> tags = 29;
+
+  string vpc_id = 30 [json_name = "vpc_id"];
+
+  repeated string vpc_security_group_ids = 31 [json_name = "vpc_security_group_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 32;
+
+  int32 count = 33;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 34;
+
+  string provider = 35;
+
+  terraform.meta.Lifecycle lifecycle = 36;
+}
+
+//AwsRedshiftServiceAccount version is 0
+message AwsRedshiftServiceAccount {
+  string arn = 1;
+
+  string id = 2;
+
+  string region = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsRegion version is 0
+message AwsRegion {
+  bool current = 1;
+
+  string description = 2;
+
+  string endpoint = 3;
+
+  string id = 4;
+
+  string name = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//AwsRegions version is 0
+message AwsRegions {
+  bool all_regions = 1 [json_name = "all_regions"];
+
+  string id = 2;
+
+  repeated string names = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsRoute version is 0
+message AwsRoute {
+  string destination_cidr_block = 1 [json_name = "destination_cidr_block"];
+
+  string destination_ipv6_cidr_block = 2 [json_name = "destination_ipv6_cidr_block"];
+
+  string egress_only_gateway_id = 3 [json_name = "egress_only_gateway_id"];
+
+  string gateway_id = 4 [json_name = "gateway_id"];
+
+  string id = 5;
+
+  string instance_id = 6 [json_name = "instance_id"];
+
+  string nat_gateway_id = 7 [json_name = "nat_gateway_id"];
+
+  string network_interface_id = 8 [json_name = "network_interface_id"];
+
+  string route_table_id = 9 [json_name = "route_table_id"];
+
+  string transit_gateway_id = 10 [json_name = "transit_gateway_id"];
+
+  string vpc_peering_connection_id = 11 [json_name = "vpc_peering_connection_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//AwsRoute53DelegationSet version is 0
+message AwsRoute53DelegationSet {
+  string caller_reference = 1 [json_name = "caller_reference"];
+
+  string id = 2;
+
+  repeated string name_servers = 3 [json_name = "name_servers"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsRoute53ResolverRule version is 0
+message AwsRoute53ResolverRule {
+  string arn = 1;
+
+  string domain_name = 2 [json_name = "domain_name"];
+
+  string id = 3;
+
+  string name = 4;
+
+  string owner_id = 5 [json_name = "owner_id"];
+
+  string resolver_endpoint_id = 6 [json_name = "resolver_endpoint_id"];
+
+  string resolver_rule_id = 7 [json_name = "resolver_rule_id"];
+
+  string rule_type = 8 [json_name = "rule_type"];
+
+  string share_status = 9 [json_name = "share_status"];
+
+  map<string, string> tags = 10;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//AwsRoute53ResolverRules version is 0
+message AwsRoute53ResolverRules {
+  string id = 1;
+
+  string owner_id = 2 [json_name = "owner_id"];
+
+  string resolver_endpoint_id = 3 [json_name = "resolver_endpoint_id"];
+
+  repeated string resolver_rule_ids = 4 [json_name = "resolver_rule_ids"];
+
+  string rule_type = 5 [json_name = "rule_type"];
+
+  string share_status = 6 [json_name = "share_status"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsRoute53Zone version is 0
+message AwsRoute53Zone {
+  string caller_reference = 1 [json_name = "caller_reference"];
+
+  string comment = 2;
+
+  string id = 3;
+
+  string linked_service_description = 4 [json_name = "linked_service_description"];
+
+  string linked_service_principal = 5 [json_name = "linked_service_principal"];
+
+  string name = 6;
+
+  repeated string name_servers = 7 [json_name = "name_servers"];
+
+  bool private_zone = 8 [json_name = "private_zone"];
+
+  int64 resource_record_set_count = 9 [json_name = "resource_record_set_count"];
+
+  map<string, string> tags = 10;
+
+  string vpc_id = 11 [json_name = "vpc_id"];
+
+  string zone_id = 12 [json_name = "zone_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+
+  int32 count = 14;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+}
+
+//AwsRouteTable version is 0
+message AwsRouteTable {
+  repeated Associations associations = 1;
+
+  string gateway_id = 2 [json_name = "gateway_id"];
+
+  string id = 3;
+
+  string owner_id = 4 [json_name = "owner_id"];
+
+  string route_table_id = 5 [json_name = "route_table_id"];
+
+  repeated Routes routes = 6;
+
+  string subnet_id = 7 [json_name = "subnet_id"];
+
+  map<string, string> tags = 8;
+
+  string vpc_id = 9 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+
+  message Associations {
+    //gateway_id: string
+    string gateway_id = 1 [json_name = "gateway_id"];
+
+    //main: bool
+    bool main = 2;
+
+    //route_table_association_id: string
+    string route_table_association_id = 3 [json_name = "route_table_association_id"];
+
+    //route_table_id: string
+    string route_table_id = 4 [json_name = "route_table_id"];
+
+    //subnet_id: string
+    string subnet_id = 5 [json_name = "subnet_id"];
+  }
+
+  message Routes {
+    //cidr_block: string
+    string cidr_block = 1 [json_name = "cidr_block"];
+
+    //egress_only_gateway_id: string
+    string egress_only_gateway_id = 2 [json_name = "egress_only_gateway_id"];
+
+    //gateway_id: string
+    string gateway_id = 3 [json_name = "gateway_id"];
+
+    //instance_id: string
+    string instance_id = 4 [json_name = "instance_id"];
+
+    //ipv6_cidr_block: string
+    string ipv6_cidr_block = 5 [json_name = "ipv6_cidr_block"];
+
+    //nat_gateway_id: string
+    string nat_gateway_id = 6 [json_name = "nat_gateway_id"];
+
+    //network_interface_id: string
+    string network_interface_id = 7 [json_name = "network_interface_id"];
+
+    //transit_gateway_id: string
+    string transit_gateway_id = 8 [json_name = "transit_gateway_id"];
+
+    //vpc_peering_connection_id: string
+    string vpc_peering_connection_id = 9 [json_name = "vpc_peering_connection_id"];
+  }
+}
+
+//AwsRouteTables version is 0
+message AwsRouteTables {
+  string id = 1;
+
+  repeated string ids = 2;
+
+  map<string, string> tags = 3;
+
+  string vpc_id = 4 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsS3Bucket version is 0
+message AwsS3Bucket {
+  string arn = 1;
+
+  string bucket = 2;
+
+  string bucket_domain_name = 3 [json_name = "bucket_domain_name"];
+
+  string bucket_regional_domain_name = 4 [json_name = "bucket_regional_domain_name"];
+
+  string hosted_zone_id = 5 [json_name = "hosted_zone_id"];
+
+  string id = 6;
+
+  string region = 7;
+
+  string website_domain = 8 [json_name = "website_domain"];
+
+  string website_endpoint = 9 [json_name = "website_endpoint"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//AwsS3BucketObject version is 0
+message AwsS3BucketObject {
+  string body = 1;
+
+  string bucket = 2;
+
+  string cache_control = 3 [json_name = "cache_control"];
+
+  string content_disposition = 4 [json_name = "content_disposition"];
+
+  string content_encoding = 5 [json_name = "content_encoding"];
+
+  string content_language = 6 [json_name = "content_language"];
+
+  int64 content_length = 7 [json_name = "content_length"];
+
+  string content_type = 8 [json_name = "content_type"];
+
+  string etag = 9;
+
+  string expiration = 10;
+
+  string expires = 11;
+
+  string id = 12;
+
+  string key = 13;
+
+  string last_modified = 14 [json_name = "last_modified"];
+
+  map<string, string> metadata = 15;
+
+  string object_lock_legal_hold_status = 16 [json_name = "object_lock_legal_hold_status"];
+
+  string object_lock_mode = 17 [json_name = "object_lock_mode"];
+
+  string object_lock_retain_until_date = 18 [json_name = "object_lock_retain_until_date"];
+
+  string range = 19;
+
+  string server_side_encryption = 20 [json_name = "server_side_encryption"];
+
+  string sse_kms_key_id = 21 [json_name = "sse_kms_key_id"];
+
+  string storage_class = 22 [json_name = "storage_class"];
+
+  map<string, string> tags = 23;
+
+  string version_id = 24 [json_name = "version_id"];
+
+  string website_redirect_location = 25 [json_name = "website_redirect_location"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 26;
+
+  int32 count = 27;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 28;
+
+  string provider = 29;
+
+  terraform.meta.Lifecycle lifecycle = 30;
+}
+
+//AwsS3BucketObjects version is 0
+message AwsS3BucketObjects {
+  string bucket = 1;
+
+  repeated string common_prefixes = 2 [json_name = "common_prefixes"];
+
+  string delimiter = 3;
+
+  string encoding_type = 4 [json_name = "encoding_type"];
+
+  bool fetch_owner = 5 [json_name = "fetch_owner"];
+
+  string id = 6;
+
+  repeated string keys = 7;
+
+  int64 max_keys = 8 [json_name = "max_keys"];
+
+  repeated string owners = 9;
+
+  string prefix = 10;
+
+  string start_after = 11 [json_name = "start_after"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+
+  int32 count = 13;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+}
+
+//AwsSecretsmanagerSecret version is 0
+message AwsSecretsmanagerSecret {
+  string arn = 1;
+
+  string description = 2;
+
+  string id = 3;
+
+  string kms_key_id = 4 [json_name = "kms_key_id"];
+
+  string name = 5;
+
+  string policy = 6;
+
+  bool rotation_enabled = 7 [json_name = "rotation_enabled"];
+
+  string rotation_lambda_arn = 8 [json_name = "rotation_lambda_arn"];
+
+  repeated RotationRules rotation_rules = 9 [json_name = "rotation_rules"];
+
+  map<string, string> tags = 10;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+
+  message RotationRules {
+    //automatically_after_days: number
+    int64 automatically_after_days = 1 [json_name = "automatically_after_days"];
+  }
+}
+
+//AwsSecretsmanagerSecretVersion version is 0
+message AwsSecretsmanagerSecretVersion {
+  string arn = 1;
+
+  string id = 2;
+
+  string secret_binary = 3 [json_name = "secret_binary"];
+
+  string secret_id = 4 [json_name = "secret_id"];
+
+  string secret_string = 5 [json_name = "secret_string"];
+
+  string version_id = 6 [json_name = "version_id"];
+
+  string version_stage = 7 [json_name = "version_stage"];
+
+  repeated string version_stages = 8 [json_name = "version_stages"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsSecurityGroup version is 0
+message AwsSecurityGroup {
+  string arn = 1;
+
+  string description = 2;
+
+  string id = 3;
+
+  string name = 4;
+
+  map<string, string> tags = 5;
+
+  string vpc_id = 6 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsSecurityGroups version is 0
+message AwsSecurityGroups {
+  string id = 1;
+
+  repeated string ids = 2;
+
+  map<string, string> tags = 3;
+
+  repeated string vpc_ids = 4 [json_name = "vpc_ids"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsServicequotasService version is 0
+message AwsServicequotasService {
+  string id = 1;
+
+  string service_code = 2 [json_name = "service_code"];
+
+  string service_name = 3 [json_name = "service_name"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsServicequotasServiceQuota version is 0
+message AwsServicequotasServiceQuota {
+  bool adjustable = 1;
+
+  string arn = 2;
+
+  int64 default_value = 3 [json_name = "default_value"];
+
+  bool global_quota = 4 [json_name = "global_quota"];
+
+  string id = 5;
+
+  string quota_code = 6 [json_name = "quota_code"];
+
+  string quota_name = 7 [json_name = "quota_name"];
+
+  string service_code = 8 [json_name = "service_code"];
+
+  string service_name = 9 [json_name = "service_name"];
+
+  int64 value = 10;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+}
+
+//AwsSfnActivity version is 0
+message AwsSfnActivity {
+  string arn = 1;
+
+  string creation_date = 2 [json_name = "creation_date"];
+
+  string id = 3;
+
+  string name = 4;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsSfnStateMachine version is 0
+message AwsSfnStateMachine {
+  string arn = 1;
+
+  string creation_date = 2 [json_name = "creation_date"];
+
+  string definition = 3;
+
+  string id = 4;
+
+  string name = 5;
+
+  string role_arn = 6 [json_name = "role_arn"];
+
+  string status = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsSnsTopic version is 0
+message AwsSnsTopic {
+  string arn = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsSqsQueue version is 0
+message AwsSqsQueue {
+  string arn = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  map<string, string> tags = 4;
+
+  string url = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//AwsSsmDocument version is 0
+message AwsSsmDocument {
+  string arn = 1;
+
+  string content = 2;
+
+  string document_format = 3 [json_name = "document_format"];
+
+  string document_type = 4 [json_name = "document_type"];
+
+  string document_version = 5 [json_name = "document_version"];
+
+  string id = 6;
+
+  string name = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsSsmParameter version is 0
+message AwsSsmParameter {
+  string arn = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  string type = 4;
+
+  string value = 5;
+
+  int64 version = 6;
+
+  bool with_decryption = 7 [json_name = "with_decryption"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsSsmPatchBaseline version is 0
+message AwsSsmPatchBaseline {
+  bool default_baseline = 1 [json_name = "default_baseline"];
+
+  string description = 2;
+
+  string id = 3;
+
+  string name = 4;
+
+  string name_prefix = 5 [json_name = "name_prefix"];
+
+  string operating_system = 6 [json_name = "operating_system"];
+
+  string owner = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//AwsStoragegatewayLocalDisk version is 0
+message AwsStoragegatewayLocalDisk {
+  string disk_id = 1 [json_name = "disk_id"];
+
+  string disk_node = 2 [json_name = "disk_node"];
+
+  string disk_path = 3 [json_name = "disk_path"];
+
+  string gateway_arn = 4 [json_name = "gateway_arn"];
+
+  string id = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//AwsSubnet version is 0
+message AwsSubnet {
+  string arn = 1;
+
+  bool assign_ipv6_address_on_creation = 2 [json_name = "assign_ipv6_address_on_creation"];
+
+  string availability_zone = 3 [json_name = "availability_zone"];
+
+  string availability_zone_id = 4 [json_name = "availability_zone_id"];
+
+  string cidr_block = 5 [json_name = "cidr_block"];
+
+  bool default_for_az = 6 [json_name = "default_for_az"];
+
+  string id = 7;
+
+  string ipv6_cidr_block = 8 [json_name = "ipv6_cidr_block"];
+
+  string ipv6_cidr_block_association_id = 9 [json_name = "ipv6_cidr_block_association_id"];
+
+  bool map_public_ip_on_launch = 10 [json_name = "map_public_ip_on_launch"];
+
+  string owner_id = 11 [json_name = "owner_id"];
+
+  string state = 12;
+
+  map<string, string> tags = 13;
+
+  string vpc_id = 14 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
+
+  int32 count = 16;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
+
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
+}
+
+//AwsSubnetIds version is 0
+message AwsSubnetIds {
+  string id = 1;
+
+  repeated string ids = 2;
+
+  map<string, string> tags = 3;
+
+  string vpc_id = 4 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//AwsTransferServer version is 0
+message AwsTransferServer {
+  string arn = 1;
+
+  string endpoint = 2;
+
+  string id = 3;
+
+  string identity_provider_type = 4 [json_name = "identity_provider_type"];
+
+  string invocation_role = 5 [json_name = "invocation_role"];
+
+  string logging_role = 6 [json_name = "logging_role"];
+
+  string server_id = 7 [json_name = "server_id"];
+
+  string url = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//AwsVpc version is 0
+message AwsVpc {
+  string arn = 1;
+
+  string cidr_block = 2 [json_name = "cidr_block"];
+
+  repeated CidrBlockAssociations cidr_block_associations = 3 [json_name = "cidr_block_associations"];
+
+  bool default = 4;
+
+  string dhcp_options_id = 5 [json_name = "dhcp_options_id"];
+
+  bool enable_dns_hostnames = 6 [json_name = "enable_dns_hostnames"];
+
+  bool enable_dns_support = 7 [json_name = "enable_dns_support"];
+
+  string id = 8;
+
+  string instance_tenancy = 9 [json_name = "instance_tenancy"];
+
+  string ipv6_association_id = 10 [json_name = "ipv6_association_id"];
+
+  string ipv6_cidr_block = 11 [json_name = "ipv6_cidr_block"];
+
+  string main_route_table_id = 12 [json_name = "main_route_table_id"];
+
+  string owner_id = 13 [json_name = "owner_id"];
+
+  string state = 14;
+
+  map<string, string> tags = 15;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
+
+  int32 count = 17;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 18;
+
+  string provider = 19;
+
+  terraform.meta.Lifecycle lifecycle = 20;
+
+  message CidrBlockAssociations {
+    //association_id: string
+    string association_id = 1 [json_name = "association_id"];
+
+    //cidr_block: string
+    string cidr_block = 2 [json_name = "cidr_block"];
+
+    //state: string
+    string state = 3;
+  }
+}
+
+//AwsVpcDhcpOptions version is 0
+message AwsVpcDhcpOptions {
+  string dhcp_options_id = 1 [json_name = "dhcp_options_id"];
+
+  string domain_name = 2 [json_name = "domain_name"];
+
+  repeated string domain_name_servers = 3 [json_name = "domain_name_servers"];
+
+  string id = 4;
+
+  repeated string netbios_name_servers = 5 [json_name = "netbios_name_servers"];
+
+  string netbios_node_type = 6 [json_name = "netbios_node_type"];
+
+  repeated string ntp_servers = 7 [json_name = "ntp_servers"];
+
+  string owner_id = 8 [json_name = "owner_id"];
+
+  map<string, string> tags = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//AwsVpcEndpoint version is 0
+message AwsVpcEndpoint {
+  repeated string cidr_blocks = 1 [json_name = "cidr_blocks"];
+
+  repeated DnsEntry dns_entry = 2 [json_name = "dns_entry"];
+
+  string id = 3;
+
+  repeated string network_interface_ids = 4 [json_name = "network_interface_ids"];
+
+  string owner_id = 5 [json_name = "owner_id"];
+
+  string policy = 6;
+
+  string prefix_list_id = 7 [json_name = "prefix_list_id"];
+
+  bool private_dns_enabled = 8 [json_name = "private_dns_enabled"];
+
+  bool requester_managed = 9 [json_name = "requester_managed"];
+
+  repeated string route_table_ids = 10 [json_name = "route_table_ids"];
+
+  repeated string security_group_ids = 11 [json_name = "security_group_ids"];
+
+  string service_name = 12 [json_name = "service_name"];
+
+  string state = 13;
+
+  repeated string subnet_ids = 14 [json_name = "subnet_ids"];
+
+  map<string, string> tags = 15;
+
+  string vpc_endpoint_type = 16 [json_name = "vpc_endpoint_type"];
+
+  string vpc_id = 17 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+
+  int32 count = 19;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+
+  string provider = 21;
+
+  terraform.meta.Lifecycle lifecycle = 22;
+
+  message DnsEntry {
+    //dns_name: string
+    string dns_name = 1 [json_name = "dns_name"];
+
+    //hosted_zone_id: string
+    string hosted_zone_id = 2 [json_name = "hosted_zone_id"];
+  }
+}
+
+//AwsVpcEndpointService version is 0
+message AwsVpcEndpointService {
+  bool acceptance_required = 1 [json_name = "acceptance_required"];
+
+  repeated string availability_zones = 2 [json_name = "availability_zones"];
+
+  repeated string base_endpoint_dns_names = 3 [json_name = "base_endpoint_dns_names"];
+
+  string id = 4;
+
+  bool manages_vpc_endpoints = 5 [json_name = "manages_vpc_endpoints"];
+
+  string owner = 6;
+
+  string private_dns_name = 7 [json_name = "private_dns_name"];
+
+  string service = 8;
+
+  string service_id = 9 [json_name = "service_id"];
+
+  string service_name = 10 [json_name = "service_name"];
+
+  string service_type = 11 [json_name = "service_type"];
+
+  map<string, string> tags = 12;
+
+  bool vpc_endpoint_policy_supported = 13 [json_name = "vpc_endpoint_policy_supported"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//AwsVpcPeeringConnection version is 0
+message AwsVpcPeeringConnection {
+  map<string, string> accepter = 1;
+
+  string cidr_block = 2 [json_name = "cidr_block"];
+
+  string id = 3;
+
+  string owner_id = 4 [json_name = "owner_id"];
+
+  string peer_cidr_block = 5 [json_name = "peer_cidr_block"];
+
+  string peer_owner_id = 6 [json_name = "peer_owner_id"];
+
+  string peer_region = 7 [json_name = "peer_region"];
+
+  string peer_vpc_id = 8 [json_name = "peer_vpc_id"];
+
+  string region = 9;
+
+  map<string, string> requester = 10;
+
+  string status = 11;
+
+  map<string, string> tags = 12;
+
+  string vpc_id = 13 [json_name = "vpc_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//AwsVpcs version is 0
+message AwsVpcs {
+  string id = 1;
+
+  repeated string ids = 2;
+
+  map<string, string> tags = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}
+
+//AwsVpnGateway version is 0
+message AwsVpnGateway {
+  string amazon_side_asn = 1 [json_name = "amazon_side_asn"];
+
+  string attached_vpc_id = 2 [json_name = "attached_vpc_id"];
+
+  string availability_zone = 3 [json_name = "availability_zone"];
+
+  string id = 4;
+
+  string state = 5;
+
+  map<string, string> tags = 6;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//AwsWafIpset version is 0
+message AwsWafIpset {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsWafRateBasedRule version is 0
+message AwsWafRateBasedRule {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsWafRule version is 0
+message AwsWafRule {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsWafWebAcl version is 0
+message AwsWafWebAcl {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsWafregionalIpset version is 0
+message AwsWafregionalIpset {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsWafregionalRateBasedRule version is 0
+message AwsWafregionalRateBasedRule {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsWafregionalRule version is 0
+message AwsWafregionalRule {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsWafregionalWebAcl version is 0
+message AwsWafregionalWebAcl {
+  string id = 1;
+
+  string name = 2;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+
+  int32 count = 4;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+
+  string provider = 6;
+
+  terraform.meta.Lifecycle lifecycle = 7;
+}
+
+//AwsWorkspacesBundle version is 0
+message AwsWorkspacesBundle {
+  string bundle_id = 1 [json_name = "bundle_id"];
+
+  repeated ComputeType compute_type = 2 [json_name = "compute_type"];
+
+  string description = 3;
+
+  string id = 4;
+
+  string name = 5;
+
+  string owner = 6;
+
+  repeated RootStorage root_storage = 7 [json_name = "root_storage"];
+
+  repeated UserStorage user_storage = 8 [json_name = "user_storage"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+
+  message ComputeType {
+    //name: string
+    string name = 1;
+  }
+
+  message RootStorage {
+    //capacity: string
+    string capacity = 1;
+  }
+
+  message UserStorage {
+    //capacity: string
+    string capacity = 1;
+  }
+}
