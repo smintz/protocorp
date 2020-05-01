@@ -32,6 +32,8 @@
                 ]
               },
               "Resources": {
+                "CPU": 1000,
+                "MemoryMB": 64,
                 "Networks": [
                   {}
                 ]
@@ -84,6 +86,8 @@
                 }
               ],
               "Resources": {
+                "CPU": 100,
+                "MemoryMB": 64,
                 "Networks": [
                   {
                     "ReservedPorts": [

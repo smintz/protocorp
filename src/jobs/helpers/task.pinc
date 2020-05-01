@@ -53,9 +53,17 @@ def NewTask(name, image=None):
         Name=name,
         Vault=Vault(Policies=["default"]),
         Resources=Resources(
-            Networks=[NetworkResource(ReservedPorts=[], DynamicPorts=[])]
+            CPU=100,
+            MemoryMB=64,
+            Networks=[NetworkResource(ReservedPorts=[], DynamicPorts=[])],
         ),
     )
+
+    def setCPU(num):
+        local_task.Resources.CPU = num
+
+    def setMemory(num):
+        local_task.Resources.MemoryMB = num
 
     def setConfig(key, v):
         local_task.Config[key] = value(v)
@@ -109,5 +117,7 @@ def NewTask(name, image=None):
         NewPort=newPort,
         NewService=newService,
         SetConfig=setConfig,
+        SetCPU=setCPU,
+        SetMemory=setMemory,
         Value=value,
     )

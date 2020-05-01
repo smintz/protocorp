@@ -32,6 +32,8 @@
                 ]
               },
               "Resources": {
+                "CPU": 1000,
+                "MemoryMB": 64,
                 "Networks": [
                   {}
                 ]

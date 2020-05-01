@@ -18,6 +18,7 @@ task.NewPort("agent", reserve=4300)
 task.SetConfig("network_mode", "host")
 task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
 task.SetConfig("args", ["-prefix=production/"])
+task.SetCPU(1000)
 
 PROTOCONF_SERVER_SCRIPT_HEADER = """\
 #!/bin/bash
