@@ -3,15 +3,17 @@
   "value": {
     "@type": "type.googleapis.com/api.RegisterJobRequest",
     "Job": {
+      "Region": "global",
       "ID": "fabio",
       "Name": "fabio",
       "Type": "system",
+      "Priority": 75,
       "Datacenters": [
         "ams3c01"
       ],
       "TaskGroups": [
         {
-          "Name": "fabio",
+          "Name": "default",
           "Count": 1,
           "Tasks": [
             {
@@ -25,6 +27,8 @@
                 ]
               },
               "Resources": {
+                "CPU": 100,
+                "MemoryMB": 64,
                 "Networks": [
                   {
                     "ReservedPorts": [
@@ -38,6 +42,11 @@
                       }
                     ]
                   }
+                ]
+              },
+              "Vault": {
+                "Policies": [
+                  "default"
                 ]
               }
             }

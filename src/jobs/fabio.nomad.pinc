@@ -10,6 +10,7 @@ load(
     "Job",
     "TaskGroup",
 )
+load("/jobs/helpers/job.pinc", "NewJob")
 load("/google/protobuf/struct.proto", "Value", "ListValue")
 load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
 
@@ -17,31 +18,10 @@ datacenters = [
     "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
 ]
 
-FABIO_TASK = Task(
-    Name="fabio",
-    Driver="docker",
-    Resources=Resources(
-        Networks=[
-            NetworkResource(
-                ReservedPorts=[
-                    Port(Label="lb", Value=9999),
-                    Port(Label="ui", Value=9998),
-                ]
-            )
-        ]
-    ),
-    Config={
-        "image": Value(string_value="fabiolb/fabio"),
-        "network_mode": Value(string_value="host"),
-        "volumes": Value(
-            list_value=ListValue(values=[Value(string_value="/etc/ssl:/etc/ssl")])
-        ),
-    },
-)
-FABIO_JOB = Job(
-    Name="fabio",
-    ID="fabio",
-    Datacenters=datacenters,
-    Type="system",
-    TaskGroups=[TaskGroup(Name="fabio", Count=1, Tasks=[FABIO_TASK])],
-)
+FABIO_JOB = NewJob("fabio", type="system")
+task = FABIO_JOB.NewTask("fabio")
+task.SetImage("fabiolb/fabio")
+task.SetConfig("network_mode", "host")
+task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
+task.NewPort("lb", reserve=9999)
+task.NewPort("ui", reserve=9998)
