@@ -18,6 +18,10 @@ import "terraform/google-data.proto";
 
 import "terraform/google-resources.proto";
 
+import "terraform/packet-data.proto";
+
+import "terraform/packet-resources.proto";
+
 import "terraform/random-resources.proto";
 
 import "terraform/tls-data.proto";
@@ -1792,27 +1796,53 @@ message Terraform {
 
     map<string, google.resources.GoogleVpcAccessConnector> google_vpc_access_connector = 881 [json_name = "google_vpc_access_connector"];
 
-    map<string, random.resources.RandomId> random_id = 882 [json_name = "random_id"];
+    map<string, packet.resources.PacketBgpSession> packet_bgp_session = 882 [json_name = "packet_bgp_session"];
 
-    map<string, random.resources.RandomInteger> random_integer = 883 [json_name = "random_integer"];
+    map<string, packet.resources.PacketDevice> packet_device = 883 [json_name = "packet_device"];
 
-    map<string, random.resources.RandomPassword> random_password = 884 [json_name = "random_password"];
+    map<string, packet.resources.PacketIpAttachment> packet_ip_attachment = 884 [json_name = "packet_ip_attachment"];
 
-    map<string, random.resources.RandomPet> random_pet = 885 [json_name = "random_pet"];
+    map<string, packet.resources.PacketOrganization> packet_organization = 885 [json_name = "packet_organization"];
 
-    map<string, random.resources.RandomShuffle> random_shuffle = 886 [json_name = "random_shuffle"];
+    map<string, packet.resources.PacketPortVlanAttachment> packet_port_vlan_attachment = 886 [json_name = "packet_port_vlan_attachment"];
 
-    map<string, random.resources.RandomString> random_string = 887 [json_name = "random_string"];
+    map<string, packet.resources.PacketProject> packet_project = 887 [json_name = "packet_project"];
 
-    map<string, random.resources.RandomUuid> random_uuid = 888 [json_name = "random_uuid"];
+    map<string, packet.resources.PacketProjectSshKey> packet_project_ssh_key = 888 [json_name = "packet_project_ssh_key"];
 
-    map<string, tls.resources.TlsCertRequest> tls_cert_request = 889 [json_name = "tls_cert_request"];
+    map<string, packet.resources.PacketReservedIpBlock> packet_reserved_ip_block = 889 [json_name = "packet_reserved_ip_block"];
 
-    map<string, tls.resources.TlsLocallySignedCert> tls_locally_signed_cert = 890 [json_name = "tls_locally_signed_cert"];
+    map<string, packet.resources.PacketSpotMarketRequest> packet_spot_market_request = 890 [json_name = "packet_spot_market_request"];
 
-    map<string, tls.resources.TlsPrivateKey> tls_private_key = 891 [json_name = "tls_private_key"];
+    map<string, packet.resources.PacketSshKey> packet_ssh_key = 891 [json_name = "packet_ssh_key"];
 
-    map<string, tls.resources.TlsSelfSignedCert> tls_self_signed_cert = 892 [json_name = "tls_self_signed_cert"];
+    map<string, packet.resources.PacketVlan> packet_vlan = 892 [json_name = "packet_vlan"];
+
+    map<string, packet.resources.PacketVolume> packet_volume = 893 [json_name = "packet_volume"];
+
+    map<string, packet.resources.PacketVolumeAttachment> packet_volume_attachment = 894 [json_name = "packet_volume_attachment"];
+
+    map<string, random.resources.RandomId> random_id = 895 [json_name = "random_id"];
+
+    map<string, random.resources.RandomInteger> random_integer = 896 [json_name = "random_integer"];
+
+    map<string, random.resources.RandomPassword> random_password = 897 [json_name = "random_password"];
+
+    map<string, random.resources.RandomPet> random_pet = 898 [json_name = "random_pet"];
+
+    map<string, random.resources.RandomShuffle> random_shuffle = 899 [json_name = "random_shuffle"];
+
+    map<string, random.resources.RandomString> random_string = 900 [json_name = "random_string"];
+
+    map<string, random.resources.RandomUuid> random_uuid = 901 [json_name = "random_uuid"];
+
+    map<string, tls.resources.TlsCertRequest> tls_cert_request = 902 [json_name = "tls_cert_request"];
+
+    map<string, tls.resources.TlsLocallySignedCert> tls_locally_signed_cert = 903 [json_name = "tls_locally_signed_cert"];
+
+    map<string, tls.resources.TlsPrivateKey> tls_private_key = 904 [json_name = "tls_private_key"];
+
+    map<string, tls.resources.TlsSelfSignedCert> tls_self_signed_cert = 905 [json_name = "tls_self_signed_cert"];
   }
 
   message Datasources {
@@ -2314,6 +2344,24 @@ message Terraform {
 
     map<string, google.data.GoogleTpuTensorflowVersions> google_tpu_tensorflow_versions = 249 [json_name = "google_tpu_tensorflow_versions"];
 
-    map<string, tls.data.TlsPublicKey> tls_public_key = 250 [json_name = "tls_public_key"];
+    map<string, packet.data.PacketDevice> packet_device = 250 [json_name = "packet_device"];
+
+    map<string, packet.data.PacketIpBlockRanges> packet_ip_block_ranges = 251 [json_name = "packet_ip_block_ranges"];
+
+    map<string, packet.data.PacketOperatingSystem> packet_operating_system = 252 [json_name = "packet_operating_system"];
+
+    map<string, packet.data.PacketOrganization> packet_organization = 253 [json_name = "packet_organization"];
+
+    map<string, packet.data.PacketPrecreatedIpBlock> packet_precreated_ip_block = 254 [json_name = "packet_precreated_ip_block"];
+
+    map<string, packet.data.PacketProject> packet_project = 255 [json_name = "packet_project"];
+
+    map<string, packet.data.PacketSpotMarketPrice> packet_spot_market_price = 256 [json_name = "packet_spot_market_price"];
+
+    map<string, packet.data.PacketSpotMarketRequest> packet_spot_market_request = 257 [json_name = "packet_spot_market_request"];
+
+    map<string, packet.data.PacketVolume> packet_volume = 258 [json_name = "packet_volume"];
+
+    map<string, tls.data.TlsPublicKey> tls_public_key = 259 [json_name = "tls_public_key"];
   }
 }

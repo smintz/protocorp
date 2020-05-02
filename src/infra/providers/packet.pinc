@@ -1,0 +1,48 @@
+"""
+packet
+"""
+load("/terraform/meta.proto", "Lifecycle")
+load("/terraform/packet-resources.proto", "PacketDevice")
+load("mutable:infra/counter", counter="value")
+COUNTER = counter.global_counter
+
+
+def DigitalOceanCluster(tf, cluster):
+    """
+    DigitalOceanCluster is an instance of helpers to create a cluster on the packet cloud provider
+
+    Args:
+        tf: an instance of Terraform.Resource
+        cluster: a Cluster instance
+    """
+
+    def get_instance_size(nmd):
+        tiers = [t for t in cluster.tiers if t.name == nmd.role]
+        size = tiers[0].instance_type
+        if not size:
+            return "c1.small.x86"
+        return size
+
+    def create_device(nmd, user_data=""):
+        droplet = PacketDevice(
+            name=nmd.hostname,
+            image="ubuntu-18-04-x64",
+            region=nmd.region,
+            # size="s-1vcpu-1gb",
+            size=get_instance_size(nmd),
+            ssh_keys=[
+                "${digitalocean_ssh_key.%s.id}" % keyname
+                for keyname in tf.digitalocean_ssh_key.keys()
+            ],
+            tags=[nmd.role, nmd.cluster_name],
+            private_networking=True,
+            user_data=user_data,
+        )
+        if nmd.id > COUNTER:
+            droplet.lifecycle = Lifecycle(
+                ignore_changes=["user_data"], create_before_destroy=True
+            )
+        tf.digitalocean_droplet[nmd.tfid] = droplet
+        return droplet
+
+    return struct(CreateInstance=create_droplet)
