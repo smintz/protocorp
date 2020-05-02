@@ -1,0 +1,481 @@
+syntax = "proto3";
+
+package terraform.packet.resources;
+
+import "terraform/meta.proto";
+
+//PacketBgpSession version is 0
+message PacketBgpSession {
+  string address_family = 1 [json_name = "address_family"];
+
+  bool default_route = 2 [json_name = "default_route"];
+
+  string device_id = 3 [json_name = "device_id"];
+
+  string id = 4;
+
+  string status = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//PacketDevice version is 0
+message PacketDevice {
+  string access_private_ipv4 = 1 [json_name = "access_private_ipv4"];
+
+  string access_public_ipv4 = 2 [json_name = "access_public_ipv4"];
+
+  string access_public_ipv6 = 3 [json_name = "access_public_ipv6"];
+
+  bool always_pxe = 4 [json_name = "always_pxe"];
+
+  string billing_cycle = 5 [json_name = "billing_cycle"];
+
+  string created = 6;
+
+  string deployed_facility = 7 [json_name = "deployed_facility"];
+
+  string description = 8;
+
+  repeated string facilities = 9;
+
+  string facility = 10;
+
+  bool force_detach_volumes = 11 [json_name = "force_detach_volumes"];
+
+  string hardware_reservation_id = 12 [json_name = "hardware_reservation_id"];
+
+  string hostname = 13;
+
+  string id = 14;
+
+  repeated string ip_address_types = 15 [json_name = "ip_address_types"];
+
+  string ipxe_script_url = 16 [json_name = "ipxe_script_url"];
+
+  bool locked = 17;
+
+  repeated Network network = 18;
+
+  string network_type = 19 [json_name = "network_type"];
+
+  string operating_system = 20 [json_name = "operating_system"];
+
+  string plan = 21;
+
+  repeated Ports ports = 22;
+
+  string project_id = 23 [json_name = "project_id"];
+
+  repeated string project_ssh_key_ids = 24 [json_name = "project_ssh_key_ids"];
+
+  int64 public_ipv4_subnet_size = 25 [json_name = "public_ipv4_subnet_size"];
+
+  string root_password = 26 [json_name = "root_password"];
+
+  repeated string ssh_key_ids = 27 [json_name = "ssh_key_ids"];
+
+  string state = 28;
+
+  string storage = 29;
+
+  repeated string tags = 30;
+
+  string updated = 31;
+
+  string user_data = 32 [json_name = "user_data"];
+
+  bool wait_for_reservation_deprovision = 33 [json_name = "wait_for_reservation_deprovision"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 34;
+
+  int32 count = 35;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 36;
+
+  string provider = 37;
+
+  terraform.meta.Lifecycle lifecycle = 38;
+
+  message Network {
+    //address: string
+    string address = 1;
+
+    //cidr: number
+    int64 cidr = 2;
+
+    //family: number
+    int64 family = 3;
+
+    //gateway: string
+    string gateway = 4;
+
+    //public: bool
+    bool public = 5;
+  }
+
+  message Ports {
+    //bonded: bool
+    bool bonded = 1;
+
+    //id: string
+    string id = 2;
+
+    //mac: string
+    string mac = 3;
+
+    //name: string
+    string name = 4;
+
+    //type: string
+    string type = 5;
+  }
+}
+
+//PacketIpAttachment version is 0
+message PacketIpAttachment {
+  string address = 1;
+
+  int64 address_family = 2 [json_name = "address_family"];
+
+  int64 cidr = 3;
+
+  string cidr_notation = 4 [json_name = "cidr_notation"];
+
+  string device_id = 5 [json_name = "device_id"];
+
+  string gateway = 6;
+
+  bool global = 7;
+
+  string id = 8;
+
+  bool manageable = 9;
+
+  bool management = 10;
+
+  string netmask = 11;
+
+  string network = 12;
+
+  bool public = 13;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//PacketOrganization version is 0
+message PacketOrganization {
+  string created = 1;
+
+  string description = 2;
+
+  string id = 3;
+
+  string logo = 4;
+
+  string name = 5;
+
+  string twitter = 6;
+
+  string updated = 7;
+
+  string website = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//PacketPortVlanAttachment version is 0
+message PacketPortVlanAttachment {
+  string device_id = 1 [json_name = "device_id"];
+
+  bool force_bond = 2 [json_name = "force_bond"];
+
+  string id = 3;
+
+  bool native = 4;
+
+  string port_id = 5 [json_name = "port_id"];
+
+  string port_name = 6 [json_name = "port_name"];
+
+  string vlan_id = 7 [json_name = "vlan_id"];
+
+  int64 vlan_vnid = 8 [json_name = "vlan_vnid"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//PacketProject version is 0
+message PacketProject {
+  bool backend_transfer = 1 [json_name = "backend_transfer"];
+
+  string created = 2;
+
+  string id = 3;
+
+  string name = 4;
+
+  string organization_id = 5 [json_name = "organization_id"];
+
+  string payment_method_id = 6 [json_name = "payment_method_id"];
+
+  string updated = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//PacketProjectSshKey version is 0
+message PacketProjectSshKey {
+  string created = 1;
+
+  string fingerprint = 2;
+
+  string id = 3;
+
+  string name = 4;
+
+  string owner_id = 5 [json_name = "owner_id"];
+
+  string project_id = 6 [json_name = "project_id"];
+
+  string public_key = 7 [json_name = "public_key"];
+
+  string updated = 8;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+
+  int32 count = 10;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+}
+
+//PacketReservedIpBlock version is 0
+message PacketReservedIpBlock {
+  string address = 1;
+
+  int64 address_family = 2 [json_name = "address_family"];
+
+  int64 cidr = 3;
+
+  string cidr_notation = 4 [json_name = "cidr_notation"];
+
+  string description = 5;
+
+  string facility = 6;
+
+  string gateway = 7;
+
+  bool global = 8;
+
+  string id = 9;
+
+  bool manageable = 10;
+
+  bool management = 11;
+
+  string netmask = 12;
+
+  string network = 13;
+
+  string project_id = 14 [json_name = "project_id"];
+
+  bool public = 15;
+
+  int64 quantity = 16;
+
+  string type = 17;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+
+  int32 count = 19;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+
+  string provider = 21;
+
+  terraform.meta.Lifecycle lifecycle = 22;
+}
+
+//PacketSpotMarketRequest version is 0
+message PacketSpotMarketRequest {
+  int64 devices_max = 1 [json_name = "devices_max"];
+
+  int64 devices_min = 2 [json_name = "devices_min"];
+
+  repeated string facilities = 3;
+
+  string id = 4;
+
+  int64 max_bid_price = 5 [json_name = "max_bid_price"];
+
+  string project_id = 6 [json_name = "project_id"];
+
+  bool wait_for_devices = 7 [json_name = "wait_for_devices"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//PacketSshKey version is 0
+message PacketSshKey {
+  string created = 1;
+
+  string fingerprint = 2;
+
+  string id = 3;
+
+  string name = 4;
+
+  string owner_id = 5 [json_name = "owner_id"];
+
+  string public_key = 6 [json_name = "public_key"];
+
+  string updated = 7;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+
+  int32 count = 9;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+}
+
+//PacketVlan version is 0
+message PacketVlan {
+  string description = 1;
+
+  string facility = 2;
+
+  string id = 3;
+
+  string project_id = 4 [json_name = "project_id"];
+
+  int64 vxlan = 5;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+
+  int32 count = 7;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+}
+
+//PacketVolume version is 0
+message PacketVolume {
+  repeated Attachments attachments = 1;
+
+  string billing_cycle = 2 [json_name = "billing_cycle"];
+
+  string created = 3;
+
+  string description = 4;
+
+  string facility = 5;
+
+  string id = 6;
+
+  bool locked = 7;
+
+  string name = 8;
+
+  string plan = 9;
+
+  string project_id = 10 [json_name = "project_id"];
+
+  int64 size = 11;
+
+  string state = 12;
+
+  string updated = 13;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+
+  message Attachments {
+    //href: string
+    string href = 1;
+  }
+}
+
+//PacketVolumeAttachment version is 0
+message PacketVolumeAttachment {
+  string device_id = 1 [json_name = "device_id"];
+
+  string id = 2;
+
+  string volume_id = 3 [json_name = "volume_id"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+}

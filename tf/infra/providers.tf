@@ -8,8 +8,8 @@ provider "digitalocean" {
 }
 provider "google" {
   credentials = var.gcp_creds
-  project = "protoconf"
-  region = "eu-central1"
+  project     = "protoconf"
+  region      = "eu-central1"
 }
 
 provider "random" {}
@@ -18,4 +18,7 @@ provider "cloudflare" {
   api_token = var.cloudflare_api_key
 }
 
+provider "packet" {
+  api_key = var.packet_key
+}
 provider "aws" {}
