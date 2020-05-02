@@ -3,7 +3,6 @@ local jobs
 """
 load("jobs.pinc", "populate")
 load("helpers/registry.pinc", "JobRegistry")
-load("/nomad/v0.10.4/api.proto", "Vault")
 
 reg = JobRegistry(
     "local-job-executor", "jobs/local", cluster_address="http://localhost:4646"

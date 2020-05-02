@@ -1,22 +1,7 @@
 """
 fabio
 """
-load(
-    "/nomad/v0.10.4/api.proto",
-    "NetworkResource",
-    "Port",
-    "Resources",
-    "Task",
-    "Job",
-    "TaskGroup",
-)
 load("/jobs/helpers/job.pinc", "NewJob")
-load("/google/protobuf/struct.proto", "Value", "ListValue")
-load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
-
-datacenters = [
-    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
-]
 
 FABIO_JOB = NewJob("fabio", type="system")
 task = FABIO_JOB.NewTask("fabio")
