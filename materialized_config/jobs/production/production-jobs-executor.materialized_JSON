@@ -38,11 +38,6 @@
                   {}
                 ]
               },
-              "Vault": {
-                "Policies": [
-                  "default"
-                ]
-              },
               "Templates": [
                 {
                   "DestPath": "local/nomad/v0.10.4/api.proto",

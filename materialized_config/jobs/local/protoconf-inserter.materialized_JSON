@@ -9,7 +9,7 @@
       "Type": "service",
       "Priority": 75,
       "Datacenters": [
-        "ams3c01"
+        "dc1"
       ],
       "TaskGroups": [
         {
@@ -36,11 +36,6 @@
                 "MemoryMB": 64,
                 "Networks": [
                   {}
-                ]
-              },
-              "Vault": {
-                "Policies": [
-                  "default"
                 ]
               },
               "Templates": [
@@ -101,7 +96,6 @@
               },
               "Vault": {
                 "Policies": [
-                  "default",
                   "github-policy"
                 ]
               },

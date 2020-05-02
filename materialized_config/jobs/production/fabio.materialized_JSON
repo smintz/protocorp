@@ -43,11 +43,6 @@
                     ]
                   }
                 ]
-              },
-              "Vault": {
-                "Policies": [
-                  "default"
-                ]
               }
             }
           ]

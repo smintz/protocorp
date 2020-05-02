@@ -9,7 +9,7 @@
       "Type": "system",
       "Priority": 75,
       "Datacenters": [
-        "ams3c01"
+        "dc1"
       ],
       "TaskGroups": [
         {
@@ -41,11 +41,6 @@
                       }
                     ]
                   }
-                ]
-              },
-              "Vault": {
-                "Policies": [
-                  "default"
                 ]
               }
             }

@@ -51,7 +51,6 @@ def NewTask(name, image=None):
     """
     local_task = Task(
         Name=name,
-        Vault=Vault(Policies=["default"]),
         Resources=Resources(
             CPU=100,
             MemoryMB=64,
@@ -104,8 +103,7 @@ def NewTask(name, image=None):
         return service
 
     def addVaultPolicies(*policies):
-        for p in policies:
-            local_task.Vault.Policies.append(p)
+        local_task.Vault = Vault(Policies=list(policies))
 
     if image:
         setImage(image)

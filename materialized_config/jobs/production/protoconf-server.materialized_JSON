@@ -58,7 +58,6 @@
               },
               "Vault": {
                 "Policies": [
-                  "default",
                   "github-policy"
                 ]
               },
