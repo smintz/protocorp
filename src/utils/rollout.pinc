@@ -1,0 +1,31 @@
+"""
+rollout.pinc
+"""
+load("rollout.proto", "RolloutConfig")
+load("encoding/base64.star", "base64")
+load("mutable:rollout", configs="value")
+
+
+def pct(x):
+    # protoconf still missing hash.md5 functions
+    # When it will be added, this could use `int(md5(x)[:8], 10) % 100`
+    return int(base64.encode(x[:4] + x[-5:]), 32) % 100
+
+
+def Rollout(feature, config=RolloutConfig(default_pct=0)):
+    config = configs.for_item.get(feature, config)
+
+    def for_string(*x):
+        m = config.for_item.get(x[0], None)
+        if m:
+            if len(x) > 1:
+                return Rollout(x[0], m).ForString(*x[1:])
+            else:
+                return pct(x[0]) < m.default_pct
+        return pct(x[0]) < config.default_pct
+
+    def for_int(i):
+        return i < config.default_pct
+
+    return struct(ForString=for_string, ForInt=for_int)
+

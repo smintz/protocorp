@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message RolloutConfig {
+    uint32 default_pct = 1;
+    map<string,RolloutConfig> for_item = 2;
+}

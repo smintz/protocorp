@@ -1,0 +1,6 @@
+{
+  "protoFile": "utils/rollout.proto",
+  "value": {
+    "@type": "type.googleapis.com/RolloutConfig"
+  }
+}
