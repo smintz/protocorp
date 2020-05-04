@@ -1,0 +1,28 @@
+"""
+ServerNameMetadata is a helper for creating names
+"""
+load("/terraform/random-resources.proto", "RandomPet")
+load("servermetadata.proto", "ServerMetadata")
+load("../consts.pinc", "CONSUL_DOMAIN")
+
+
+def ServerNameMetadata(tf):
+    def create(role, id, region, cluster):
+        tfid = "-".join([role, str(id), region, cluster])
+        tf.random_pet[tfid] = RandomPet()
+        hostname = "${random_pet.%s.id}" % tfid
+        dc = region + cluster
+        fqdn = "{}.node.{}.{}".format(hostname, dc, CONSUL_DOMAIN)
+        return ServerMetadata(
+            cluster_name=cluster,
+            datacenter=dc,
+            domain=CONSUL_DOMAIN,
+            fqdn=fqdn,
+            hostname=hostname,
+            id=id,
+            region=region,
+            role=role,
+            tfid=tfid,
+        )
+
+    return struct(create=create)

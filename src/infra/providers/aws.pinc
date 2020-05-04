@@ -1,5 +1,5 @@
 """
-DigitalOcean
+AWS
 """
 load("/terraform/meta.proto", "Lifecycle")
 load("/terraform/aws-resources.proto", "AwsVpc", "AwsSubnet")
@@ -9,7 +9,7 @@ COUNTER = counter.global_counter
 
 def AWSCluster(tf, cluster):
     """
-    AWSCluster is an instance of helpers to create a cluster on the DigitalOcean cloud provider
+    AWSCluster is an instance of helpers to create a cluster on the AWS cloud provider
 
     Args:
         tf: an instance of Terraform.Resource

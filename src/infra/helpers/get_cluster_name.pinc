@@ -1,0 +1,10 @@
+"""
+get_cluster_name
+"""
+
+
+def get_cluster_name(cluster_number):
+    if cluster_number < 10:
+        return "c0" + str(cluster_number)
+    else:
+        return "c" + str(cluster_number)

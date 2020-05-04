@@ -1,0 +1,13 @@
+"""
+provider registry
+"""
+load("base.pinc", "BaseClusterInterface")
+load("digitalocean.pinc", "DigitalOceanCluster")
+load("../cluster.proto", "Cluster")
+
+
+def ProviderFactory(tf, cluster):
+    if str(cluster.provider) == str(Cluster.Providers.DIGITALOCEAN):
+        return DigitalOceanCluster(tf, cluster)
+    print("could not find provider for", cluster.provider)
+    fail("error")
