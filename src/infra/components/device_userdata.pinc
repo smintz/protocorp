@@ -1,0 +1,55 @@
+"""
+UserMetaData
+"""
+load("base.pinc", "Base")
+load("docker.pinc", "Docker")
+load("consul.pinc", "Consul")
+load("vault.pinc", "Vault")
+load("nomad.pinc", "Nomad")
+load("protoconf_binary.pinc", "ProtoconfBinary")
+load("/pc4os/component.pinc", "Component", "String")
+
+
+def DeviceUserDataFactory(ca, join=[], join_wan=[]):
+    def DeviceUserData(nmd):
+        """
+        DeviceUserData will generate a userdata script for installing the instances
+
+        Args:
+            nmd: server name metadata factory
+        Returns:
+            DeviceUserData component
+        """
+        nomad_config = """\
+advertise {
+    http = "{{GetPublicIP}}"
+    rpc = "{{GetPublicIP}}"
+    serf = "{{GetPublicIP}}"
+}
+"""
+
+        if nmd.role == "server":
+            vault = Vault(nmd, ca=ca)
+        else:
+            vault = String("")
+
+        def render():
+            return [
+                String("#!/bin/bash"),
+                Base(),
+                Consul(
+                    nmd.role,
+                    nmd,
+                    join_lan=join,
+                    join_wan=join_wan + ["wan.protoconf.com"],
+                    ca=ca,
+                ),
+                vault,
+                Docker(),
+                Nomad(nmd.role, nmd, ca=ca, additional_config=nomad_config),
+                ProtoconfBinary(),
+            ]
+
+        return Component("DeviceUserData", render)
+
+    return DeviceUserData

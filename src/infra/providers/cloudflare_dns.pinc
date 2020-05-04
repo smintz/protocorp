@@ -1,0 +1,18 @@
+"""
+cloudflare dns provider
+"""
+load("base.pinc", "BaseDNSInterface")
+load("/terraform/cloudflare-resources.proto", "CloudflareRecord")
+
+
+def CloudflareDNS(tf, ZONE_ID, prefix=None):
+    def create_entry(id, record, content, type="A", ttl=120):
+        tf.cloudflare_record[id] = CloudflareRecord(
+            zone_id=ZONE_ID,
+            name=".".join([i for i in [record, prefix] if i]),
+            type=type,
+            ttl=ttl,
+            value=content,
+        )
+
+    return BaseDNSInterface(tf, create_entry_func=create_entry)

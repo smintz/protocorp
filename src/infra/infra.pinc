@@ -5,31 +5,12 @@ This is the entrypoint of the terraform file.
 load("cluster.proto", "Cluster", "Tier")
 load("/terraform/terraform.proto", "Terraform")
 load("/terraform/digitalocean-resources.proto", "DigitaloceanSshKey")
-load("/terraform/cloudflare-resources.proto", "CloudflareRecord")
-load("/terraform/random-resources.proto", "RandomPet", "RandomId")
-load("installers/base.pinc", "Base")
-load("installers/docker.pinc", "Docker")
-load("installers/consul.pinc", "Consul")
-load("installers/vault.pinc", "Vault")
-load("installers/nomad.pinc", "Nomad")
-load("installers/protoconf_binary.pinc", "ProtoconfBinary")
+load("/terraform/random-resources.proto", "RandomId")
 load("ca.pinc", "CA")
 load("/employees/employees.pinc", "EMPLOYEES")
-load("/pc4os/pc4os.pinc", "compile")
-load("/pc4os/component.pinc", "Component", "String")
-load("servermetadata.proto", "ServerMetadata")
 load("providers/digitalocean.pinc", "DigitalOceanCluster")
-load("mutable:infra/counter", counter="value")
-
-COUNTER = counter.global_counter
-SERVERS = 3
-CLIENTS = 0
-
-# CONSUL_DOMAIN = "pco.nf"
-CONSUL_DOMAIN = "protoconf.sh"
-CF_PROTOCONF_COM_ID = "0280c074462b8ec6ff40f9b1790f7af3"
-# CF_PCO_NF_ID = "f05cf5af25ffab8e186f43cfea099628"
-CF_PCO_NF_ID = "509ed139781f06c94ebb5d6c9d9e85be"
+load("components/device_userdata.pinc", "DeviceUserDataFactory")
+load("providers/registry.pinc", "ProviderFactory")
 
 # Providers
 DIGITALOCEAN = str(Cluster.Providers.DIGITALOCEAN)
@@ -39,24 +20,6 @@ ca = CA(tf.resource)
 tf.resource.random_id["consul_encrypt"] = RandomId(byte_length=16)
 tf.resource.random_id["nomad_encrypt"] = RandomId(byte_length=16)
 provider = DIGITALOCEAN
-CONSUL_JOIN_ARGS = {
-    DIGITALOCEAN: "provider=digitalocean api_token={token} region={dc} tag_name=server",
-    # Will support more providers later
-}
-CONSUL_JOIN_WAN_ARGS = {
-    DIGITALOCEAN: "provider=digitalocean api_token={token} tag_name=server",
-    # Will support more providers later
-}
-
-
-TOKENS = {DIGITALOCEAN: "${var.digitalocean_token}"}
-
-
-def get_cluster_name(cluster_number):
-    if cluster_number < 10:
-        return "c0" + str(cluster_number)
-    else:
-        return "c" + str(cluster_number)
 
 
 def set_ssh_keys(tf, provider):
@@ -81,163 +44,6 @@ def set_ssh_keys(tf, provider):
 set_ssh_keys(tf.resource, provider)
 
 
-def ServerNameMetadata(tf):
-    def create(role, id, region, cluster):
-        tfid = "-".join([role, str(id), region, cluster])
-        tf.random_pet[tfid] = RandomPet()
-        hostname = "${random_pet.%s.id}" % tfid
-        dc = region + cluster
-        fqdn = "{}.node.{}.{}".format(hostname, dc, CONSUL_DOMAIN)
-        return ServerMetadata(
-            cluster_name=cluster,
-            datacenter=dc,
-            domain=CONSUL_DOMAIN,
-            fqdn=fqdn,
-            hostname=hostname,
-            id=id,
-            region=region,
-            role=role,
-            tfid=tfid,
-        )
-
-    return struct(create=create)
-
-
-server_name_metadata = ServerNameMetadata(tf.resource)
-
-
-def DeviceUserData(role, nmd, provider):
-    """
-    DeviceUserData will generate a userdata script for installing the instances
-
-    Args:
-        role: the role of the instance
-        nmd: server name metadata factory
-        provider: enum value
-    Returns:
-        DeviceUserData component
-    """
-    nomad_config = """\
-advertise {
-    http = "{{GetPublicIP}}"
-    rpc = "{{GetPublicIP}}"
-    serf = "{{GetPublicIP}}"
-}
-"""
-
-    if role == "server":
-        vault = Vault(nmd, ca=ca)
-    else:
-        vault = String("")
-
-    def render():
-        return [
-            String("#!/bin/bash"),
-            Base(),
-            Consul(
-                nmd.role,
-                nmd,
-                join_lan=[
-                    CONSUL_JOIN_ARGS[provider].format(
-                        dc=nmd.region, token=TOKENS[provider]
-                    )
-                ],
-                join_wan=[
-                    CONSUL_JOIN_WAN_ARGS[provider].format(
-                        dc=nmd.region, token=TOKENS[provider]
-                    ),
-                    "wan.protoconf.com",
-                ],
-                ca=ca,
-            ),
-            vault,
-            Docker(),
-            Nomad(role, nmd, ca=ca, additional_config=nomad_config),
-            ProtoconfBinary(),
-        ]
-
-    return Component("DeviceUserData", render)
-
-
-def create_device(tf, nmd, cluster):
-    """
-    create_device adds devices and their "pet" names to the terraform object
-
-    Args:
-        tf: The terraform protobuf object
-        nmd: Node Metadata
-        cluster: the cluster configuration
-    """
-    provider = str(cluster.provider)
-
-    user_data = compile(DeviceUserData(nmd.role, nmd, provider))
-
-    if provider == DIGITALOCEAN:
-        DigitalOceanCluster(tf, cluster).CreateInstance(nmd, user_data)
-        # tf.digitalocean_droplet[nmd.tfid] = create_droplet(tf, nmd, user_data)
-        tf.cloudflare_record[nmd.tfid] = CloudflareRecord(
-            zone_id=CF_PCO_NF_ID,
-            name="{}.node.{}".format(nmd.hostname, nmd.datacenter),
-            type="A",
-            value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
-        )
-
-
-def ProvisionCluster(tf, cluster):
-    """
-    Cluster will generate a cluster of servers
-
-    Args:
-        tf: a resource instance
-        cluster: a Cluster instance
-    """
-    cluster_name = get_cluster_name(cluster.cluster_number)
-    index = COUNTER
-
-    servers_tier = [tier for tier in cluster.tiers if tier.name == "server"][0]
-    if servers_tier.count not in [3, 5, 7]:
-        fail("servers_count must be one of 3, 5 or 7 (got: %d)" % cluster.servers_count)
-
-    clients = []
-    for t in cluster.tiers:
-        clients.extend(
-            [
-                server_name_metadata.create(t.name, i, cluster.region, cluster_name)
-                for i in range(index + 0, index + t.count)
-            ]
-        )
-
-    for nmd in clients:
-        create_device(tf, nmd, cluster)
-
-        tf.cloudflare_record[nmd.tfid + "-" + "star"] = CloudflareRecord(
-            zone_id=CF_PCO_NF_ID,
-            name="{}.service.{}".format("*", cluster.region + cluster_name),
-            type="A",
-            ttl=120,
-            value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
-        )
-
-    servers = [nmd for nmd in clients if nmd.role == "server"]
-    for nmd in servers:
-        for svc in ["consul", "nomad", "vault"]:
-            tf.cloudflare_record[nmd.tfid + "-" + svc] = CloudflareRecord(
-                zone_id=CF_PCO_NF_ID,
-                name="{}.service.{}".format(svc, cluster.region + cluster_name),
-                type="A",
-                ttl=1,
-                value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
-            )
-
-        tf.cloudflare_record[nmd.tfid + "-wan"] = CloudflareRecord(
-            zone_id=CF_PROTOCONF_COM_ID,
-            name="wan",
-            type="A",
-            ttl=120,
-            value="${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
-        )
-
-
 CLUSTERS = [
     Cluster(
         provider=Cluster.Providers.DIGITALOCEAN,
@@ -247,5 +53,10 @@ CLUSTERS = [
     )
 ]
 
+join_wan = [ProviderFactory(tf.resource, c).JoinWan for c in CLUSTERS]
 for c in CLUSTERS:
-    ProvisionCluster(tf.resource, c)
+    cluster = ProviderFactory(tf.resource, c)
+    for tier in c.tiers:
+        cluster.CreateTier(
+            tier, DeviceUserDataFactory(ca, join=[cluster.Join], join_wan=join_wan)
+        )

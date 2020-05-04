@@ -6,13 +6,8 @@ load(
 )
 load("/nomad/v0.10.4/api.proto", "RegisterJobRequest")
 load("/nomad/v0.10.4/api.pinc", "NOMAD_PROTO")
-load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
 load("../protoconf_exec_task.pinc", "ProtoconfExecTask")
 load("job.pinc", "NewJob")
-
-datacenters = [
-    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
-]
 
 
 def JobRegistry(

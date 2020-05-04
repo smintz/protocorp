@@ -1,0 +1,56 @@
+"""
+base.pinc provides facilities to define a production cluster
+"""
+
+
+def default_setup_func(cluster):
+    pass
+
+
+def default_create_tier_func(tier, userdata):
+    pass
+
+
+def default_create_instance_func(nmd, userdata):
+    pass
+
+
+def BaseClusterInterface(
+    tf,
+    setup_func=default_setup_func,
+    create_tier_func=default_create_tier_func,
+    create_instance_func=default_create_instance_func,
+    join="",
+    join_wan="",
+):
+    def run_setup(cluster):
+        setup_func(cluster)
+
+    def run_create_tier(tier, userdata):
+        create_tier_func(tier, userdata)
+
+    def run_create_instance(nmd, userdata):
+        create_instance_func(nmd, userdata)
+
+    return struct(
+        Setup=run_setup,
+        CreateTier=run_create_tier,
+        CreateInstance=run_create_instance,
+        Join=join,
+        JoinWan=join_wan,
+    )
+
+
+def default_create_entry_func(id, record, content, type="A", ttl=120):
+    pass
+
+
+def BaseDNSInterface(tf, setup_func=None, create_entry_func=default_create_entry_func):
+    def run_setup():
+        setup_func()
+
+    def run_create_entry(id, record, content, type="A", ttl=120):
+        create_entry_func(id, record, content, type, ttl)
+
+    return struct(Setup=run_setup, CreateEntry=run_create_entry)
+

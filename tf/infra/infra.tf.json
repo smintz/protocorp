@@ -3,6 +3,7 @@
     "cloudflare_record": {
       "server-0-ams3-c01": {
         "name": "${random_pet.server-0-ams3-c01.id}.node.ams3c01",
+        "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
         "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
@@ -44,6 +45,7 @@
       },
       "server-1-ams3-c01": {
         "name": "${random_pet.server-1-ams3-c01.id}.node.ams3c01",
+        "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
         "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"
@@ -85,6 +87,7 @@
       },
       "server-2-ams3-c01": {
         "name": "${random_pet.server-2-ams3-c01.id}.node.ams3c01",
+        "ttl": 120,
         "type": "A",
         "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
         "zone_id": "509ed139781f06c94ebb5d6c9d9e85be"

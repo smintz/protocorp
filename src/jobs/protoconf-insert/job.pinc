@@ -5,7 +5,7 @@ load("/nomad/v0.10.4/api.proto", "Template", "ServiceCheck", "CheckRestart")
 load("/jobs/helpers/job.pinc", "NewJob")
 load("insertion-script.pinc", "PROTOCONF_INSERT_SCRIPT")
 load("/jobs/protoconf_exec_task.pinc", "ProtoconfExecTask")
-load("/infra/infra.pinc", "CONSUL_DOMAIN")
+load("/infra/consts.pinc", "CONSUL_DOMAIN")
 
 
 job = NewJob("protoconf-inserter")

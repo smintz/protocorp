@@ -1,0 +1,14 @@
+"""
+consts
+"""
+load("mutable:infra/counter", counter="value")
+
+COUNTER = counter.global_counter
+
+CF_PROTOCONF_COM_ID = "0280c074462b8ec6ff40f9b1790f7af3"
+
+# CONSUL_DOMAIN = "pco.nf"
+# CF_PCO_NF_ID = "f05cf5af25ffab8e186f43cfea099628"
+
+CONSUL_DOMAIN = "protoconf.sh"
+CF_PCO_NF_ID = "509ed139781f06c94ebb5d6c9d9e85be"

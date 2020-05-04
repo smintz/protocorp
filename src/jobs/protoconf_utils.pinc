@@ -4,11 +4,6 @@ utils for protoconf based nomad jobs
 load("/nomad/v0.10.4/api.proto", "Template", "ServiceCheck")
 load("helpers/job.pinc", "NewJob")
 load("consts.pinc", PROTOCONF_VERSION="PROTOCONF_V_VERSION")
-load("/infra/infra.pinc", "CLUSTERS", "get_cluster_name")
-
-datacenters = [
-    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
-]
 
 
 PROTOCONF_AGENT_JOB = NewJob("protoconf-agent", type="system")
