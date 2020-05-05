@@ -331,7 +331,7 @@
           "hostname": "${random_pet.server-0-ams1-c01.id}",
           "operating_system": "ubuntu_18_04",
           "plan": "c1.small.x86",
-          "project_id": "var.packet_project_id",
+          "project_id": "${var.packet_project_id}",
           "tags": [
             "server",
             "c01"
@@ -346,7 +346,7 @@
           "hostname": "${random_pet.server-1-ams1-c01.id}",
           "operating_system": "ubuntu_18_04",
           "plan": "c1.small.x86",
-          "project_id": "var.packet_project_id",
+          "project_id": "${var.packet_project_id}",
           "tags": [
             "server",
             "c01"
@@ -367,7 +367,7 @@
           "hostname": "${random_pet.server-2-ams1-c01.id}",
           "operating_system": "ubuntu_18_04",
           "plan": "c1.small.x86",
-          "project_id": "var.packet_project_id",
+          "project_id": "${var.packet_project_id}",
           "tags": [
             "server",
             "c01"

@@ -44,7 +44,7 @@ def PacketCluster(tf, cluster):
             plan=get_instance_size(nmd),
             tags=[nmd.role, nmd.cluster_name],
             user_data=userdata,
-            project_id="var.packet_project_id",
+            project_id="${var.packet_project_id}",
             billing_cycle="hourly",
         )
         if nmd.id > COUNTER:
