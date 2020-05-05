@@ -7,7 +7,7 @@ load("/infra/helpers/get_cluster_name.pinc", "get_cluster_name")
 load("task.pinc", "NewTask")
 
 datacenters = [
-    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS
+    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS if c.ready
 ]
 
 

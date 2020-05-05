@@ -108,5 +108,4 @@ def DigitalOceanCluster(tf, cluster):
         join="provider=digitalocean api_token=${{var.digitalocean_token}} region={} tag_name=server".format(
             cluster.region
         ),
-        join_wan="provider=digitalocean api_token=${var.digitalocean_token} tag_name=server",
     )

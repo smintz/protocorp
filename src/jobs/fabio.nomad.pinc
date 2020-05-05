@@ -2,10 +2,7 @@
 fabio
 """
 load("/jobs/helpers/job.pinc", "NewJob")
-<<<<<<< HEAD
-=======
 
->>>>>>> refactor(infra): abstract cloud providers
 
 FABIO_JOB = NewJob("fabio", type="system")
 task = FABIO_JOB.NewTask("fabio")

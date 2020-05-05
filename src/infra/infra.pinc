@@ -50,10 +50,17 @@ CLUSTERS = [
         region="ams3",
         cluster_number=1,
         tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
-    )
+        ready=True,
+    ),
+    Cluster(
+        provider=Cluster.Providers.PACKET,
+        region="ams1",
+        cluster_number=1,
+        tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
+    ),
 ]
 
-join_wan = [ProviderFactory(tf.resource, c).JoinWan for c in CLUSTERS]
+join_wan = [ProviderFactory(tf.resource, c).Join for c in CLUSTERS]
 for c in CLUSTERS:
     cluster = ProviderFactory(tf.resource, c)
     for tier in c.tiers:

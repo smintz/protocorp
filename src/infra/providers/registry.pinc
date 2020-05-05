@@ -1,13 +1,23 @@
 """
 provider registry
 """
-load("base.pinc", "BaseClusterInterface")
 load("digitalocean.pinc", "DigitalOceanCluster")
+load("packet.pinc", "PacketCluster")
 load("../cluster.proto", "Cluster")
 
 
 def ProviderFactory(tf, cluster):
+    """
+    ProviderFactory returns a provider helper for provider enum type
+
+    Args:
+        tf: An instance of Terraform.Resource
+        cluster: a Cluster instance
+    Returns:
+        a BaceClusterInterface instance
+    """
     if str(cluster.provider) == str(Cluster.Providers.DIGITALOCEAN):
         return DigitalOceanCluster(tf, cluster)
-    print("could not find provider for", cluster.provider)
-    fail("error")
+    if str(cluster.provider) == str(Cluster.Providers.PACKET):
+        return PacketCluster(tf, cluster)
+    fail("error: could not find provider for %s" % str(cluster.provider))
