@@ -341,7 +341,7 @@
         ],
         "hostname": "${random_pet.general-0-ams1-c01.id}",
         "operating_system": "ubuntu_18_04",
-        "plan": "c1.small.x86",
+        "plan": "c3.small.x86",
         "project_id": "${var.packet_project_id}",
         "tags": [
           "general",
