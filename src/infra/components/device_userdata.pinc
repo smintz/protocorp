@@ -36,6 +36,7 @@ advertise {
         def render():
             return [
                 String("#!/bin/bash"),
+                String("export DEBIAN_FRONTEND=noninteractive"),
                 Base(),
                 Consul(
                     nmd.role,

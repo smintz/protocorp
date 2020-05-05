@@ -56,7 +56,7 @@ CLUSTERS = [
         provider=Cluster.Providers.PACKET,
         region="ams1",
         cluster_number=1,
-        tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
+        tiers=[Tier(name="server", count=3), Tier(name="general", count=1)],
     ),
 ]
 
