@@ -16,6 +16,7 @@ message Cluster {
     uint32 cluster_number = 3;
     uint32 servers_count = 4;
     repeated Tier tiers = 5;    
+    bool ready = 6;
     enum Providers {
         NONE = 0;
         AWS = 1;
