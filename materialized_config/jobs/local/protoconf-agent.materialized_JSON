@@ -31,7 +31,7 @@
               },
               "Resources": {
                 "CPU": 1000,
-                "MemoryMB": 64,
+                "MemoryMB": 1024,
                 "Networks": [
                   {
                     "ReservedPorts": [
