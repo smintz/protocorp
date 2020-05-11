@@ -86,6 +86,7 @@ mutate.SetImage("smintz/webhook:latest")
 mutate.SetConfig("network_mode", "host")
 mutate.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
 mutate.SetConfig("entrypoint", ["/local/entrypoint.sh"])
+mutate.SetMemory(1024)
 mutate.AddVaultPolicies("github-policy")
 mutate.NewService(
     "mutate",
