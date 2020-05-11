@@ -41,6 +41,7 @@ webhook_task.NewService(
         )
     ],
 )
+webhook_task.SetMemory(512)
 
 webhook_task.task.Templates = [
     Template(

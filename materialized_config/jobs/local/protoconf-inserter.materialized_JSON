@@ -85,7 +85,7 @@
               ],
               "Resources": {
                 "CPU": 100,
-                "MemoryMB": 64,
+                "MemoryMB": 512,
                 "Networks": [
                   {
                     "ReservedPorts": [
