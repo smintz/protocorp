@@ -120,6 +120,8 @@ def NewTask(name, image=None):
     if image:
         setImage(image)
 
+    setConfig("dns_options", ["169.254.1.1"])
+
     return struct(
         task=local_task,
         SetImage=setImage,

@@ -23,6 +23,9 @@
                 "args": [
                   "-prefix=production/"
                 ],
+                "dns_options": [
+                  "169.254.1.1"
+                ],
                 "image": "protoconf/agent:v0.1.1",
                 "network_mode": "host",
                 "volumes": [

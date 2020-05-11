@@ -25,6 +25,9 @@
                   "-config=jobs/protoconf-insert/config",
                   "-proto_dir=/local"
                 ],
+                "dns_options": [
+                  "169.254.1.1"
+                ],
                 "image": "protoconf/protoconf:v0.1.1",
                 "network_mode": "host",
                 "volumes": [
@@ -53,6 +56,9 @@
                   "-verbose",
                   "-hooks=/alloc/tmp/hooks.json",
                   "-hotreload"
+                ],
+                "dns_options": [
+                  "169.254.1.1"
                 ],
                 "image": "smintz/webhook:latest",
                 "network_mode": "host",

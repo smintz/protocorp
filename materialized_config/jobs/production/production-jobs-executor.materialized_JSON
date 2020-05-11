@@ -25,6 +25,9 @@
                   "-config=jobs/production/apply",
                   "-proto_dir=/local"
                 ],
+                "dns_options": [
+                  "169.254.1.1"
+                ],
                 "image": "protoconf/protoconf:v0.1.1",
                 "network_mode": "host",
                 "volumes": [
