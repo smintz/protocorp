@@ -8,6 +8,9 @@
       "Name": "protoconf-inserter",
       "Type": "service",
       "Priority": 75,
+      "Datacenters": [
+        "ams3c01"
+      ],
       "TaskGroups": [
         {
           "Name": "default",
@@ -66,6 +69,9 @@
               "Services": [
                 {
                   "Name": "webhooks",
+                  "Tags": [
+                    "urlprefix-webhooks.service.ams3c01.protoconf.sh:9999/"
+                  ],
                   "PortLabel": "webhooks",
                   "Checks": [
                     {
