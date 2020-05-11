@@ -2,7 +2,12 @@
 nomad jobs
 """
 load(
-    "/executor/exec_config.proto", "Config", "WatcherConfig", "Action", "ActionTypeHttp"
+    "/executor/exec_config.proto",
+    "Config",
+    "WatcherConfig",
+    "Action",
+    "ActionTypeHttp",
+    "ActionTypeWriteToFile",
 )
 load("/nomad/v0.10.4/api.proto", "RegisterJobRequest")
 load("/nomad/v0.10.4/api.pinc", "NOMAD_PROTO")
@@ -37,7 +42,13 @@ def JobRegistry(
             actions=[
                 Action(
                     http=ActionTypeHttp(uri=cluster_address + "/v1/jobs", method="POST")
-                )
+                ),
+                Action(
+                    file=ActionTypeWriteToFile(
+                        path="/local/jobs/{}.json".format(job.ID),
+                        serializer=Config.Serializer.JSON,
+                    )
+                ),
             ],
         )
         executor.items.append(e)

@@ -12,6 +12,12 @@
               "uri": "https://localhost:4646/v1/jobs",
               "method": "POST"
             }
+          },
+          {
+            "file": {
+              "path": "/local/jobs/production-jobs-executor.json",
+              "serializer": "JSON"
+            }
           }
         ]
       },
@@ -23,6 +29,12 @@
             "http": {
               "uri": "https://localhost:4646/v1/jobs",
               "method": "POST"
+            }
+          },
+          {
+            "file": {
+              "path": "/local/jobs/protoconf-agent.json",
+              "serializer": "JSON"
             }
           }
         ]
@@ -36,6 +48,12 @@
               "uri": "https://localhost:4646/v1/jobs",
               "method": "POST"
             }
+          },
+          {
+            "file": {
+              "path": "/local/jobs/protoconf-server.json",
+              "serializer": "JSON"
+            }
           }
         ]
       },
@@ -48,6 +66,12 @@
               "uri": "https://localhost:4646/v1/jobs",
               "method": "POST"
             }
+          },
+          {
+            "file": {
+              "path": "/local/jobs/fabio.json",
+              "serializer": "JSON"
+            }
           }
         ]
       },
@@ -59,6 +83,12 @@
             "http": {
               "uri": "https://localhost:4646/v1/jobs",
               "method": "POST"
+            }
+          },
+          {
+            "file": {
+              "path": "/local/jobs/protoconf-inserter.json",
+              "serializer": "JSON"
             }
           }
         ]
