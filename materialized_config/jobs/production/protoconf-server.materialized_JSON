@@ -41,7 +41,8 @@
                     }
                   ],
                   "Connect": {
-                    "SidecarService": {}
+                    "SidecarService": {},
+                    "SidecarTask": {}
                   }
                 }
               ],

@@ -13,6 +13,7 @@ load(
     "Service",
     "ConsulConnect",
     "ConsulSidecarService",
+    "SidecarTask",
 )
 
 
@@ -105,7 +106,9 @@ def NewTask(name, image=None):
             PortLabel=port.Label,
             Tags=tags,
             Checks=checks,
-            Connect=ConsulConnect(SidecarService=ConsulSidecarService()),
+            Connect=ConsulConnect(
+                SidecarService=ConsulSidecarService(), SidecarTask=SidecarTask()
+            ),
         )
         local_task.Services.append(service)
         return service
