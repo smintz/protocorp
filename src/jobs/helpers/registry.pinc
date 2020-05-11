@@ -45,7 +45,7 @@ def JobRegistry(
                 ),
                 Action(
                     file=ActionTypeWriteToFile(
-                        path="/local/jobs/{}.json".format(job.ID),
+                        path="/local/{}.json".format(job.ID),
                         serializer=Config.Serializer.JSON,
                     )
                 ),
