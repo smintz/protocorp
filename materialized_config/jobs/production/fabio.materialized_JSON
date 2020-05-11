@@ -8,9 +8,6 @@
       "Name": "fabio",
       "Type": "system",
       "Priority": 75,
-      "Datacenters": [
-        "ams3c01"
-      ],
       "TaskGroups": [
         {
           "Name": "default",
