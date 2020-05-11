@@ -122,6 +122,17 @@ def Consul(
                 ]
             ),
         ),
+        File(
+            "/etc/consul.d/connect.hcl",
+            mode="0640",
+            owner="consul",
+            group="consul",
+            content="""\
+connect {
+  enabled = true
+}
+""",
+        ),
     ]
     if role == "server":
         setup.append(
