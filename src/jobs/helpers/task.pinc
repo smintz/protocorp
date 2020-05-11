@@ -107,7 +107,8 @@ def NewTask(name, image=None):
             Tags=tags,
             Checks=checks,
             Connect=ConsulConnect(
-                SidecarService=ConsulSidecarService(), SidecarTask=SidecarTask()
+                SidecarService=ConsulSidecarService(Tags=["connect"]),
+                SidecarTask=SidecarTask(Env={"HELLO": "world"}),
             ),
         )
         local_task.Services.append(service)

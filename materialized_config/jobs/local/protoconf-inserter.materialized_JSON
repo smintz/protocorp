@@ -79,8 +79,16 @@
                     }
                   ],
                   "Connect": {
-                    "SidecarService": {},
-                    "SidecarTask": {}
+                    "SidecarService": {
+                      "Tags": [
+                        "connect"
+                      ]
+                    },
+                    "SidecarTask": {
+                      "Env": {
+                        "HELLO": "world"
+                      }
+                    }
                   }
                 }
               ],
