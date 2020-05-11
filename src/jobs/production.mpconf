@@ -3,11 +3,12 @@ local jobs
 """
 load("jobs.pinc", "populate")
 load("helpers/registry.pinc", "JobRegistry")
+load("/infra/consts.pinc", "CONSUL_DOMAIN")
 
 reg = JobRegistry(
     "production-jobs-executor",
     "jobs/production",
-    cluster_address="https://localhost:4646",
+    cluster_address="https://nomad.service.{}:4646".format(CONSUL_DOMAIN),
 )
 populate(reg)
 
