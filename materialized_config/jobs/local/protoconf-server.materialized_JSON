@@ -39,7 +39,10 @@
                       "Interval": 10000000000,
                       "Timeout": 2000000000
                     }
-                  ]
+                  ],
+                  "Connect": {
+                    "SidecarService": {}
+                  }
                 }
               ],
               "Resources": {

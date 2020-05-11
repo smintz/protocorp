@@ -6,7 +6,12 @@ load("/terraform/meta.proto", "Lifecycle")
 load("/terraform/packet-resources.proto", "PacketDevice")
 load("../helpers/server_name_metadata.pinc", "ServerNameMetadata")
 load("../helpers/get_cluster_name.pinc", "get_cluster_name")
-load("../consts.pinc", "COUNTER", "CF_PCO_NF_ID", "CF_PROTOCONF_COM_ID")
+load(
+    "../consts.pinc",
+    "COUNTER",
+    "CLOUDFLARE_INTERNAL_DOMAIN_ID",
+    "CLOUDFLARE_EXTERNAL_DOMAIN_ID",
+)
 load("cloudflare_dns.pinc", "CloudflareDNS")
 load("/pc4os/pc4os.pinc", "compile")
 
@@ -22,9 +27,11 @@ def PacketCluster(tf, cluster):
         a BaseClusterInterface instance
     """
     cluster_dns = CloudflareDNS(
-        tf, CF_PCO_NF_ID, cluster.region + get_cluster_name(cluster.cluster_number)
+        tf,
+        CLOUDFLARE_INTERNAL_DOMAIN_ID,
+        cluster.region + get_cluster_name(cluster.cluster_number),
     )
-    global_dns = CloudflareDNS(tf, CF_PROTOCONF_COM_ID)
+    global_dns = CloudflareDNS(tf, CLOUDFLARE_EXTERNAL_DOMAIN_ID)
 
     def get_instance_size(nmd):
         tiers = [t for t in cluster.tiers if t.name == nmd.role]

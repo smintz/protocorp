@@ -11,6 +11,8 @@ load(
     "NetworkResource",
     "Port",
     "Service",
+    "ConsulConnect",
+    "ConsulSidecarService",
 )
 
 
@@ -98,7 +100,13 @@ def NewTask(name, image=None):
 
         port = newPort(label, to, reserve)
 
-        service = Service(Name=name, PortLabel=port.Label, Tags=tags, Checks=checks)
+        service = Service(
+            Name=name,
+            PortLabel=port.Label,
+            Tags=tags,
+            Checks=checks,
+            Connect=ConsulConnect(SidecarService=ConsulSidecarService()),
+        )
         local_task.Services.append(service)
         return service
 

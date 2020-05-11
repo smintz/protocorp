@@ -2,7 +2,7 @@ compile:
 	cat ../../materialized_config/infra/infra.tf.materialized_JSON | jq '.value | del(.["@type"])' > infra.tf.json
 
 generate:
-	pc4tf generate
+	protoconf import terraform
 
 plan: compile
 	terraform plan

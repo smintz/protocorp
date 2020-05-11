@@ -8,7 +8,6 @@ load("/terraform/digitalocean-resources.proto", "DigitaloceanSshKey")
 load("/terraform/random-resources.proto", "RandomId")
 load("ca.pinc", "CA")
 load("/employees/employees.pinc", "EMPLOYEES")
-load("providers/digitalocean.pinc", "DigitalOceanCluster")
 load("components/device_userdata.pinc", "DeviceUserDataFactory")
 load("providers/registry.pinc", "ProviderFactory")
 

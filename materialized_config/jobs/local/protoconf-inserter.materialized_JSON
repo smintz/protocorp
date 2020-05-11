@@ -77,7 +77,10 @@
                         "Limit": 5
                       }
                     }
-                  ]
+                  ],
+                  "Connect": {
+                    "SidecarService": {}
+                  }
                 }
               ],
               "Resources": {
