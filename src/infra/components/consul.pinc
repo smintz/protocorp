@@ -63,6 +63,12 @@ Domains= ~{}.
 DNS=169.254.1.1
 """
 
+RESOLVED_CONF = """\
+[Resolve]
+DNS=8.8.8.8
+FallbackDNS=8.8.4.4
+"""
+
 
 def DummyInterface(domain="consul"):
     def render():
@@ -72,7 +78,10 @@ def DummyInterface(domain="consul"):
                 "/etc/systemd/network/consul0.network",
                 content=CONSUL_NETWORK_CONFIG.format(domain),
             ),
+            File("/etc/systemd/resolved.conf", content=RESOLVED_CONF),
+            Command("systemctl restart systemd-resolved"),
             Command("systemctl restart systemd-networkd"),
+            File("/etc/resolve.conf", content="nameserver 127.0.0.53"),
         ]
 
     return Component("DummyInterface", render)
@@ -86,6 +95,7 @@ def Consul(
     join_wan=[],
     ca=None,
     advertise_iface="eth0",
+    bootstrap_expect=3,
 ):
     """
     Defines the installation of consul
@@ -98,6 +108,7 @@ def Consul(
         join_wan: list of servers or discovery expressions to join via wan
         ca: a facility to create certificates
         advertise_iface: which interface holds the IP which should be used for consul communciation
+        bootstrap_expect: number of servers in the cluster
     Returns:
         Installation and configuration script for the consul agent.
     """
@@ -141,7 +152,9 @@ connect {
                 mode="0640",
                 owner="consul",
                 group="consul",
-                content="""server = true\nbootstrap_expect = 3""",
+                content="""server = true\nbootstrap_expect = {}""".format(
+                    bootstrap_expect
+                ),
             )
         )
 
@@ -156,7 +169,7 @@ connect {
                 "consul.service.{}.{}".format(nf.datacenter, nf.domain),
                 "localhost",
             ],
-            ip_addresses=["127.0.0.1"],
+            ip_addresses=["127.0.0.1", "169.254.1.1"],
         )
         setup.extend(
             [
