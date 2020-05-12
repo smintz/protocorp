@@ -76,6 +76,7 @@ main() {
   vault_is_initialized || initialize_vault
   unseal_vault || exit 0
   vault_root_login
+  export VAULT_TOKEN=$(consul kv get vault_init | openssl aes-256-cbc -d -a -kfile /etc/vault.d/tls/consul_encrypt.key | jq -r '.root_token')
   vault policy write admin /etc/vault.d/scripts/admin.hcl
   vault policy write github-policy /etc/vault.d/scripts/github-policy.hcl
 }
