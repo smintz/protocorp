@@ -9,7 +9,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://nomad.service.ams1c01.protoconf.sh:4646/v1/jobs",
               "method": "POST"
             }
           },
@@ -27,7 +27,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://nomad.service.ams1c01.protoconf.sh:4646/v1/jobs",
               "method": "POST"
             }
           },
@@ -45,7 +45,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://nomad.service.ams1c01.protoconf.sh:4646/v1/jobs",
               "method": "POST"
             }
           },
@@ -63,7 +63,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://nomad.service.ams1c01.protoconf.sh:4646/v1/jobs",
               "method": "POST"
             }
           },
@@ -81,7 +81,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.protoconf.sh:4646/v1/jobs",
+              "uri": "https://nomad.service.ams1c01.protoconf.sh:4646/v1/jobs",
               "method": "POST"
             }
           },
