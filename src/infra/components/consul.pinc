@@ -81,7 +81,7 @@ def DummyInterface(domain="consul"):
             File("/etc/systemd/resolved.conf", content=RESOLVED_CONF),
             Command("systemctl restart systemd-resolved"),
             Command("systemctl restart systemd-networkd"),
-            File("/etc/resolve.conf", content="nameserver 127.0.0.53"),
+            File("/etc/resolv.conf", content="nameserver 127.0.0.53"),
         ]
 
     return Component("DummyInterface", render)

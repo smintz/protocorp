@@ -47,7 +47,7 @@ consul {{
 VAULT_CONFIG = """\
 vault {{
     enabled = true
-    address = "https://vault.service.{domain}:8200"
+    address = "https://vault.service.{dc}.{domain}:8200"
     create_from_role = "nomad-cluster"
     ca_file = "/usr/local/share/ca-certificates/protoconf.crt"
     cert_file = "/etc/nomad.d/tls/cert.pem"
@@ -204,7 +204,10 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
         File("/etc/nomad.d/nomad.hcl", content="\n".join(['data_dir = "/opt/nomad"'])),
         File("/etc/nomad.d/datacenter.hcl", 'datacenter = "{}"'.format(dc)),
         File("/etc/nomad.d/client.hcl", content=CLIENT_CONFIG.format(role=role)),
-        File("/etc/nomad.d/vault.hcl", content=VAULT_CONFIG.format(domain=nf.domain)),
+        File(
+            "/etc/nomad.d/vault.hcl",
+            content=VAULT_CONFIG.format(dc=dc, domain=nf.domain),
+        ),
     ]
 
     service = Service(
