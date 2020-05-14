@@ -17,6 +17,7 @@ message Cluster {
     uint32 servers_count = 4;
     repeated Tier tiers = 5;    
     bool ready = 6;
+    ClusterVersions versions = 7;
     enum Providers {
         NONE = 0;
         AWS = 1;
@@ -25,6 +26,13 @@ message Cluster {
         GOOGLE = 4;
         PACKET = 5;
     }
+}
+
+message ClusterVersions {
+    string consul_version = 1;
+    string vault_version = 2;
+    string nomad_version = 3;
+    string protoconf_version = 4;
 }
 
 // Counters are used to make changes via the mutation api

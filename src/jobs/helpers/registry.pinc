@@ -9,8 +9,8 @@ load(
     "ActionTypeHttp",
     "ActionTypeWriteToFile",
 )
-load("/nomad/v0.10.4/api.proto", "RegisterJobRequest")
-load("/nomad/v0.10.4/api.pinc", "NOMAD_PROTO")
+load("/nomad/v0.11.1/api.proto", "RegisterJobRequest")
+load("/nomad/v0.11.1/api.pinc", "NOMAD_PROTO")
 load("../protoconf_exec_task.pinc", "ProtoconfExecTask")
 load("job.pinc", "NewJob")
 
@@ -38,7 +38,7 @@ def JobRegistry(
         output[job.ID] = RegisterJobRequest(Job=job)
         e = WatcherConfig(
             path="/".join([config_root, job.ID]),
-            proto_file="nomad/v0.10.4/api.proto",
+            proto_file="nomad/v0.11.1/api.proto",
             actions=[
                 Action(
                     http=ActionTypeHttp(uri=cluster_address + "/v1/jobs", method="POST")

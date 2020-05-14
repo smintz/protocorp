@@ -4,7 +4,7 @@ Task Helper
 
 load("/google/protobuf/struct.proto", "Value", "ListValue")
 load(
-    "/nomad/v0.10.4/api.proto",
+    "/nomad/v0.11.1/api.proto",
     "Task",
     "Vault",
     "Resources",

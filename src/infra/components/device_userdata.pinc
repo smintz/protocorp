@@ -10,7 +10,7 @@ load("protoconf_binary.pinc", "ProtoconfBinary")
 load("/pc4os/component.pinc", "Component", "String")
 
 
-def DeviceUserDataFactory(ca, join=[], join_wan=[]):
+def DeviceUserDataFactory(ca, cluster, join=[], join_wan=[]):
     def DeviceUserData(nmd):
         """
         DeviceUserData will generate a userdata script for installing the instances
@@ -29,7 +29,7 @@ advertise {
 """
 
         if nmd.role == "server":
-            vault = Vault(nmd, ca=ca)
+            vault = Vault(nmd, ca=ca, version=cluster.versions.vault_version)
         else:
             vault = String("")
 
@@ -44,10 +44,17 @@ advertise {
                     join_lan=join,
                     join_wan=join_wan + ["wan.protoconf.com"],
                     ca=ca,
+                    version=cluster.versions.consul_version,
                 ),
                 vault,
                 Docker(),
-                Nomad(nmd.role, nmd, ca=ca, additional_config=nomad_config),
+                Nomad(
+                    nmd.role,
+                    nmd,
+                    ca=ca,
+                    additional_config=nomad_config,
+                    version=cluster.versions.nomad_version,
+                ),
                 ProtoconfBinary(),
             ]
 
