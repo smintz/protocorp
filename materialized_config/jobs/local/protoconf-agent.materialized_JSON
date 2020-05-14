@@ -1,5 +1,5 @@
 {
-  "protoFile": "nomad/v0.10.4/api.proto",
+  "protoFile": "nomad/v0.11.1/api.proto",
   "value": {
     "@type": "type.googleapis.com/api.RegisterJobRequest",
     "Job": {

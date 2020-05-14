@@ -5,7 +5,7 @@
     "items": [
       {
         "path": "jobs/local/local-job-executor",
-        "protoFile": "nomad/v0.10.4/api.proto",
+        "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
           {
             "http": {
@@ -23,7 +23,7 @@
       },
       {
         "path": "jobs/local/protoconf-agent",
-        "protoFile": "nomad/v0.10.4/api.proto",
+        "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
           {
             "http": {
@@ -41,7 +41,7 @@
       },
       {
         "path": "jobs/local/protoconf-server",
-        "protoFile": "nomad/v0.10.4/api.proto",
+        "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
           {
             "http": {
@@ -59,7 +59,7 @@
       },
       {
         "path": "jobs/local/fabio",
-        "protoFile": "nomad/v0.10.4/api.proto",
+        "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
           {
             "http": {
@@ -77,7 +77,7 @@
       },
       {
         "path": "jobs/local/protoconf-inserter",
-        "protoFile": "nomad/v0.10.4/api.proto",
+        "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
           {
             "http": {

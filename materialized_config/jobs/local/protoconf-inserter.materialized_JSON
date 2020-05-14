@@ -1,5 +1,5 @@
 {
-  "protoFile": "nomad/v0.10.4/api.proto",
+  "protoFile": "nomad/v0.11.1/api.proto",
   "value": {
     "@type": "type.googleapis.com/api.RegisterJobRequest",
     "Job": {
@@ -70,7 +70,8 @@
                 {
                   "Name": "webhooks",
                   "Tags": [
-                    "urlprefix-webhooks.service.ams1c01.pco.nf:9999/"
+                    "urlprefix-webhooks.service.ams1c01.pco.nf:9999/",
+                    "urlprefix-webhooks.service.ams1c02.pco.nf:9999/"
                   ],
                   "PortLabel": "webhooks",
                   "Checks": [

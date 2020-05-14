@@ -2,7 +2,7 @@
 """
 This is the entrypoint of the terraform file.
 """
-load("cluster.proto", "Cluster", "Tier")
+load("cluster.proto", "Cluster", "Tier", "ClusterVersions")
 load("/terraform/terraform.proto", "Terraform")
 load("/terraform/digitalocean-resources.proto", "DigitaloceanSshKey")
 load("/terraform/random-resources.proto", "RandomId")
@@ -43,6 +43,20 @@ def set_ssh_keys(tf, provider):
 set_ssh_keys(tf.resource, provider)
 
 
+def DefaultVersions(
+    consul_version="1.7.1",
+    vault_version="1.3.2",
+    nomad_version="0.10.4",
+    protoconf_version="0.1.1",
+):
+    return ClusterVersions(
+        consul_version=consul_version,
+        vault_version=vault_version,
+        nomad_version=nomad_version,
+        protoconf_version=protoconf_version,
+    )
+
+
 CLUSTERS = [
     # Cluster(
     #     provider=Cluster.Providers.DIGITALOCEAN,
@@ -60,7 +74,21 @@ CLUSTERS = [
             Tier(name="server", count=3),
             # Tier(name="general", count=1, instance_type="c3.small.x86"),
         ],
-    )
+        versions=DefaultVersions(),
+    ),
+    Cluster(
+        provider=Cluster.Providers.PACKET,
+        region="ams1",
+        cluster_number=2,
+        ready=True,
+        tiers=[
+            Tier(name="server", count=3),
+            # Tier(name="general", count=1, instance_type="c3.small.x86"),
+        ],
+        versions=DefaultVersions(
+            nomad_version="0.11.1", consul_version="1.7.3", vault_version="1.4.1"
+        ),
+    ),
 ]
 
 join_wan = [ProviderFactory(tf.resource, c).Join for c in CLUSTERS]
@@ -68,5 +96,5 @@ for c in CLUSTERS:
     cluster = ProviderFactory(tf.resource, c)
     for tier in c.tiers:
         cluster.CreateTier(
-            tier, DeviceUserDataFactory(ca, join=[cluster.Join], join_wan=join_wan)
+            tier, DeviceUserDataFactory(ca, c, join=[cluster.Join], join_wan=join_wan)
         )

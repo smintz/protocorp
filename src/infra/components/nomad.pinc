@@ -8,7 +8,7 @@ load("/pc4os/command.pinc", "Command")
 load("/pc4os/systemd.pinc", "Systemd")
 load("/pc4os/systemd.proto", "Service")
 
-NOMAD_VERSION = "0.10.4"
+NOMAD_VERSION = "0.11.1"
 
 SERVER_CONFIG = """\
 server {
