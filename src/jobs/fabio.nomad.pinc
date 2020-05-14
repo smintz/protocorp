@@ -2,6 +2,7 @@
 fabio
 """
 load("/jobs/helpers/job.pinc", "NewJob")
+load("/nomad/v0.11.1/api.proto", "ServiceCheck", "CheckRestart")
 
 
 FABIO_JOB = NewJob("fabio", type="system")
@@ -10,4 +11,16 @@ task.SetImage("fabiolb/fabio")
 task.SetConfig("network_mode", "host")
 task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
 task.NewPort("lb", reserve=9999)
-task.NewPort("ui", reserve=9998)
+task.NewService(
+    "fabio-ui",
+    reserve=9998,
+    checks=[
+        ServiceCheck(
+            Type="http",
+            Path="/hooks/protoconf-insert",
+            Interval=10 * 1000000000,
+            Timeout=2 * 1000000000,
+            CheckRestart=CheckRestart(Limit=5),
+        )
+    ],
+)
