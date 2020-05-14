@@ -61,7 +61,7 @@ def JobRegistry(
     executor_job = NewJob(executor_name)
     executor_job.AddTask(
         ProtoconfExecTask(
-            "/".join([config_root, "apply"]), {"nomad/v0.10.4/api.proto": NOMAD_PROTO}
+            "/".join([config_root, "apply"]), {"nomad/v0.11.1/api.proto": NOMAD_PROTO}
         )
     )
     register_job(executor_job.job)
