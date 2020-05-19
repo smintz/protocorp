@@ -147,6 +147,10 @@ path "kv/github-creds" {
 """
 
 
+def v(ver):
+    return tuple(ver.split("."))
+
+
 def VaultInstall(version):
     downloaded_file = "/tmp/vault-{}.zip".format(version)
     install = [
@@ -203,6 +207,11 @@ listener "tcp" {
   tls_key_file  = "/etc/vault.d/tls/key.pem"
 }
 """
+    vault_service_registration = """\
+service_registration "consul" {
+  address = "127.0.0.1:8500"
+}
+"""
 
     if ca:
         pki = ca.server_cert(
@@ -218,6 +227,8 @@ listener "tcp" {
             ip_addresses=["127.0.0.1"],
         )
         vault_config = vault_config + vault_tls_config
+        if v(version) >= v("1.4.1"):
+            vault_config += vault_service_registration
         setup.extend(
             [
                 Directory("/etc/vault.d/tls", mode="700", owner="vault", group="vault"),

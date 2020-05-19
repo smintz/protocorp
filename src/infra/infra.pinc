@@ -80,7 +80,7 @@ CLUSTERS = [
         provider=Cluster.Providers.PACKET,
         region="ams1",
         cluster_number=1,
-        # ready=True,
+        ready=True,
         tiers=[
             Tier(name="server", count=3),
             # Tier(name="general", count=1, instance_type="c3.small.x86"),
