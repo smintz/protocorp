@@ -8,10 +8,6 @@
       "Name": "production-jobs-executor",
       "Type": "service",
       "Priority": 75,
-      "Datacenters": [
-        "ams1c01",
-        "ams1c02"
-      ],
       "TaskGroups": [
         {
           "Name": "default",
@@ -29,7 +25,7 @@
                 "dns_options": [
                   "169.254.1.1"
                 ],
-                "image": "protoconf/protoconf:v0.1.1",
+                "image": "protoconf/protoconf:0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5",
                 "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"

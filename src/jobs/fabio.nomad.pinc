@@ -8,12 +8,12 @@ load("/nomad/v0.11.1/api.proto", "ServiceCheck", "CheckRestart")
 FABIO_JOB = NewJob("fabio", type="system")
 task = FABIO_JOB.NewTask("fabio")
 task.SetImage("fabiolb/fabio")
-task.SetConfig("network_mode", "host")
+# task.SetConfig("network_mode", "host")
 task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
-task.NewPort("lb", reserve=9999)
 task.NewService(
     "fabio-ui",
     reserve=9998,
+    to=9998,
     checks=[
         ServiceCheck(
             Type="http",
@@ -24,3 +24,22 @@ task.NewService(
         )
     ],
 )
+task.task.Env = {
+    "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501",
+    "FABIO_PROXY_ADDR": ":9999;proto=grpc",
+}
+
+task.NewPort("lb", reserve=9999)
+
+# task.NewService(
+#     "fabio-lb",
+#     reserve=9999,
+#     checks=[
+#         ServiceCheck(
+#             Type="tcp",
+#             Interval=10 * 1000000000,
+#             Timeout=2 * 1000000000,
+#             CheckRestart=CheckRestart(Limit=5),
+#         )
+#     ],
+# )

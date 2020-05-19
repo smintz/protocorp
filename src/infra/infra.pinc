@@ -65,22 +65,22 @@ CLUSTERS = [
     #     tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
     #     ready=True,
     # ),
+    # Cluster(
+    #     provider=Cluster.Providers.PACKET,
+    #     region="ams1",
+    #     cluster_number=1,
+    #     ready=True,
+    #     tiers=[
+    #         Tier(name="server", count=3),
+    #         # Tier(name="general", count=1, instance_type="c3.small.x86"),
+    #     ],
+    #     versions=DefaultVersions(),
+    # ),
     Cluster(
         provider=Cluster.Providers.PACKET,
         region="ams1",
         cluster_number=1,
-        ready=True,
-        tiers=[
-            Tier(name="server", count=3),
-            # Tier(name="general", count=1, instance_type="c3.small.x86"),
-        ],
-        versions=DefaultVersions(),
-    ),
-    Cluster(
-        provider=Cluster.Providers.PACKET,
-        region="ams1",
-        cluster_number=2,
-        ready=True,
+        # ready=True,
         tiers=[
             Tier(name="server", count=3),
             # Tier(name="general", count=1, instance_type="c3.small.x86"),
@@ -88,7 +88,7 @@ CLUSTERS = [
         versions=DefaultVersions(
             nomad_version="0.11.1", consul_version="1.7.3", vault_version="1.4.1"
         ),
-    ),
+    )
 ]
 
 join_wan = [ProviderFactory(tf.resource, c).Join for c in CLUSTERS]

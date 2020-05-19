@@ -8,10 +8,6 @@
       "Name": "protoconf-server",
       "Type": "service",
       "Priority": 75,
-      "Datacenters": [
-        "ams1c01",
-        "ams1c02"
-      ],
       "TaskGroups": [
         {
           "Name": "default",
@@ -36,6 +32,9 @@
               "Services": [
                 {
                   "Name": "mutate",
+                  "Tags": [
+                    "urlprefix-/v1.ProtoconfMutationService/MutateConfig"
+                  ],
                   "PortLabel": "mutate",
                   "Checks": [
                     {

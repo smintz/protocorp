@@ -28,7 +28,7 @@
                 "dns_options": [
                   "169.254.1.1"
                 ],
-                "image": "protoconf/protoconf:v0.1.1",
+                "image": "protoconf/protoconf:0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5",
                 "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"
@@ -69,10 +69,6 @@
               "Services": [
                 {
                   "Name": "webhooks",
-                  "Tags": [
-                    "urlprefix-webhooks.service.ams1c01.pco.nf:9999/",
-                    "urlprefix-webhooks.service.ams1c02.pco.nf:9999/"
-                  ],
                   "PortLabel": "webhooks",
                   "Checks": [
                     {

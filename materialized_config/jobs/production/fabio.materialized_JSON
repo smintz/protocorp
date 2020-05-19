@@ -8,10 +8,6 @@
       "Name": "fabio",
       "Type": "system",
       "Priority": 75,
-      "Datacenters": [
-        "ams1c01",
-        "ams1c02"
-      ],
       "TaskGroups": [
         {
           "Name": "default",
@@ -25,10 +21,13 @@
                   "169.254.1.1"
                 ],
                 "image": "fabiolb/fabio",
-                "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"
                 ]
+              },
+              "Env": {
+                "FABIO_PROXY_ADDR": ":9999;proto=grpc",
+                "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501"
               },
               "Services": [
                 {
@@ -66,12 +65,13 @@
                   {
                     "ReservedPorts": [
                       {
-                        "Label": "lb",
-                        "Value": 9999
+                        "Label": "fabio-ui",
+                        "Value": 9998,
+                        "To": 9998
                       },
                       {
-                        "Label": "fabio-ui",
-                        "Value": 9998
+                        "Label": "lb",
+                        "Value": 9999
                       }
                     ]
                   }
