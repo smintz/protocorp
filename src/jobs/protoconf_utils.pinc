@@ -10,6 +10,7 @@ PROTOCONF_AGENT_JOB = NewJob("protoconf-agent", type="system")
 task = PROTOCONF_AGENT_JOB.NewTask("protoconf-agent")
 task.SetImage("protoconf/agent:" + PROTOCONF_VERSION)
 task.NewPort("agent", reserve=4300)
+task.SetConfig("network_mode", "host")
 task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
 task.SetConfig(
     "args",
