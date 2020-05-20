@@ -205,6 +205,7 @@ addresses {
 ports {
     https = 8501
     dns = 53
+    grpc = 8502
 }
 encrypt = "${random_id.consul_encrypt.b64_std}"
 recursors = ["127.0.0.53"]

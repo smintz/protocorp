@@ -185,6 +185,33 @@ def NomadInstall(version):
     return Component("NomadInstall", render)
 
 
+def InstallCNIPlugins(version="0.8.4"):
+    install = [
+        File(
+            "/tmp/cni-plugins.tgz",
+            download="https://github.com/containernetworking/plugins/releases/download/v{0}/cni-plugins-linux-amd64-v{0}.tgz".format(
+                version
+            ),
+        ),
+        Directory("/opt/cni/bin"),
+        Command("tar", "-C", "/opt/cni/bin", "-xzf", "/tmp/cni-plugins.tgz"),
+        File(
+            "/etc/sysctl.d/bridge.conf",
+            content="""\
+net.bridge.bridge-nf-call-arptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+""",
+        ),
+        Command("sysctl", "-p"),
+    ]
+
+    def render():
+        return install
+
+    return Component("InstallCNIPlugins", render)
+
+
 def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
     """
     Nomad installs and configures the nomad agent on the host
@@ -200,6 +227,7 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
     """
     dc = nf.datacenter
     setup = [
+        InstallCNIPlugins(),
         NomadInstall(version),
         File("/etc/nomad.d/nomad.hcl", content="\n".join(['data_dir = "/opt/nomad"'])),
         File("/etc/nomad.d/datacenter.hcl", 'datacenter = "{}"'.format(dc)),
