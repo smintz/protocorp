@@ -17,7 +17,7 @@
           "Count": 1,
           "Tasks": [
             {
-              "Name": "fabio",
+              "Name": "fabio-http",
               "Driver": "docker",
               "Config": {
                 "dns_options": [
@@ -29,16 +29,20 @@
                 ]
               },
               "Env": {
+                "FABIO_PROXY_ADDR": ":80;proto=http",
                 "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501"
               },
               "Services": [
                 {
-                  "Name": "fabio-ui",
-                  "PortLabel": "fabio-ui",
+                  "Name": "fabio-http",
+                  "Tags": [
+                    "urlprefix-fabio-http.service.pco.nf/"
+                  ],
+                  "PortLabel": "fabio-http",
                   "Checks": [
                     {
                       "Type": "http",
-                      "Path": "/hooks/protoconf-insert",
+                      "Path": "/",
                       "Interval": 10000000000,
                       "Timeout": 2000000000,
                       "CheckRestart": {
@@ -67,13 +71,85 @@
                   {
                     "ReservedPorts": [
                       {
-                        "Label": "fabio-ui",
-                        "Value": 9998,
+                        "Label": "lb",
+                        "Value": 80,
+                        "To": 80
+                      }
+                    ],
+                    "DynamicPorts": [
+                      {
+                        "Label": "fabio-http",
                         "To": 9998
-                      },
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "Name": "fabio-grpc",
+              "Driver": "docker",
+              "Config": {
+                "dns_options": [
+                  "169.254.1.1"
+                ],
+                "image": "fabiolb/fabio",
+                "volumes": [
+                  "/etc/ssl:/etc/ssl"
+                ]
+              },
+              "Env": {
+                "FABIO_PROXY_ADDR": ":9999;proto=grpc",
+                "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501"
+              },
+              "Services": [
+                {
+                  "Name": "fabio-grpc",
+                  "Tags": [
+                    "urlprefix-fabio-grpc.service.pco.nf/"
+                  ],
+                  "PortLabel": "fabio-grpc",
+                  "Checks": [
+                    {
+                      "Type": "http",
+                      "Path": "/",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ],
+                  "Connect": {
+                    "SidecarService": {
+                      "Tags": [
+                        "connect"
+                      ]
+                    },
+                    "SidecarTask": {
+                      "Env": {
+                        "HELLO": "world"
+                      }
+                    }
+                  }
+                }
+              ],
+              "Resources": {
+                "CPU": 100,
+                "MemoryMB": 64,
+                "Networks": [
+                  {
+                    "ReservedPorts": [
                       {
                         "Label": "lb",
-                        "Value": 9999
+                        "Value": 9999,
+                        "To": 9999
+                      }
+                    ],
+                    "DynamicPorts": [
+                      {
+                        "Label": "fabio-grpc",
+                        "To": 9998
                       }
                     ]
                   }

@@ -3,33 +3,41 @@ fabio
 """
 load("/jobs/helpers/job.pinc", "NewJob")
 load("/nomad/v0.11.1/api.proto", "ServiceCheck", "CheckRestart")
+load("/infra/consts.pinc", "CONSUL_DOMAIN")
 
 
 FABIO_JOB = NewJob("fabio", type="system")
-task = FABIO_JOB.NewTask("fabio")
-task.SetImage("fabiolb/fabio")
-# task.SetConfig("network_mode", "host")
-task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
-task.NewService(
-    "fabio-ui",
-    reserve=9998,
-    to=9998,
-    checks=[
-        ServiceCheck(
-            Type="http",
-            Path="/hooks/protoconf-insert",
-            Interval=10 * 1000000000,
-            Timeout=2 * 1000000000,
-            CheckRestart=CheckRestart(Limit=5),
-        )
-    ],
-)
-task.task.Env = {
-    "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501",
-    # "FABIO_PROXY_ADDR": ":9999;proto=grpc",
-}
 
-task.NewPort("lb", reserve=9999)
+
+def fabio_task(port, proto):
+    task = FABIO_JOB.NewTask("fabio-%s" % proto)
+    task.SetImage("fabiolb/fabio")
+    task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
+    task.NewService(
+        "fabio-%s" % proto,
+        to=9998,
+        checks=[
+            ServiceCheck(
+                Type="http",
+                Path="/",
+                Interval=10 * 1000000000,
+                Timeout=2 * 1000000000,
+                CheckRestart=CheckRestart(Limit=5),
+            )
+        ],
+        tags=["urlprefix-fabio-{}.service.{}/".format(proto, CONSUL_DOMAIN)],
+    )
+    task.task.Env = {
+        "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501",
+        "FABIO_PROXY_ADDR": ":{};proto={}".format(port, proto),
+    }
+
+    task.NewPort("lb", reserve=port, to=port)
+    return task
+
+
+fabio_task(80, "http")
+fabio_task(9999, "grpc")
 
 # task.NewService(
 #     "fabio-lb",
