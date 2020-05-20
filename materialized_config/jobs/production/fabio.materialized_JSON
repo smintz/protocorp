@@ -29,7 +29,6 @@
                 ]
               },
               "Env": {
-                "FABIO_PROXY_ADDR": ":9999;proto=grpc",
                 "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501"
               },
               "Services": [

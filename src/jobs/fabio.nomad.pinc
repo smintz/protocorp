@@ -26,7 +26,7 @@ task.NewService(
 )
 task.task.Env = {
     "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501",
-    "FABIO_PROXY_ADDR": ":9999;proto=grpc",
+    # "FABIO_PROXY_ADDR": ":9999;proto=grpc",
 }
 
 task.NewPort("lb", reserve=9999)
