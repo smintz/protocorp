@@ -196,6 +196,7 @@ def Vault(nmd, version=VAULT_VERSION, ca=None):
 
     vault_config = """\
 ui = true
+api_addr = "https://127.0.0.1:8200"
 storage "consul" {
     path = "vault/"
 }
