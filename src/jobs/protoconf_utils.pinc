@@ -64,6 +64,7 @@ exec protoconf serve -pre=/local/pre.sh -post=/local/post.sh /local/protocorp
 
 
 PROTOCONF_SERVER_JOB = NewJob("protoconf-server")
+PROTOCONF_SERVER_JOB.SetCount(3)
 mutate = PROTOCONF_SERVER_JOB.NewTask("protoconf-server")
 mutate.task.Templates = [
     Template(

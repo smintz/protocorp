@@ -14,7 +14,7 @@
       "TaskGroups": [
         {
           "Name": "default",
-          "Count": 1,
+          "Count": 3,
           "Tasks": [
             {
               "Name": "protoconf-server",

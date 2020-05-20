@@ -9,6 +9,7 @@ load("/infra/consts.pinc", "CONSUL_DOMAIN")
 
 
 job = NewJob("protoconf-inserter")
+job.SetCount(3)
 job.AddTask(
     ProtoconfExecTask(
         "jobs/protoconf-insert/config", {"webhook/hook.proto": HOOK_PROTO}
