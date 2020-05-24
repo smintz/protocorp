@@ -10,6 +10,15 @@ FABIO_JOB = NewJob("fabio", type="system")
 
 
 def fabio_task(port, proto):
+    """
+    fabio_task generates a fabio task with a port listener
+
+    Args:
+        port: the port should be used for the listener
+        proto: the terminating protocol
+    Returns:
+        A nomad task
+    """
     task = FABIO_JOB.NewTask("fabio-%s" % proto, proto)
     task.SetImage("fabiolb/fabio")
     task.SetMemory(512)
@@ -44,16 +53,3 @@ def fabio_task(port, proto):
 
 fabio_task(80, "http")
 fabio_task(9999, "grpc")
-
-# task.NewService(
-#     "fabio-lb",
-#     reserve=9999,
-#     checks=[
-#         ServiceCheck(
-#             Type="tcp",
-#             Interval=10 * 1000000000,
-#             Timeout=2 * 1000000000,
-#             CheckRestart=CheckRestart(Limit=5),
-#         )
-#     ],
-# )
