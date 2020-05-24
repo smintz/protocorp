@@ -10,8 +10,9 @@ FABIO_JOB = NewJob("fabio", type="system")
 
 
 def fabio_task(port, proto):
-    task = FABIO_JOB.NewTask("fabio-%s" % proto)
+    task = FABIO_JOB.NewTask("fabio-%s" % proto, proto)
     task.SetImage("fabiolb/fabio")
+    task.SetMemory(512)
     task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
     task.NewService(
         "fabio-%s" % proto,
@@ -19,17 +20,22 @@ def fabio_task(port, proto):
         checks=[
             ServiceCheck(
                 Type="http",
-                Path="/",
+                Path="/health",
                 Interval=10 * 1000000000,
                 Timeout=2 * 1000000000,
                 CheckRestart=CheckRestart(Limit=5),
             )
         ],
-        tags=["urlprefix-fabio-{}.service.{}/".format(proto, CONSUL_DOMAIN)],
+        tags=[
+            "urlprefix-fabio-{}.{}.service.{}/".format(proto, dc, CONSUL_DOMAIN)
+            for dc in FABIO_JOB.job.Datacenters
+        ],
+        label="ui",
     )
     task.task.Env = {
         "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501",
         "FABIO_PROXY_ADDR": ":{};proto={}".format(port, proto),
+        "FABIO_UI_ADDR": ":${NOMAD_PORT_ui}",
     }
 
     task.NewPort("lb", reserve=port, to=port)

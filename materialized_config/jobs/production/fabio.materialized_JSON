@@ -13,7 +13,7 @@
       ],
       "TaskGroups": [
         {
-          "Name": "default",
+          "Name": "http",
           "Count": 1,
           "Tasks": [
             {
@@ -30,19 +30,20 @@
               },
               "Env": {
                 "FABIO_PROXY_ADDR": ":80;proto=http",
-                "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501"
+                "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501",
+                "FABIO_UI_ADDR": ":${NOMAD_PORT_ui}"
               },
               "Services": [
                 {
                   "Name": "fabio-http",
                   "Tags": [
-                    "urlprefix-fabio-http.service.pco.nf/"
+                    "urlprefix-fabio-http.ams1c01.service.pco.nf/"
                   ],
-                  "PortLabel": "fabio-http",
+                  "PortLabel": "ui",
                   "Checks": [
                     {
                       "Type": "http",
-                      "Path": "/",
+                      "Path": "/health",
                       "Interval": 10000000000,
                       "Timeout": 2000000000,
                       "CheckRestart": {
@@ -66,7 +67,7 @@
               ],
               "Resources": {
                 "CPU": 100,
-                "MemoryMB": 64,
+                "MemoryMB": 512,
                 "Networks": [
                   {
                     "ReservedPorts": [
@@ -78,14 +79,20 @@
                     ],
                     "DynamicPorts": [
                       {
-                        "Label": "fabio-http",
+                        "Label": "ui",
                         "To": 9998
                       }
                     ]
                   }
                 ]
               }
-            },
+            }
+          ]
+        },
+        {
+          "Name": "grpc",
+          "Count": 1,
+          "Tasks": [
             {
               "Name": "fabio-grpc",
               "Driver": "docker",
@@ -100,19 +107,20 @@
               },
               "Env": {
                 "FABIO_PROXY_ADDR": ":9999;proto=grpc",
-                "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501"
+                "FABIO_REGISTRY_CONSUL_ADDR": "https://169.254.1.1:8501",
+                "FABIO_UI_ADDR": ":${NOMAD_PORT_ui}"
               },
               "Services": [
                 {
                   "Name": "fabio-grpc",
                   "Tags": [
-                    "urlprefix-fabio-grpc.service.pco.nf/"
+                    "urlprefix-fabio-grpc.ams1c01.service.pco.nf/"
                   ],
-                  "PortLabel": "fabio-grpc",
+                  "PortLabel": "ui",
                   "Checks": [
                     {
                       "Type": "http",
-                      "Path": "/",
+                      "Path": "/health",
                       "Interval": 10000000000,
                       "Timeout": 2000000000,
                       "CheckRestart": {
@@ -136,7 +144,7 @@
               ],
               "Resources": {
                 "CPU": 100,
-                "MemoryMB": 64,
+                "MemoryMB": 512,
                 "Networks": [
                   {
                     "ReservedPorts": [
@@ -148,7 +156,7 @@
                     ],
                     "DynamicPorts": [
                       {
-                        "Label": "fabio-grpc",
+                        "Label": "ui",
                         "To": 9998
                       }
                     ]
