@@ -70,7 +70,7 @@
                 {
                   "Name": "webhooks",
                   "Tags": [
-                    "urlprefix-webhooks.service.ams1c01.pco.nf:9999/"
+                    "urlprefix-webhooks.service.ams1c01.pco.nf/"
                   ],
                   "PortLabel": "webhooks",
                   "Checks": [
