@@ -196,11 +196,13 @@ def Vault(nmd, version=VAULT_VERSION, ca=None):
 
     vault_config = """\
 ui = true
-api_addr = "https://127.0.0.1:8200"
-storage "consul" {
+api_addr = "https://{}:8200"
+storage "consul" {{
     path = "vault/"
-}
-"""
+}}
+""".format(
+        nmd.fqdn
+    )
     vault_tls_config = """\
 listener "tcp" {
   address       = "0.0.0.0:8200"
