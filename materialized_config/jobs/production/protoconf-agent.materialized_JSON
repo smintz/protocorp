@@ -39,6 +39,7 @@
                 "MemoryMB": 1024,
                 "Networks": [
                   {
+                    "Mode": "bridge",
                     "ReservedPorts": [
                       {
                         "Label": "agent",

@@ -24,6 +24,11 @@
                   "169.254.1.1"
                 ],
                 "image": "fabiolb/fabio",
+                "port_map": [
+                  {
+                    "lb": 80
+                  }
+                ],
                 "volumes": [
                   "/etc/ssl:/etc/ssl"
                 ]
@@ -70,6 +75,7 @@
                 "MemoryMB": 512,
                 "Networks": [
                   {
+                    "Mode": "bridge",
                     "ReservedPorts": [
                       {
                         "Label": "lb",
@@ -101,6 +107,11 @@
                   "169.254.1.1"
                 ],
                 "image": "fabiolb/fabio",
+                "port_map": [
+                  {
+                    "lb": 9999
+                  }
+                ],
                 "volumes": [
                   "/etc/ssl:/etc/ssl"
                 ]
@@ -147,6 +158,7 @@
                 "MemoryMB": 512,
                 "Networks": [
                   {
+                    "Mode": "bridge",
                     "ReservedPorts": [
                       {
                         "Label": "lb",
