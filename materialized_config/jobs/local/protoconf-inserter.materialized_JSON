@@ -61,7 +61,6 @@
                   "169.254.1.1"
                 ],
                 "image": "smintz/webhook:latest",
-                "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"
                 ]
@@ -103,10 +102,10 @@
                 "MemoryMB": 512,
                 "Networks": [
                   {
-                    "ReservedPorts": [
+                    "DynamicPorts": [
                       {
                         "Label": "webhooks",
-                        "Value": 9000
+                        "To": 9000
                       }
                     ]
                   }

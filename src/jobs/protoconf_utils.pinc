@@ -87,14 +87,14 @@ mutate.task.Templates = [
     ),
 ]
 mutate.SetImage("smintz/webhook:latest")
-mutate.SetConfig("network_mode", "host")
+# mutate.SetConfig("network_mode", "host")
 mutate.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
 mutate.SetConfig("entrypoint", ["/local/entrypoint.sh"])
 mutate.SetMemory(1024)
 mutate.AddVaultPolicies("github-policy")
 mutate.NewService(
     "mutate",
-    reserve=4301,
+    to=4301,
     checks=[ServiceCheck(Type="tcp", Interval=10 * 1000000000, Timeout=2 * 1000000000)],
     tags=["urlprefix-/v1.ProtoconfMutationService/MutateConfig"],
 )

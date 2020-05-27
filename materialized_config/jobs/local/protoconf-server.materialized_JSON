@@ -27,7 +27,6 @@
                   "/local/entrypoint.sh"
                 ],
                 "image": "smintz/webhook:latest",
-                "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"
                 ]
@@ -65,10 +64,10 @@
                 "MemoryMB": 1024,
                 "Networks": [
                   {
-                    "ReservedPorts": [
+                    "DynamicPorts": [
                       {
                         "Label": "mutate",
-                        "Value": 4301
+                        "To": 4301
                       }
                     ]
                   }
