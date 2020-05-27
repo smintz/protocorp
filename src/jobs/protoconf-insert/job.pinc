@@ -26,7 +26,7 @@ webhook_task.NewService(
     "webhooks",
     to=9000,
     tags=[
-        "urlprefix-webhooks.service.{dc}.{domain}/".format(dc=dc, domain=CONSUL_DOMAIN)
+        "httpprefix-webhooks.service.{dc}.{domain}/".format(dc=dc, domain=CONSUL_DOMAIN)
         for dc in job.job.Datacenters
     ],
     checks=[

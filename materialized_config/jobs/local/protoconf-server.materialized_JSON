@@ -40,7 +40,7 @@
                 {
                   "Name": "mutate",
                   "Tags": [
-                    "urlprefix-/v1.ProtoconfMutationService/MutateConfig"
+                    "grpcprefix-/v1.ProtoconfMutationService/MutateConfig"
                   ],
                   "PortLabel": "mutate",
                   "Checks": [
