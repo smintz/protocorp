@@ -8,9 +8,6 @@
       "Name": "protoconf-server",
       "Type": "service",
       "Priority": 75,
-      "Datacenters": [
-        "ams1c01"
-      ],
       "TaskGroups": [
         {
           "Name": "default",

@@ -8,9 +8,6 @@
       "Name": "protoconf-agent",
       "Type": "system",
       "Priority": 75,
-      "Datacenters": [
-        "ams1c01"
-      ],
       "TaskGroups": [
         {
           "Name": "default",

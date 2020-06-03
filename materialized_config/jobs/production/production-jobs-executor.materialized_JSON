@@ -8,9 +8,6 @@
       "Name": "production-jobs-executor",
       "Type": "service",
       "Priority": 75,
-      "Datacenters": [
-        "ams1c01"
-      ],
       "TaskGroups": [
         {
           "Name": "default",
