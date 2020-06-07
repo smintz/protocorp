@@ -15,7 +15,7 @@
           "server"
         ],
         "network_interface": {
-          "network": "global"
+          "network": "default"
         },
         "scheduling": {
           "automatic_restart": true,

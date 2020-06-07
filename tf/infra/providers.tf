@@ -13,7 +13,7 @@ provider "digitalocean" {
 provider "google" {
   credentials = var.gcp_creds
   project     = "protoconf"
-  region      = "eu-central1"
+  region      = "europe-west4"
 }
 
 provider "random" {}
