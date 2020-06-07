@@ -45,9 +45,6 @@
           "base_instance_name": "server",
           "name": "server",
           "region": "europe-west4",
-          "target_pools": [
-            "n1-standard-1"
-          ],
           "target_size": 3,
           "version": {
             "instance_template": "${google_compute_instance_template.server.self_link}"

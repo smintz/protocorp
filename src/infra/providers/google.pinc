@@ -26,7 +26,7 @@ def GoogleCluster(tf, cluster):
             # instance_template=compile(userdata(nmd)),
             region=cluster.region,
             # update_strategy="ROLLING_UPDATE",
-            target_pools=[tier.instance_type],
+            target_pools=[],
             target_size=tier.count,
             version=GoogleComputeRegionInstanceGroupManager.Version(
                 instance_template="${google_compute_instance_template.%s.self_link}"
