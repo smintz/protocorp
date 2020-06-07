@@ -23,9 +23,7 @@ def GoogleCluster(tf, cluster):
         ] = GoogleComputeRegionInstanceGroupManager(
             name=tier.name,
             base_instance_name=tier.name,
-            # instance_template=compile(userdata(nmd)),
             region=cluster.region,
-            # update_strategy="ROLLING_UPDATE",
             target_pools=[],
             target_size=tier.count,
             version=GoogleComputeRegionInstanceGroupManager.Version(
@@ -37,7 +35,7 @@ def GoogleCluster(tf, cluster):
             name_prefix=tier.name,
             machine_type=tier.instance_type,
             tags=[tier.name],
-            metadata_startup_script=compile(userdata(nmd)),
+            metadata_startup_script=compile(userdata(nmd, "{{GetPrivateIP}}")),
             scheduling=GoogleComputeInstanceTemplate.Scheduling(
                 automatic_restart=True, on_host_maintenance="MIGRATE", preemptible=False
             ),

@@ -94,7 +94,7 @@ def Consul(
     join_lan=[],
     join_wan=[],
     ca=None,
-    advertise_iface="eth0",
+    advertise_addr="{{GetPublicIP}}",
     bootstrap_expect=3,
 ):
     """
@@ -107,7 +107,7 @@ def Consul(
         join_lan: list of servers or discovery expressions to join via lan
         join_wan: list of servers or discovery expressions to join via wan
         ca: a facility to create certificates
-        advertise_iface: which interface holds the IP which should be used for consul communciation
+        advertise_addr: which interface holds the IP which should be used for consul communciation
         bootstrap_expect: number of servers in the cluster
     Returns:
         Installation and configuration script for the consul agent.
@@ -126,7 +126,7 @@ def Consul(
                 [
                     "ui = true",
                     'bind_addr = "0.0.0.0"',
-                    'advertise_addr = "{{GetPublicIP}}"',
+                    'advertise_addr = "{}"'.format(advertise_addr),
                     'datacenter = "{}"'.format(dc),
                     'data_dir = "/opt/consul"',
                     'domain = "{}"'.format(nf.domain),
