@@ -2206,15 +2206,37 @@ message GoogleIamPolicy {
 
   string policy_data = 2 [json_name = "policy_data"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+  AuditConfig audit_config = 3 [json_name = "audit_config"];
 
-  int32 count = 4;
+  Binding binding = 4;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  string provider = 6;
+  int32 count = 6;
 
-  terraform.meta.Lifecycle lifecycle = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message AuditConfig {
+    string service = 1;
+
+    AuditLogConfigs audit_log_configs = 2 [json_name = "audit_log_configs"];
+
+    message AuditLogConfigs {
+      repeated string exempted_members = 1 [json_name = "exempted_members"];
+
+      string log_type = 2 [json_name = "log_type"];
+    }
+  }
+
+  message Binding {
+    repeated string members = 1;
+
+    string role = 2;
+  }
 }
 
 //GoogleIamRole version is 0

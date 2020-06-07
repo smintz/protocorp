@@ -55,15 +55,31 @@ message AwsAcmpcaCertificateAuthority {
 
   string type = 11;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+  RevocationConfiguration revocation_configuration = 12 [json_name = "revocation_configuration"];
 
-  int32 count = 13;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+  int32 count = 14;
 
-  string provider = 15;
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
 
-  terraform.meta.Lifecycle lifecycle = 16;
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+
+  message RevocationConfiguration {
+    CrlConfiguration crl_configuration = 1 [json_name = "crl_configuration"];
+
+    message CrlConfiguration {
+      string custom_cname = 1 [json_name = "custom_cname"];
+
+      bool enabled = 2;
+
+      int64 expiration_in_days = 3 [json_name = "expiration_in_days"];
+
+      string s3_bucket_name = 4 [json_name = "s3_bucket_name"];
+    }
+  }
 }
 
 //AwsAlb version is 0
@@ -419,15 +435,17 @@ message AwsAmi {
 
   string virtualization_type = 29 [json_name = "virtualization_type"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 30;
+  Filter filter = 30;
 
-  int32 count = 31;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 31;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 32;
+  int32 count = 32;
 
-  string provider = 33;
+  terraform.meta.MetaFields.ForEachEntry for_each = 33;
 
-  terraform.meta.Lifecycle lifecycle = 34;
+  string provider = 34;
+
+  terraform.meta.Lifecycle lifecycle = 35;
 
   message BlockDeviceMappings {
     //device_name: string
@@ -450,6 +468,12 @@ message AwsAmi {
     //product_code_type: string
     string product_code_type = 2 [json_name = "product_code_type"];
   }
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsAmiIds version is 0
@@ -466,15 +490,23 @@ message AwsAmiIds {
 
   bool sort_ascending = 6 [json_name = "sort_ascending"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+  Filter filter = 7;
 
-  int32 count = 8;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+  int32 count = 9;
 
-  string provider = 10;
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
 
-  terraform.meta.Lifecycle lifecycle = 11;
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsApiGatewayApiKey version is 0
@@ -687,15 +719,23 @@ message AwsAutoscalingGroups {
 
   repeated string names = 3;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Filter filter = 4;
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsAvailabilityZone version is 0
@@ -720,15 +760,23 @@ message AwsAvailabilityZone {
 
   string zone_id = 10 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+  Filter filter = 11;
 
-  int32 count = 12;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+  int32 count = 13;
 
-  string provider = 14;
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
 
-  terraform.meta.Lifecycle lifecycle = 15;
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsAvailabilityZones version is 0
@@ -749,15 +797,23 @@ message AwsAvailabilityZones {
 
   repeated string zone_ids = 8 [json_name = "zone_ids"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+  Filter filter = 9;
 
-  int32 count = 10;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+  int32 count = 11;
 
-  string provider = 12;
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
 
-  terraform.meta.Lifecycle lifecycle = 13;
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsBatchComputeEnvironment version is 0
@@ -1155,15 +1211,23 @@ message AwsCustomerGateway {
 
   string type = 5;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+  Filter filter = 6;
 
-  int32 count = 7;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+  int32 count = 8;
 
-  string provider = 9;
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
 
-  terraform.meta.Lifecycle lifecycle = 10;
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsDbClusterSnapshot version is 0
@@ -1522,15 +1586,17 @@ message AwsDynamodbTable {
 
   int64 write_capacity = 19 [json_name = "write_capacity"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
+  ServerSideEncryption server_side_encryption = 20 [json_name = "server_side_encryption"];
 
-  int32 count = 21;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 21;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 22;
+  int32 count = 22;
 
-  string provider = 23;
+  terraform.meta.MetaFields.ForEachEntry for_each = 23;
 
-  terraform.meta.Lifecycle lifecycle = 24;
+  string provider = 24;
+
+  terraform.meta.Lifecycle lifecycle = 25;
 
   message Attribute {
     //name: string
@@ -1593,6 +1659,12 @@ message AwsDynamodbTable {
 
     //enabled: bool
     bool enabled = 2;
+  }
+
+  message ServerSideEncryption {
+    bool enabled = 1;
+
+    string kms_key_arn = 2 [json_name = "kms_key_arn"];
   }
 }
 
@@ -1664,15 +1736,23 @@ message AwsEbsSnapshot {
 
   int64 volume_size = 16 [json_name = "volume_size"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
+  Filter filter = 17;
 
-  int32 count = 18;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 19;
+  int32 count = 19;
 
-  string provider = 20;
+  terraform.meta.MetaFields.ForEachEntry for_each = 20;
 
-  terraform.meta.Lifecycle lifecycle = 21;
+  string provider = 21;
+
+  terraform.meta.Lifecycle lifecycle = 22;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEbsSnapshotIds version is 0
@@ -1685,15 +1765,23 @@ message AwsEbsSnapshotIds {
 
   repeated string restorable_by_user_ids = 4 [json_name = "restorable_by_user_ids"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEbsVolume version is 0
@@ -1722,15 +1810,23 @@ message AwsEbsVolume {
 
   string volume_type = 12 [json_name = "volume_type"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+  Filter filter = 13;
 
-  int32 count = 14;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+  int32 count = 15;
 
-  string provider = 16;
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
 
-  terraform.meta.Lifecycle lifecycle = 17;
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEc2InstanceTypeOffering version is 0
@@ -1743,15 +1839,23 @@ message AwsEc2InstanceTypeOffering {
 
   repeated string preferred_instance_types = 4 [json_name = "preferred_instance_types"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEc2InstanceTypeOfferings version is 0
@@ -1762,15 +1866,23 @@ message AwsEc2InstanceTypeOfferings {
 
   string location_type = 3 [json_name = "location_type"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Filter filter = 4;
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEc2TransitGateway version is 0
@@ -1801,15 +1913,23 @@ message AwsEc2TransitGateway {
 
   string vpn_ecmp_support = 13 [json_name = "vpn_ecmp_support"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+  Filter filter = 14;
 
-  int32 count = 15;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+  int32 count = 16;
 
-  string provider = 17;
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
 
-  terraform.meta.Lifecycle lifecycle = 18;
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEc2TransitGatewayDxGatewayAttachment version is 0
@@ -1822,15 +1942,23 @@ message AwsEc2TransitGatewayDxGatewayAttachment {
 
   string transit_gateway_id = 4 [json_name = "transit_gateway_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEc2TransitGatewayRouteTable version is 0
@@ -1845,15 +1973,23 @@ message AwsEc2TransitGatewayRouteTable {
 
   string transit_gateway_id = 5 [json_name = "transit_gateway_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+  Filter filter = 6;
 
-  int32 count = 7;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+  int32 count = 8;
 
-  string provider = 9;
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
 
-  terraform.meta.Lifecycle lifecycle = 10;
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEc2TransitGatewayVpcAttachment version is 0
@@ -1874,15 +2010,23 @@ message AwsEc2TransitGatewayVpcAttachment {
 
   string vpc_owner_id = 8 [json_name = "vpc_owner_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
+  Filter filter = 9;
 
-  int32 count = 10;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 11;
+  int32 count = 11;
 
-  string provider = 12;
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
 
-  terraform.meta.Lifecycle lifecycle = 13;
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEc2TransitGatewayVpnAttachment version is 0
@@ -1895,15 +2039,23 @@ message AwsEc2TransitGatewayVpnAttachment {
 
   string vpn_connection_id = 4 [json_name = "vpn_connection_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEcrImage version is 0
@@ -2187,15 +2339,23 @@ message AwsEip {
 
   map<string, string> tags = 12;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
+  Filter filter = 13;
 
-  int32 count = 14;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 15;
+  int32 count = 15;
 
-  string provider = 16;
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
 
-  terraform.meta.Lifecycle lifecycle = 17;
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsEksCluster version is 0
@@ -2782,15 +2942,45 @@ message AwsGlueScript {
 
   string scala_code = 4 [json_name = "scala_code"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  DagEdge dag_edge = 5 [json_name = "dag_edge"];
 
-  int32 count = 6;
+  DagNode dag_node = 6 [json_name = "dag_node"];
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
 
-  string provider = 8;
+  int32 count = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+
+  message DagEdge {
+    string source = 1;
+
+    string target = 2;
+
+    string target_parameter = 3 [json_name = "target_parameter"];
+  }
+
+  message DagNode {
+    string id = 1;
+
+    int64 line_number = 2 [json_name = "line_number"];
+
+    string node_type = 3 [json_name = "node_type"];
+
+    Args args = 4;
+
+    message Args {
+      string name = 1;
+
+      bool param = 2;
+
+      string value = 3;
+    }
+  }
 }
 
 //AwsGuarddutyDetector version is 0
@@ -2938,15 +3128,57 @@ message AwsIamPolicyDocument {
 
   string version = 6;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+  Statement statement = 7;
 
-  int32 count = 8;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+  int32 count = 9;
 
-  string provider = 10;
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
 
-  terraform.meta.Lifecycle lifecycle = 11;
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message Statement {
+    repeated string actions = 1;
+
+    string effect = 2;
+
+    repeated string not_actions = 3 [json_name = "not_actions"];
+
+    repeated string not_resources = 4 [json_name = "not_resources"];
+
+    repeated string resources = 5;
+
+    string sid = 6;
+
+    Condition condition = 7;
+
+    NotPrincipals not_principals = 8 [json_name = "not_principals"];
+
+    Principals principals = 9;
+
+    message Condition {
+      string test = 1;
+
+      repeated string values = 2;
+
+      string variable = 3;
+    }
+
+    message NotPrincipals {
+      repeated string identifiers = 1;
+
+      string type = 2;
+    }
+
+    message Principals {
+      repeated string identifiers = 1;
+
+      string type = 2;
+    }
+  }
 }
 
 //AwsIamRole version is 0
@@ -3143,15 +3375,17 @@ message AwsInstance {
 
   repeated string vpc_security_group_ids = 37 [json_name = "vpc_security_group_ids"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 38;
+  Filter filter = 38;
 
-  int32 count = 39;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 39;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 40;
+  int32 count = 40;
 
-  string provider = 41;
+  terraform.meta.MetaFields.ForEachEntry for_each = 41;
 
-  terraform.meta.Lifecycle lifecycle = 42;
+  string provider = 42;
+
+  terraform.meta.Lifecycle lifecycle = 43;
 
   message CreditSpecification {
     //cpu_credits: string
@@ -3234,6 +3468,12 @@ message AwsInstance {
     //volume_type: string
     string volume_type = 8 [json_name = "volume_type"];
   }
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsInstances version is 0
@@ -3250,15 +3490,23 @@ message AwsInstances {
 
   repeated string public_ips = 6 [json_name = "public_ips"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+  Filter filter = 7;
 
-  int32 count = 8;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+  int32 count = 9;
 
-  string provider = 10;
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
 
-  terraform.meta.Lifecycle lifecycle = 11;
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsInternetGateway version is 0
@@ -3273,15 +3521,17 @@ message AwsInternetGateway {
 
   map<string, string> tags = 5;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+  Filter filter = 6;
 
-  int32 count = 7;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+  int32 count = 8;
 
-  string provider = 9;
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
 
-  terraform.meta.Lifecycle lifecycle = 10;
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
 
   message Attachments {
     //state: string
@@ -3289,6 +3539,12 @@ message AwsInternetGateway {
 
     //vpc_id: string
     string vpc_id = 2 [json_name = "vpc_id"];
+  }
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
   }
 }
 
@@ -3468,22 +3724,7 @@ message AwsKmsKey {
 message AwsKmsSecret {
   string id = 1;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 2;
-
-  int32 count = 3;
-
-  terraform.meta.MetaFields.ForEachEntry for_each = 4;
-
-  string provider = 5;
-
-  terraform.meta.Lifecycle lifecycle = 6;
-}
-
-//AwsKmsSecrets version is 0
-message AwsKmsSecrets {
-  string id = 1;
-
-  map<string, string> plaintext = 2;
+  Secret secret = 2;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
 
@@ -3494,6 +3735,45 @@ message AwsKmsSecrets {
   string provider = 6;
 
   terraform.meta.Lifecycle lifecycle = 7;
+
+  message Secret {
+    map<string, string> context = 1;
+
+    repeated string grant_tokens = 2 [json_name = "grant_tokens"];
+
+    string name = 3;
+
+    string payload = 4;
+  }
+}
+
+//AwsKmsSecrets version is 0
+message AwsKmsSecrets {
+  string id = 1;
+
+  map<string, string> plaintext = 2;
+
+  Secret secret = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+
+  message Secret {
+    map<string, string> context = 1;
+
+    repeated string grant_tokens = 2 [json_name = "grant_tokens"];
+
+    string name = 3;
+
+    string payload = 4;
+  }
 }
 
 //AwsLambdaAlias version is 0
@@ -3831,15 +4111,17 @@ message AwsLaunchTemplate {
 
   repeated string vpc_security_group_ids = 29 [json_name = "vpc_security_group_ids"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 30;
+  Filter filter = 30;
 
-  int32 count = 31;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 31;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 32;
+  int32 count = 32;
 
-  string provider = 33;
+  terraform.meta.MetaFields.ForEachEntry for_each = 33;
 
-  terraform.meta.Lifecycle lifecycle = 34;
+  string provider = 34;
+
+  terraform.meta.Lifecycle lifecycle = 35;
 
   message BlockDeviceMappings {
     //device_name: string
@@ -4006,6 +4288,12 @@ message AwsLaunchTemplate {
 
     //tags: map of string
     map<string, string> tags = 2;
+  }
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
   }
 }
 
@@ -4340,15 +4628,17 @@ message AwsMqBroker {
 
   repeated User user = 18;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 19;
+  Logs logs = 19;
 
-  int32 count = 20;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 21;
+  int32 count = 21;
 
-  string provider = 22;
+  terraform.meta.MetaFields.ForEachEntry for_each = 22;
 
-  terraform.meta.Lifecycle lifecycle = 23;
+  string provider = 23;
+
+  terraform.meta.Lifecycle lifecycle = 24;
 
   message Configuration {
     //id: string
@@ -4397,6 +4687,12 @@ message AwsMqBroker {
 
     //username: string
     string username = 3;
+  }
+
+  message Logs {
+    bool audit = 1;
+
+    bool general = 2;
   }
 }
 
@@ -4478,15 +4774,23 @@ message AwsNatGateway {
 
   string vpc_id = 9 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+  Filter filter = 10;
 
-  int32 count = 11;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+  int32 count = 12;
 
-  string provider = 13;
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
 
-  terraform.meta.Lifecycle lifecycle = 14;
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsNetworkAcls version is 0
@@ -4499,15 +4803,23 @@ message AwsNetworkAcls {
 
   string vpc_id = 4 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsNetworkInterface version is 0
@@ -4546,15 +4858,17 @@ message AwsNetworkInterface {
 
   string vpc_id = 17 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+  Filter filter = 18;
 
-  int32 count = 19;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 19;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+  int32 count = 20;
 
-  string provider = 21;
+  terraform.meta.MetaFields.ForEachEntry for_each = 21;
 
-  terraform.meta.Lifecycle lifecycle = 22;
+  string provider = 22;
+
+  terraform.meta.Lifecycle lifecycle = 23;
 
   message Association {
     //allocation_id: string
@@ -4586,6 +4900,12 @@ message AwsNetworkInterface {
     //instance_owner_id: string
     string instance_owner_id = 4 [json_name = "instance_owner_id"];
   }
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsNetworkInterfaces version is 0
@@ -4596,15 +4916,23 @@ message AwsNetworkInterfaces {
 
   map<string, string> tags = 3;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Filter filter = 4;
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsOrganizationsOrganization version is 0
@@ -4757,15 +5085,23 @@ message AwsPrefixList {
 
   string prefix_list_id = 4 [json_name = "prefix_list_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsPricingProduct version is 0
@@ -4776,15 +5112,23 @@ message AwsPricingProduct {
 
   string service_code = 3 [json_name = "service_code"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Filters filters = 4;
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Filters {
+    string field = 1;
+
+    string value = 2;
+  }
 }
 
 //AwsQldbLedger version is 0
@@ -4822,15 +5166,23 @@ message AwsRamResourceShare {
 
   map<string, string> tags = 6;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+  Filter filter = 7;
 
-  int32 count = 8;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+  int32 count = 9;
 
-  string provider = 10;
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
 
-  terraform.meta.Lifecycle lifecycle = 11;
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsRdsCluster version is 0
@@ -5027,15 +5379,23 @@ message AwsRegions {
 
   repeated string names = 3;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Filter filter = 4;
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsRoute version is 0
@@ -5207,15 +5567,17 @@ message AwsRouteTable {
 
   string vpc_id = 9 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+  Filter filter = 10;
 
-  int32 count = 11;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+  int32 count = 12;
 
-  string provider = 13;
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
 
-  terraform.meta.Lifecycle lifecycle = 14;
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
 
   message Associations {
     //gateway_id: string
@@ -5262,6 +5624,12 @@ message AwsRouteTable {
     //vpc_peering_connection_id: string
     string vpc_peering_connection_id = 9 [json_name = "vpc_peering_connection_id"];
   }
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsRouteTables version is 0
@@ -5274,15 +5642,23 @@ message AwsRouteTables {
 
   string vpc_id = 4 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsS3Bucket version is 0
@@ -5495,15 +5871,23 @@ message AwsSecurityGroup {
 
   string vpc_id = 6 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+  Filter filter = 7;
 
-  int32 count = 8;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+  int32 count = 9;
 
-  string provider = 10;
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
 
-  terraform.meta.Lifecycle lifecycle = 11;
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsSecurityGroups version is 0
@@ -5516,15 +5900,23 @@ message AwsSecurityGroups {
 
   repeated string vpc_ids = 4 [json_name = "vpc_ids"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsServicequotasService version is 0
@@ -5803,15 +6195,23 @@ message AwsSubnet {
 
   string vpc_id = 14 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
+  Filter filter = 15;
 
-  int32 count = 16;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 17;
+  int32 count = 17;
 
-  string provider = 18;
+  terraform.meta.MetaFields.ForEachEntry for_each = 18;
 
-  terraform.meta.Lifecycle lifecycle = 19;
+  string provider = 19;
+
+  terraform.meta.Lifecycle lifecycle = 20;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsSubnetIds version is 0
@@ -5824,15 +6224,23 @@ message AwsSubnetIds {
 
   string vpc_id = 4 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsTransferServer version is 0
@@ -5896,15 +6304,17 @@ message AwsVpc {
 
   map<string, string> tags = 15;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
+  Filter filter = 16;
 
-  int32 count = 17;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 18;
+  int32 count = 18;
 
-  string provider = 19;
+  terraform.meta.MetaFields.ForEachEntry for_each = 19;
 
-  terraform.meta.Lifecycle lifecycle = 20;
+  string provider = 20;
+
+  terraform.meta.Lifecycle lifecycle = 21;
 
   message CidrBlockAssociations {
     //association_id: string
@@ -5915,6 +6325,12 @@ message AwsVpc {
 
     //state: string
     string state = 3;
+  }
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
   }
 }
 
@@ -5938,15 +6354,23 @@ message AwsVpcDhcpOptions {
 
   map<string, string> tags = 9;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+  Filter filter = 10;
 
-  int32 count = 11;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+  int32 count = 12;
 
-  string provider = 13;
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
 
-  terraform.meta.Lifecycle lifecycle = 14;
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsVpcEndpoint version is 0
@@ -5985,15 +6409,17 @@ message AwsVpcEndpoint {
 
   string vpc_id = 17 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
+  Filter filter = 18;
 
-  int32 count = 19;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 19;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 20;
+  int32 count = 20;
 
-  string provider = 21;
+  terraform.meta.MetaFields.ForEachEntry for_each = 21;
 
-  terraform.meta.Lifecycle lifecycle = 22;
+  string provider = 22;
+
+  terraform.meta.Lifecycle lifecycle = 23;
 
   message DnsEntry {
     //dns_name: string
@@ -6001,6 +6427,12 @@ message AwsVpcEndpoint {
 
     //hosted_zone_id: string
     string hosted_zone_id = 2 [json_name = "hosted_zone_id"];
+  }
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
   }
 }
 
@@ -6032,15 +6464,23 @@ message AwsVpcEndpointService {
 
   bool vpc_endpoint_policy_supported = 13 [json_name = "vpc_endpoint_policy_supported"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+  Filter filter = 14;
 
-  int32 count = 15;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+  int32 count = 16;
 
-  string provider = 17;
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
 
-  terraform.meta.Lifecycle lifecycle = 18;
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsVpcPeeringConnection version is 0
@@ -6071,15 +6511,23 @@ message AwsVpcPeeringConnection {
 
   string vpc_id = 13 [json_name = "vpc_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+  Filter filter = 14;
 
-  int32 count = 15;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+  int32 count = 16;
 
-  string provider = 17;
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
 
-  terraform.meta.Lifecycle lifecycle = 18;
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsVpcs version is 0
@@ -6090,15 +6538,23 @@ message AwsVpcs {
 
   map<string, string> tags = 3;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Filter filter = 4;
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsVpnGateway version is 0
@@ -6115,15 +6571,23 @@ message AwsVpnGateway {
 
   map<string, string> tags = 6;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+  Filter filter = 7;
 
-  int32 count = 8;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+  int32 count = 9;
 
-  string provider = 10;
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
 
-  terraform.meta.Lifecycle lifecycle = 11;
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message Filter {
+    string name = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //AwsWafIpset version is 0

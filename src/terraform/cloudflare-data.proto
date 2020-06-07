@@ -35,15 +35,17 @@ message CloudflareWafGroups {
 
   string zone_id = 4 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
 
   message Groups {
     //description: string
@@ -67,6 +69,12 @@ message CloudflareWafGroups {
     //rules_count: number
     int64 rules_count = 7 [json_name = "rules_count"];
   }
+
+  message Filter {
+    string mode = 1;
+
+    string name = 2;
+  }
 }
 
 //CloudflareWafPackages version is 0
@@ -77,15 +85,17 @@ message CloudflareWafPackages {
 
   string zone_id = 3 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Filter filter = 4;
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
 
   message Packages {
     //action_mode: string
@@ -106,6 +116,16 @@ message CloudflareWafPackages {
     //sensitivity: string
     string sensitivity = 6;
   }
+
+  message Filter {
+    string action_mode = 1 [json_name = "action_mode"];
+
+    string detection_mode = 2 [json_name = "detection_mode"];
+
+    string name = 3;
+
+    string sensitivity = 4;
+  }
 }
 
 //CloudflareWafRules version is 0
@@ -118,15 +138,17 @@ message CloudflareWafRules {
 
   string zone_id = 4 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Filter filter = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
 
   message Rules {
     //allowed_modes: list of string
@@ -153,6 +175,14 @@ message CloudflareWafRules {
     //priority: string
     string priority = 8;
   }
+
+  message Filter {
+    string description = 1;
+
+    string group_id = 2 [json_name = "group_id"];
+
+    string mode = 3;
+  }
 }
 
 //CloudflareZones version is 0
@@ -161,15 +191,17 @@ message CloudflareZones {
 
   repeated Zones zones = 2;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+  Filter filter = 3;
 
-  int32 count = 4;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+  int32 count = 5;
 
-  string provider = 6;
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
 
-  terraform.meta.Lifecycle lifecycle = 7;
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
 
   message Zones {
     //id: string
@@ -177,5 +209,13 @@ message CloudflareZones {
 
     //name: string
     string name = 2;
+  }
+
+  message Filter {
+    string name = 1;
+
+    bool paused = 2;
+
+    string status = 3;
   }
 }

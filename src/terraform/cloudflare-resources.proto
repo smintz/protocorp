@@ -37,15 +37,57 @@ message CloudflareAccessGroup {
 
   string name = 3;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Exclude exclude = 4;
 
-  int32 count = 5;
+  Include include = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  Require require = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+
+  message Exclude {
+    repeated string email = 1;
+
+    repeated string email_domain = 2 [json_name = "email_domain"];
+
+    bool everyone = 3;
+
+    repeated string group = 4;
+
+    repeated string ip = 5;
+  }
+
+  message Include {
+    repeated string email = 1;
+
+    repeated string email_domain = 2 [json_name = "email_domain"];
+
+    bool everyone = 3;
+
+    repeated string group = 4;
+
+    repeated string ip = 5;
+  }
+
+  message Require {
+    repeated string email = 1;
+
+    repeated string email_domain = 2 [json_name = "email_domain"];
+
+    bool everyone = 3;
+
+    repeated string group = 4;
+
+    repeated string ip = 5;
+  }
 }
 
 //CloudflareAccessIdentityProvider version is 0
@@ -58,15 +100,57 @@ message CloudflareAccessIdentityProvider {
 
   string type = 4;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+  Config config = 5;
 
-  int32 count = 6;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+  int32 count = 7;
 
-  string provider = 8;
+  terraform.meta.MetaFields.ForEachEntry for_each = 8;
 
-  terraform.meta.Lifecycle lifecycle = 9;
+  string provider = 9;
+
+  terraform.meta.Lifecycle lifecycle = 10;
+
+  message Config {
+    string apps_domain = 1 [json_name = "apps_domain"];
+
+    repeated string attributes = 2;
+
+    string auth_url = 3 [json_name = "auth_url"];
+
+    string centrify_account = 4 [json_name = "centrify_account"];
+
+    string centrify_app_id = 5 [json_name = "centrify_app_id"];
+
+    string certs_url = 6 [json_name = "certs_url"];
+
+    string client_id = 7 [json_name = "client_id"];
+
+    string client_secret = 8 [json_name = "client_secret"];
+
+    string directory_id = 9 [json_name = "directory_id"];
+
+    string email_attribute_name = 10 [json_name = "email_attribute_name"];
+
+    string idp_public_cert = 11 [json_name = "idp_public_cert"];
+
+    string issuer_url = 12 [json_name = "issuer_url"];
+
+    string okta_account = 13 [json_name = "okta_account"];
+
+    string onelogin_account = 14 [json_name = "onelogin_account"];
+
+    string redirect_url = 15 [json_name = "redirect_url"];
+
+    bool sign_request = 16 [json_name = "sign_request"];
+
+    string sso_target_url = 17 [json_name = "sso_target_url"];
+
+    bool support_groups = 18 [json_name = "support_groups"];
+
+    string token_url = 19 [json_name = "token_url"];
+  }
 }
 
 //CloudflareAccessPolicy version is 0
@@ -83,15 +167,51 @@ message CloudflareAccessPolicy {
 
   string zone_id = 6 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+  Exclude exclude = 7;
 
-  int32 count = 8;
+  Include include = 8;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+  Require require = 9;
 
-  string provider = 10;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
-  terraform.meta.Lifecycle lifecycle = 11;
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+
+  message Exclude {
+    repeated string email = 1;
+
+    repeated string email_domain = 2 [json_name = "email_domain"];
+
+    bool everyone = 3;
+
+    repeated string ip = 4;
+  }
+
+  message Include {
+    repeated string email = 1;
+
+    repeated string email_domain = 2 [json_name = "email_domain"];
+
+    bool everyone = 3;
+
+    repeated string ip = 4;
+  }
+
+  message Require {
+    repeated string email = 1;
+
+    repeated string email_domain = 2 [json_name = "email_domain"];
+
+    bool everyone = 3;
+
+    repeated string ip = 4;
+  }
 }
 
 //CloudflareAccessRule version is 0
@@ -229,15 +349,23 @@ message CloudflareCustomSsl {
 
   string zone_id = 11 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+  CustomSslPriority custom_ssl_priority = 12 [json_name = "custom_ssl_priority"];
 
-  int32 count = 13;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+  int32 count = 14;
 
-  string provider = 15;
+  terraform.meta.MetaFields.ForEachEntry for_each = 15;
 
-  terraform.meta.Lifecycle lifecycle = 16;
+  string provider = 16;
+
+  terraform.meta.Lifecycle lifecycle = 17;
+
+  message CustomSslPriority {
+    string id = 1;
+
+    int64 priority = 2;
+  }
 }
 
 //CloudflareFilter version is 0
@@ -322,15 +450,31 @@ message CloudflareLoadBalancer {
 
   string zone_id = 13 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+  PopPools pop_pools = 14 [json_name = "pop_pools"];
 
-  int32 count = 15;
+  RegionPools region_pools = 15 [json_name = "region_pools"];
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
 
-  string provider = 17;
+  int32 count = 17;
 
-  terraform.meta.Lifecycle lifecycle = 18;
+  terraform.meta.MetaFields.ForEachEntry for_each = 18;
+
+  string provider = 19;
+
+  terraform.meta.Lifecycle lifecycle = 20;
+
+  message PopPools {
+    repeated string pool_ids = 1 [json_name = "pool_ids"];
+
+    string pop = 2;
+  }
+
+  message RegionPools {
+    repeated string pool_ids = 1 [json_name = "pool_ids"];
+
+    string region = 2;
+  }
 }
 
 //CloudflareLoadBalancerMonitor version is 0
@@ -365,15 +509,23 @@ message CloudflareLoadBalancerMonitor {
 
   string type = 15;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
+  Header header = 16;
 
-  int32 count = 17;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 18;
+  int32 count = 18;
 
-  string provider = 19;
+  terraform.meta.MetaFields.ForEachEntry for_each = 19;
 
-  terraform.meta.Lifecycle lifecycle = 20;
+  string provider = 20;
+
+  terraform.meta.Lifecycle lifecycle = 21;
+
+  message Header {
+    string header = 1;
+
+    repeated string values = 2;
+  }
 }
 
 //CloudflareLoadBalancerPool version is 0
@@ -398,15 +550,27 @@ message CloudflareLoadBalancerPool {
 
   string notification_email = 10 [json_name = "notification_email"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
+  Origins origins = 11;
 
-  int32 count = 12;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+  int32 count = 13;
 
-  string provider = 14;
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
 
-  terraform.meta.Lifecycle lifecycle = 15;
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+
+  message Origins {
+    string address = 1;
+
+    bool enabled = 2;
+
+    string name = 3;
+
+    int64 weight = 4;
+  }
 }
 
 //CloudflareLogpushJob version is 0
@@ -475,15 +639,103 @@ message CloudflarePageRule {
 
   string zone_id = 5 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 6;
+  Actions actions = 6;
 
-  int32 count = 7;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 8;
+  int32 count = 8;
 
-  string provider = 9;
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
 
-  terraform.meta.Lifecycle lifecycle = 10;
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+
+  message Actions {
+    string always_online = 1 [json_name = "always_online"];
+
+    bool always_use_https = 2 [json_name = "always_use_https"];
+
+    string automatic_https_rewrites = 3 [json_name = "automatic_https_rewrites"];
+
+    string browser_cache_ttl = 4 [json_name = "browser_cache_ttl"];
+
+    string browser_check = 5 [json_name = "browser_check"];
+
+    string bypass_cache_on_cookie = 6 [json_name = "bypass_cache_on_cookie"];
+
+    string cache_by_device_type = 7 [json_name = "cache_by_device_type"];
+
+    string cache_deception_armor = 8 [json_name = "cache_deception_armor"];
+
+    string cache_level = 9 [json_name = "cache_level"];
+
+    string cache_on_cookie = 10 [json_name = "cache_on_cookie"];
+
+    bool disable_apps = 11 [json_name = "disable_apps"];
+
+    bool disable_performance = 12 [json_name = "disable_performance"];
+
+    bool disable_railgun = 13 [json_name = "disable_railgun"];
+
+    bool disable_security = 14 [json_name = "disable_security"];
+
+    int64 edge_cache_ttl = 15 [json_name = "edge_cache_ttl"];
+
+    string email_obfuscation = 16 [json_name = "email_obfuscation"];
+
+    string explicit_cache_control = 17 [json_name = "explicit_cache_control"];
+
+    string host_header_override = 18 [json_name = "host_header_override"];
+
+    string ip_geolocation = 19 [json_name = "ip_geolocation"];
+
+    string mirage = 20;
+
+    string opportunistic_encryption = 21 [json_name = "opportunistic_encryption"];
+
+    string origin_error_page_pass_thru = 22 [json_name = "origin_error_page_pass_thru"];
+
+    string polish = 23;
+
+    string resolve_override = 24 [json_name = "resolve_override"];
+
+    string respect_strong_etag = 25 [json_name = "respect_strong_etag"];
+
+    string response_buffering = 26 [json_name = "response_buffering"];
+
+    string rocket_loader = 27 [json_name = "rocket_loader"];
+
+    string security_level = 28 [json_name = "security_level"];
+
+    string server_side_exclude = 29 [json_name = "server_side_exclude"];
+
+    string sort_query_string_for_cache = 30 [json_name = "sort_query_string_for_cache"];
+
+    string ssl = 31;
+
+    string true_client_ip_header = 32 [json_name = "true_client_ip_header"];
+
+    string waf = 33;
+
+    ForwardingUrl forwarding_url = 34 [json_name = "forwarding_url"];
+
+    Minify minify = 35;
+
+    message ForwardingUrl {
+      int64 status_code = 1 [json_name = "status_code"];
+
+      string url = 2;
+    }
+
+    message Minify {
+      string css = 1;
+
+      string html = 2;
+
+      string js = 3;
+    }
+  }
 }
 
 //CloudflareRateLimit version is 0
@@ -502,15 +754,59 @@ message CloudflareRateLimit {
 
   string zone_id = 7 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+  Action action = 8;
 
-  int32 count = 9;
+  Correlate correlate = 9;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+  Match match = 10;
 
-  string provider = 11;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 11;
 
-  terraform.meta.Lifecycle lifecycle = 12;
+  int32 count = 12;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 13;
+
+  string provider = 14;
+
+  terraform.meta.Lifecycle lifecycle = 15;
+
+  message Action {
+    string mode = 1;
+
+    int64 timeout = 2;
+
+    Response response = 3;
+
+    message Response {
+      string body = 1;
+
+      string content_type = 2 [json_name = "content_type"];
+    }
+  }
+
+  message Correlate {
+    string by = 1;
+  }
+
+  message Match {
+    Request request = 1;
+
+    Response response = 2;
+
+    message Request {
+      repeated string methods = 1;
+
+      repeated string schemes = 2;
+
+      string url_pattern = 3 [json_name = "url_pattern"];
+    }
+
+    message Response {
+      bool origin_traffic = 1 [json_name = "origin_traffic"];
+
+      repeated int64 statuses = 2;
+    }
+  }
 }
 
 //CloudflareRecord version is 1
@@ -574,15 +870,29 @@ message CloudflareSpectrumApplication {
 
   string zone_id = 9 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+  Dns dns = 10;
 
-  int32 count = 11;
+  OriginDns origin_dns = 11 [json_name = "origin_dns"];
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
 
-  string provider = 13;
+  int32 count = 13;
 
-  terraform.meta.Lifecycle lifecycle = 14;
+  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+
+  string provider = 15;
+
+  terraform.meta.Lifecycle lifecycle = 16;
+
+  message Dns {
+    string name = 1;
+
+    string type = 2;
+  }
+
+  message OriginDns {
+    string name = 1;
+  }
 }
 
 //CloudflareWafGroup version is 0
@@ -685,15 +995,23 @@ message CloudflareWorkerScript {
 
   string name = 3;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  KvNamespaceBinding kv_namespace_binding = 4 [json_name = "kv_namespace_binding"];
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message KvNamespaceBinding {
+    string name = 1;
+
+    string namespace_id = 2 [json_name = "namespace_id"];
+  }
 }
 
 //CloudflareWorkersKv version is 0
@@ -783,15 +1101,23 @@ message CloudflareZoneLockdown {
 
   string zone_id = 6 [json_name = "zone_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+  Configurations configurations = 7;
 
-  int32 count = 8;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+  int32 count = 9;
 
-  string provider = 10;
+  terraform.meta.MetaFields.ForEachEntry for_each = 10;
 
-  terraform.meta.Lifecycle lifecycle = 11;
+  string provider = 11;
+
+  terraform.meta.Lifecycle lifecycle = 12;
+
+  message Configurations {
+    string target = 1;
+
+    string value = 2;
+  }
 }
 
 //CloudflareZoneSettingsOverride version is 0
@@ -810,15 +1136,17 @@ message CloudflareZoneSettingsOverride {
 
   string zone_type = 7 [json_name = "zone_type"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+  Settings settings = 8;
 
-  int32 count = 9;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+  int32 count = 10;
 
-  string provider = 11;
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
 
-  terraform.meta.Lifecycle lifecycle = 12;
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
 
   message InitialSettings {
     //always_online: string
@@ -995,6 +1323,128 @@ message CloudflareZoneSettingsOverride {
       bool nosniff = 4;
 
       //preload: bool
+      bool preload = 5;
+    }
+  }
+
+  message Settings {
+    string always_online = 1 [json_name = "always_online"];
+
+    string always_use_https = 2 [json_name = "always_use_https"];
+
+    string automatic_https_rewrites = 3 [json_name = "automatic_https_rewrites"];
+
+    string brotli = 4;
+
+    int64 browser_cache_ttl = 5 [json_name = "browser_cache_ttl"];
+
+    string browser_check = 6 [json_name = "browser_check"];
+
+    string cache_level = 7 [json_name = "cache_level"];
+
+    int64 challenge_ttl = 8 [json_name = "challenge_ttl"];
+
+    string cname_flattening = 9 [json_name = "cname_flattening"];
+
+    string development_mode = 10 [json_name = "development_mode"];
+
+    int64 edge_cache_ttl = 11 [json_name = "edge_cache_ttl"];
+
+    string email_obfuscation = 12 [json_name = "email_obfuscation"];
+
+    string h2_prioritization = 13 [json_name = "h2_prioritization"];
+
+    string hotlink_protection = 14 [json_name = "hotlink_protection"];
+
+    string http2 = 15;
+
+    string http3 = 16;
+
+    string image_resizing = 17 [json_name = "image_resizing"];
+
+    string ip_geolocation = 18 [json_name = "ip_geolocation"];
+
+    string ipv6 = 19;
+
+    int64 max_upload = 20 [json_name = "max_upload"];
+
+    string min_tls_version = 21 [json_name = "min_tls_version"];
+
+    string mirage = 22;
+
+    string opportunistic_encryption = 23 [json_name = "opportunistic_encryption"];
+
+    string opportunistic_onion = 24 [json_name = "opportunistic_onion"];
+
+    string origin_error_page_pass_thru = 25 [json_name = "origin_error_page_pass_thru"];
+
+    string polish = 26;
+
+    string prefetch_preload = 27 [json_name = "prefetch_preload"];
+
+    string privacy_pass = 28 [json_name = "privacy_pass"];
+
+    string pseudo_ipv4 = 29 [json_name = "pseudo_ipv4"];
+
+    string response_buffering = 30 [json_name = "response_buffering"];
+
+    string rocket_loader = 31 [json_name = "rocket_loader"];
+
+    string security_level = 32 [json_name = "security_level"];
+
+    string server_side_exclude = 33 [json_name = "server_side_exclude"];
+
+    string sort_query_string_for_cache = 34 [json_name = "sort_query_string_for_cache"];
+
+    string ssl = 35;
+
+    string tls_1_2_only = 36 [json_name = "tls_1_2_only"];
+
+    string tls_1_3 = 37 [json_name = "tls_1_3"];
+
+    string tls_client_auth = 38 [json_name = "tls_client_auth"];
+
+    string true_client_ip_header = 39 [json_name = "true_client_ip_header"];
+
+    string waf = 40;
+
+    string webp = 41;
+
+    string websockets = 42;
+
+    string zero_rtt = 43 [json_name = "zero_rtt"];
+
+    Minify minify = 44;
+
+    MobileRedirect mobile_redirect = 45 [json_name = "mobile_redirect"];
+
+    SecurityHeader security_header = 46 [json_name = "security_header"];
+
+    message Minify {
+      string css = 1;
+
+      string html = 2;
+
+      string js = 3;
+    }
+
+    message MobileRedirect {
+      string mobile_subdomain = 1 [json_name = "mobile_subdomain"];
+
+      string status = 2;
+
+      bool strip_uri = 3 [json_name = "strip_uri"];
+    }
+
+    message SecurityHeader {
+      bool enabled = 1;
+
+      bool include_subdomains = 2 [json_name = "include_subdomains"];
+
+      int64 max_age = 3 [json_name = "max_age"];
+
+      bool nosniff = 4;
+
       bool preload = 5;
     }
   }

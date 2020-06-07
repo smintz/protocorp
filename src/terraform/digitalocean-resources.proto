@@ -110,15 +110,23 @@ message DigitaloceanDatabaseCluster {
 
   string version = 19;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
+  MaintenanceWindow maintenance_window = 20 [json_name = "maintenance_window"];
 
-  int32 count = 21;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 21;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 22;
+  int32 count = 22;
 
-  string provider = 23;
+  terraform.meta.MetaFields.ForEachEntry for_each = 23;
 
-  terraform.meta.Lifecycle lifecycle = 24;
+  string provider = 24;
+
+  terraform.meta.Lifecycle lifecycle = 25;
+
+  message MaintenanceWindow {
+    string day = 1;
+
+    string hour = 2;
+  }
 }
 
 //DigitaloceanDatabaseConnectionPool version is 0
@@ -185,15 +193,27 @@ message DigitaloceanDatabaseFirewall {
 
   string id = 2;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+  Rule rule = 3;
 
-  int32 count = 4;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+  int32 count = 5;
 
-  string provider = 6;
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
 
-  terraform.meta.Lifecycle lifecycle = 7;
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+
+  message Rule {
+    string created_at = 1 [json_name = "created_at"];
+
+    string type = 2;
+
+    string uuid = 3;
+
+    string value = 4;
+  }
 }
 
 //DigitaloceanDatabaseReplica version is 0
@@ -393,15 +413,19 @@ message DigitaloceanFirewall {
 
   repeated string tags = 7;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+  InboundRule inbound_rule = 8 [json_name = "inbound_rule"];
 
-  int32 count = 9;
+  OutboundRule outbound_rule = 9 [json_name = "outbound_rule"];
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
-  string provider = 11;
+  int32 count = 11;
 
-  terraform.meta.Lifecycle lifecycle = 12;
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
 
   message PendingChanges {
     //droplet_id: number
@@ -412,6 +436,34 @@ message DigitaloceanFirewall {
 
     //status: string
     string status = 3;
+  }
+
+  message InboundRule {
+    string port_range = 1 [json_name = "port_range"];
+
+    string protocol = 2;
+
+    repeated string source_addresses = 3 [json_name = "source_addresses"];
+
+    repeated int64 source_droplet_ids = 4 [json_name = "source_droplet_ids"];
+
+    repeated string source_load_balancer_uids = 5 [json_name = "source_load_balancer_uids"];
+
+    repeated string source_tags = 6 [json_name = "source_tags"];
+  }
+
+  message OutboundRule {
+    repeated string destination_addresses = 1 [json_name = "destination_addresses"];
+
+    repeated int64 destination_droplet_ids = 2 [json_name = "destination_droplet_ids"];
+
+    repeated string destination_load_balancer_uids = 3 [json_name = "destination_load_balancer_uids"];
+
+    repeated string destination_tags = 4 [json_name = "destination_tags"];
+
+    string port_range = 5 [json_name = "port_range"];
+
+    string protocol = 6;
   }
 }
 
@@ -486,15 +538,17 @@ message DigitaloceanKubernetesCluster {
 
   string version = 13;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+  NodePool node_pool = 14 [json_name = "node_pool"];
 
-  int32 count = 15;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+  int32 count = 16;
 
-  string provider = 17;
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
 
-  terraform.meta.Lifecycle lifecycle = 18;
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
 
   message KubeConfig {
     //client_certificate: string
@@ -517,6 +571,50 @@ message DigitaloceanKubernetesCluster {
 
     //token: string
     string token = 7;
+  }
+
+  message NodePool {
+    int64 actual_node_count = 1 [json_name = "actual_node_count"];
+
+    bool auto_scale = 2 [json_name = "auto_scale"];
+
+    string id = 3;
+
+    map<string, string> labels = 4;
+
+    int64 max_nodes = 5 [json_name = "max_nodes"];
+
+    int64 min_nodes = 6 [json_name = "min_nodes"];
+
+    string name = 7;
+
+    int64 node_count = 8 [json_name = "node_count"];
+
+    repeated Nodes nodes = 9;
+
+    string size = 10;
+
+    repeated string tags = 11;
+
+    message Nodes {
+      //created_at: string
+      string created_at = 1 [json_name = "created_at"];
+
+      //droplet_id: string
+      string droplet_id = 2 [json_name = "droplet_id"];
+
+      //id: string
+      string id = 3;
+
+      //name: string
+      string name = 4;
+
+      //status: string
+      string status = 5;
+
+      //updated_at: string
+      string updated_at = 6 [json_name = "updated_at"];
+    }
   }
 }
 
@@ -602,15 +700,59 @@ message DigitaloceanLoadbalancer {
   //the uniform resource name for the load balancer
   string urn = 11;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 12;
+  ForwardingRule forwarding_rule = 12 [json_name = "forwarding_rule"];
 
-  int32 count = 13;
+  Healthcheck healthcheck = 13;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 14;
+  StickySessions sticky_sessions = 14 [json_name = "sticky_sessions"];
 
-  string provider = 15;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
-  terraform.meta.Lifecycle lifecycle = 16;
+  int32 count = 16;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 17;
+
+  string provider = 18;
+
+  terraform.meta.Lifecycle lifecycle = 19;
+
+  message ForwardingRule {
+    string certificate_id = 1 [json_name = "certificate_id"];
+
+    int64 entry_port = 2 [json_name = "entry_port"];
+
+    string entry_protocol = 3 [json_name = "entry_protocol"];
+
+    int64 target_port = 4 [json_name = "target_port"];
+
+    string target_protocol = 5 [json_name = "target_protocol"];
+
+    bool tls_passthrough = 6 [json_name = "tls_passthrough"];
+  }
+
+  message Healthcheck {
+    int64 check_interval_seconds = 1 [json_name = "check_interval_seconds"];
+
+    int64 healthy_threshold = 2 [json_name = "healthy_threshold"];
+
+    string path = 3;
+
+    int64 port = 4;
+
+    string protocol = 5;
+
+    int64 response_timeout_seconds = 6 [json_name = "response_timeout_seconds"];
+
+    int64 unhealthy_threshold = 7 [json_name = "unhealthy_threshold"];
+  }
+
+  message StickySessions {
+    string cookie_name = 1 [json_name = "cookie_name"];
+
+    int64 cookie_ttl_seconds = 2 [json_name = "cookie_ttl_seconds"];
+
+    string type = 3;
+  }
 }
 
 //DigitaloceanProject version is 0
@@ -737,15 +879,30 @@ message DigitaloceanSpacesBucket {
   //the uniform resource name for the bucket
   string urn = 7;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+  CorsRule cors_rule = 8 [json_name = "cors_rule"];
 
-  int32 count = 9;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+  int32 count = 10;
 
-  string provider = 11;
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
 
-  terraform.meta.Lifecycle lifecycle = 12;
+  string provider = 12;
+
+  terraform.meta.Lifecycle lifecycle = 13;
+
+  message CorsRule {
+    //A list of headers that will be included in the CORS preflight request's Access-Control-Request-Headers. A header may contain one wildcard (e.g. x-amz-*).
+    repeated string allowed_headers = 1 [json_name = "allowed_headers"];
+
+    //A list of HTTP methods (e.g. GET) which are allowed from the specified origin.
+    repeated string allowed_methods = 2 [json_name = "allowed_methods"];
+
+    //A list of hosts from which requests using the specified methods are allowed. A host may contain one wildcard (e.g. http://*.example.com).
+    repeated string allowed_origins = 3 [json_name = "allowed_origins"];
+
+    int64 max_age_seconds = 4 [json_name = "max_age_seconds"];
+  }
 }
 
 //DigitaloceanSshKey version is 0

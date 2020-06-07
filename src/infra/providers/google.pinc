@@ -1,29 +1,87 @@
 """
 Google Cloud
 """
+load("base.pinc", "BaseClusterInterface")
+load(
+    "/terraform/google-resources.proto",
+    "GoogleComputeRegionInstanceGroupManager",
+    "GoogleComputeInstanceTemplate",
+)
+load("/pc4os/pc4os.pinc", "compile")
+load("../helpers/server_name_metadata.pinc", "ServerNameMetadata")
+load("../helpers/get_cluster_name.pinc", "get_cluster_name")
+load("/terraform/meta.proto", "Lifecycle")
 
 
-def create_gcp_vm(tf, nmd, user_data=""):
-    vm = GoogleComputeInstance(
-        name=nmd.hostname,
-        machine_type="f1-micro",
-        zone=nmd.region + "-a",
-        labels={"role": nmd.role, "cluster": nmd.cluster_name},
-        tags=[nmd.role, nmd.cluster_name],
-        metadata_startup_script=user_data,
-        boot_disk=[
-            GoogleComputeInstance.BootDisk(
-                initialize_params=[
-                    GoogleComputeInstance.BootDisk.InitializeParams(
-                        image="ubuntu-os-cloud/ubuntu-1804-lts"
-                    )
-                ]
-            )
-        ],
-        network_interface=[GoogleComputeInstance.NetworkInterface(network="default")],
-    )
-    if nmd.id > COUNTER:
-        vm.lifecycle = Lifecycle(
-            ignore_changes=["metadata_startup_script"], create_before_destroy=True
+def GoogleCluster(tf, cluster):
+    def create_tier(tier, userdata):
+        nmd = ServerNameMetadata(tf).create(
+            tier.name, 0, cluster.region, get_cluster_name(cluster.cluster_number)
         )
-    return vm
+        tf.google_compute_region_instance_group_manager[
+            tier.name
+        ] = GoogleComputeRegionInstanceGroupManager(
+            name=tier.name,
+            base_instance_name=tier.name,
+            # instance_template=compile(userdata(nmd)),
+            region=cluster.region,
+            # update_strategy="ROLLING_UPDATE",
+            target_pools=[tier.instance_type],
+            target_size=tier.count,
+            version=GoogleComputeRegionInstanceGroupManager.Version(
+                instance_template="${google_compute_instance_template.%s.self_link}"
+                % tier.name
+            ),
+        )
+        tf.google_compute_instance_template[tier.name] = GoogleComputeInstanceTemplate(
+            name_prefix=tier.name,
+            machine_type=tier.instance_type,
+            tags=[tier.name],
+            metadata_startup_script=compile(userdata(nmd)),
+            scheduling=GoogleComputeInstanceTemplate.Scheduling(
+                automatic_restart=True, on_host_maintenance="MIGRATE", preemptible=False
+            ),
+            disk=GoogleComputeInstanceTemplate.Disk(
+                boot=True,
+                auto_delete=True,
+                source_image="ubuntu-os-cloud/ubuntu-1804-lts",
+            ),
+            network_interface=GoogleComputeInstanceTemplate.NetworkInterface(
+                network="global"
+            ),
+            service_account=GoogleComputeInstanceTemplate.ServiceAccount(
+                scopes=[
+                    "https://www.googleapis.com/auth/userinfo.email",
+                    "https://www.googleapis.com/auth/compute.readonly",
+                ]
+            ),
+            lifecycle=Lifecycle(create_before_destroy=True),
+        )
+
+    return BaseClusterInterface(tf, create_tier_func=create_tier)
+
+
+# def create_gcp_vm(tf, nmd, user_data=""):
+#     vm = GoogleComputeInstance(
+#         name=nmd.hostname,
+#         machine_type="f1-micro",
+#         zone=nmd.region + "-a",
+#         labels={"role": nmd.role, "cluster": nmd.cluster_name},
+#         tags=[nmd.role, nmd.cluster_name],
+#         metadata_startup_script=user_data,
+#         boot_disk=[
+#             GoogleComputeInstance.BootDisk(
+#                 initialize_params=[
+#                     GoogleComputeInstance.BootDisk.InitializeParams(
+#                         image="ubuntu-os-cloud/ubuntu-1804-lts"
+#                     )
+#                 ]
+#             )
+#         ],
+#         network_interface=[GoogleComputeInstance.NetworkInterface(network="default")],
+#     )
+#     if nmd.id > COUNTER:
+#         vm.lifecycle = Lifecycle(
+#             ignore_changes=["metadata_startup_script"], create_before_destroy=True
+#         )
+#     return vm

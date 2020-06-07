@@ -366,15 +366,19 @@ message DigitaloceanImages {
 
   repeated Images images = 2;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+  Filter filter = 3;
 
-  int32 count = 4;
+  Sort sort = 4;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  string provider = 6;
+  int32 count = 6;
 
-  terraform.meta.Lifecycle lifecycle = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
 
   message Images {
     //created: string
@@ -418,6 +422,18 @@ message DigitaloceanImages {
 
     //type: string
     string type = 14;
+  }
+
+  message Filter {
+    string key = 1;
+
+    repeated string values = 2;
+  }
+
+  message Sort {
+    string direction = 1;
+
+    string key = 2;
   }
 }
 
@@ -712,15 +728,19 @@ message DigitaloceanProjects {
 
   repeated Projects projects = 2;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+  Filter filter = 3;
 
-  int32 count = 4;
+  Sort sort = 4;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  string provider = 6;
+  int32 count = 6;
 
-  terraform.meta.Lifecycle lifecycle = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
 
   message Projects {
     //created_at: string
@@ -755,6 +775,18 @@ message DigitaloceanProjects {
 
     //updated_at: string
     string updated_at = 11 [json_name = "updated_at"];
+  }
+
+  message Filter {
+    string key = 1;
+
+    repeated string values = 2;
+  }
+
+  message Sort {
+    string direction = 1;
+
+    string key = 2;
   }
 }
 
@@ -834,15 +866,19 @@ message DigitaloceanRegions {
 
   repeated Regions regions = 2;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+  Filter filter = 3;
 
-  int32 count = 4;
+  Sort sort = 4;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  string provider = 6;
+  int32 count = 6;
 
-  terraform.meta.Lifecycle lifecycle = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
 
   message Regions {
     //available: bool
@@ -860,6 +896,18 @@ message DigitaloceanRegions {
     //slug: string
     string slug = 5;
   }
+
+  message Filter {
+    string key = 1;
+
+    repeated string values = 2;
+  }
+
+  message Sort {
+    string direction = 1;
+
+    string key = 2;
+  }
 }
 
 //DigitaloceanSizes version is 0
@@ -868,15 +916,19 @@ message DigitaloceanSizes {
 
   repeated Sizes sizes = 2;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 3;
+  Filter filter = 3;
 
-  int32 count = 4;
+  Sort sort = 4;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  string provider = 6;
+  int32 count = 6;
 
-  terraform.meta.Lifecycle lifecycle = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
 
   message Sizes {
     //available: bool
@@ -905,6 +957,18 @@ message DigitaloceanSizes {
 
     //vcpus: number
     int64 vcpus = 9;
+  }
+
+  message Filter {
+    string key = 1;
+
+    repeated string values = 2;
+  }
+
+  message Sort {
+    string direction = 1;
+
+    string key = 2;
   }
 }
 

@@ -302,15 +302,27 @@ message PacketSpotMarketRequest {
 
   string request_id = 3 [json_name = "request_id"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+  Timeouts timeouts = 4;
 
-  int32 count = 5;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+  int32 count = 6;
 
-  string provider = 7;
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
 
-  terraform.meta.Lifecycle lifecycle = 8;
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+
+  message Timeouts {
+    string create = 1;
+
+    string default = 2;
+
+    string delete = 3;
+
+    string update = 4;
+  }
 }
 
 //PacketVolume version is 0

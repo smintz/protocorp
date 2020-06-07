@@ -3,6 +3,7 @@ provider registry
 """
 load("digitalocean.pinc", "DigitalOceanCluster")
 load("packet.pinc", "PacketCluster")
+load("google.pinc", "GoogleCluster")
 load("../cluster.proto", "Cluster")
 
 
@@ -20,4 +21,6 @@ def ProviderFactory(tf, cluster):
         return DigitalOceanCluster(tf, cluster)
     if str(cluster.provider) == str(Cluster.Providers.PACKET):
         return PacketCluster(tf, cluster)
+    if str(cluster.provider) == str(Cluster.Providers.GOOGLE):
+        return GoogleCluster(tf, cluster)
     fail("error: could not find provider for %s" % str(cluster.provider))
