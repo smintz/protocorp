@@ -70,7 +70,7 @@ def GoogleCluster(tf, cluster):
                 "https://www.googleapis.com/auth/compute.readonly",
             ]
         )
-        if tier == "server":
+        if tier.name == "server":
             svc_account = GoogleComputeInstanceTemplate.ServiceAccount(
                 email="${google_service_account.vault_kms_service_account.email}",
                 scopes=["cloud-platform", "compute-rw", "userinfo-email", "storage-ro"],

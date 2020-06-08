@@ -22,9 +22,12 @@
           "on_host_maintenance": "MIGRATE"
         },
         "service_account": {
+          "email": "${google_service_account.vault_kms_service_account.email}",
           "scopes": [
-            "https://www.googleapis.com/auth/userinfo.email",
-            "https://www.googleapis.com/auth/compute.readonly"
+            "cloud-platform",
+            "compute-rw",
+            "userinfo-email",
+            "storage-ro"
           ]
         },
         "disk": {
