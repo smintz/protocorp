@@ -56,7 +56,11 @@ def GoogleCluster(tf, cluster):
             lifecycle=Lifecycle(create_before_destroy=True),
         )
 
-    return BaseClusterInterface(tf, create_tier_func=create_tier)
+    return BaseClusterInterface(
+        tf,
+        create_tier_func=create_tier,
+        join="provider=gce tag_value=server zone_pattern={}.*".format(cluster.region),
+    )
 
 
 # def create_gcp_vm(tf, nmd, user_data=""):
