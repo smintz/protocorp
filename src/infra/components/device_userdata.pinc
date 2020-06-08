@@ -31,7 +31,9 @@ advertise {{
         )
 
         if nmd.role == "server":
-            vault = Vault(nmd, ca=ca, version=cluster.versions.vault_version)
+            vault = Vault(
+                nmd, ca=ca, version=cluster.versions.vault_version, cluster=cluster
+            )
         else:
             vault = String("")
 
