@@ -49,6 +49,13 @@
           "name": "server",
           "region": "europe-west4",
           "target_size": 3,
+          "update_policy": {
+            "max_surge_percent": 33,
+            "max_unavailable_percent": 33,
+            "min_ready_sec": 30,
+            "minimal_action": "REPLACE",
+            "type": "PROACTIVE"
+          },
           "version": {
             "instance_template": "${google_compute_instance_template.server.self_link}"
           }

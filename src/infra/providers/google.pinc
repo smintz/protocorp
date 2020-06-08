@@ -59,6 +59,13 @@ def GoogleCluster(tf, cluster):
             region=cluster.region,
             target_pools=[],
             target_size=tier.count,
+            update_policy=GoogleComputeRegionInstanceGroupManager.UpdatePolicy(
+                max_surge_percent=33,
+                max_unavailable_percent=33,
+                min_ready_sec=30,
+                minimal_action="REPLACE",
+                type="PROACTIVE",
+            ),
             version=GoogleComputeRegionInstanceGroupManager.Version(
                 instance_template="${google_compute_instance_template.%s.self_link}"
                 % tier.name
