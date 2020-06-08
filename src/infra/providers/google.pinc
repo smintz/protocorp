@@ -61,7 +61,6 @@ def GoogleCluster(tf, cluster):
             target_size=tier.count,
             update_policy=GoogleComputeRegionInstanceGroupManager.UpdatePolicy(
                 max_surge_percent=33 if tier.count >= 10 else 0,
-                max_unavailable_fixed=int(tier.count / 3) if tier.count < 10 else 0,
                 max_unavailable_percent=33 if tier.count >= 10 else 0,
                 min_ready_sec=30,
                 minimal_action="REPLACE",
