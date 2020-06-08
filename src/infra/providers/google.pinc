@@ -18,6 +18,15 @@ load("/terraform/meta.proto", "Lifecycle")
 
 
 def GoogleCluster(tf, cluster):
+    """
+    GoogleCluster provisions a cluster on GCP
+
+    Args:
+        tf: An instance of Terraform.Resource
+        cluster: An instance of Cluster
+    Returns:
+        ClusterProviderInterface
+    """
     key_ring_name = "vault-" + cluster.region + get_cluster_name(cluster.cluster_number)
     tf.google_service_account["vault_kms_service_account"] = GoogleServiceAccount(
         account_id="vault-gcpkms", display_name="Vault KMS for auto-unseal"
@@ -64,14 +73,7 @@ def GoogleCluster(tf, cluster):
         if tier == "server":
             svc_account = GoogleComputeInstanceTemplate.ServiceAccount(
                 email="${google_service_account.vault_kms_service_account.email}",
-                scopes=[
-                    "cloud-platform",
-                    "compute-rw",
-                    "userinfo-email",
-                    "storage-ro",
-                    "https://www.googleapis.com/auth/userinfo.email",
-                    "https://www.googleapis.com/auth/compute.readonly",
-                ],
+                scopes=["cloud-platform", "compute-rw", "userinfo-email", "storage-ro"],
             )
 
         tf.google_compute_instance_template[tier.name] = GoogleComputeInstanceTemplate(
@@ -100,28 +102,3 @@ def GoogleCluster(tf, cluster):
         join="provider=gce tag_value=server zone_pattern={}.*".format(cluster.region),
     )
 
-
-# def create_gcp_vm(tf, nmd, user_data=""):
-#     vm = GoogleComputeInstance(
-#         name=nmd.hostname,
-#         machine_type="f1-micro",
-#         zone=nmd.region + "-a",
-#         labels={"role": nmd.role, "cluster": nmd.cluster_name},
-#         tags=[nmd.role, nmd.cluster_name],
-#         metadata_startup_script=user_data,
-#         boot_disk=[
-#             GoogleComputeInstance.BootDisk(
-#                 initialize_params=[
-#                     GoogleComputeInstance.BootDisk.InitializeParams(
-#                         image="ubuntu-os-cloud/ubuntu-1804-lts"
-#                     )
-#                 ]
-#             )
-#         ],
-#         network_interface=[GoogleComputeInstance.NetworkInterface(network="default")],
-#     )
-#     if nmd.id > COUNTER:
-#         vm.lifecycle = Lifecycle(
-#             ignore_changes=["metadata_startup_script"], create_before_destroy=True
-#         )
-#     return vm

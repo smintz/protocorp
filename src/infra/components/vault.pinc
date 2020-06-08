@@ -222,6 +222,7 @@ service_registration "consul" {
 """
     vault_gcp_unseal = """\
 seal "gcpckms" {{
+  project     = "protoconf"
   region      = "global"
   key_ring    = "{0}"
   crypto_key  = "{0}"
