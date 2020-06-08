@@ -47,8 +47,8 @@
         "region": "europe-west4",
         "target_size": 3,
         "update_policy": {
-          "max_surge_percent": 33,
-          "max_unavailable_percent": 33,
+          "max_surge_fixed": 1,
+          "max_unavailable_fixed": 1,
           "min_ready_sec": 30,
           "minimal_action": "REPLACE",
           "type": "PROACTIVE"
