@@ -4,12 +4,13 @@ Google Cloud
 load("base.pinc", "BaseClusterInterface")
 load(
     "/terraform/google-resources.proto",
-    "GoogleComputeRegionInstanceGroupManager",
+    "GoogleComputeInstance",
     "GoogleComputeInstanceTemplate",
-    "GoogleServiceAccount",
-    "GoogleKmsKeyRing",
+    "GoogleComputeRegionInstanceGroupManager",
     "GoogleKmsCryptoKey",
+    "GoogleKmsKeyRing",
     "GoogleKmsKeyRingIamBinding",
+    "GoogleServiceAccount",
 )
 load("/pc4os/pc4os.pinc", "compile")
 load("../helpers/server_name_metadata.pinc", "ServerNameMetadata")
@@ -47,6 +48,32 @@ def GoogleCluster(tf, cluster):
         ],
     )
 
+    def get_instance_size(nmd):
+        tiers = [t for t in cluster.tiers if t.name == nmd.role]
+        size = tiers[0].instance_type
+        if not size:
+            return "n1-standard-1"
+        return size
+
+    def create_instance(nmd, userdata):
+        instance = GoogleComputeInstance(
+            name=nmd.hostname,
+            machine_type=get_instance_size(nmd),
+            tags=[nmd.role],
+            metadata_startup_script=compile(userdata(nmd, "{{GetPrivateIP}}")),
+            scheduling=GoogleComputeInstance.Scheduling(
+                automatic_restart=True, on_host_maintenance="MIGRATE", preemptible=False
+            ),
+            disk=GoogleComputeInstance.Disk(
+                boot=True,
+                auto_delete=True,
+                source_image="ubuntu-os-cloud/ubuntu-1804-lts",
+            ),
+            network_interface=GoogleComputeInstance.NetworkInterface(network="default"),
+            lifecycle=Lifecycle(create_before_destroy=True),
+        )
+        tf.google_compute_instance[nmd.tfid] = instance
+
     def create_tier(tier, userdata):
         nmd = ServerNameMetadata(tf).create(
             tier.name, 0, cluster.region, get_cluster_name(cluster.cluster_number)
@@ -60,7 +87,13 @@ def GoogleCluster(tf, cluster):
             target_pools=[],
             target_size=tier.count,
             update_policy=GoogleComputeRegionInstanceGroupManager.UpdatePolicy(
+                max_surge_fixed=int(tier.count // 3)
+                if tier.count < 10 and tier.count >= 3 * 3
+                else 0,
                 max_surge_percent=33 if tier.count >= 10 else 0,
+                max_unavailable_fixed=int(tier.count // 3)
+                if tier.count < 10 and tier.count >= 3 * 3
+                else 0,
                 max_unavailable_percent=33 if tier.count >= 10 else 0,
                 min_ready_sec=30,
                 minimal_action="REPLACE",
@@ -85,7 +118,7 @@ def GoogleCluster(tf, cluster):
 
         tf.google_compute_instance_template[tier.name] = GoogleComputeInstanceTemplate(
             name_prefix=tier.name,
-            machine_type=tier.instance_type,
+            machine_type=get_instance_size(nmd),
             tags=[tier.name],
             metadata_startup_script=compile(userdata(nmd, "{{GetPrivateIP}}")),
             scheduling=GoogleComputeInstanceTemplate.Scheduling(
