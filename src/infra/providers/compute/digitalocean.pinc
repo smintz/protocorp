@@ -1,24 +1,24 @@
 """
-packet
+DigitalOcean
 """
-load("base.pinc", "BaseClusterInterface")
+load("../base.pinc", "BaseClusterInterface")
 load("/terraform/meta.proto", "Lifecycle")
-load("/terraform/packet-resources.proto", "PacketDevice")
-load("../helpers/server_name_metadata.pinc", "ServerNameMetadata")
-load("../helpers/get_cluster_name.pinc", "get_cluster_name")
+load("/terraform/digitalocean-resources.proto", "DigitaloceanDroplet")
+load("../../helpers/server_name_metadata.pinc", "ServerNameMetadata")
+load("../../helpers/get_cluster_name.pinc", "get_cluster_name")
 load(
-    "../consts.pinc",
+    "../../consts.pinc",
     "COUNTER",
     "CLOUDFLARE_INTERNAL_DOMAIN_ID",
     "CLOUDFLARE_EXTERNAL_DOMAIN_ID",
 )
-load("cloudflare_dns.pinc", "CloudflareDNS")
+load("../dns/cloudflare_dns.pinc", "CloudflareDNS")
 load("/pc4os/pc4os.pinc", "compile")
 
 
-def PacketCluster(tf, cluster):
+def DigitalOceanCluster(tf, cluster):
     """
-    PacketCluster is an instance of helpers to create a cluster on the packet cloud provider
+    DigitalOceanCluster is an instance of helpers to create a cluster on the DigitalOcean cloud provider
 
     Args:
         tf: an instance of Terraform.Resource
@@ -37,28 +37,34 @@ def PacketCluster(tf, cluster):
         tiers = [t for t in cluster.tiers if t.name == nmd.role]
         size = tiers[0].instance_type
         if not size:
-            return "c1.small.x86"
+            return "s-2vcpu-4gb"
         return size
 
-    def create_instance(nmd, user_data=None):
+    def create_droplet(nmd, user_data=None):
         userdata = ""
         if user_data:
             userdata = compile(user_data(nmd))
-        device = PacketDevice(
-            hostname=nmd.hostname,
-            operating_system="ubuntu_18_04",
-            facilities=[nmd.region],
-            plan=get_instance_size(nmd),
+
+        droplet = DigitaloceanDroplet(
+            name=nmd.hostname,
+            image="ubuntu-18-04-x64",
+            region=nmd.region,
+            # size="s-1vcpu-1gb",
+            size=get_instance_size(nmd),
+            ssh_keys=[
+                "${digitalocean_ssh_key.%s.id}" % keyname
+                for keyname in tf.digitalocean_ssh_key.keys()
+            ],
             tags=[nmd.role, nmd.cluster_name],
+            private_networking=True,
             user_data=userdata,
-            project_id="${var.packet_project_id}",
-            billing_cycle="hourly",
         )
         if nmd.id > COUNTER:
-            device.lifecycle = Lifecycle(
+            droplet.lifecycle = Lifecycle(
                 ignore_changes=["user_data"], create_before_destroy=True
             )
-        tf.packet_device[nmd.tfid] = device
+        tf.digitalocean_droplet[nmd.tfid] = droplet
+        return droplet
 
     def create_tier(tier, userdata):
         instances_nmd = [
@@ -80,33 +86,33 @@ def PacketCluster(tf, cluster):
                     cluster_dns.CreateEntry(
                         nmd.tfid + "-" + svc,
                         svc + ".service",
-                        "${packet_device.%s.access_public_ipv4}" % nmd.tfid,
+                        "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
                         ttl=1,
                     )
                 global_dns.CreateEntry(
                     nmd.tfid + "-wan",
                     "wan",
-                    "${packet_device.%s.access_public_ipv4}" % nmd.tfid,
+                    "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
                 )
 
         for nmd in instances_nmd:
             cluster_dns.CreateEntry(
                 nmd.tfid,
                 nmd.hostname + ".node",
-                "${packet_device.%s.access_public_ipv4}" % nmd.tfid,
+                "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
             )
             cluster_dns.CreateEntry(
                 nmd.tfid + "-star",
                 "*.service",
-                "${packet_device.%s.access_public_ipv4}" % nmd.tfid,
+                "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
             )
-            create_instance(nmd, userdata)
+            create_droplet(nmd, userdata)
 
     return BaseClusterInterface(
         tf,
-        create_instance_func=create_instance,
+        create_instance_func=create_droplet,
         create_tier_func=create_tier,
-        join="provider=packet auth_token=${{var.packet_auth_token}} project={} facility={} tag=server".format(
-            "${var.packet_project_id}", cluster.region
+        join="provider=digitalocean api_token=${{var.digitalocean_token}} region={} tag_name=server".format(
+            cluster.region
         ),
     )

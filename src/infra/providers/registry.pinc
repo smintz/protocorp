@@ -1,9 +1,9 @@
 """
 provider registry
 """
-load("digitalocean.pinc", "DigitalOceanCluster")
-load("packet.pinc", "PacketCluster")
-load("google.pinc", "GoogleCluster")
+load("compute/digitalocean.pinc", "DigitalOceanCluster")
+load("compute/packet.pinc", "PacketCluster")
+load("compute/google.pinc", "GoogleCluster")
 load("../cluster.proto", "Cluster")
 
 

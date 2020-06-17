@@ -1,7 +1,7 @@
 """
 Google Cloud
 """
-load("base.pinc", "BaseClusterInterface")
+load("../base.pinc", "BaseClusterInterface")
 load(
     "/terraform/google-resources.proto",
     "GoogleComputeInstance",
@@ -13,8 +13,8 @@ load(
     "GoogleServiceAccount",
 )
 load("/pc4os/pc4os.pinc", "compile")
-load("../helpers/server_name_metadata.pinc", "ServerNameMetadata")
-load("../helpers/get_cluster_name.pinc", "get_cluster_name")
+load("../../helpers/server_name_metadata.pinc", "ServerNameMetadata")
+load("../../helpers/get_cluster_name.pinc", "get_cluster_name")
 load("/terraform/meta.proto", "Lifecycle")
 
 

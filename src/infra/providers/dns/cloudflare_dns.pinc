@@ -1,7 +1,7 @@
 """
 cloudflare dns provider
 """
-load("base.pinc", "BaseDNSInterface")
+load("../base.pinc", "BaseDNSInterface")
 load("/terraform/cloudflare-resources.proto", "CloudflareRecord")
 
 
