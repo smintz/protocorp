@@ -8,9 +8,6 @@
       "Name": "fabio",
       "Type": "system",
       "Priority": 75,
-      "Datacenters": [
-        "europe-west4c01"
-      ],
       "TaskGroups": [
         {
           "Name": "http",
@@ -42,9 +39,6 @@
               "Services": [
                 {
                   "Name": "fabio-http",
-                  "Tags": [
-                    "httpprefix-fabio-http.service.europe-west4c01.pco.nf/"
-                  ],
                   "PortLabel": "ui",
                   "Checks": [
                     {
@@ -126,9 +120,6 @@
               "Services": [
                 {
                   "Name": "fabio-grpc",
-                  "Tags": [
-                    "httpprefix-fabio-grpc.service.europe-west4c01.pco.nf/"
-                  ],
                   "PortLabel": "ui",
                   "Checks": [
                     {

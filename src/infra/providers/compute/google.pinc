@@ -63,7 +63,6 @@ def GoogleCluster(tf, cluster):
             zone=nmd.region + "-" + ["a", "b", "c"][nmd.id % 3],
             machine_type=get_instance_size(nmd),
             tags=[nmd.role],
-
             metadata_startup_script=compile(userdata(nmd, "{{GetPrivateIP}}")),
             scheduling=GoogleComputeInstance.Scheduling(
                 automatic_restart=True, on_host_maintenance="MIGRATE", preemptible=False
