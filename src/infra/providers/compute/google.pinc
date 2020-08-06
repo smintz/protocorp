@@ -7,10 +7,10 @@ load(
     "GoogleComputeInstance",
     "GoogleComputeInstanceTemplate",
     "GoogleComputeRegionInstanceGroupManager",
-    "GoogleKmsCryptoKey",
-    "GoogleKmsKeyRing",
-    "GoogleKmsKeyRingIamBinding",
-    "GoogleServiceAccount",
+    # "GoogleKmsCryptoKey",
+    # "GoogleKmsKeyRing",
+    # "GoogleKmsKeyRingIamBinding",
+    # "GoogleServiceAccount",
 )
 load( "../../consts.pinc", "COUNTER")
 load("/pc4os/pc4os.pinc", "compile")
@@ -88,7 +88,7 @@ def GoogleCluster(tf, cluster):
             create_tier_local(tier, userdata)
 
     def fixed(count):
-        return 1 if count < 10 else 0
+        return 3 if count < 10 else 0
     
     def pct(count):
         return 0 if count < 10 else 33
@@ -97,8 +97,6 @@ def GoogleCluster(tf, cluster):
         nmd = ServerNameMetadata(tf).create(
             tier.name, 0, cluster.region, get_cluster_name(cluster.cluster_number)
         )
-
-
 
         tf.google_compute_region_instance_group_manager[
             tier.name
@@ -111,7 +109,7 @@ def GoogleCluster(tf, cluster):
             update_policy=GoogleComputeRegionInstanceGroupManager.UpdatePolicy(
                 # max_surge_fixed=fixed(tier.count),
                 max_surge_percent=pct(tier.count),
-                max_unavailable_fixed=fixed(tier.count),
+                # max_unavailable_fixed=fixed(tier.count),
                 max_unavailable_percent=pct(tier.count),
                 min_ready_sec=30,
                 minimal_action="REPLACE",
