@@ -86,12 +86,19 @@ def GoogleCluster(tf, cluster):
                 create_instance(nmd, userdata)
         else:
             create_tier_local(tier, userdata)
+
+    def fixed(count):
+        return 1 if count < 10 else 0
     
+    def pct(count):
+        return 0 if count < 10 else 33
 
     def create_tier_local(tier, userdata):
         nmd = ServerNameMetadata(tf).create(
             tier.name, 0, cluster.region, get_cluster_name(cluster.cluster_number)
         )
+
+
 
         tf.google_compute_region_instance_group_manager[
             tier.name
@@ -102,14 +109,10 @@ def GoogleCluster(tf, cluster):
             target_pools=[],
             target_size=tier.count,
             update_policy=GoogleComputeRegionInstanceGroupManager.UpdatePolicy(
-                max_surge_fixed=int(tier.count // 3)
-                if tier.count < 10 and tier.count >= 3 * 3
-                else 0,
-                max_surge_percent=33 if tier.count >= 10 else 0,
-                max_unavailable_fixed=int(tier.count // 3)
-                if tier.count < 10 and tier.count >= 3 * 3
-                else 0,
-                max_unavailable_percent=33 if tier.count >= 10 else 0,
+                max_surge_fixed=fixed(tier.count),
+                max_surge_percent=pct(tier.count),
+                max_unavailable_fixed=fixed(tier.count),
+                max_unavailable_percent=pct(tier.count),
                 min_ready_sec=30,
                 minimal_action="REPLACE",
                 type="PROACTIVE",
