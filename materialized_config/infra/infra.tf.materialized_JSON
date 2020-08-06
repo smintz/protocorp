@@ -147,10 +147,18 @@
         }
       },
       "random_pet": {
-        "general-0-europe-west4-c01": {},
-        "server-0-europe-west4-c01": {},
-        "server-1-europe-west4-c01": {},
-        "server-2-europe-west4-c01": {}
+        "general-0-europe-west4-c01": {
+          "prefix": "general"
+        },
+        "server-0-europe-west4-c01": {
+          "prefix": "server"
+        },
+        "server-1-europe-west4-c01": {
+          "prefix": "server"
+        },
+        "server-2-europe-west4-c01": {
+          "prefix": "server"
+        }
       },
       "tls_cert_request": {
         "consul-encrypt": {

@@ -9,7 +9,7 @@ load("../consts.pinc", "CONSUL_DOMAIN")
 def ServerNameMetadata(tf):
     def create(role, id, region, cluster):
         tfid = "-".join([role, str(id), region, cluster])
-        tf.random_pet[tfid] = RandomPet()
+        tf.random_pet[tfid] = RandomPet(prefix=role)
         hostname = "${random_pet.%s.id}" % tfid
         dc = region + cluster
         fqdn = "{}.node.{}.{}".format(hostname, dc, CONSUL_DOMAIN)
