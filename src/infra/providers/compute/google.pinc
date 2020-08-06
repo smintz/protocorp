@@ -109,7 +109,7 @@ def GoogleCluster(tf, cluster):
             target_pools=[],
             target_size=tier.count,
             update_policy=GoogleComputeRegionInstanceGroupManager.UpdatePolicy(
-                max_surge_fixed=fixed(tier.count),
+                # max_surge_fixed=fixed(tier.count),
                 max_surge_percent=pct(tier.count),
                 max_unavailable_fixed=fixed(tier.count),
                 max_unavailable_percent=pct(tier.count),
