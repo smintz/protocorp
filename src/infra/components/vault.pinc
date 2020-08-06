@@ -247,8 +247,8 @@ seal "gcpckms" {{
         vault_config = vault_config + vault_tls_config
         if v(version) >= v("1.4.1"):
             vault_config += vault_service_registration
-        if cluster and str(cluster.provider) == str(Cluster.Providers.GOOGLE):
-            vault_config += vault_gcp_unseal
+        # if cluster and str(cluster.provider) == str(Cluster.Providers.GOOGLE):
+        #     vault_config += vault_gcp_unseal
 
         setup.extend(
             [
