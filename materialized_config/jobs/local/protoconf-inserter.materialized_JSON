@@ -73,6 +73,9 @@
               "Services": [
                 {
                   "Name": "webhooks",
+                  "Tags": [
+                    "httpprefix-webhooks.service.europe-west4c01.pco.nf/"
+                  ],
                   "PortLabel": "webhooks",
                   "Checks": [
                     {
