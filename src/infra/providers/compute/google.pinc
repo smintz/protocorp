@@ -29,25 +29,25 @@ def GoogleCluster(tf, cluster):
     Returns:
         ClusterProviderInterface
     """
-    key_ring_name = "vault-" + cluster.region + get_cluster_name(cluster.cluster_number)
-    tf.google_service_account["vault_kms_service_account"] = GoogleServiceAccount(
-        account_id="vault-gcpkms", display_name="Vault KMS for auto-unseal"
-    )
-    tf.google_kms_key_ring[key_ring_name] = GoogleKmsKeyRing(
-        name=key_ring_name, location="global"
-    )
-    tf.google_kms_crypto_key[key_ring_name] = GoogleKmsCryptoKey(
-        name=key_ring_name,
-        key_ring="${google_kms_key_ring.%s.self_link}" % key_ring_name,
-        rotation_period="100000s",
-    )
-    tf.google_kms_key_ring_iam_binding[key_ring_name] = GoogleKmsKeyRingIamBinding(
-        key_ring_id="${google_kms_key_ring.%s.id}" % key_ring_name,
-        role="roles/owner",
-        members=[
-            "serviceAccount:${google_service_account.vault_kms_service_account.email}"
-        ],
-    )
+    # key_ring_name = "vault-" + cluster.region + get_cluster_name(cluster.cluster_number)
+    # tf.google_service_account["vault_kms_service_account"] = GoogleServiceAccount(
+    #     account_id="vault-gcpkms", display_name="Vault KMS for auto-unseal"
+    # )
+    # tf.google_kms_key_ring[key_ring_name] = GoogleKmsKeyRing(
+    #     name=key_ring_name, location="global"
+    # )
+    # tf.google_kms_crypto_key[key_ring_name] = GoogleKmsCryptoKey(
+    #     name=key_ring_name,
+    #     key_ring="${google_kms_key_ring.%s.self_link}" % key_ring_name,
+    #     rotation_period="100000s",
+    # )
+    # tf.google_kms_key_ring_iam_binding[key_ring_name] = GoogleKmsKeyRingIamBinding(
+    #     key_ring_id="${google_kms_key_ring.%s.id}" % key_ring_name,
+    #     role="roles/owner",
+    #     members=[
+    #         "serviceAccount:${google_service_account.vault_kms_service_account.email}"
+    #     ],
+    # )
 
     def get_instance_size(nmd):
         tiers = [t for t in cluster.tiers if t.name == nmd.role]

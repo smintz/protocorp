@@ -83,34 +83,6 @@
           }
         }
       },
-      "google_kms_crypto_key": {
-        "vault-europe-west4c01": {
-          "key_ring": "${google_kms_key_ring.vault-europe-west4c01.self_link}",
-          "name": "vault-europe-west4c01",
-          "rotation_period": "100000s"
-        }
-      },
-      "google_kms_key_ring": {
-        "vault-europe-west4c01": {
-          "location": "global",
-          "name": "vault-europe-west4c01"
-        }
-      },
-      "google_kms_key_ring_iam_binding": {
-        "vault-europe-west4c01": {
-          "key_ring_id": "${google_kms_key_ring.vault-europe-west4c01.id}",
-          "members": [
-            "serviceAccount:${google_service_account.vault_kms_service_account.email}"
-          ],
-          "role": "roles/owner"
-        }
-      },
-      "google_service_account": {
-        "vault_kms_service_account": {
-          "account_id": "vault-gcpkms",
-          "display_name": "Vault KMS for auto-unseal"
-        }
-      },
       "random_id": {
         "consul_encrypt": {
           "byte_length": 16
