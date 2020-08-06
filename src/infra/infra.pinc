@@ -89,19 +89,19 @@ CLUSTERS = [
     #         nomad_version="0.11.1", consul_version="1.7.3", vault_version="1.4.1"
     #     ),
     # )
-    Cluster(
-        provider=Cluster.Providers.GOOGLE,
-        region="europe-west4",
-        cluster_number=1,
-        ready=True,
-        tiers=[
-            Tier(name="server", count=3, instance_type="n1-standard-1"),
-            # Tier(name="general", count=1, instance_type="c3.small.x86"),
-        ],
-        versions=DefaultVersions(
-            nomad_version="0.11.1", consul_version="1.7.3", vault_version="1.4.1"
-        ),
-    )
+    # Cluster(
+    #     provider=Cluster.Providers.GOOGLE,
+    #     region="europe-west4",
+    #     cluster_number=1,
+    #     ready=True,
+    #     tiers=[
+    #         Tier(name="server", count=3, instance_type="n1-standard-1"),
+    #         # Tier(name="general", count=1, instance_type="c3.small.x86"),
+    #     ],
+    #     versions=DefaultVersions(
+    #         nomad_version="0.11.1", consul_version="1.7.3", vault_version="1.4.1"
+    #     ),
+    # )
 ]
 
 join_wan = [ProviderFactory(tf.resource, c).Join for c in CLUSTERS]
