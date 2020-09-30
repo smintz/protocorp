@@ -11,4 +11,3 @@ def populate(reg):
     reg.register_job(PROTOCONF_SERVER_JOB.job)
     reg.register_job(FABIO_JOB.job)
     reg.register_job(INSERTER.job)
-

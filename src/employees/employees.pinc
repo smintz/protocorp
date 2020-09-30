@@ -1,12 +1,15 @@
 # vim: ft=python
 load("employee.proto", "Employee")
 
-smintz=Employee(
+smintz = Employee(
     id=10001,
     unix_name="smintz",
     first_name="Shahar",
     last_name="Mintz",
-    ssh_keys=["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk4ST4XhbBmZ3AKej/HWBBvodS/GBs3T6w6pP3WS2463QSOPnY42SVeH4AJZP3nVvvljeH7cYdFShastYOA6pkCxIVw7HSkE2xPLc+09n8bzaU3L8kHmjtfyZEQRxKmYTJA9dv0o3QYiJZgPWvUfGoLSYG4fqgD7KBZZrO+kygoAVby23mK3uPY67Z3mwQ8tB2JL3Fj00zbe+dTagHzXbudlUk28DvWBN59F8xLRZ0zI263MkkS0/1DuzmLlwj9XDfKaSxfSBOLBlAVF3CJ63dHLZ72JQ3ca5utFHkyK+WWymZskN+g3ahlvzb/cN/mMbSusVjvYg7+SDvPiN0waFP smintz@onavo"]
+    ssh_keys=[
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk4ST4XhbBmZ3AKej/HWBBvodS/GBs3T6w6pP3WS2463QSOPnY42SVeH4AJZP3nVvvljeH7cYdFShastYOA6pkCxIVw7HSkE2xPLc+09n8bzaU3L8kHmjtfyZEQRxKmYTJA9dv0o3QYiJZgPWvUfGoLSYG4fqgD7KBZZrO+kygoAVby23mK3uPY67Z3mwQ8tB2JL3Fj00zbe+dTagHzXbudlUk28DvWBN59F8xLRZ0zI263MkkS0/1DuzmLlwj9XDfKaSxfSBOLBlAVF3CJ63dHLZ72JQ3ca5utFHkyK+WWymZskN+g3ahlvzb/cN/mMbSusVjvYg7+SDvPiN0waFP smintz@onavo",
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCZ0VAcgyS7Rg8sPMc1BcxrbDcL0vZT5eXE89rpCfE+e0p1CIPF77deVhycgOLROR5WpX+pUmOEb4fSgaSpPPLzF330G/6TTo9Mf0pIeqvcXrrh/3/9HnHBfELDTO1mVSkzk3dxDXyz71UrFEISk2d8L58NsU4GdLENrKB8+GaUq7XvXrDCtESDK4A5PlrHQwbMJNEEr/ynEEgWJ78FbbRQvHAheBUyUjdMD0jo+kszCYjDMUyyvABoECjDiWuDvlgztLndb2E9oDtPF/lRX8GWsXU8KCKCGwSLOcaVKOIOtInuX5vz/S2DOq5cReblk04GZsHd13AP/2ti5fsVB/pi+r9mz4WTcIxzoaQ7uLweDX2acdBXwoEx3JZ0TuytdAYeFeklIX82TaSb6wgTMP9d6npHRbXUrkPLGJgwAPpYlL2UL+WjDV1hhFdMGCgsiOpkiIRWYvTioMAGqNmUGPNZpvVc+d2L0B3Ey3lSF9eMtjSTkjfVmsvcsBiB1NlsUHs= smintz@wix.com",
+    ],
 )
 
-EMPLOYEES=[smintz]
+EMPLOYEES = [smintz]

@@ -110,5 +110,8 @@ for c in CLUSTERS:
     cluster = ProviderFactory(tf.resource, c)
     for tier in c.tiers:
         cluster.CreateTier(
-            tier, DeviceUserDataFactory(ca, c, join=[cluster.Join], join_wan=join_wan)
+            tier,
+            DeviceUserDataFactory(
+                ca, c, join=[cluster.Join], join_wan=join_wan
+            ),
         )

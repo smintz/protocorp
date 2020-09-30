@@ -10,11 +10,15 @@ load(
 )
 load("/terraform/tls-subject.proto", "TlsSubject")
 
-PRIVATE_KEY = TlsPrivateKey(algorithm="ECDSA", ecdsa_curve="P384", rsa_bits=4096)
+PRIVATE_KEY = TlsPrivateKey(
+    algorithm="ECDSA", ecdsa_curve="P384", rsa_bits=4096
+)
 
 
 def CA(tf, dns_names=["protoconf.com"]):
-    tf.tls_private_key["root"] = TlsPrivateKey(algorithm="ECDSA", ecdsa_curve="P384")
+    tf.tls_private_key["root"] = TlsPrivateKey(
+        algorithm="ECDSA", ecdsa_curve="P384"
+    )
     tf.tls_self_signed_cert["root"] = TlsSelfSignedCert(
         allowed_uses=[
             "cert_signing",
@@ -49,7 +53,8 @@ def CA(tf, dns_names=["protoconf.com"]):
                 subject=TlsSubject(common_name=common_name),
             )
             tf.tls_locally_signed_cert[name] = TlsLocallySignedCert(
-                cert_request_pem="${tls_cert_request.%s.cert_request_pem}" % name,
+                cert_request_pem="${tls_cert_request.%s.cert_request_pem}"
+                % name,
                 ca_key_algorithm="${tls_private_key.root.algorithm}",
                 ca_private_key_pem="${tls_private_key.root.private_key_pem}",
                 ca_cert_pem="${tls_self_signed_cert.root.cert_pem}",
@@ -70,4 +75,3 @@ def CA(tf, dns_names=["protoconf.com"]):
     return struct(
         server_cert=server_cert, root_pem="tls_self_signed_cert.root.cert_pem"
     )
-

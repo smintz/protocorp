@@ -63,7 +63,10 @@ def PacketCluster(tf, cluster):
     def create_tier(tier, userdata):
         instances_nmd = [
             ServerNameMetadata(tf).create(
-                tier.name, i, cluster.region, get_cluster_name(cluster.cluster_number)
+                tier.name,
+                i,
+                cluster.region,
+                get_cluster_name(cluster.cluster_number),
             )
             for i in range(COUNTER + 0, COUNTER + tier.count)
         ]

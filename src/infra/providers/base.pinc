@@ -44,7 +44,9 @@ def default_create_entry_func(id, record, content, type="A", ttl=120):
     pass
 
 
-def BaseDNSInterface(tf, setup_func=None, create_entry_func=default_create_entry_func):
+def BaseDNSInterface(
+    tf, setup_func=None, create_entry_func=default_create_entry_func
+):
     def run_setup():
         setup_func()
 
@@ -52,4 +54,3 @@ def BaseDNSInterface(tf, setup_func=None, create_entry_func=default_create_entry
         create_entry_func(id, record, content, type, ttl)
 
     return struct(Setup=run_setup, CreateEntry=run_create_entry)
-

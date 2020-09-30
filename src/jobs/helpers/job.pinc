@@ -7,7 +7,9 @@ load("/infra/helpers/get_cluster_name.pinc", "get_cluster_name")
 load("task.pinc", "NewTask")
 
 datacenters = [
-    "%s%s" % (c.region, get_cluster_name(c.cluster_number)) for c in CLUSTERS if c.ready
+    "%s%s" % (c.region, get_cluster_name(c.cluster_number))
+    for c in CLUSTERS
+    if c.ready
 ]
 
 
@@ -28,7 +30,12 @@ def NewJob(name, dc=datacenters, region="global", type="service", priority=75):
         A struct of functions
     """
     local_job = Job(
-        Name=name, ID=name, Datacenters=dc, Region=region, Type=type, Priority=priority
+        Name=name,
+        ID=name,
+        Datacenters=dc,
+        Region=region,
+        Type=type,
+        Priority=priority,
     )
 
     def addTaskGroup(taskGroupName=DEFAULT_GROUP_NAME):
@@ -64,4 +71,3 @@ def NewJob(name, dc=datacenters, region="global", type="service", priority=75):
         AddTask=addTask,
         NewTask=newTask,
     )
-

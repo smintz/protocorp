@@ -83,7 +83,9 @@ def NewTask(name, image=None):
 
     def setPortMapping(label, port):
         if not hasattr(local_task.Config, "port_map"):
-            local_task.Config["port_map"] = Value(list_value=ListValue(values=[]))
+            local_task.Config["port_map"] = Value(
+                list_value=ListValue(values=[])
+            )
         local_task.Config["port_map"].list_value.values.append(
             Value(struct_value=Struct(fields={label: value(port)}))
         )

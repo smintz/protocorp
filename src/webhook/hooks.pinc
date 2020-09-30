@@ -15,7 +15,11 @@ def GithubHook(hook_id, command, secret, ref="refs/heads/master"):
         PassEnvironmentToCommand=[
             Argument(envname="BEFORE_COMMIT", source="payload", name="before"),
             Argument(envname="AFTER_COMMIT", source="payload", name="after"),
-            Argument(envname="GIT_REPO", source="payload", name="repository.clone_url"),
+            Argument(
+                envname="GIT_REPO",
+                source="payload",
+                name="repository.clone_url",
+            ),
         ],
         PassArgumentsToCommand=[
             Argument(source="payload", name="head_commit.id"),
@@ -29,7 +33,9 @@ def GithubHook(hook_id, command, secret, ref="refs/heads/master"):
                     match=MatchRule(
                         type="payload-hash-sha1",
                         secret=secret,
-                        parameter=Argument(source="header", name="X-Hub-Signature"),
+                        parameter=Argument(
+                            source="header", name="X-Hub-Signature"
+                        ),
                     )
                 ),
                 Rules(
@@ -42,4 +48,3 @@ def GithubHook(hook_id, command, secret, ref="refs/heads/master"):
             ]
         ),
     )
-

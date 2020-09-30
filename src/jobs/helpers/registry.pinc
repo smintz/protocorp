@@ -41,7 +41,9 @@ def JobRegistry(
             proto_file="nomad/v0.11.1/api.proto",
             actions=[
                 Action(
-                    http=ActionTypeHttp(uri=cluster_address + "/v1/jobs", method="POST")
+                    http=ActionTypeHttp(
+                        uri=cluster_address + "/v1/jobs", method="POST"
+                    )
                 ),
                 Action(
                     file=ActionTypeWriteToFile(
@@ -61,10 +63,10 @@ def JobRegistry(
     executor_job = NewJob(executor_name)
     executor_job.AddTask(
         ProtoconfExecTask(
-            "/".join([config_root, "apply"]), {"nomad/v0.11.1/api.proto": NOMAD_PROTO}
+            "/".join([config_root, "apply"]),
+            {"nomad/v0.11.1/api.proto": NOMAD_PROTO},
         )
     )
     register_job(executor_job.job)
 
     return struct(output=output, register_job=register_job, NewJob=newJob)
-

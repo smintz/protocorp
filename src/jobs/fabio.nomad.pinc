@@ -36,7 +36,9 @@ def fabio_task(port, proto):
             )
         ],
         tags=[
-            "httpprefix-fabio-{}.service.{}.{}/".format(proto, dc, CONSUL_DOMAIN)
+            "httpprefix-fabio-{}.service.{}.{}/".format(
+                proto, dc, CONSUL_DOMAIN
+            )
             for dc in FABIO_JOB.job.Datacenters
         ],
         label="ui",

@@ -7,7 +7,11 @@ load("command.pinc", "Command")
 
 def Function(id, components):
     def render():
-        return [String("""function {}(){{""".format(id)), components, String("}")]
+        return [
+            String("""function {}(){{""".format(id)),
+            components,
+            String("}"),
+        ]
 
     return Component("Function", render)
 

@@ -183,7 +183,9 @@ def VaultInstall(version):
     return Component("VaultInstall", render)
 
 
-def Vault(nmd, version=VAULT_VERSION, ca=None, cluster=None, advertize_addr=None):
+def Vault(
+    nmd, version=VAULT_VERSION, ca=None, cluster=None, advertize_addr=None
+):
     """
     Vault defines and install the hashicorp's Vault server
 
@@ -252,7 +254,9 @@ seal "gcpckms" {{
 
         setup.extend(
             [
-                Directory("/etc/vault.d/tls", mode="700", owner="vault", group="vault"),
+                Directory(
+                    "/etc/vault.d/tls", mode="700", owner="vault", group="vault"
+                ),
                 File(
                     "/etc/vault.d/tls/key.pem",
                     "${%s}" % pki.private_key,
@@ -283,7 +287,10 @@ seal "gcpckms" {{
             ),
             File("/etc/vault.d/vault.hcl", content=vault_config),
             Directory(
-                "/etc/vault.d/scripts", owner="vault", group="vault", mode="0755"
+                "/etc/vault.d/scripts",
+                owner="vault",
+                group="vault",
+                mode="0755",
             ),
             File(
                 "/etc/vault.d/scripts/post_start.sh",

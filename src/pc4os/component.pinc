@@ -40,4 +40,3 @@ def String(content):
         return content
 
     return Component("String", render, is_string_renderer=True)
-

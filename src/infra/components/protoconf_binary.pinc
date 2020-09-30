@@ -22,4 +22,3 @@ def ProtoconfBinary(version=PROTOCONF_VERSION):
         ]
 
     return Component("ProtoconfBinary", render)
-

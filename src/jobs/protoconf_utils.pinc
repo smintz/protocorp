@@ -14,7 +14,11 @@ task.SetConfig("network_mode", "host")
 task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
 task.SetConfig(
     "args",
-    ["-store=consul", "-store-address=https://169.254.1.1:8501", "-prefix=production/"],
+    [
+        "-store=consul",
+        "-store-address=https://169.254.1.1:8501",
+        "-prefix=production/",
+    ],
 )
 task.SetCPU(1000)
 task.SetMemory(1024)
@@ -80,10 +84,14 @@ mutate.task.Templates = [
         Perms="0755",
     ),
     Template(
-        EmbeddedTmpl=PROTOCONF_SERVER_PRE_SH, DestPath="local/pre.sh", Perms="0755"
+        EmbeddedTmpl=PROTOCONF_SERVER_PRE_SH,
+        DestPath="local/pre.sh",
+        Perms="0755",
     ),
     Template(
-        EmbeddedTmpl=PROTOCONF_SERVER_POST_SH, DestPath="local/post.sh", Perms="0755"
+        EmbeddedTmpl=PROTOCONF_SERVER_POST_SH,
+        DestPath="local/post.sh",
+        Perms="0755",
     ),
 ]
 mutate.SetImage("smintz/webhook:latest")
@@ -95,6 +103,10 @@ mutate.AddVaultPolicies("github-policy")
 mutate.NewService(
     "mutate",
     to=4301,
-    checks=[ServiceCheck(Type="tcp", Interval=10 * 1000000000, Timeout=2 * 1000000000)],
+    checks=[
+        ServiceCheck(
+            Type="tcp", Interval=10 * 1000000000, Timeout=2 * 1000000000
+        )
+    ],
     tags=["grpcprefix-/v1.ProtoconfMutationService/MutateConfig"],
 )

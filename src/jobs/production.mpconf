@@ -8,7 +8,9 @@ load("/infra/consts.pinc", "CONSUL_DOMAIN")
 reg = JobRegistry(
     "production-jobs-executor",
     "jobs/production",
-    cluster_address="https://nomad.service.ams1c01.{}:4646".format(CONSUL_DOMAIN),
+    cluster_address="https://nomad.service.ams1c01.{}:4646".format(
+        CONSUL_DOMAIN
+    ),
 )
 populate(reg)
 

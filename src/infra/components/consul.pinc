@@ -14,7 +14,9 @@ CONSUL_VERSION = "1.7.1"
 def ConsulInstall(version):
     downloaded_file = "/tmp/consul-{}.zip".format(version)
     install = [
-        Command("useradd --system --home /etc/consul.d --shell /bin/false consul"),
+        Command(
+            "useradd --system --home /etc/consul.d --shell /bin/false consul"
+        ),
         Directory("/etc/consul.d"),
         Directory("/opt/consul", owner="consul", group="consul"),
         File(
@@ -73,7 +75,10 @@ FallbackDNS=8.8.4.4
 def DummyInterface(domain="consul"):
     def render():
         return [
-            File("/etc/systemd/network/consul0.netdev", content=CONSUL_NETDEV_CONFIG),
+            File(
+                "/etc/systemd/network/consul0.netdev",
+                content=CONSUL_NETDEV_CONFIG,
+            ),
             File(
                 "/etc/systemd/network/consul0.network",
                 content=CONSUL_NETWORK_CONFIG.format(domain),
@@ -248,7 +253,11 @@ recursors = ["127.0.0.53"]
                 User="consul",
                 Group="consul",
                 ExecStart=" ".join(
-                    ["/usr/local/bin/consul", "agent", "-config-dir=/etc/consul.d/"]
+                    [
+                        "/usr/local/bin/consul",
+                        "agent",
+                        "-config-dir=/etc/consul.d/",
+                    ]
                 ),
                 ExecReload="/usr/local/bin/consul reload",
                 KillMode="process",

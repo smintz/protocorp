@@ -12,7 +12,7 @@ load(
     # "GoogleKmsKeyRingIamBinding",
     # "GoogleServiceAccount",
 )
-load( "../../consts.pinc", "COUNTER")
+load("../../consts.pinc", "COUNTER")
 load("/pc4os/pc4os.pinc", "compile")
 load("../../helpers/server_name_metadata.pinc", "ServerNameMetadata")
 load("../../helpers/get_cluster_name.pinc", "get_cluster_name")
@@ -65,15 +65,19 @@ def GoogleCluster(tf, cluster):
             tags=[nmd.role],
             metadata_startup_script=compile(userdata(nmd, "{{GetPrivateIP}}")),
             scheduling=GoogleComputeInstance.Scheduling(
-                automatic_restart=True, on_host_maintenance="MIGRATE", preemptible=False
+                automatic_restart=True,
+                on_host_maintenance="MIGRATE",
+                preemptible=False,
             ),
             boot_disk=GoogleComputeInstance.BootDisk(
                 auto_delete=True,
                 initialize_params=GoogleComputeInstance.BootDisk.InitializeParams(
                     image="ubuntu-os-cloud/ubuntu-1804-lts",
-                )
+                ),
             ),
-            network_interface=GoogleComputeInstance.NetworkInterface(network="default"),
+            network_interface=GoogleComputeInstance.NetworkInterface(
+                network="default"
+            ),
             lifecycle=Lifecycle(create_before_destroy=True),
         )
         tf.google_compute_instance[nmd.tfid] = instance
@@ -81,20 +85,28 @@ def GoogleCluster(tf, cluster):
     def create_tier(tier, userdata):
         if tier.name == "server":
             for i in range(COUNTER + 0, COUNTER + tier.count):
-                nmd = ServerNameMetadata(tf).create(tier.name, i, cluster.region, get_cluster_name(cluster.cluster_number))
+                nmd = ServerNameMetadata(tf).create(
+                    tier.name,
+                    i,
+                    cluster.region,
+                    get_cluster_name(cluster.cluster_number),
+                )
                 create_instance(nmd, userdata)
         else:
             create_tier_local(tier, userdata)
 
     def fixed(count):
         return 3 if count < 10 else 0
-    
+
     def pct(count):
         return 0 if count < 10 else 33
 
     def create_tier_local(tier, userdata):
         nmd = ServerNameMetadata(tf).create(
-            tier.name, 0, cluster.region, get_cluster_name(cluster.cluster_number)
+            tier.name,
+            0,
+            cluster.region,
+            get_cluster_name(cluster.cluster_number),
         )
 
         tf.google_compute_region_instance_group_manager[
@@ -128,16 +140,25 @@ def GoogleCluster(tf, cluster):
         if tier.name == "server":
             svc_account = GoogleComputeInstanceTemplate.ServiceAccount(
                 email="${google_service_account.vault_kms_service_account.email}",
-                scopes=["cloud-platform", "compute-rw", "userinfo-email", "storage-ro"],
+                scopes=[
+                    "cloud-platform",
+                    "compute-rw",
+                    "userinfo-email",
+                    "storage-ro",
+                ],
             )
 
-        tf.google_compute_instance_template[tier.name] = GoogleComputeInstanceTemplate(
+        tf.google_compute_instance_template[
+            tier.name
+        ] = GoogleComputeInstanceTemplate(
             name_prefix=tier.name,
             machine_type=get_instance_size(nmd),
             tags=[tier.name],
             metadata_startup_script=compile(userdata(nmd, "{{GetPrivateIP}}")),
             scheduling=GoogleComputeInstanceTemplate.Scheduling(
-                automatic_restart=True, on_host_maintenance="MIGRATE", preemptible=False
+                automatic_restart=True,
+                on_host_maintenance="MIGRATE",
+                preemptible=False,
             ),
             disk=GoogleComputeInstanceTemplate.Disk(
                 boot=True,
@@ -154,6 +175,7 @@ def GoogleCluster(tf, cluster):
     return BaseClusterInterface(
         tf,
         create_tier_func=create_tier,
-        join="provider=gce tag_value=server zone_pattern={}.*".format(cluster.region),
+        join="provider=gce tag_value=server zone_pattern={}.*".format(
+            cluster.region
+        ),
     )
-

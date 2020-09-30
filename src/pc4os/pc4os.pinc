@@ -16,5 +16,9 @@ def compile(component):
         return component.render()
     else:
         return "\n".join(
-            [compile(c) for c in component.render() if not component.is_rendered]
+            [
+                compile(c)
+                for c in component.render()
+                if not component.is_rendered
+            ]
         )

@@ -9,7 +9,10 @@ load("/pc4os/ubuntu.pinc", "PackagesRegistryUpdate", "Install")
 
 def Base():
     def render():
-        return [PackagesRegistryUpdate(), Install("unzip", "curl", "jq", "dnsutils")]
+        return [
+            PackagesRegistryUpdate(),
+            Install("unzip", "curl", "jq", "dnsutils"),
+        ]
 
     return Component("Base", render)
 

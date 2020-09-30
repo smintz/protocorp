@@ -17,7 +17,7 @@ def AWSCluster(tf, cluster):
     Returns:
         a Cluster struct
     """
-    VPC_NAME = cluster.
+    VPC_NAME = cluster.name
 
     CIDR = "10.100.0.0/16"
 
@@ -66,6 +66,5 @@ def AWSCluster(tf, cluster):
 
 
 def AWSNetwork(name, vpc_cidr, azs, region, private_subnets, public_subnets):
-
-    def vpc(name, cidrs)
-    pass
+    def vpc(name, cidrs):
+        pass

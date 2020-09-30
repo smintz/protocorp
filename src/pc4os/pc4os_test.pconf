@@ -32,4 +32,3 @@ def MyComponent():
 def main():
     m = MyComponent()
     return ExampleFile(content=compile(m))
-

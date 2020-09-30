@@ -45,7 +45,12 @@ def serialize_msg(msg):
 
 
 def Systemd(
-    service_name, service=None, unit=None, install=install(), start=True, enable=True
+    service_name,
+    service=None,
+    unit=None,
+    install=install(),
+    start=True,
+    enable=True,
 ):
     """
     Systemd installs and manages a systemd config

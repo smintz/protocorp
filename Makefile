@@ -1,4 +1,5 @@
 compile:
+	black src -l 80 --include="\.m?p(inc|conf|roto-validator)"
 	protoconf compile .
 	cd tf/infra && $(MAKE) compile
 
