@@ -63,7 +63,11 @@ CLUSTERS = [
         region="ams3",
         cluster_number=1,
         tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
-        versions=DefaultVersions(),
+        versions=DefaultVersions(
+            nomad_version="0.11.1",
+            consul_version="1.7.3",
+            vault_version="1.4.1",
+        ),
         ready=True,
     ),
     # Cluster(
