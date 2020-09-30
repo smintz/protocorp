@@ -58,13 +58,14 @@ def DefaultVersions(
 
 
 CLUSTERS = [
-    # Cluster(
-    #     provider=Cluster.Providers.DIGITALOCEAN,
-    #     region="ams3",
-    #     cluster_number=1,
-    #     tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
-    #     ready=True,
-    # ),
+    Cluster(
+        provider=Cluster.Providers.DIGITALOCEAN,
+        region="ams3",
+        cluster_number=1,
+        tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
+        versions=DefaultVersions(),
+        ready=True,
+    ),
     # Cluster(
     #     provider=Cluster.Providers.PACKET,
     #     region="ams1",

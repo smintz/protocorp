@@ -27,9 +27,9 @@ cd /tmp/repo
 git fetch -a
 git reset --hard $AFTER_COMMIT
 if [ "${CHANGES_ONLY}" == "true" ]; then
-  CONFIGS_TO_INSERT=$(git diff --name-only --diff-filter=ACMR ${AFTER_COMMIT:-HEAD} ${BEFORE_COMMIT:-HEAD~1} | sed -n 's/^materialized_config\///p')
+  CONFIGS_TO_INSERT=$(git diff --name-only --diff-filter=ACMR ${AFTER_COMMIT:-HEAD} ${BEFORE_COMMIT:-HEAD~1} | sed -n 's/^materialized_config\\///p')
 else
-  CONFIGS_TO_INSERT=$(find . -name *.materialized_JSON | sed -n 's/^.\/materialized_config\///p')
+  CONFIGS_TO_INSERT=$(find . -name *.materialized_JSON | sed -n 's/^.\\/materialized_config\\///p')
 fi
 if [ -z "$CONFIGS_TO_INSERT" ]; then
     exit 0

@@ -42,13 +42,16 @@
               "Services": [
                 {
                   "Name": "fabio-http",
+                  "Tags": [
+                    "httpprefix-fabio-http.service.ams3c01.pco.nf/"
+                  ],
                   "PortLabel": "ui",
                   "Checks": [
                     {
                       "Type": "http",
                       "Path": "/health",
-                      "Interval": 10000000000,
-                      "Timeout": 2000000000,
+                      "Interval": "10000000000",
+                      "Timeout": "2000000000",
                       "CheckRestart": {
                         "Limit": 5
                       }
@@ -123,13 +126,16 @@
               "Services": [
                 {
                   "Name": "fabio-grpc",
+                  "Tags": [
+                    "httpprefix-fabio-grpc.service.ams3c01.pco.nf/"
+                  ],
                   "PortLabel": "ui",
                   "Checks": [
                     {
                       "Type": "http",
                       "Path": "/health",
-                      "Interval": 10000000000,
-                      "Timeout": 2000000000,
+                      "Interval": "10000000000",
+                      "Timeout": "2000000000",
                       "CheckRestart": {
                         "Limit": 5
                       }
