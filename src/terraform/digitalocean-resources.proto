@@ -413,9 +413,9 @@ message DigitaloceanFirewall {
 
   repeated string tags = 7;
 
-  InboundRule inbound_rule = 8 [json_name = "inbound_rule"];
+  OutboundRule outbound_rule = 8 [json_name = "outbound_rule"];
 
-  OutboundRule outbound_rule = 9 [json_name = "outbound_rule"];
+  InboundRule inbound_rule = 9 [json_name = "inbound_rule"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
@@ -438,20 +438,6 @@ message DigitaloceanFirewall {
     string status = 3;
   }
 
-  message InboundRule {
-    string port_range = 1 [json_name = "port_range"];
-
-    string protocol = 2;
-
-    repeated string source_addresses = 3 [json_name = "source_addresses"];
-
-    repeated int64 source_droplet_ids = 4 [json_name = "source_droplet_ids"];
-
-    repeated string source_load_balancer_uids = 5 [json_name = "source_load_balancer_uids"];
-
-    repeated string source_tags = 6 [json_name = "source_tags"];
-  }
-
   message OutboundRule {
     repeated string destination_addresses = 1 [json_name = "destination_addresses"];
 
@@ -464,6 +450,20 @@ message DigitaloceanFirewall {
     string port_range = 5 [json_name = "port_range"];
 
     string protocol = 6;
+  }
+
+  message InboundRule {
+    string port_range = 1 [json_name = "port_range"];
+
+    string protocol = 2;
+
+    repeated string source_addresses = 3 [json_name = "source_addresses"];
+
+    repeated int64 source_droplet_ids = 4 [json_name = "source_droplet_ids"];
+
+    repeated string source_load_balancer_uids = 5 [json_name = "source_load_balancer_uids"];
+
+    repeated string source_tags = 6 [json_name = "source_tags"];
   }
 }
 

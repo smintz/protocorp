@@ -4,8 +4,6 @@ package terraform.tls.resources;
 
 import "terraform/meta.proto";
 
-import "terraform/tls-subject.proto";
-
 //TlsCertRequest version is 0
 message TlsCertRequest {
   string cert_request_pem = 1 [json_name = "cert_request_pem"];
@@ -27,17 +25,37 @@ message TlsCertRequest {
   //List of URIs to use as subjects of the certificate
   repeated string uris = 7;
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
+  Subject subject = 8;
 
-  int32 count = 9;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 10;
+  int32 count = 10;
 
-  string provider = 11;
+  terraform.meta.MetaFields.ForEachEntry for_each = 11;
 
-  terraform.meta.Lifecycle lifecycle = 12;
+  string provider = 12;
 
-  terraform.tls.subject.TlsSubject  subject = 13;
+  terraform.meta.Lifecycle lifecycle = 13;
+
+  message Subject {
+    string common_name = 1 [json_name = "common_name"];
+
+    string country = 2;
+
+    string locality = 3;
+
+    string organization = 4;
+
+    string organizational_unit = 5 [json_name = "organizational_unit"];
+
+    string postal_code = 6 [json_name = "postal_code"];
+
+    string province = 7;
+
+    string serial_number = 8 [json_name = "serial_number"];
+
+    repeated string street_address = 9 [json_name = "street_address"];
+  }
 }
 
 //TlsLocallySignedCert version is 0
@@ -88,7 +106,6 @@ message TlsLocallySignedCert {
   string provider = 18;
 
   terraform.meta.Lifecycle lifecycle = 19;
-  terraform.tls.subject.TlsSubject subject = 20;
 }
 
 //TlsPrivateKey version is 0
@@ -165,14 +182,35 @@ message TlsSelfSignedCert {
 
   string validity_start_time = 15 [json_name = "validity_start_time"];
 
-  terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
+  Subject subject = 16;
 
-  int32 count = 17;
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
 
-  terraform.meta.MetaFields.ForEachEntry for_each = 18;
+  int32 count = 18;
 
-  string provider = 19;
+  terraform.meta.MetaFields.ForEachEntry for_each = 19;
 
-  terraform.meta.Lifecycle lifecycle = 20;
-  terraform.tls.subject.TlsSubject subject = 21;
+  string provider = 20;
+
+  terraform.meta.Lifecycle lifecycle = 21;
+
+  message Subject {
+    string common_name = 1 [json_name = "common_name"];
+
+    string country = 2;
+
+    string locality = 3;
+
+    string organization = 4;
+
+    string organizational_unit = 5 [json_name = "organizational_unit"];
+
+    string postal_code = 6 [json_name = "postal_code"];
+
+    string province = 7;
+
+    string serial_number = 8 [json_name = "serial_number"];
+
+    repeated string street_address = 9 [json_name = "street_address"];
+  }
 }

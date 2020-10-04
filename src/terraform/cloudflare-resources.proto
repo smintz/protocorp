@@ -167,11 +167,11 @@ message CloudflareAccessPolicy {
 
   string zone_id = 6 [json_name = "zone_id"];
 
-  Exclude exclude = 7;
+  Include include = 7;
 
-  Include include = 8;
+  Require require = 8;
 
-  Require require = 9;
+  Exclude exclude = 9;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
@@ -182,16 +182,6 @@ message CloudflareAccessPolicy {
   string provider = 13;
 
   terraform.meta.Lifecycle lifecycle = 14;
-
-  message Exclude {
-    repeated string email = 1;
-
-    repeated string email_domain = 2 [json_name = "email_domain"];
-
-    bool everyone = 3;
-
-    repeated string ip = 4;
-  }
 
   message Include {
     repeated string email = 1;
@@ -204,6 +194,16 @@ message CloudflareAccessPolicy {
   }
 
   message Require {
+    repeated string email = 1;
+
+    repeated string email_domain = 2 [json_name = "email_domain"];
+
+    bool everyone = 3;
+
+    repeated string ip = 4;
+  }
+
+  message Exclude {
     repeated string email = 1;
 
     repeated string email_domain = 2 [json_name = "email_domain"];

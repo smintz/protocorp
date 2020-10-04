@@ -4,7 +4,7 @@ variable "cloudflare_api_key" {}
 variable "gcp_creds" {}
 variable "packet_auth_token" {}
 variable "packet_project_id" {}
-
+variable "github_secret_url" {}
 
 
 provider "digitalocean" {
@@ -26,3 +26,4 @@ provider "packet" {
   auth_token = var.packet_auth_token
 }
 provider "aws" {}
+provider "vault" {}

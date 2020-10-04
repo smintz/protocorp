@@ -33,7 +33,7 @@ def CA(tf, dns_names=["protoconf.com"]):
         validity_period_hours=24 * 365 * 10,
         early_renewal_hours=24 * 365 * 5,
         dns_names=dns_names,
-        subject=TlsSubject(
+        subject=TlsSelfSignedCert.Subject(
             common_name=dns_names[0],
             organization="protoconf",
             organizational_unit="protocorp",
@@ -50,7 +50,7 @@ def CA(tf, dns_names=["protoconf.com"]):
                 private_key_pem="${tls_private_key.%s.private_key_pem}" % name,
                 dns_names=dns_names,
                 ip_addresses=ip_addresses,
-                subject=TlsSubject(common_name=common_name),
+                subject=TlsCertRequest.Subject(common_name=common_name),
             )
             tf.tls_locally_signed_cert[name] = TlsLocallySignedCert(
                 cert_request_pem="${tls_cert_request.%s.cert_request_pem}"

@@ -6,7 +6,6 @@ load("/pc4os/file.pinc", "File", "Directory")
 load("/pc4os/command.pinc", "Command")
 load("/pc4os/systemd.pinc", "Systemd")
 load("/pc4os/systemd.proto", "Service")
-load("../cluster.proto", "Cluster")
 load("../helpers/get_cluster_name.pinc", "get_cluster_name")
 
 VAULT_VERSION = "1.3.2"
@@ -81,6 +80,12 @@ main() {
   export VAULT_TOKEN=$(consul kv get vault_init | openssl aes-256-cbc -d -a -kfile /etc/vault.d/tls/consul_encrypt.key | jq -r '.root_token')
   vault policy write admin /etc/vault.d/scripts/admin.hcl
   vault policy write github-policy /etc/vault.d/scripts/github-policy.hcl
+  vault auth enable cert
+  vault write auth/cert/certs/terraform \
+    display_name=terraform \
+    policies=admin \
+    certificate=@/etc/vault.d/tls/terraform.crt \
+    ttl=3600
 }
 
 main
@@ -251,6 +256,7 @@ seal "gcpckms" {{
             vault_config += vault_service_registration
         # if cluster and str(cluster.provider) == str(Cluster.Providers.GOOGLE):
         #     vault_config += vault_gcp_unseal
+        vault_writer = ca.server_cert("vault-terraform")
 
         setup.extend(
             [
@@ -267,6 +273,18 @@ seal "gcpckms" {{
                 File(
                     "/etc/vault.d/tls/cert.pem",
                     "${%s}" % pki.certificate,
+                    owner="vault",
+                    group="vault",
+                ),
+                File(
+                    "/etc/vault.d/tls/terraform.crt",
+                    "${%s}" % vault_writer.certificate,
+                    owner="vault",
+                    group="vault",
+                ),
+                File(
+                    "/etc/vault.d/tls/terraform.key",
+                    "${%s}" % vault_writer.private_key,
                     owner="vault",
                     group="vault",
                 ),

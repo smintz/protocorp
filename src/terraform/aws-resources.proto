@@ -324,45 +324,13 @@ message AwsAlbListener {
 
     string type = 3;
 
-    Redirect redirect = 4;
+    AuthenticateOidc authenticate_oidc = 4 [json_name = "authenticate_oidc"];
 
-    AuthenticateCognito authenticate_cognito = 5 [json_name = "authenticate_cognito"];
+    FixedResponse fixed_response = 5 [json_name = "fixed_response"];
 
-    AuthenticateOidc authenticate_oidc = 6 [json_name = "authenticate_oidc"];
+    Redirect redirect = 6;
 
-    FixedResponse fixed_response = 7 [json_name = "fixed_response"];
-
-    message Redirect {
-      string host = 1;
-
-      string path = 2;
-
-      string port = 3;
-
-      string protocol = 4;
-
-      string query = 5;
-
-      string status_code = 6 [json_name = "status_code"];
-    }
-
-    message AuthenticateCognito {
-      map<string, string> authentication_request_extra_params = 1;
-
-      string on_unauthenticated_request = 2 [json_name = "on_unauthenticated_request"];
-
-      string scope = 3;
-
-      string session_cookie_name = 4 [json_name = "session_cookie_name"];
-
-      int64 session_timeout = 5 [json_name = "session_timeout"];
-
-      string user_pool_arn = 6 [json_name = "user_pool_arn"];
-
-      string user_pool_client_id = 7 [json_name = "user_pool_client_id"];
-
-      string user_pool_domain = 8 [json_name = "user_pool_domain"];
-    }
+    AuthenticateCognito authenticate_cognito = 7 [json_name = "authenticate_cognito"];
 
     message AuthenticateOidc {
       map<string, string> authentication_request_extra_params = 1;
@@ -394,6 +362,38 @@ message AwsAlbListener {
       string message_body = 2 [json_name = "message_body"];
 
       string status_code = 3 [json_name = "status_code"];
+    }
+
+    message Redirect {
+      string host = 1;
+
+      string path = 2;
+
+      string port = 3;
+
+      string protocol = 4;
+
+      string query = 5;
+
+      string status_code = 6 [json_name = "status_code"];
+    }
+
+    message AuthenticateCognito {
+      map<string, string> authentication_request_extra_params = 1;
+
+      string on_unauthenticated_request = 2 [json_name = "on_unauthenticated_request"];
+
+      string scope = 3;
+
+      string session_cookie_name = 4 [json_name = "session_cookie_name"];
+
+      int64 session_timeout = 5 [json_name = "session_timeout"];
+
+      string user_pool_arn = 6 [json_name = "user_pool_arn"];
+
+      string user_pool_client_id = 7 [json_name = "user_pool_client_id"];
+
+      string user_pool_domain = 8 [json_name = "user_pool_domain"];
     }
   }
 
@@ -452,27 +452,13 @@ message AwsAlbListenerRule {
 
     string type = 3;
 
-    Redirect redirect = 4;
+    AuthenticateCognito authenticate_cognito = 4 [json_name = "authenticate_cognito"];
 
-    AuthenticateCognito authenticate_cognito = 5 [json_name = "authenticate_cognito"];
+    AuthenticateOidc authenticate_oidc = 5 [json_name = "authenticate_oidc"];
 
-    AuthenticateOidc authenticate_oidc = 6 [json_name = "authenticate_oidc"];
+    FixedResponse fixed_response = 6 [json_name = "fixed_response"];
 
-    FixedResponse fixed_response = 7 [json_name = "fixed_response"];
-
-    message Redirect {
-      string host = 1;
-
-      string path = 2;
-
-      string port = 3;
-
-      string protocol = 4;
-
-      string query = 5;
-
-      string status_code = 6 [json_name = "status_code"];
-    }
+    Redirect redirect = 7;
 
     message AuthenticateCognito {
       map<string, string> authentication_request_extra_params = 1;
@@ -523,6 +509,20 @@ message AwsAlbListenerRule {
 
       string status_code = 3 [json_name = "status_code"];
     }
+
+    message Redirect {
+      string host = 1;
+
+      string path = 2;
+
+      string port = 3;
+
+      string protocol = 4;
+
+      string query = 5;
+
+      string status_code = 6 [json_name = "status_code"];
+    }
   }
 
   message Condition {
@@ -530,17 +530,27 @@ message AwsAlbListenerRule {
 
     repeated string values = 2;
 
-    HttpRequestMethod http_request_method = 3 [json_name = "http_request_method"];
+    HostHeader host_header = 3 [json_name = "host_header"];
 
-    PathPattern path_pattern = 4 [json_name = "path_pattern"];
+    HttpHeader http_header = 4 [json_name = "http_header"];
 
-    QueryString query_string = 5 [json_name = "query_string"];
+    HttpRequestMethod http_request_method = 5 [json_name = "http_request_method"];
 
-    SourceIp source_ip = 6 [json_name = "source_ip"];
+    PathPattern path_pattern = 6 [json_name = "path_pattern"];
 
-    HostHeader host_header = 7 [json_name = "host_header"];
+    QueryString query_string = 7 [json_name = "query_string"];
 
-    HttpHeader http_header = 8 [json_name = "http_header"];
+    SourceIp source_ip = 8 [json_name = "source_ip"];
+
+    message HostHeader {
+      repeated string values = 1;
+    }
+
+    message HttpHeader {
+      string http_header_name = 1 [json_name = "http_header_name"];
+
+      repeated string values = 2;
+    }
 
     message HttpRequestMethod {
       repeated string values = 1;
@@ -558,16 +568,6 @@ message AwsAlbListenerRule {
 
     message SourceIp {
       repeated string values = 1;
-    }
-
-    message HostHeader {
-      repeated string values = 1;
-    }
-
-    message HttpHeader {
-      string http_header_name = 1 [json_name = "http_header_name"];
-
-      repeated string values = 2;
     }
   }
 }
@@ -700,11 +700,11 @@ message AwsAmi {
 
   string virtualization_type = 14 [json_name = "virtualization_type"];
 
-  Timeouts timeouts = 15;
+  EbsBlockDevice ebs_block_device = 15 [json_name = "ebs_block_device"];
 
-  EbsBlockDevice ebs_block_device = 16 [json_name = "ebs_block_device"];
+  EphemeralBlockDevice ephemeral_block_device = 16 [json_name = "ephemeral_block_device"];
 
-  EphemeralBlockDevice ephemeral_block_device = 17 [json_name = "ephemeral_block_device"];
+  Timeouts timeouts = 17;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
 
@@ -715,14 +715,6 @@ message AwsAmi {
   string provider = 21;
 
   terraform.meta.Lifecycle lifecycle = 22;
-
-  message Timeouts {
-    string create = 1;
-
-    string delete = 2;
-
-    string update = 3;
-  }
 
   message EbsBlockDevice {
     bool delete_on_termination = 1 [json_name = "delete_on_termination"];
@@ -744,6 +736,14 @@ message AwsAmi {
     string device_name = 1 [json_name = "device_name"];
 
     string virtual_name = 2 [json_name = "virtual_name"];
+  }
+
+  message Timeouts {
+    string create = 1;
+
+    string delete = 2;
+
+    string update = 3;
   }
 }
 
@@ -1620,11 +1620,11 @@ message AwsApiGatewayUsagePlan {
 
   map<string, string> tags = 6;
 
-  ThrottleSettings throttle_settings = 7 [json_name = "throttle_settings"];
+  ApiStages api_stages = 7 [json_name = "api_stages"];
 
-  ApiStages api_stages = 8 [json_name = "api_stages"];
+  QuotaSettings quota_settings = 8 [json_name = "quota_settings"];
 
-  QuotaSettings quota_settings = 9 [json_name = "quota_settings"];
+  ThrottleSettings throttle_settings = 9 [json_name = "throttle_settings"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
@@ -1635,12 +1635,6 @@ message AwsApiGatewayUsagePlan {
   string provider = 13;
 
   terraform.meta.Lifecycle lifecycle = 14;
-
-  message ThrottleSettings {
-    int64 burst_limit = 1 [json_name = "burst_limit"];
-
-    int64 rate_limit = 2 [json_name = "rate_limit"];
-  }
 
   message ApiStages {
     string api_id = 1 [json_name = "api_id"];
@@ -1654,6 +1648,12 @@ message AwsApiGatewayUsagePlan {
     int64 offset = 2;
 
     string period = 3;
+  }
+
+  message ThrottleSettings {
+    int64 burst_limit = 1 [json_name = "burst_limit"];
+
+    int64 rate_limit = 2 [json_name = "rate_limit"];
   }
 }
 
@@ -1810,9 +1810,9 @@ message AwsApigatewayv2DomainName {
 
   map<string, string> tags = 5;
 
-  Timeouts timeouts = 6;
+  DomainNameConfiguration domain_name_configuration = 6 [json_name = "domain_name_configuration"];
 
-  DomainNameConfiguration domain_name_configuration = 7 [json_name = "domain_name_configuration"];
+  Timeouts timeouts = 7;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 8;
 
@@ -1824,10 +1824,6 @@ message AwsApigatewayv2DomainName {
 
   terraform.meta.Lifecycle lifecycle = 12;
 
-  message Timeouts {
-    string update = 1;
-  }
-
   message DomainNameConfiguration {
     string certificate_arn = 1 [json_name = "certificate_arn"];
 
@@ -1838,6 +1834,10 @@ message AwsApigatewayv2DomainName {
     string security_policy = 4 [json_name = "security_policy"];
 
     string target_domain_name = 5 [json_name = "target_domain_name"];
+  }
+
+  message Timeouts {
+    string update = 1;
   }
 }
 
@@ -2122,11 +2122,11 @@ message AwsAppautoscalingPolicy {
 
   string service_namespace = 11 [json_name = "service_namespace"];
 
-  StepAdjustment step_adjustment = 12 [json_name = "step_adjustment"];
+  TargetTrackingScalingPolicyConfiguration target_tracking_scaling_policy_configuration = 12 [json_name = "target_tracking_scaling_policy_configuration"];
 
-  StepScalingPolicyConfiguration step_scaling_policy_configuration = 13 [json_name = "step_scaling_policy_configuration"];
+  StepAdjustment step_adjustment = 13 [json_name = "step_adjustment"];
 
-  TargetTrackingScalingPolicyConfiguration target_tracking_scaling_policy_configuration = 14 [json_name = "target_tracking_scaling_policy_configuration"];
+  StepScalingPolicyConfiguration step_scaling_policy_configuration = 14 [json_name = "step_scaling_policy_configuration"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
@@ -2137,34 +2137,6 @@ message AwsAppautoscalingPolicy {
   string provider = 18;
 
   terraform.meta.Lifecycle lifecycle = 19;
-
-  message StepAdjustment {
-    string metric_interval_lower_bound = 1 [json_name = "metric_interval_lower_bound"];
-
-    string metric_interval_upper_bound = 2 [json_name = "metric_interval_upper_bound"];
-
-    int64 scaling_adjustment = 3 [json_name = "scaling_adjustment"];
-  }
-
-  message StepScalingPolicyConfiguration {
-    string adjustment_type = 1 [json_name = "adjustment_type"];
-
-    int64 cooldown = 2;
-
-    string metric_aggregation_type = 3 [json_name = "metric_aggregation_type"];
-
-    int64 min_adjustment_magnitude = 4 [json_name = "min_adjustment_magnitude"];
-
-    StepAdjustment step_adjustment = 5 [json_name = "step_adjustment"];
-
-    message StepAdjustment {
-      string metric_interval_lower_bound = 1 [json_name = "metric_interval_lower_bound"];
-
-      string metric_interval_upper_bound = 2 [json_name = "metric_interval_upper_bound"];
-
-      int64 scaling_adjustment = 3 [json_name = "scaling_adjustment"];
-    }
-  }
 
   message TargetTrackingScalingPolicyConfiguration {
     bool disable_scale_in = 1 [json_name = "disable_scale_in"];
@@ -2201,6 +2173,34 @@ message AwsAppautoscalingPolicy {
       string predefined_metric_type = 1 [json_name = "predefined_metric_type"];
 
       string resource_label = 2 [json_name = "resource_label"];
+    }
+  }
+
+  message StepAdjustment {
+    string metric_interval_lower_bound = 1 [json_name = "metric_interval_lower_bound"];
+
+    string metric_interval_upper_bound = 2 [json_name = "metric_interval_upper_bound"];
+
+    int64 scaling_adjustment = 3 [json_name = "scaling_adjustment"];
+  }
+
+  message StepScalingPolicyConfiguration {
+    string adjustment_type = 1 [json_name = "adjustment_type"];
+
+    int64 cooldown = 2;
+
+    string metric_aggregation_type = 3 [json_name = "metric_aggregation_type"];
+
+    int64 min_adjustment_magnitude = 4 [json_name = "min_adjustment_magnitude"];
+
+    StepAdjustment step_adjustment = 5 [json_name = "step_adjustment"];
+
+    message StepAdjustment {
+      string metric_interval_lower_bound = 1 [json_name = "metric_interval_lower_bound"];
+
+      string metric_interval_upper_bound = 2 [json_name = "metric_interval_upper_bound"];
+
+      int64 scaling_adjustment = 3 [json_name = "scaling_adjustment"];
     }
   }
 }
@@ -2344,19 +2344,9 @@ message AwsAppmeshRoute {
     TcpRoute tcp_route = 3 [json_name = "tcp_route"];
 
     message HttpRoute {
-      Action action = 1;
+      Match match = 1;
 
-      Match match = 2;
-
-      message Action {
-        WeightedTarget weighted_target = 1 [json_name = "weighted_target"];
-
-        message WeightedTarget {
-          string virtual_node = 1 [json_name = "virtual_node"];
-
-          int64 weight = 2;
-        }
-      }
+      Action action = 2;
 
       message Match {
         string method = 1;
@@ -2391,6 +2381,16 @@ message AwsAppmeshRoute {
               int64 start = 2;
             }
           }
+        }
+      }
+
+      message Action {
+        WeightedTarget weighted_target = 1 [json_name = "weighted_target"];
+
+        message WeightedTarget {
+          string virtual_node = 1 [json_name = "virtual_node"];
+
+          int64 weight = 2;
         }
       }
     }
@@ -2442,21 +2442,13 @@ message AwsAppmeshVirtualNode {
   message Spec {
     repeated string backends = 1;
 
-    Backend backend = 2;
+    Listener listener = 2;
 
-    Listener listener = 3;
+    Logging logging = 3;
 
-    Logging logging = 4;
+    ServiceDiscovery service_discovery = 4 [json_name = "service_discovery"];
 
-    ServiceDiscovery service_discovery = 5 [json_name = "service_discovery"];
-
-    message Backend {
-      VirtualService virtual_service = 1 [json_name = "virtual_service"];
-
-      message VirtualService {
-        string virtual_service_name = 1 [json_name = "virtual_service_name"];
-      }
-    }
+    Backend backend = 5;
 
     message Listener {
       HealthCheck health_check = 1 [json_name = "health_check"];
@@ -2499,15 +2491,9 @@ message AwsAppmeshVirtualNode {
     }
 
     message ServiceDiscovery {
-      Dns dns = 1;
+      AwsCloudMap aws_cloud_map = 1 [json_name = "aws_cloud_map"];
 
-      AwsCloudMap aws_cloud_map = 2 [json_name = "aws_cloud_map"];
-
-      message Dns {
-        string hostname = 1;
-
-        string service_name = 2 [json_name = "service_name"];
-      }
+      Dns dns = 2;
 
       message AwsCloudMap {
         map<string, string> attributes = 1;
@@ -2515,6 +2501,20 @@ message AwsAppmeshVirtualNode {
         string namespace_name = 2 [json_name = "namespace_name"];
 
         string service_name = 3 [json_name = "service_name"];
+      }
+
+      message Dns {
+        string hostname = 1;
+
+        string service_name = 2 [json_name = "service_name"];
+      }
+    }
+
+    message Backend {
+      VirtualService virtual_service = 1 [json_name = "virtual_service"];
+
+      message VirtualService {
+        string virtual_service_name = 1 [json_name = "virtual_service_name"];
       }
     }
   }
@@ -2597,16 +2597,16 @@ message AwsAppmeshVirtualService {
     Provider provider = 1;
 
     message Provider {
-      VirtualNode virtual_node = 1 [json_name = "virtual_node"];
+      VirtualRouter virtual_router = 1 [json_name = "virtual_router"];
 
-      VirtualRouter virtual_router = 2 [json_name = "virtual_router"];
-
-      message VirtualNode {
-        string virtual_node_name = 1 [json_name = "virtual_node_name"];
-      }
+      VirtualNode virtual_node = 2 [json_name = "virtual_node"];
 
       message VirtualRouter {
         string virtual_router_name = 1 [json_name = "virtual_router_name"];
+      }
+
+      message VirtualNode {
+        string virtual_node_name = 1 [json_name = "virtual_node_name"];
       }
     }
   }
@@ -3035,15 +3035,15 @@ message AwsAutoscalingGroup {
 
   int64 wait_for_elb_capacity = 28 [json_name = "wait_for_elb_capacity"];
 
-  LaunchTemplate launch_template = 29 [json_name = "launch_template"];
+  InitialLifecycleHook initial_lifecycle_hook = 29 [json_name = "initial_lifecycle_hook"];
 
-  MixedInstancesPolicy mixed_instances_policy = 30 [json_name = "mixed_instances_policy"];
+  LaunchTemplate launch_template = 30 [json_name = "launch_template"];
 
-  Tag tag = 31;
+  MixedInstancesPolicy mixed_instances_policy = 31 [json_name = "mixed_instances_policy"];
 
-  Timeouts timeouts = 32;
+  Tag tag = 32;
 
-  InitialLifecycleHook initial_lifecycle_hook = 33 [json_name = "initial_lifecycle_hook"];
+  Timeouts timeouts = 33;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 34;
 
@@ -3054,6 +3054,22 @@ message AwsAutoscalingGroup {
   string provider = 37;
 
   terraform.meta.Lifecycle lifecycle = 38;
+
+  message InitialLifecycleHook {
+    string default_result = 1 [json_name = "default_result"];
+
+    int64 heartbeat_timeout = 2 [json_name = "heartbeat_timeout"];
+
+    string lifecycle_transition = 3 [json_name = "lifecycle_transition"];
+
+    string name = 4;
+
+    string notification_metadata = 5 [json_name = "notification_metadata"];
+
+    string notification_target_arn = 6 [json_name = "notification_target_arn"];
+
+    string role_arn = 7 [json_name = "role_arn"];
+  }
 
   message LaunchTemplate {
     string id = 1;
@@ -3113,22 +3129,6 @@ message AwsAutoscalingGroup {
 
   message Timeouts {
     string delete = 1;
-  }
-
-  message InitialLifecycleHook {
-    string default_result = 1 [json_name = "default_result"];
-
-    int64 heartbeat_timeout = 2 [json_name = "heartbeat_timeout"];
-
-    string lifecycle_transition = 3 [json_name = "lifecycle_transition"];
-
-    string name = 4;
-
-    string notification_metadata = 5 [json_name = "notification_metadata"];
-
-    string notification_target_arn = 6 [json_name = "notification_target_arn"];
-
-    string role_arn = 7 [json_name = "role_arn"];
   }
 }
 
@@ -3210,9 +3210,9 @@ message AwsAutoscalingPolicy {
 
   int64 scaling_adjustment = 12 [json_name = "scaling_adjustment"];
 
-  TargetTrackingConfiguration target_tracking_configuration = 13 [json_name = "target_tracking_configuration"];
+  StepAdjustment step_adjustment = 13 [json_name = "step_adjustment"];
 
-  StepAdjustment step_adjustment = 14 [json_name = "step_adjustment"];
+  TargetTrackingConfiguration target_tracking_configuration = 14 [json_name = "target_tracking_configuration"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
@@ -3224,20 +3224,22 @@ message AwsAutoscalingPolicy {
 
   terraform.meta.Lifecycle lifecycle = 19;
 
+  message StepAdjustment {
+    string metric_interval_lower_bound = 1 [json_name = "metric_interval_lower_bound"];
+
+    string metric_interval_upper_bound = 2 [json_name = "metric_interval_upper_bound"];
+
+    int64 scaling_adjustment = 3 [json_name = "scaling_adjustment"];
+  }
+
   message TargetTrackingConfiguration {
     bool disable_scale_in = 1 [json_name = "disable_scale_in"];
 
     int64 target_value = 2 [json_name = "target_value"];
 
-    PredefinedMetricSpecification predefined_metric_specification = 3 [json_name = "predefined_metric_specification"];
+    CustomizedMetricSpecification customized_metric_specification = 3 [json_name = "customized_metric_specification"];
 
-    CustomizedMetricSpecification customized_metric_specification = 4 [json_name = "customized_metric_specification"];
-
-    message PredefinedMetricSpecification {
-      string predefined_metric_type = 1 [json_name = "predefined_metric_type"];
-
-      string resource_label = 2 [json_name = "resource_label"];
-    }
+    PredefinedMetricSpecification predefined_metric_specification = 4 [json_name = "predefined_metric_specification"];
 
     message CustomizedMetricSpecification {
       string metric_name = 1 [json_name = "metric_name"];
@@ -3256,14 +3258,12 @@ message AwsAutoscalingPolicy {
         string value = 2;
       }
     }
-  }
 
-  message StepAdjustment {
-    string metric_interval_lower_bound = 1 [json_name = "metric_interval_lower_bound"];
+    message PredefinedMetricSpecification {
+      string predefined_metric_type = 1 [json_name = "predefined_metric_type"];
 
-    string metric_interval_upper_bound = 2 [json_name = "metric_interval_upper_bound"];
-
-    int64 scaling_adjustment = 3 [json_name = "scaling_adjustment"];
+      string resource_label = 2 [json_name = "resource_label"];
+    }
   }
 }
 
@@ -3337,9 +3337,15 @@ message AwsBackupPlan {
 
     string target_vault_name = 6 [json_name = "target_vault_name"];
 
-    CopyAction copy_action = 7 [json_name = "copy_action"];
+    Lifecycle lifecycle = 7;
 
-    Lifecycle lifecycle = 8;
+    CopyAction copy_action = 8 [json_name = "copy_action"];
+
+    message Lifecycle {
+      int64 cold_storage_after = 1 [json_name = "cold_storage_after"];
+
+      int64 delete_after = 2 [json_name = "delete_after"];
+    }
 
     message CopyAction {
       string destination_vault_arn = 1 [json_name = "destination_vault_arn"];
@@ -3351,12 +3357,6 @@ message AwsBackupPlan {
 
         int64 delete_after = 2 [json_name = "delete_after"];
       }
-    }
-
-    message Lifecycle {
-      int64 cold_storage_after = 1 [json_name = "cold_storage_after"];
-
-      int64 delete_after = 2 [json_name = "delete_after"];
     }
   }
 }
@@ -3512,9 +3512,9 @@ message AwsBatchJobDefinition {
 
   string type = 7;
 
-  Timeout timeout = 8;
+  RetryStrategy retry_strategy = 8 [json_name = "retry_strategy"];
 
-  RetryStrategy retry_strategy = 9 [json_name = "retry_strategy"];
+  Timeout timeout = 9;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
@@ -3526,12 +3526,12 @@ message AwsBatchJobDefinition {
 
   terraform.meta.Lifecycle lifecycle = 14;
 
-  message Timeout {
-    int64 attempt_duration_seconds = 1 [json_name = "attempt_duration_seconds"];
-  }
-
   message RetryStrategy {
     int64 attempts = 1;
+  }
+
+  message Timeout {
+    int64 attempt_duration_seconds = 1 [json_name = "attempt_duration_seconds"];
   }
 }
 
@@ -3847,23 +3847,23 @@ message AwsCloudfrontDistribution {
 
   string web_acl_id = 21 [json_name = "web_acl_id"];
 
-  ViewerCertificate viewer_certificate = 22 [json_name = "viewer_certificate"];
+  CustomErrorResponse custom_error_response = 22 [json_name = "custom_error_response"];
 
-  CacheBehavior cache_behavior = 23 [json_name = "cache_behavior"];
+  Origin origin = 23;
 
-  LoggingConfig logging_config = 24 [json_name = "logging_config"];
+  Restrictions restrictions = 24;
 
-  Origin origin = 25;
+  CacheBehavior cache_behavior = 25 [json_name = "cache_behavior"];
 
-  OriginGroup origin_group = 26 [json_name = "origin_group"];
+  DefaultCacheBehavior default_cache_behavior = 26 [json_name = "default_cache_behavior"];
 
-  CustomErrorResponse custom_error_response = 27 [json_name = "custom_error_response"];
+  LoggingConfig logging_config = 27 [json_name = "logging_config"];
 
-  DefaultCacheBehavior default_cache_behavior = 28 [json_name = "default_cache_behavior"];
+  OrderedCacheBehavior ordered_cache_behavior = 28 [json_name = "ordered_cache_behavior"];
 
-  OrderedCacheBehavior ordered_cache_behavior = 29 [json_name = "ordered_cache_behavior"];
+  OriginGroup origin_group = 29 [json_name = "origin_group"];
 
-  Restrictions restrictions = 30;
+  ViewerCertificate viewer_certificate = 30 [json_name = "viewer_certificate"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 31;
 
@@ -3875,16 +3875,62 @@ message AwsCloudfrontDistribution {
 
   terraform.meta.Lifecycle lifecycle = 35;
 
-  message ViewerCertificate {
-    string acm_certificate_arn = 1 [json_name = "acm_certificate_arn"];
+  message CustomErrorResponse {
+    int64 error_caching_min_ttl = 1 [json_name = "error_caching_min_ttl"];
 
-    bool cloudfront_default_certificate = 2 [json_name = "cloudfront_default_certificate"];
+    int64 error_code = 2 [json_name = "error_code"];
 
-    string iam_certificate_id = 3 [json_name = "iam_certificate_id"];
+    int64 response_code = 3 [json_name = "response_code"];
 
-    string minimum_protocol_version = 4 [json_name = "minimum_protocol_version"];
+    string response_page_path = 4 [json_name = "response_page_path"];
+  }
 
-    string ssl_support_method = 5 [json_name = "ssl_support_method"];
+  message Origin {
+    string domain_name = 1 [json_name = "domain_name"];
+
+    string origin_id = 2 [json_name = "origin_id"];
+
+    string origin_path = 3 [json_name = "origin_path"];
+
+    S3OriginConfig s3_origin_config = 4 [json_name = "s3_origin_config"];
+
+    CustomHeader custom_header = 5 [json_name = "custom_header"];
+
+    CustomOriginConfig custom_origin_config = 6 [json_name = "custom_origin_config"];
+
+    message S3OriginConfig {
+      string origin_access_identity = 1 [json_name = "origin_access_identity"];
+    }
+
+    message CustomHeader {
+      string name = 1;
+
+      string value = 2;
+    }
+
+    message CustomOriginConfig {
+      int64 http_port = 1 [json_name = "http_port"];
+
+      int64 https_port = 2 [json_name = "https_port"];
+
+      int64 origin_keepalive_timeout = 3 [json_name = "origin_keepalive_timeout"];
+
+      string origin_protocol_policy = 4 [json_name = "origin_protocol_policy"];
+
+      int64 origin_read_timeout = 5 [json_name = "origin_read_timeout"];
+
+      repeated string origin_ssl_protocols = 6 [json_name = "origin_ssl_protocols"];
+    }
+  }
+
+  message Restrictions {
+    GeoRestriction geo_restriction = 1 [json_name = "geo_restriction"];
+
+    message GeoRestriction {
+      repeated string locations = 1;
+
+      string restriction_type = 2 [json_name = "restriction_type"];
+    }
   }
 
   message CacheBehavior {
@@ -3941,78 +3987,6 @@ message AwsCloudfrontDistribution {
     }
   }
 
-  message LoggingConfig {
-    string bucket = 1;
-
-    bool include_cookies = 2 [json_name = "include_cookies"];
-
-    string prefix = 3;
-  }
-
-  message Origin {
-    string domain_name = 1 [json_name = "domain_name"];
-
-    string origin_id = 2 [json_name = "origin_id"];
-
-    string origin_path = 3 [json_name = "origin_path"];
-
-    CustomHeader custom_header = 4 [json_name = "custom_header"];
-
-    CustomOriginConfig custom_origin_config = 5 [json_name = "custom_origin_config"];
-
-    S3OriginConfig s3_origin_config = 6 [json_name = "s3_origin_config"];
-
-    message CustomHeader {
-      string name = 1;
-
-      string value = 2;
-    }
-
-    message CustomOriginConfig {
-      int64 http_port = 1 [json_name = "http_port"];
-
-      int64 https_port = 2 [json_name = "https_port"];
-
-      int64 origin_keepalive_timeout = 3 [json_name = "origin_keepalive_timeout"];
-
-      string origin_protocol_policy = 4 [json_name = "origin_protocol_policy"];
-
-      int64 origin_read_timeout = 5 [json_name = "origin_read_timeout"];
-
-      repeated string origin_ssl_protocols = 6 [json_name = "origin_ssl_protocols"];
-    }
-
-    message S3OriginConfig {
-      string origin_access_identity = 1 [json_name = "origin_access_identity"];
-    }
-  }
-
-  message OriginGroup {
-    string origin_id = 1 [json_name = "origin_id"];
-
-    FailoverCriteria failover_criteria = 2 [json_name = "failover_criteria"];
-
-    Member member = 3;
-
-    message FailoverCriteria {
-      repeated int64 status_codes = 1 [json_name = "status_codes"];
-    }
-
-    message Member {
-      string origin_id = 1 [json_name = "origin_id"];
-    }
-  }
-
-  message CustomErrorResponse {
-    int64 error_caching_min_ttl = 1 [json_name = "error_caching_min_ttl"];
-
-    int64 error_code = 2 [json_name = "error_code"];
-
-    int64 response_code = 3 [json_name = "response_code"];
-
-    string response_page_path = 4 [json_name = "response_page_path"];
-  }
-
   message DefaultCacheBehavior {
     repeated string allowed_methods = 1 [json_name = "allowed_methods"];
 
@@ -4065,6 +4039,14 @@ message AwsCloudfrontDistribution {
     }
   }
 
+  message LoggingConfig {
+    string bucket = 1;
+
+    bool include_cookies = 2 [json_name = "include_cookies"];
+
+    string prefix = 3;
+  }
+
   message OrderedCacheBehavior {
     repeated string allowed_methods = 1 [json_name = "allowed_methods"];
 
@@ -4090,17 +4072,9 @@ message AwsCloudfrontDistribution {
 
     string viewer_protocol_policy = 12 [json_name = "viewer_protocol_policy"];
 
-    LambdaFunctionAssociation lambda_function_association = 13 [json_name = "lambda_function_association"];
+    ForwardedValues forwarded_values = 13 [json_name = "forwarded_values"];
 
-    ForwardedValues forwarded_values = 14 [json_name = "forwarded_values"];
-
-    message LambdaFunctionAssociation {
-      string event_type = 1 [json_name = "event_type"];
-
-      bool include_body = 2 [json_name = "include_body"];
-
-      string lambda_arn = 3 [json_name = "lambda_arn"];
-    }
+    LambdaFunctionAssociation lambda_function_association = 14 [json_name = "lambda_function_association"];
 
     message ForwardedValues {
       repeated string headers = 1;
@@ -4117,16 +4091,42 @@ message AwsCloudfrontDistribution {
         repeated string whitelisted_names = 2 [json_name = "whitelisted_names"];
       }
     }
+
+    message LambdaFunctionAssociation {
+      string event_type = 1 [json_name = "event_type"];
+
+      bool include_body = 2 [json_name = "include_body"];
+
+      string lambda_arn = 3 [json_name = "lambda_arn"];
+    }
   }
 
-  message Restrictions {
-    GeoRestriction geo_restriction = 1 [json_name = "geo_restriction"];
+  message OriginGroup {
+    string origin_id = 1 [json_name = "origin_id"];
 
-    message GeoRestriction {
-      repeated string locations = 1;
+    FailoverCriteria failover_criteria = 2 [json_name = "failover_criteria"];
 
-      string restriction_type = 2 [json_name = "restriction_type"];
+    Member member = 3;
+
+    message FailoverCriteria {
+      repeated int64 status_codes = 1 [json_name = "status_codes"];
     }
+
+    message Member {
+      string origin_id = 1 [json_name = "origin_id"];
+    }
+  }
+
+  message ViewerCertificate {
+    string acm_certificate_arn = 1 [json_name = "acm_certificate_arn"];
+
+    bool cloudfront_default_certificate = 2 [json_name = "cloudfront_default_certificate"];
+
+    string iam_certificate_id = 3 [json_name = "iam_certificate_id"];
+
+    string minimum_protocol_version = 4 [json_name = "minimum_protocol_version"];
+
+    string ssl_support_method = 5 [json_name = "ssl_support_method"];
   }
 }
 
@@ -4445,17 +4445,17 @@ message AwsCloudwatchEventTarget {
 
   string target_id = 7 [json_name = "target_id"];
 
-  BatchTarget batch_target = 8 [json_name = "batch_target"];
+  KinesisTarget kinesis_target = 8 [json_name = "kinesis_target"];
 
-  EcsTarget ecs_target = 9 [json_name = "ecs_target"];
+  RunCommandTargets run_command_targets = 9 [json_name = "run_command_targets"];
 
-  InputTransformer input_transformer = 10 [json_name = "input_transformer"];
+  SqsTarget sqs_target = 10 [json_name = "sqs_target"];
 
-  KinesisTarget kinesis_target = 11 [json_name = "kinesis_target"];
+  BatchTarget batch_target = 11 [json_name = "batch_target"];
 
-  RunCommandTargets run_command_targets = 12 [json_name = "run_command_targets"];
+  EcsTarget ecs_target = 12 [json_name = "ecs_target"];
 
-  SqsTarget sqs_target = 13 [json_name = "sqs_target"];
+  InputTransformer input_transformer = 13 [json_name = "input_transformer"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
 
@@ -4466,6 +4466,20 @@ message AwsCloudwatchEventTarget {
   string provider = 17;
 
   terraform.meta.Lifecycle lifecycle = 18;
+
+  message KinesisTarget {
+    string partition_key_path = 1 [json_name = "partition_key_path"];
+  }
+
+  message RunCommandTargets {
+    string key = 1;
+
+    repeated string values = 2;
+  }
+
+  message SqsTarget {
+    string message_group_id = 1 [json_name = "message_group_id"];
+  }
 
   message BatchTarget {
     int64 array_size = 1 [json_name = "array_size"];
@@ -4503,20 +4517,6 @@ message AwsCloudwatchEventTarget {
     map<string, string> input_paths = 1;
 
     string input_template = 2 [json_name = "input_template"];
-  }
-
-  message KinesisTarget {
-    string partition_key_path = 1 [json_name = "partition_key_path"];
-  }
-
-  message RunCommandTargets {
-    string key = 1;
-
-    repeated string values = 2;
-  }
-
-  message SqsTarget {
-    string message_group_id = 1 [json_name = "message_group_id"];
   }
 }
 
@@ -4802,21 +4802,21 @@ message AwsCodebuildProject {
 
   map<string, string> tags = 12;
 
-  Artifacts artifacts = 13;
+  SecondarySources secondary_sources = 13 [json_name = "secondary_sources"];
 
-  Cache cache = 14;
+  Source source = 14;
 
-  Environment environment = 15;
+  VpcConfig vpc_config = 15 [json_name = "vpc_config"];
 
-  LogsConfig logs_config = 16 [json_name = "logs_config"];
+  Artifacts artifacts = 16;
 
-  SecondaryArtifacts secondary_artifacts = 17 [json_name = "secondary_artifacts"];
+  Cache cache = 17;
 
-  SecondarySources secondary_sources = 18 [json_name = "secondary_sources"];
+  Environment environment = 18;
 
-  Source source = 19;
+  LogsConfig logs_config = 19 [json_name = "logs_config"];
 
-  VpcConfig vpc_config = 20 [json_name = "vpc_config"];
+  SecondaryArtifacts secondary_artifacts = 20 [json_name = "secondary_artifacts"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 21;
 
@@ -4827,108 +4827,6 @@ message AwsCodebuildProject {
   string provider = 24;
 
   terraform.meta.Lifecycle lifecycle = 25;
-
-  message Artifacts {
-    string artifact_identifier = 1 [json_name = "artifact_identifier"];
-
-    bool encryption_disabled = 2 [json_name = "encryption_disabled"];
-
-    string location = 3;
-
-    string name = 4;
-
-    string namespace_type = 5 [json_name = "namespace_type"];
-
-    bool override_artifact_name = 6 [json_name = "override_artifact_name"];
-
-    string packaging = 7;
-
-    string path = 8;
-
-    string type = 9;
-  }
-
-  message Cache {
-    string location = 1;
-
-    repeated string modes = 2;
-
-    string type = 3;
-  }
-
-  message Environment {
-    string certificate = 1;
-
-    string compute_type = 2 [json_name = "compute_type"];
-
-    string image = 3;
-
-    string image_pull_credentials_type = 4 [json_name = "image_pull_credentials_type"];
-
-    bool privileged_mode = 5 [json_name = "privileged_mode"];
-
-    string type = 6;
-
-    EnvironmentVariable environment_variable = 7 [json_name = "environment_variable"];
-
-    RegistryCredential registry_credential = 8 [json_name = "registry_credential"];
-
-    message EnvironmentVariable {
-      string name = 1;
-
-      string type = 2;
-
-      string value = 3;
-    }
-
-    message RegistryCredential {
-      string credential = 1;
-
-      string credential_provider = 2 [json_name = "credential_provider"];
-    }
-  }
-
-  message LogsConfig {
-    CloudwatchLogs cloudwatch_logs = 1 [json_name = "cloudwatch_logs"];
-
-    S3Logs s3_logs = 2 [json_name = "s3_logs"];
-
-    message CloudwatchLogs {
-      string group_name = 1 [json_name = "group_name"];
-
-      string status = 2;
-
-      string stream_name = 3 [json_name = "stream_name"];
-    }
-
-    message S3Logs {
-      bool encryption_disabled = 1 [json_name = "encryption_disabled"];
-
-      string location = 2;
-
-      string status = 3;
-    }
-  }
-
-  message SecondaryArtifacts {
-    string artifact_identifier = 1 [json_name = "artifact_identifier"];
-
-    bool encryption_disabled = 2 [json_name = "encryption_disabled"];
-
-    string location = 3;
-
-    string name = 4;
-
-    string namespace_type = 5 [json_name = "namespace_type"];
-
-    bool override_artifact_name = 6 [json_name = "override_artifact_name"];
-
-    string packaging = 7;
-
-    string path = 8;
-
-    string type = 9;
-  }
 
   message SecondarySources {
     string buildspec = 1;
@@ -4994,6 +4892,108 @@ message AwsCodebuildProject {
     repeated string subnets = 2;
 
     string vpc_id = 3 [json_name = "vpc_id"];
+  }
+
+  message Artifacts {
+    string artifact_identifier = 1 [json_name = "artifact_identifier"];
+
+    bool encryption_disabled = 2 [json_name = "encryption_disabled"];
+
+    string location = 3;
+
+    string name = 4;
+
+    string namespace_type = 5 [json_name = "namespace_type"];
+
+    bool override_artifact_name = 6 [json_name = "override_artifact_name"];
+
+    string packaging = 7;
+
+    string path = 8;
+
+    string type = 9;
+  }
+
+  message Cache {
+    string location = 1;
+
+    repeated string modes = 2;
+
+    string type = 3;
+  }
+
+  message Environment {
+    string certificate = 1;
+
+    string compute_type = 2 [json_name = "compute_type"];
+
+    string image = 3;
+
+    string image_pull_credentials_type = 4 [json_name = "image_pull_credentials_type"];
+
+    bool privileged_mode = 5 [json_name = "privileged_mode"];
+
+    string type = 6;
+
+    RegistryCredential registry_credential = 7 [json_name = "registry_credential"];
+
+    EnvironmentVariable environment_variable = 8 [json_name = "environment_variable"];
+
+    message RegistryCredential {
+      string credential = 1;
+
+      string credential_provider = 2 [json_name = "credential_provider"];
+    }
+
+    message EnvironmentVariable {
+      string name = 1;
+
+      string type = 2;
+
+      string value = 3;
+    }
+  }
+
+  message LogsConfig {
+    CloudwatchLogs cloudwatch_logs = 1 [json_name = "cloudwatch_logs"];
+
+    S3Logs s3_logs = 2 [json_name = "s3_logs"];
+
+    message CloudwatchLogs {
+      string group_name = 1 [json_name = "group_name"];
+
+      string status = 2;
+
+      string stream_name = 3 [json_name = "stream_name"];
+    }
+
+    message S3Logs {
+      bool encryption_disabled = 1 [json_name = "encryption_disabled"];
+
+      string location = 2;
+
+      string status = 3;
+    }
+  }
+
+  message SecondaryArtifacts {
+    string artifact_identifier = 1 [json_name = "artifact_identifier"];
+
+    bool encryption_disabled = 2 [json_name = "encryption_disabled"];
+
+    string location = 3;
+
+    string name = 4;
+
+    string namespace_type = 5 [json_name = "namespace_type"];
+
+    bool override_artifact_name = 6 [json_name = "override_artifact_name"];
+
+    string packaging = 7;
+
+    string path = 8;
+
+    string type = 9;
   }
 }
 
@@ -5211,25 +5211,25 @@ message AwsCodedeployDeploymentGroup {
 
   string service_role_arn = 6 [json_name = "service_role_arn"];
 
-  AutoRollbackConfiguration auto_rollback_configuration = 7 [json_name = "auto_rollback_configuration"];
+  AlarmConfiguration alarm_configuration = 7 [json_name = "alarm_configuration"];
 
-  BlueGreenDeploymentConfig blue_green_deployment_config = 8 [json_name = "blue_green_deployment_config"];
+  DeploymentStyle deployment_style = 8 [json_name = "deployment_style"];
 
-  OnPremisesInstanceTagFilter on_premises_instance_tag_filter = 9 [json_name = "on_premises_instance_tag_filter"];
+  LoadBalancerInfo load_balancer_info = 9 [json_name = "load_balancer_info"];
 
   TriggerConfiguration trigger_configuration = 10 [json_name = "trigger_configuration"];
 
-  EcsService ecs_service = 11 [json_name = "ecs_service"];
+  AutoRollbackConfiguration auto_rollback_configuration = 11 [json_name = "auto_rollback_configuration"];
 
-  LoadBalancerInfo load_balancer_info = 12 [json_name = "load_balancer_info"];
+  BlueGreenDeploymentConfig blue_green_deployment_config = 12 [json_name = "blue_green_deployment_config"];
 
-  AlarmConfiguration alarm_configuration = 13 [json_name = "alarm_configuration"];
+  Ec2TagFilter ec2_tag_filter = 13 [json_name = "ec2_tag_filter"];
 
-  DeploymentStyle deployment_style = 14 [json_name = "deployment_style"];
+  Ec2TagSet ec2_tag_set = 14 [json_name = "ec2_tag_set"];
 
-  Ec2TagFilter ec2_tag_filter = 15 [json_name = "ec2_tag_filter"];
+  EcsService ecs_service = 15 [json_name = "ecs_service"];
 
-  Ec2TagSet ec2_tag_set = 16 [json_name = "ec2_tag_set"];
+  OnPremisesInstanceTagFilter on_premises_instance_tag_filter = 16 [json_name = "on_premises_instance_tag_filter"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
 
@@ -5240,6 +5240,64 @@ message AwsCodedeployDeploymentGroup {
   string provider = 20;
 
   terraform.meta.Lifecycle lifecycle = 21;
+
+  message AlarmConfiguration {
+    repeated string alarms = 1;
+
+    bool enabled = 2;
+
+    bool ignore_poll_alarm_failure = 3 [json_name = "ignore_poll_alarm_failure"];
+  }
+
+  message DeploymentStyle {
+    string deployment_option = 1 [json_name = "deployment_option"];
+
+    string deployment_type = 2 [json_name = "deployment_type"];
+  }
+
+  message LoadBalancerInfo {
+    TargetGroupInfo target_group_info = 1 [json_name = "target_group_info"];
+
+    TargetGroupPairInfo target_group_pair_info = 2 [json_name = "target_group_pair_info"];
+
+    ElbInfo elb_info = 3 [json_name = "elb_info"];
+
+    message TargetGroupInfo {
+      string name = 1;
+    }
+
+    message TargetGroupPairInfo {
+      ProdTrafficRoute prod_traffic_route = 1 [json_name = "prod_traffic_route"];
+
+      TargetGroup target_group = 2 [json_name = "target_group"];
+
+      TestTrafficRoute test_traffic_route = 3 [json_name = "test_traffic_route"];
+
+      message ProdTrafficRoute {
+        repeated string listener_arns = 1 [json_name = "listener_arns"];
+      }
+
+      message TargetGroup {
+        string name = 1;
+      }
+
+      message TestTrafficRoute {
+        repeated string listener_arns = 1 [json_name = "listener_arns"];
+      }
+    }
+
+    message ElbInfo {
+      string name = 1;
+    }
+  }
+
+  message TriggerConfiguration {
+    repeated string trigger_events = 1 [json_name = "trigger_events"];
+
+    string trigger_name = 2 [json_name = "trigger_name"];
+
+    string trigger_target_arn = 3 [json_name = "trigger_target_arn"];
+  }
 
   message AutoRollbackConfiguration {
     bool enabled = 1;
@@ -5271,78 +5329,6 @@ message AwsCodedeployDeploymentGroup {
     }
   }
 
-  message OnPremisesInstanceTagFilter {
-    string key = 1;
-
-    string type = 2;
-
-    string value = 3;
-  }
-
-  message TriggerConfiguration {
-    repeated string trigger_events = 1 [json_name = "trigger_events"];
-
-    string trigger_name = 2 [json_name = "trigger_name"];
-
-    string trigger_target_arn = 3 [json_name = "trigger_target_arn"];
-  }
-
-  message EcsService {
-    string cluster_name = 1 [json_name = "cluster_name"];
-
-    string service_name = 2 [json_name = "service_name"];
-  }
-
-  message LoadBalancerInfo {
-    ElbInfo elb_info = 1 [json_name = "elb_info"];
-
-    TargetGroupInfo target_group_info = 2 [json_name = "target_group_info"];
-
-    TargetGroupPairInfo target_group_pair_info = 3 [json_name = "target_group_pair_info"];
-
-    message ElbInfo {
-      string name = 1;
-    }
-
-    message TargetGroupInfo {
-      string name = 1;
-    }
-
-    message TargetGroupPairInfo {
-      TestTrafficRoute test_traffic_route = 1 [json_name = "test_traffic_route"];
-
-      ProdTrafficRoute prod_traffic_route = 2 [json_name = "prod_traffic_route"];
-
-      TargetGroup target_group = 3 [json_name = "target_group"];
-
-      message TestTrafficRoute {
-        repeated string listener_arns = 1 [json_name = "listener_arns"];
-      }
-
-      message ProdTrafficRoute {
-        repeated string listener_arns = 1 [json_name = "listener_arns"];
-      }
-
-      message TargetGroup {
-        string name = 1;
-      }
-    }
-  }
-
-  message AlarmConfiguration {
-    repeated string alarms = 1;
-
-    bool enabled = 2;
-
-    bool ignore_poll_alarm_failure = 3 [json_name = "ignore_poll_alarm_failure"];
-  }
-
-  message DeploymentStyle {
-    string deployment_option = 1 [json_name = "deployment_option"];
-
-    string deployment_type = 2 [json_name = "deployment_type"];
-  }
-
   message Ec2TagFilter {
     string key = 1;
 
@@ -5361,6 +5347,20 @@ message AwsCodedeployDeploymentGroup {
 
       string value = 3;
     }
+  }
+
+  message EcsService {
+    string cluster_name = 1 [json_name = "cluster_name"];
+
+    string service_name = 2 [json_name = "service_name"];
+  }
+
+  message OnPremisesInstanceTagFilter {
+    string key = 1;
+
+    string type = 2;
+
+    string value = 3;
   }
 }
 
@@ -5716,27 +5716,27 @@ message AwsCognitoUserPool {
 
   repeated string username_attributes = 15 [json_name = "username_attributes"];
 
-  DeviceConfiguration device_configuration = 16 [json_name = "device_configuration"];
+  AdminCreateUserConfig admin_create_user_config = 16 [json_name = "admin_create_user_config"];
 
-  LambdaConfig lambda_config = 17 [json_name = "lambda_config"];
+  PasswordPolicy password_policy = 17 [json_name = "password_policy"];
 
-  PasswordPolicy password_policy = 18 [json_name = "password_policy"];
+  SoftwareTokenMfaConfiguration software_token_mfa_configuration = 18 [json_name = "software_token_mfa_configuration"];
 
-  Schema schema = 19;
+  UserPoolAddOns user_pool_add_ons = 19 [json_name = "user_pool_add_ons"];
 
-  SoftwareTokenMfaConfiguration software_token_mfa_configuration = 20 [json_name = "software_token_mfa_configuration"];
+  DeviceConfiguration device_configuration = 20 [json_name = "device_configuration"];
 
-  UserPoolAddOns user_pool_add_ons = 21 [json_name = "user_pool_add_ons"];
+  EmailConfiguration email_configuration = 21 [json_name = "email_configuration"];
 
-  UsernameConfiguration username_configuration = 22 [json_name = "username_configuration"];
+  LambdaConfig lambda_config = 22 [json_name = "lambda_config"];
 
-  AdminCreateUserConfig admin_create_user_config = 23 [json_name = "admin_create_user_config"];
+  Schema schema = 23;
 
-  VerificationMessageTemplate verification_message_template = 24 [json_name = "verification_message_template"];
+  SmsConfiguration sms_configuration = 24 [json_name = "sms_configuration"];
 
-  SmsConfiguration sms_configuration = 25 [json_name = "sms_configuration"];
+  UsernameConfiguration username_configuration = 25 [json_name = "username_configuration"];
 
-  EmailConfiguration email_configuration = 26 [json_name = "email_configuration"];
+  VerificationMessageTemplate verification_message_template = 26 [json_name = "verification_message_template"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 27;
 
@@ -5748,10 +5748,58 @@ message AwsCognitoUserPool {
 
   terraform.meta.Lifecycle lifecycle = 31;
 
+  message AdminCreateUserConfig {
+    bool allow_admin_create_user_only = 1 [json_name = "allow_admin_create_user_only"];
+
+    int64 unused_account_validity_days = 2 [json_name = "unused_account_validity_days"];
+
+    InviteMessageTemplate invite_message_template = 3 [json_name = "invite_message_template"];
+
+    message InviteMessageTemplate {
+      string email_message = 1 [json_name = "email_message"];
+
+      string email_subject = 2 [json_name = "email_subject"];
+
+      string sms_message = 3 [json_name = "sms_message"];
+    }
+  }
+
+  message PasswordPolicy {
+    int64 minimum_length = 1 [json_name = "minimum_length"];
+
+    bool require_lowercase = 2 [json_name = "require_lowercase"];
+
+    bool require_numbers = 3 [json_name = "require_numbers"];
+
+    bool require_symbols = 4 [json_name = "require_symbols"];
+
+    bool require_uppercase = 5 [json_name = "require_uppercase"];
+
+    int64 temporary_password_validity_days = 6 [json_name = "temporary_password_validity_days"];
+  }
+
+  message SoftwareTokenMfaConfiguration {
+    bool enabled = 1;
+  }
+
+  message UserPoolAddOns {
+    string advanced_security_mode = 1 [json_name = "advanced_security_mode"];
+  }
+
   message DeviceConfiguration {
     bool challenge_required_on_new_device = 1 [json_name = "challenge_required_on_new_device"];
 
     bool device_only_remembered_on_user_prompt = 2 [json_name = "device_only_remembered_on_user_prompt"];
+  }
+
+  message EmailConfiguration {
+    string email_sending_account = 1 [json_name = "email_sending_account"];
+
+    string from_email_address = 2 [json_name = "from_email_address"];
+
+    string reply_to_email_address = 3 [json_name = "reply_to_email_address"];
+
+    string source_arn = 4 [json_name = "source_arn"];
   }
 
   message LambdaConfig {
@@ -5774,20 +5822,6 @@ message AwsCognitoUserPool {
     string user_migration = 9 [json_name = "user_migration"];
 
     string verify_auth_challenge_response = 10 [json_name = "verify_auth_challenge_response"];
-  }
-
-  message PasswordPolicy {
-    int64 minimum_length = 1 [json_name = "minimum_length"];
-
-    bool require_lowercase = 2 [json_name = "require_lowercase"];
-
-    bool require_numbers = 3 [json_name = "require_numbers"];
-
-    bool require_symbols = 4 [json_name = "require_symbols"];
-
-    bool require_uppercase = 5 [json_name = "require_uppercase"];
-
-    int64 temporary_password_validity_days = 6 [json_name = "temporary_password_validity_days"];
   }
 
   message Schema {
@@ -5818,32 +5852,14 @@ message AwsCognitoUserPool {
     }
   }
 
-  message SoftwareTokenMfaConfiguration {
-    bool enabled = 1;
-  }
+  message SmsConfiguration {
+    string external_id = 1 [json_name = "external_id"];
 
-  message UserPoolAddOns {
-    string advanced_security_mode = 1 [json_name = "advanced_security_mode"];
+    string sns_caller_arn = 2 [json_name = "sns_caller_arn"];
   }
 
   message UsernameConfiguration {
     bool case_sensitive = 1 [json_name = "case_sensitive"];
-  }
-
-  message AdminCreateUserConfig {
-    bool allow_admin_create_user_only = 1 [json_name = "allow_admin_create_user_only"];
-
-    int64 unused_account_validity_days = 2 [json_name = "unused_account_validity_days"];
-
-    InviteMessageTemplate invite_message_template = 3 [json_name = "invite_message_template"];
-
-    message InviteMessageTemplate {
-      string email_message = 1 [json_name = "email_message"];
-
-      string email_subject = 2 [json_name = "email_subject"];
-
-      string sms_message = 3 [json_name = "sms_message"];
-    }
   }
 
   message VerificationMessageTemplate {
@@ -5858,22 +5874,6 @@ message AwsCognitoUserPool {
     string email_subject_by_link = 5 [json_name = "email_subject_by_link"];
 
     string sms_message = 6 [json_name = "sms_message"];
-  }
-
-  message SmsConfiguration {
-    string external_id = 1 [json_name = "external_id"];
-
-    string sns_caller_arn = 2 [json_name = "sns_caller_arn"];
-  }
-
-  message EmailConfiguration {
-    string email_sending_account = 1 [json_name = "email_sending_account"];
-
-    string from_email_address = 2 [json_name = "from_email_address"];
-
-    string reply_to_email_address = 3 [json_name = "reply_to_email_address"];
-
-    string source_arn = 4 [json_name = "source_arn"];
   }
 }
 
@@ -6519,9 +6519,9 @@ message AwsDatasyncTask {
 
   map<string, string> tags = 7;
 
-  Timeouts timeouts = 8;
+  Options options = 8;
 
-  Options options = 9;
+  Timeouts timeouts = 9;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
@@ -6532,10 +6532,6 @@ message AwsDatasyncTask {
   string provider = 13;
 
   terraform.meta.Lifecycle lifecycle = 14;
-
-  message Timeouts {
-    string create = 1;
-  }
 
   message Options {
     string atime = 1;
@@ -6555,6 +6551,10 @@ message AwsDatasyncTask {
     string uid = 8;
 
     string verify_mode = 9 [json_name = "verify_mode"];
+  }
+
+  message Timeouts {
+    string create = 1;
   }
 }
 
@@ -6596,9 +6596,9 @@ message AwsDaxCluster {
 
   map<string, string> tags = 18;
 
-  ServerSideEncryption server_side_encryption = 19 [json_name = "server_side_encryption"];
+  Timeouts timeouts = 19;
 
-  Timeouts timeouts = 20;
+  ServerSideEncryption server_side_encryption = 20 [json_name = "server_side_encryption"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 21;
 
@@ -6624,16 +6624,16 @@ message AwsDaxCluster {
     int64 port = 4;
   }
 
-  message ServerSideEncryption {
-    bool enabled = 1;
-  }
-
   message Timeouts {
     string create = 1;
 
     string delete = 2;
 
     string update = 3;
+  }
+
+  message ServerSideEncryption {
+    bool enabled = 1;
   }
 }
 
@@ -7683,13 +7683,9 @@ message AwsDlmLifecyclePolicy {
 
       map<string, string> tags_to_add = 3;
 
-      RetainRule retain_rule = 4 [json_name = "retain_rule"];
+      CreateRule create_rule = 4 [json_name = "create_rule"];
 
-      CreateRule create_rule = 5 [json_name = "create_rule"];
-
-      message RetainRule {
-        int64 count = 1;
-      }
+      RetainRule retain_rule = 5 [json_name = "retain_rule"];
 
       message CreateRule {
         int64 interval = 1;
@@ -7697,6 +7693,10 @@ message AwsDlmLifecyclePolicy {
         string interval_unit = 2 [json_name = "interval_unit"];
 
         repeated string times = 3;
+      }
+
+      message RetainRule {
+        int64 count = 1;
       }
     }
   }
@@ -7759,13 +7759,13 @@ message AwsDmsEndpoint {
 
   string username = 16;
 
-  MongodbSettings mongodb_settings = 17 [json_name = "mongodb_settings"];
+  ElasticsearchSettings elasticsearch_settings = 17 [json_name = "elasticsearch_settings"];
 
-  S3Settings s3_settings = 18 [json_name = "s3_settings"];
+  KinesisSettings kinesis_settings = 18 [json_name = "kinesis_settings"];
 
-  ElasticsearchSettings elasticsearch_settings = 19 [json_name = "elasticsearch_settings"];
+  MongodbSettings mongodb_settings = 19 [json_name = "mongodb_settings"];
 
-  KinesisSettings kinesis_settings = 20 [json_name = "kinesis_settings"];
+  S3Settings s3_settings = 20 [json_name = "s3_settings"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 21;
 
@@ -7776,6 +7776,24 @@ message AwsDmsEndpoint {
   string provider = 24;
 
   terraform.meta.Lifecycle lifecycle = 25;
+
+  message ElasticsearchSettings {
+    string endpoint_uri = 1 [json_name = "endpoint_uri"];
+
+    int64 error_retry_duration = 2 [json_name = "error_retry_duration"];
+
+    int64 full_load_error_percentage = 3 [json_name = "full_load_error_percentage"];
+
+    string service_access_role_arn = 4 [json_name = "service_access_role_arn"];
+  }
+
+  message KinesisSettings {
+    string message_format = 1 [json_name = "message_format"];
+
+    string service_access_role_arn = 2 [json_name = "service_access_role_arn"];
+
+    string stream_arn = 3 [json_name = "stream_arn"];
+  }
 
   message MongodbSettings {
     string auth_mechanism = 1 [json_name = "auth_mechanism"];
@@ -7805,24 +7823,6 @@ message AwsDmsEndpoint {
     string external_table_definition = 6 [json_name = "external_table_definition"];
 
     string service_access_role_arn = 7 [json_name = "service_access_role_arn"];
-  }
-
-  message ElasticsearchSettings {
-    string endpoint_uri = 1 [json_name = "endpoint_uri"];
-
-    int64 error_retry_duration = 2 [json_name = "error_retry_duration"];
-
-    int64 full_load_error_percentage = 3 [json_name = "full_load_error_percentage"];
-
-    string service_access_role_arn = 4 [json_name = "service_access_role_arn"];
-  }
-
-  message KinesisSettings {
-    string message_format = 1 [json_name = "message_format"];
-
-    string service_access_role_arn = 2 [json_name = "service_access_role_arn"];
-
-    string stream_arn = 3 [json_name = "stream_arn"];
   }
 }
 
@@ -9283,9 +9283,9 @@ message AwsEc2ClientVpnEndpoint {
 
   string transport_protocol = 10 [json_name = "transport_protocol"];
 
-  AuthenticationOptions authentication_options = 11 [json_name = "authentication_options"];
+  ConnectionLogOptions connection_log_options = 11 [json_name = "connection_log_options"];
 
-  ConnectionLogOptions connection_log_options = 12 [json_name = "connection_log_options"];
+  AuthenticationOptions authentication_options = 12 [json_name = "authentication_options"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
 
@@ -9297,20 +9297,20 @@ message AwsEc2ClientVpnEndpoint {
 
   terraform.meta.Lifecycle lifecycle = 17;
 
-  message AuthenticationOptions {
-    string active_directory_id = 1 [json_name = "active_directory_id"];
-
-    string root_certificate_chain_arn = 2 [json_name = "root_certificate_chain_arn"];
-
-    string type = 3;
-  }
-
   message ConnectionLogOptions {
     string cloudwatch_log_group = 1 [json_name = "cloudwatch_log_group"];
 
     string cloudwatch_log_stream = 2 [json_name = "cloudwatch_log_stream"];
 
     bool enabled = 3;
+  }
+
+  message AuthenticationOptions {
+    string active_directory_id = 1 [json_name = "active_directory_id"];
+
+    string root_certificate_chain_arn = 2 [json_name = "root_certificate_chain_arn"];
+
+    string type = 3;
   }
 }
 
@@ -9355,15 +9355,15 @@ message AwsEc2Fleet {
 
   string type = 7;
 
-  LaunchTemplateConfig launch_template_config = 8 [json_name = "launch_template_config"];
+  SpotOptions spot_options = 8 [json_name = "spot_options"];
 
-  OnDemandOptions on_demand_options = 9 [json_name = "on_demand_options"];
+  TargetCapacitySpecification target_capacity_specification = 9 [json_name = "target_capacity_specification"];
 
-  SpotOptions spot_options = 10 [json_name = "spot_options"];
+  Timeouts timeouts = 10;
 
-  TargetCapacitySpecification target_capacity_specification = 11 [json_name = "target_capacity_specification"];
+  LaunchTemplateConfig launch_template_config = 11 [json_name = "launch_template_config"];
 
-  Timeouts timeouts = 12;
+  OnDemandOptions on_demand_options = 12 [json_name = "on_demand_options"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
 
@@ -9374,38 +9374,6 @@ message AwsEc2Fleet {
   string provider = 16;
 
   terraform.meta.Lifecycle lifecycle = 17;
-
-  message LaunchTemplateConfig {
-    LaunchTemplateSpecification launch_template_specification = 1 [json_name = "launch_template_specification"];
-
-    Override override = 2;
-
-    message LaunchTemplateSpecification {
-      string launch_template_id = 1 [json_name = "launch_template_id"];
-
-      string launch_template_name = 2 [json_name = "launch_template_name"];
-
-      string version = 3;
-    }
-
-    message Override {
-      string availability_zone = 1 [json_name = "availability_zone"];
-
-      string instance_type = 2 [json_name = "instance_type"];
-
-      string max_price = 3 [json_name = "max_price"];
-
-      int64 priority = 4;
-
-      string subnet_id = 5 [json_name = "subnet_id"];
-
-      int64 weighted_capacity = 6 [json_name = "weighted_capacity"];
-    }
-  }
-
-  message OnDemandOptions {
-    string allocation_strategy = 1 [json_name = "allocation_strategy"];
-  }
 
   message SpotOptions {
     string allocation_strategy = 1 [json_name = "allocation_strategy"];
@@ -9431,6 +9399,38 @@ message AwsEc2Fleet {
     string delete = 2;
 
     string update = 3;
+  }
+
+  message LaunchTemplateConfig {
+    Override override = 1;
+
+    LaunchTemplateSpecification launch_template_specification = 2 [json_name = "launch_template_specification"];
+
+    message Override {
+      string availability_zone = 1 [json_name = "availability_zone"];
+
+      string instance_type = 2 [json_name = "instance_type"];
+
+      string max_price = 3 [json_name = "max_price"];
+
+      int64 priority = 4;
+
+      string subnet_id = 5 [json_name = "subnet_id"];
+
+      int64 weighted_capacity = 6 [json_name = "weighted_capacity"];
+    }
+
+    message LaunchTemplateSpecification {
+      string launch_template_id = 1 [json_name = "launch_template_id"];
+
+      string launch_template_name = 2 [json_name = "launch_template_name"];
+
+      string version = 3;
+    }
+  }
+
+  message OnDemandOptions {
+    string allocation_strategy = 1 [json_name = "allocation_strategy"];
   }
 }
 
@@ -9950,21 +9950,21 @@ message AwsEcsService {
 
   string task_definition = 15 [json_name = "task_definition"];
 
-  DeploymentController deployment_controller = 16 [json_name = "deployment_controller"];
+  OrderedPlacementStrategy ordered_placement_strategy = 16 [json_name = "ordered_placement_strategy"];
 
-  LoadBalancer load_balancer = 17 [json_name = "load_balancer"];
+  PlacementConstraints placement_constraints = 17 [json_name = "placement_constraints"];
 
-  NetworkConfiguration network_configuration = 18 [json_name = "network_configuration"];
+  PlacementStrategy placement_strategy = 18 [json_name = "placement_strategy"];
 
-  OrderedPlacementStrategy ordered_placement_strategy = 19 [json_name = "ordered_placement_strategy"];
+  ServiceRegistries service_registries = 19 [json_name = "service_registries"];
 
-  PlacementConstraints placement_constraints = 20 [json_name = "placement_constraints"];
+  CapacityProviderStrategy capacity_provider_strategy = 20 [json_name = "capacity_provider_strategy"];
 
-  PlacementStrategy placement_strategy = 21 [json_name = "placement_strategy"];
+  DeploymentController deployment_controller = 21 [json_name = "deployment_controller"];
 
-  ServiceRegistries service_registries = 22 [json_name = "service_registries"];
+  LoadBalancer load_balancer = 22 [json_name = "load_balancer"];
 
-  CapacityProviderStrategy capacity_provider_strategy = 23 [json_name = "capacity_provider_strategy"];
+  NetworkConfiguration network_configuration = 23 [json_name = "network_configuration"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 24;
 
@@ -9975,28 +9975,6 @@ message AwsEcsService {
   string provider = 27;
 
   terraform.meta.Lifecycle lifecycle = 28;
-
-  message DeploymentController {
-    string type = 1;
-  }
-
-  message LoadBalancer {
-    string container_name = 1 [json_name = "container_name"];
-
-    int64 container_port = 2 [json_name = "container_port"];
-
-    string elb_name = 3 [json_name = "elb_name"];
-
-    string target_group_arn = 4 [json_name = "target_group_arn"];
-  }
-
-  message NetworkConfiguration {
-    bool assign_public_ip = 1 [json_name = "assign_public_ip"];
-
-    repeated string security_groups = 2 [json_name = "security_groups"];
-
-    repeated string subnets = 3;
-  }
 
   message OrderedPlacementStrategy {
     string field = 1;
@@ -10032,6 +10010,28 @@ message AwsEcsService {
     string capacity_provider = 2 [json_name = "capacity_provider"];
 
     int64 weight = 3;
+  }
+
+  message DeploymentController {
+    string type = 1;
+  }
+
+  message LoadBalancer {
+    string container_name = 1 [json_name = "container_name"];
+
+    int64 container_port = 2 [json_name = "container_port"];
+
+    string elb_name = 3 [json_name = "elb_name"];
+
+    string target_group_arn = 4 [json_name = "target_group_arn"];
+  }
+
+  message NetworkConfiguration {
+    bool assign_public_ip = 1 [json_name = "assign_public_ip"];
+
+    repeated string security_groups = 2 [json_name = "security_groups"];
+
+    repeated string subnets = 3;
   }
 }
 
@@ -10977,23 +10977,23 @@ message AwsElasticsearchDomain {
 
   map<string, string> tags = 10;
 
-  LogPublishingOptions log_publishing_options = 11 [json_name = "log_publishing_options"];
+  ClusterConfig cluster_config = 11 [json_name = "cluster_config"];
 
-  NodeToNodeEncryption node_to_node_encryption = 12 [json_name = "node_to_node_encryption"];
+  DomainEndpointOptions domain_endpoint_options = 12 [json_name = "domain_endpoint_options"];
 
-  SnapshotOptions snapshot_options = 13 [json_name = "snapshot_options"];
+  EbsOptions ebs_options = 13 [json_name = "ebs_options"];
 
-  VpcOptions vpc_options = 14 [json_name = "vpc_options"];
+  EncryptAtRest encrypt_at_rest = 14 [json_name = "encrypt_at_rest"];
 
-  ClusterConfig cluster_config = 15 [json_name = "cluster_config"];
+  LogPublishingOptions log_publishing_options = 15 [json_name = "log_publishing_options"];
 
-  CognitoOptions cognito_options = 16 [json_name = "cognito_options"];
+  SnapshotOptions snapshot_options = 16 [json_name = "snapshot_options"];
 
-  EbsOptions ebs_options = 17 [json_name = "ebs_options"];
+  CognitoOptions cognito_options = 17 [json_name = "cognito_options"];
 
-  EncryptAtRest encrypt_at_rest = 18 [json_name = "encrypt_at_rest"];
+  NodeToNodeEncryption node_to_node_encryption = 18 [json_name = "node_to_node_encryption"];
 
-  DomainEndpointOptions domain_endpoint_options = 19 [json_name = "domain_endpoint_options"];
+  VpcOptions vpc_options = 19 [json_name = "vpc_options"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
 
@@ -11004,32 +11004,6 @@ message AwsElasticsearchDomain {
   string provider = 23;
 
   terraform.meta.Lifecycle lifecycle = 24;
-
-  message LogPublishingOptions {
-    string cloudwatch_log_group_arn = 1 [json_name = "cloudwatch_log_group_arn"];
-
-    bool enabled = 2;
-
-    string log_type = 3 [json_name = "log_type"];
-  }
-
-  message NodeToNodeEncryption {
-    bool enabled = 1;
-  }
-
-  message SnapshotOptions {
-    int64 automated_snapshot_start_hour = 1 [json_name = "automated_snapshot_start_hour"];
-  }
-
-  message VpcOptions {
-    repeated string availability_zones = 1 [json_name = "availability_zones"];
-
-    repeated string security_group_ids = 2 [json_name = "security_group_ids"];
-
-    repeated string subnet_ids = 3 [json_name = "subnet_ids"];
-
-    string vpc_id = 4 [json_name = "vpc_id"];
-  }
 
   message ClusterConfig {
     int64 dedicated_master_count = 1 [json_name = "dedicated_master_count"];
@@ -11051,14 +11025,10 @@ message AwsElasticsearchDomain {
     }
   }
 
-  message CognitoOptions {
-    bool enabled = 1;
+  message DomainEndpointOptions {
+    bool enforce_https = 1 [json_name = "enforce_https"];
 
-    string identity_pool_id = 2 [json_name = "identity_pool_id"];
-
-    string role_arn = 3 [json_name = "role_arn"];
-
-    string user_pool_id = 4 [json_name = "user_pool_id"];
+    string tls_security_policy = 2 [json_name = "tls_security_policy"];
   }
 
   message EbsOptions {
@@ -11077,10 +11047,40 @@ message AwsElasticsearchDomain {
     string kms_key_id = 2 [json_name = "kms_key_id"];
   }
 
-  message DomainEndpointOptions {
-    bool enforce_https = 1 [json_name = "enforce_https"];
+  message LogPublishingOptions {
+    string cloudwatch_log_group_arn = 1 [json_name = "cloudwatch_log_group_arn"];
 
-    string tls_security_policy = 2 [json_name = "tls_security_policy"];
+    bool enabled = 2;
+
+    string log_type = 3 [json_name = "log_type"];
+  }
+
+  message SnapshotOptions {
+    int64 automated_snapshot_start_hour = 1 [json_name = "automated_snapshot_start_hour"];
+  }
+
+  message CognitoOptions {
+    bool enabled = 1;
+
+    string identity_pool_id = 2 [json_name = "identity_pool_id"];
+
+    string role_arn = 3 [json_name = "role_arn"];
+
+    string user_pool_id = 4 [json_name = "user_pool_id"];
+  }
+
+  message NodeToNodeEncryption {
+    bool enabled = 1;
+  }
+
+  message VpcOptions {
+    repeated string availability_zones = 1 [json_name = "availability_zones"];
+
+    repeated string security_group_ids = 2 [json_name = "security_group_ids"];
+
+    repeated string subnet_ids = 3 [json_name = "subnet_ids"];
+
+    string vpc_id = 4 [json_name = "vpc_id"];
   }
 }
 
@@ -11194,15 +11194,15 @@ message AwsElastictranscoderPreset {
 
   map<string, string> video_codec_options = 7;
 
-  Audio audio = 8;
+  AudioCodecOptions audio_codec_options = 8 [json_name = "audio_codec_options"];
 
-  AudioCodecOptions audio_codec_options = 9 [json_name = "audio_codec_options"];
+  Thumbnails thumbnails = 9;
 
-  Thumbnails thumbnails = 10;
+  Video video = 10;
 
-  Video video = 11;
+  VideoWatermarks video_watermarks = 11 [json_name = "video_watermarks"];
 
-  VideoWatermarks video_watermarks = 12 [json_name = "video_watermarks"];
+  Audio audio = 12;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
 
@@ -11213,18 +11213,6 @@ message AwsElastictranscoderPreset {
   string provider = 16;
 
   terraform.meta.Lifecycle lifecycle = 17;
-
-  message Audio {
-    string audio_packing_mode = 1 [json_name = "audio_packing_mode"];
-
-    string bit_rate = 2 [json_name = "bit_rate"];
-
-    string channels = 3;
-
-    string codec = 4;
-
-    string sample_rate = 5 [json_name = "sample_rate"];
-  }
 
   message AudioCodecOptions {
     string bit_depth = 1 [json_name = "bit_depth"];
@@ -11302,6 +11290,18 @@ message AwsElastictranscoderPreset {
     string vertical_align = 9 [json_name = "vertical_align"];
 
     string vertical_offset = 10 [json_name = "vertical_offset"];
+  }
+
+  message Audio {
+    string audio_packing_mode = 1 [json_name = "audio_packing_mode"];
+
+    string bit_rate = 2 [json_name = "bit_rate"];
+
+    string channels = 3;
+
+    string codec = 4;
+
+    string sample_rate = 5 [json_name = "sample_rate"];
   }
 }
 
@@ -11467,17 +11467,17 @@ message AwsEmrCluster {
 
   bool visible_to_all_users = 26 [json_name = "visible_to_all_users"];
 
-  Ec2Attributes ec2_attributes = 27 [json_name = "ec2_attributes"];
+  BootstrapAction bootstrap_action = 27 [json_name = "bootstrap_action"];
 
-  InstanceGroup instance_group = 28 [json_name = "instance_group"];
+  CoreInstanceGroup core_instance_group = 28 [json_name = "core_instance_group"];
 
-  KerberosAttributes kerberos_attributes = 29 [json_name = "kerberos_attributes"];
+  Ec2Attributes ec2_attributes = 29 [json_name = "ec2_attributes"];
 
-  MasterInstanceGroup master_instance_group = 30 [json_name = "master_instance_group"];
+  InstanceGroup instance_group = 30 [json_name = "instance_group"];
 
-  BootstrapAction bootstrap_action = 31 [json_name = "bootstrap_action"];
+  KerberosAttributes kerberos_attributes = 31 [json_name = "kerberos_attributes"];
 
-  CoreInstanceGroup core_instance_group = 32 [json_name = "core_instance_group"];
+  MasterInstanceGroup master_instance_group = 32 [json_name = "master_instance_group"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 33;
 
@@ -11511,6 +11511,40 @@ message AwsEmrCluster {
 
       //properties: map of string
       map<string, string> properties = 4;
+    }
+  }
+
+  message BootstrapAction {
+    repeated string args = 1;
+
+    string name = 2;
+
+    string path = 3;
+  }
+
+  message CoreInstanceGroup {
+    string autoscaling_policy = 1 [json_name = "autoscaling_policy"];
+
+    string bid_price = 2 [json_name = "bid_price"];
+
+    string id = 3;
+
+    int64 instance_count = 4 [json_name = "instance_count"];
+
+    string instance_type = 5 [json_name = "instance_type"];
+
+    string name = 6;
+
+    EbsConfig ebs_config = 7 [json_name = "ebs_config"];
+
+    message EbsConfig {
+      int64 iops = 1;
+
+      int64 size = 2;
+
+      string type = 3;
+
+      int64 volumes_per_instance = 4 [json_name = "volumes_per_instance"];
     }
   }
 
@@ -11584,40 +11618,6 @@ message AwsEmrCluster {
     string name = 5;
 
     EbsConfig ebs_config = 6 [json_name = "ebs_config"];
-
-    message EbsConfig {
-      int64 iops = 1;
-
-      int64 size = 2;
-
-      string type = 3;
-
-      int64 volumes_per_instance = 4 [json_name = "volumes_per_instance"];
-    }
-  }
-
-  message BootstrapAction {
-    repeated string args = 1;
-
-    string name = 2;
-
-    string path = 3;
-  }
-
-  message CoreInstanceGroup {
-    string autoscaling_policy = 1 [json_name = "autoscaling_policy"];
-
-    string bid_price = 2 [json_name = "bid_price"];
-
-    string id = 3;
-
-    int64 instance_count = 4 [json_name = "instance_count"];
-
-    string instance_type = 5 [json_name = "instance_type"];
-
-    string name = 6;
-
-    EbsConfig ebs_config = 7 [json_name = "ebs_config"];
 
     message EbsConfig {
       int64 iops = 1;
@@ -12322,27 +12322,13 @@ message AwsGlueCatalogTable {
 
     bool stored_as_sub_directories = 8 [json_name = "stored_as_sub_directories"];
 
-    SkewedInfo skewed_info = 9 [json_name = "skewed_info"];
+    Columns columns = 9;
 
-    SortColumns sort_columns = 10 [json_name = "sort_columns"];
+    SerDeInfo ser_de_info = 10 [json_name = "ser_de_info"];
 
-    Columns columns = 11;
+    SkewedInfo skewed_info = 11 [json_name = "skewed_info"];
 
-    SerDeInfo ser_de_info = 12 [json_name = "ser_de_info"];
-
-    message SkewedInfo {
-      repeated string skewed_column_names = 1 [json_name = "skewed_column_names"];
-
-      map<string, string> skewed_column_value_location_maps = 2;
-
-      repeated string skewed_column_values = 3 [json_name = "skewed_column_values"];
-    }
-
-    message SortColumns {
-      string column = 1;
-
-      int64 sort_order = 2 [json_name = "sort_order"];
-    }
+    SortColumns sort_columns = 12 [json_name = "sort_columns"];
 
     message Columns {
       string comment = 1;
@@ -12358,6 +12344,20 @@ message AwsGlueCatalogTable {
       map<string, string> parameters = 2;
 
       string serialization_library = 3 [json_name = "serialization_library"];
+    }
+
+    message SkewedInfo {
+      repeated string skewed_column_names = 1 [json_name = "skewed_column_names"];
+
+      map<string, string> skewed_column_value_location_maps = 2;
+
+      repeated string skewed_column_values = 3 [json_name = "skewed_column_values"];
+    }
+
+    message SortColumns {
+      string column = 1;
+
+      int64 sort_order = 2 [json_name = "sort_order"];
     }
   }
 }
@@ -12482,15 +12482,15 @@ message AwsGlueCrawler {
 
   map<string, string> tags = 12;
 
-  DynamodbTarget dynamodb_target = 13 [json_name = "dynamodb_target"];
+  CatalogTarget catalog_target = 13 [json_name = "catalog_target"];
 
-  JdbcTarget jdbc_target = 14 [json_name = "jdbc_target"];
+  DynamodbTarget dynamodb_target = 14 [json_name = "dynamodb_target"];
 
-  S3Target s3_target = 15 [json_name = "s3_target"];
+  JdbcTarget jdbc_target = 15 [json_name = "jdbc_target"];
 
-  SchemaChangePolicy schema_change_policy = 16 [json_name = "schema_change_policy"];
+  S3Target s3_target = 16 [json_name = "s3_target"];
 
-  CatalogTarget catalog_target = 17 [json_name = "catalog_target"];
+  SchemaChangePolicy schema_change_policy = 17 [json_name = "schema_change_policy"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
 
@@ -12501,6 +12501,12 @@ message AwsGlueCrawler {
   string provider = 21;
 
   terraform.meta.Lifecycle lifecycle = 22;
+
+  message CatalogTarget {
+    string database_name = 1 [json_name = "database_name"];
+
+    repeated string tables = 2;
+  }
 
   message DynamodbTarget {
     string path = 1;
@@ -12524,12 +12530,6 @@ message AwsGlueCrawler {
     string delete_behavior = 1 [json_name = "delete_behavior"];
 
     string update_behavior = 2 [json_name = "update_behavior"];
-  }
-
-  message CatalogTarget {
-    string database_name = 1 [json_name = "database_name"];
-
-    repeated string tables = 2;
   }
 }
 
@@ -12619,17 +12619,11 @@ message AwsGlueSecurityConfiguration {
   terraform.meta.Lifecycle lifecycle = 8;
 
   message EncryptionConfiguration {
-    CloudwatchEncryption cloudwatch_encryption = 1 [json_name = "cloudwatch_encryption"];
+    JobBookmarksEncryption job_bookmarks_encryption = 1 [json_name = "job_bookmarks_encryption"];
 
-    JobBookmarksEncryption job_bookmarks_encryption = 2 [json_name = "job_bookmarks_encryption"];
+    S3Encryption s3_encryption = 2 [json_name = "s3_encryption"];
 
-    S3Encryption s3_encryption = 3 [json_name = "s3_encryption"];
-
-    message CloudwatchEncryption {
-      string cloudwatch_encryption_mode = 1 [json_name = "cloudwatch_encryption_mode"];
-
-      string kms_key_arn = 2 [json_name = "kms_key_arn"];
-    }
+    CloudwatchEncryption cloudwatch_encryption = 3 [json_name = "cloudwatch_encryption"];
 
     message JobBookmarksEncryption {
       string job_bookmarks_encryption_mode = 1 [json_name = "job_bookmarks_encryption_mode"];
@@ -12641,6 +12635,12 @@ message AwsGlueSecurityConfiguration {
       string kms_key_arn = 1 [json_name = "kms_key_arn"];
 
       string s3_encryption_mode = 2 [json_name = "s3_encryption_mode"];
+    }
+
+    message CloudwatchEncryption {
+      string cloudwatch_encryption_mode = 1 [json_name = "cloudwatch_encryption_mode"];
+
+      string kms_key_arn = 2 [json_name = "kms_key_arn"];
     }
   }
 }
@@ -12665,11 +12665,11 @@ message AwsGlueTrigger {
 
   string workflow_name = 9 [json_name = "workflow_name"];
 
-  Timeouts timeouts = 10;
+  Actions actions = 10;
 
-  Actions actions = 11;
+  Predicate predicate = 11;
 
-  Predicate predicate = 12;
+  Timeouts timeouts = 12;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 13;
 
@@ -12680,12 +12680,6 @@ message AwsGlueTrigger {
   string provider = 16;
 
   terraform.meta.Lifecycle lifecycle = 17;
-
-  message Timeouts {
-    string create = 1;
-
-    string delete = 2;
-  }
 
   message Actions {
     map<string, string> arguments = 1;
@@ -12713,6 +12707,12 @@ message AwsGlueTrigger {
 
       string state = 5;
     }
+  }
+
+  message Timeouts {
+    string create = 1;
+
+    string delete = 2;
   }
 }
 
@@ -13597,19 +13597,19 @@ message AwsInstance {
 
   repeated string vpc_security_group_ids = 37 [json_name = "vpc_security_group_ids"];
 
-  RootBlockDevice root_block_device = 38 [json_name = "root_block_device"];
+  CreditSpecification credit_specification = 38 [json_name = "credit_specification"];
 
-  Timeouts timeouts = 39;
+  EbsBlockDevice ebs_block_device = 39 [json_name = "ebs_block_device"];
 
-  CreditSpecification credit_specification = 40 [json_name = "credit_specification"];
+  EphemeralBlockDevice ephemeral_block_device = 40 [json_name = "ephemeral_block_device"];
 
-  EbsBlockDevice ebs_block_device = 41 [json_name = "ebs_block_device"];
+  MetadataOptions metadata_options = 41 [json_name = "metadata_options"];
 
-  EphemeralBlockDevice ephemeral_block_device = 42 [json_name = "ephemeral_block_device"];
+  NetworkInterface network_interface = 42 [json_name = "network_interface"];
 
-  MetadataOptions metadata_options = 43 [json_name = "metadata_options"];
+  RootBlockDevice root_block_device = 43 [json_name = "root_block_device"];
 
-  NetworkInterface network_interface = 44 [json_name = "network_interface"];
+  Timeouts timeouts = 44;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 45;
 
@@ -13620,32 +13620,6 @@ message AwsInstance {
   string provider = 48;
 
   terraform.meta.Lifecycle lifecycle = 49;
-
-  message RootBlockDevice {
-    bool delete_on_termination = 1 [json_name = "delete_on_termination"];
-
-    string device_name = 2 [json_name = "device_name"];
-
-    bool encrypted = 3;
-
-    int64 iops = 4;
-
-    string kms_key_id = 5 [json_name = "kms_key_id"];
-
-    string volume_id = 6 [json_name = "volume_id"];
-
-    int64 volume_size = 7 [json_name = "volume_size"];
-
-    string volume_type = 8 [json_name = "volume_type"];
-  }
-
-  message Timeouts {
-    string create = 1;
-
-    string delete = 2;
-
-    string update = 3;
-  }
 
   message CreditSpecification {
     string cpu_credits = 1 [json_name = "cpu_credits"];
@@ -13693,6 +13667,32 @@ message AwsInstance {
     int64 device_index = 2 [json_name = "device_index"];
 
     string network_interface_id = 3 [json_name = "network_interface_id"];
+  }
+
+  message RootBlockDevice {
+    bool delete_on_termination = 1 [json_name = "delete_on_termination"];
+
+    string device_name = 2 [json_name = "device_name"];
+
+    bool encrypted = 3;
+
+    int64 iops = 4;
+
+    string kms_key_id = 5 [json_name = "kms_key_id"];
+
+    string volume_id = 6 [json_name = "volume_id"];
+
+    int64 volume_size = 7 [json_name = "volume_size"];
+
+    string volume_type = 8 [json_name = "volume_type"];
+  }
+
+  message Timeouts {
+    string create = 1;
+
+    string delete = 2;
+
+    string update = 3;
   }
 }
 
@@ -13900,27 +13900,27 @@ message AwsIotTopicRule {
 
   string sql_version = 7 [json_name = "sql_version"];
 
-  CloudwatchMetric cloudwatch_metric = 8 [json_name = "cloudwatch_metric"];
+  CloudwatchAlarm cloudwatch_alarm = 8 [json_name = "cloudwatch_alarm"];
 
-  Firehose firehose = 9;
+  CloudwatchMetric cloudwatch_metric = 9 [json_name = "cloudwatch_metric"];
 
-  Kinesis kinesis = 10;
+  Dynamodb dynamodb = 10;
 
-  Lambda lambda = 11;
+  Firehose firehose = 11;
 
-  S3 s3 = 12;
+  Lambda lambda = 12;
 
-  Sns sns = 13;
+  Sqs sqs = 13;
 
-  Sqs sqs = 14;
+  Elasticsearch elasticsearch = 14;
 
-  CloudwatchAlarm cloudwatch_alarm = 15 [json_name = "cloudwatch_alarm"];
+  Kinesis kinesis = 15;
 
-  Dynamodb dynamodb = 16;
+  Republish republish = 16;
 
-  Elasticsearch elasticsearch = 17;
+  S3 s3 = 17;
 
-  Republish republish = 18;
+  Sns sns = 18;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 19;
 
@@ -13931,6 +13931,16 @@ message AwsIotTopicRule {
   string provider = 22;
 
   terraform.meta.Lifecycle lifecycle = 23;
+
+  message CloudwatchAlarm {
+    string alarm_name = 1 [json_name = "alarm_name"];
+
+    string role_arn = 2 [json_name = "role_arn"];
+
+    string state_reason = 3 [json_name = "state_reason"];
+
+    string state_value = 4 [json_name = "state_value"];
+  }
 
   message CloudwatchMetric {
     string metric_name = 1 [json_name = "metric_name"];
@@ -13944,60 +13954,6 @@ message AwsIotTopicRule {
     string metric_value = 5 [json_name = "metric_value"];
 
     string role_arn = 6 [json_name = "role_arn"];
-  }
-
-  message Firehose {
-    string delivery_stream_name = 1 [json_name = "delivery_stream_name"];
-
-    string role_arn = 2 [json_name = "role_arn"];
-
-    string separator = 3;
-  }
-
-  message Kinesis {
-    string partition_key = 1 [json_name = "partition_key"];
-
-    string role_arn = 2 [json_name = "role_arn"];
-
-    string stream_name = 3 [json_name = "stream_name"];
-  }
-
-  message Lambda {
-    string function_arn = 1 [json_name = "function_arn"];
-  }
-
-  message S3 {
-    string bucket_name = 1 [json_name = "bucket_name"];
-
-    string key = 2;
-
-    string role_arn = 3 [json_name = "role_arn"];
-  }
-
-  message Sns {
-    string message_format = 1 [json_name = "message_format"];
-
-    string role_arn = 2 [json_name = "role_arn"];
-
-    string target_arn = 3 [json_name = "target_arn"];
-  }
-
-  message Sqs {
-    string queue_url = 1 [json_name = "queue_url"];
-
-    string role_arn = 2 [json_name = "role_arn"];
-
-    bool use_base64 = 3 [json_name = "use_base64"];
-  }
-
-  message CloudwatchAlarm {
-    string alarm_name = 1 [json_name = "alarm_name"];
-
-    string role_arn = 2 [json_name = "role_arn"];
-
-    string state_reason = 3 [json_name = "state_reason"];
-
-    string state_value = 4 [json_name = "state_value"];
   }
 
   message Dynamodb {
@@ -14020,6 +13976,26 @@ message AwsIotTopicRule {
     string table_name = 9 [json_name = "table_name"];
   }
 
+  message Firehose {
+    string delivery_stream_name = 1 [json_name = "delivery_stream_name"];
+
+    string role_arn = 2 [json_name = "role_arn"];
+
+    string separator = 3;
+  }
+
+  message Lambda {
+    string function_arn = 1 [json_name = "function_arn"];
+  }
+
+  message Sqs {
+    string queue_url = 1 [json_name = "queue_url"];
+
+    string role_arn = 2 [json_name = "role_arn"];
+
+    bool use_base64 = 3 [json_name = "use_base64"];
+  }
+
   message Elasticsearch {
     string endpoint = 1;
 
@@ -14032,10 +14008,34 @@ message AwsIotTopicRule {
     string type = 5;
   }
 
+  message Kinesis {
+    string partition_key = 1 [json_name = "partition_key"];
+
+    string role_arn = 2 [json_name = "role_arn"];
+
+    string stream_name = 3 [json_name = "stream_name"];
+  }
+
   message Republish {
     string role_arn = 1 [json_name = "role_arn"];
 
     string topic = 2;
+  }
+
+  message S3 {
+    string bucket_name = 1 [json_name = "bucket_name"];
+
+    string key = 2;
+
+    string role_arn = 3 [json_name = "role_arn"];
+  }
+
+  message Sns {
+    string message_format = 1 [json_name = "message_format"];
+
+    string role_arn = 2 [json_name = "role_arn"];
+
+    string target_arn = 3 [json_name = "target_arn"];
   }
 }
 
@@ -14088,13 +14088,13 @@ message AwsKinesisAnalyticsApplication {
 
   int64 version = 10;
 
-  CloudwatchLoggingOptions cloudwatch_logging_options = 11 [json_name = "cloudwatch_logging_options"];
+  Outputs outputs = 11;
 
-  Inputs inputs = 12;
+  ReferenceDataSources reference_data_sources = 12 [json_name = "reference_data_sources"];
 
-  Outputs outputs = 13;
+  CloudwatchLoggingOptions cloudwatch_logging_options = 13 [json_name = "cloudwatch_logging_options"];
 
-  ReferenceDataSources reference_data_sources = 14 [json_name = "reference_data_sources"];
+  Inputs inputs = 14;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
@@ -14105,6 +14105,98 @@ message AwsKinesisAnalyticsApplication {
   string provider = 18;
 
   terraform.meta.Lifecycle lifecycle = 19;
+
+  message Outputs {
+    string id = 1;
+
+    string name = 2;
+
+    KinesisFirehose kinesis_firehose = 3 [json_name = "kinesis_firehose"];
+
+    KinesisStream kinesis_stream = 4 [json_name = "kinesis_stream"];
+
+    Lambda lambda = 5;
+
+    Schema schema = 6;
+
+    message KinesisFirehose {
+      string resource_arn = 1 [json_name = "resource_arn"];
+
+      string role_arn = 2 [json_name = "role_arn"];
+    }
+
+    message KinesisStream {
+      string resource_arn = 1 [json_name = "resource_arn"];
+
+      string role_arn = 2 [json_name = "role_arn"];
+    }
+
+    message Lambda {
+      string resource_arn = 1 [json_name = "resource_arn"];
+
+      string role_arn = 2 [json_name = "role_arn"];
+    }
+
+    message Schema {
+      string record_format_type = 1 [json_name = "record_format_type"];
+    }
+  }
+
+  message ReferenceDataSources {
+    string id = 1;
+
+    string table_name = 2 [json_name = "table_name"];
+
+    S3 s3 = 3;
+
+    Schema schema = 4;
+
+    message S3 {
+      string bucket_arn = 1 [json_name = "bucket_arn"];
+
+      string file_key = 2 [json_name = "file_key"];
+
+      string role_arn = 3 [json_name = "role_arn"];
+    }
+
+    message Schema {
+      string record_encoding = 1 [json_name = "record_encoding"];
+
+      RecordFormat record_format = 2 [json_name = "record_format"];
+
+      RecordColumns record_columns = 3 [json_name = "record_columns"];
+
+      message RecordFormat {
+        string record_format_type = 1 [json_name = "record_format_type"];
+
+        MappingParameters mapping_parameters = 2 [json_name = "mapping_parameters"];
+
+        message MappingParameters {
+          Csv csv = 1;
+
+          Json json = 2;
+
+          message Csv {
+            string record_column_delimiter = 1 [json_name = "record_column_delimiter"];
+
+            string record_row_delimiter = 2 [json_name = "record_row_delimiter"];
+          }
+
+          message Json {
+            string record_row_path = 1 [json_name = "record_row_path"];
+          }
+        }
+      }
+
+      message RecordColumns {
+        string mapping = 1;
+
+        string name = 2;
+
+        string sql_type = 3 [json_name = "sql_type"];
+      }
+    }
+  }
 
   message CloudwatchLoggingOptions {
     string id = 1;
@@ -14167,17 +14259,9 @@ message AwsKinesisAnalyticsApplication {
     message Schema {
       string record_encoding = 1 [json_name = "record_encoding"];
 
-      RecordColumns record_columns = 2 [json_name = "record_columns"];
+      RecordFormat record_format = 2 [json_name = "record_format"];
 
-      RecordFormat record_format = 3 [json_name = "record_format"];
-
-      message RecordColumns {
-        string mapping = 1;
-
-        string name = 2;
-
-        string sql_type = 3 [json_name = "sql_type"];
-      }
+      RecordColumns record_columns = 3 [json_name = "record_columns"];
 
       message RecordFormat {
         string record_format_type = 1 [json_name = "record_format_type"];
@@ -14185,83 +14269,21 @@ message AwsKinesisAnalyticsApplication {
         MappingParameters mapping_parameters = 2 [json_name = "mapping_parameters"];
 
         message MappingParameters {
-          Csv csv = 1;
+          Json json = 1;
 
-          Json json = 2;
+          Csv csv = 2;
+
+          message Json {
+            string record_row_path = 1 [json_name = "record_row_path"];
+          }
 
           message Csv {
             string record_column_delimiter = 1 [json_name = "record_column_delimiter"];
 
             string record_row_delimiter = 2 [json_name = "record_row_delimiter"];
           }
-
-          message Json {
-            string record_row_path = 1 [json_name = "record_row_path"];
-          }
         }
       }
-    }
-  }
-
-  message Outputs {
-    string id = 1;
-
-    string name = 2;
-
-    Lambda lambda = 3;
-
-    Schema schema = 4;
-
-    KinesisFirehose kinesis_firehose = 5 [json_name = "kinesis_firehose"];
-
-    KinesisStream kinesis_stream = 6 [json_name = "kinesis_stream"];
-
-    message Lambda {
-      string resource_arn = 1 [json_name = "resource_arn"];
-
-      string role_arn = 2 [json_name = "role_arn"];
-    }
-
-    message Schema {
-      string record_format_type = 1 [json_name = "record_format_type"];
-    }
-
-    message KinesisFirehose {
-      string resource_arn = 1 [json_name = "resource_arn"];
-
-      string role_arn = 2 [json_name = "role_arn"];
-    }
-
-    message KinesisStream {
-      string resource_arn = 1 [json_name = "resource_arn"];
-
-      string role_arn = 2 [json_name = "role_arn"];
-    }
-  }
-
-  message ReferenceDataSources {
-    string id = 1;
-
-    string table_name = 2 [json_name = "table_name"];
-
-    S3 s3 = 3;
-
-    Schema schema = 4;
-
-    message S3 {
-      string bucket_arn = 1 [json_name = "bucket_arn"];
-
-      string file_key = 2 [json_name = "file_key"];
-
-      string role_arn = 3 [json_name = "role_arn"];
-    }
-
-    message Schema {
-      string record_encoding = 1 [json_name = "record_encoding"];
-
-      RecordColumns record_columns = 2 [json_name = "record_columns"];
-
-      RecordFormat record_format = 3 [json_name = "record_format"];
 
       message RecordColumns {
         string mapping = 1;
@@ -14269,28 +14291,6 @@ message AwsKinesisAnalyticsApplication {
         string name = 2;
 
         string sql_type = 3 [json_name = "sql_type"];
-      }
-
-      message RecordFormat {
-        string record_format_type = 1 [json_name = "record_format_type"];
-
-        MappingParameters mapping_parameters = 2 [json_name = "mapping_parameters"];
-
-        message MappingParameters {
-          Csv csv = 1;
-
-          Json json = 2;
-
-          message Csv {
-            string record_column_delimiter = 1 [json_name = "record_column_delimiter"];
-
-            string record_row_delimiter = 2 [json_name = "record_row_delimiter"];
-          }
-
-          message Json {
-            string record_row_path = 1 [json_name = "record_row_path"];
-          }
-        }
       }
     }
   }
@@ -14312,19 +14312,19 @@ message AwsKinesisFirehoseDeliveryStream {
 
   string version_id = 7 [json_name = "version_id"];
 
-  ServerSideEncryption server_side_encryption = 8 [json_name = "server_side_encryption"];
+  SplunkConfiguration splunk_configuration = 8 [json_name = "splunk_configuration"];
 
-  SplunkConfiguration splunk_configuration = 9 [json_name = "splunk_configuration"];
+  ElasticsearchConfiguration elasticsearch_configuration = 9 [json_name = "elasticsearch_configuration"];
 
-  ElasticsearchConfiguration elasticsearch_configuration = 10 [json_name = "elasticsearch_configuration"];
+  ExtendedS3Configuration extended_s3_configuration = 10 [json_name = "extended_s3_configuration"];
 
-  ExtendedS3Configuration extended_s3_configuration = 11 [json_name = "extended_s3_configuration"];
+  KinesisSourceConfiguration kinesis_source_configuration = 11 [json_name = "kinesis_source_configuration"];
 
-  KinesisSourceConfiguration kinesis_source_configuration = 12 [json_name = "kinesis_source_configuration"];
+  RedshiftConfiguration redshift_configuration = 12 [json_name = "redshift_configuration"];
 
-  RedshiftConfiguration redshift_configuration = 13 [json_name = "redshift_configuration"];
+  S3Configuration s3_configuration = 13 [json_name = "s3_configuration"];
 
-  S3Configuration s3_configuration = 14 [json_name = "s3_configuration"];
+  ServerSideEncryption server_side_encryption = 14 [json_name = "server_side_encryption"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
@@ -14335,10 +14335,6 @@ message AwsKinesisFirehoseDeliveryStream {
   string provider = 18;
 
   terraform.meta.Lifecycle lifecycle = 19;
-
-  message ServerSideEncryption {
-    bool enabled = 1;
-  }
 
   message SplunkConfiguration {
     int64 hec_acknowledgment_timeout = 1 [json_name = "hec_acknowledgment_timeout"];
@@ -14504,9 +14500,23 @@ message AwsKinesisFirehoseDeliveryStream {
         Serializer serializer = 1;
 
         message Serializer {
-          OrcSerDe orc_ser_de = 1 [json_name = "orc_ser_de"];
+          ParquetSerDe parquet_ser_de = 1 [json_name = "parquet_ser_de"];
 
-          ParquetSerDe parquet_ser_de = 2 [json_name = "parquet_ser_de"];
+          OrcSerDe orc_ser_de = 2 [json_name = "orc_ser_de"];
+
+          message ParquetSerDe {
+            int64 block_size_bytes = 1 [json_name = "block_size_bytes"];
+
+            string compression = 2;
+
+            bool enable_dictionary_compression = 3 [json_name = "enable_dictionary_compression"];
+
+            int64 max_padding_bytes = 4 [json_name = "max_padding_bytes"];
+
+            int64 page_size_bytes = 5 [json_name = "page_size_bytes"];
+
+            string writer_version = 6 [json_name = "writer_version"];
+          }
 
           message OrcSerDe {
             int64 block_size_bytes = 1 [json_name = "block_size_bytes"];
@@ -14528,20 +14538,6 @@ message AwsKinesisFirehoseDeliveryStream {
             int64 row_index_stride = 9 [json_name = "row_index_stride"];
 
             int64 stripe_size_bytes = 10 [json_name = "stripe_size_bytes"];
-          }
-
-          message ParquetSerDe {
-            int64 block_size_bytes = 1 [json_name = "block_size_bytes"];
-
-            string compression = 2;
-
-            bool enable_dictionary_compression = 3 [json_name = "enable_dictionary_compression"];
-
-            int64 max_padding_bytes = 4 [json_name = "max_padding_bytes"];
-
-            int64 page_size_bytes = 5 [json_name = "page_size_bytes"];
-
-            string writer_version = 6 [json_name = "writer_version"];
           }
         }
       }
@@ -14714,6 +14710,10 @@ message AwsKinesisFirehoseDeliveryStream {
 
       string log_stream_name = 3 [json_name = "log_stream_name"];
     }
+  }
+
+  message ServerSideEncryption {
+    bool enabled = 1;
   }
 }
 
@@ -15176,15 +15176,15 @@ message AwsLambdaFunctionEventInvokeConfig {
   terraform.meta.Lifecycle lifecycle = 11;
 
   message DestinationConfig {
-    OnFailure on_failure = 1 [json_name = "on_failure"];
+    OnSuccess on_success = 1 [json_name = "on_success"];
 
-    OnSuccess on_success = 2 [json_name = "on_success"];
+    OnFailure on_failure = 2 [json_name = "on_failure"];
 
-    message OnFailure {
+    message OnSuccess {
       string destination = 1;
     }
 
-    message OnSuccess {
+    message OnFailure {
       string destination = 1;
     }
   }
@@ -15426,35 +15426,35 @@ message AwsLaunchTemplate {
 
   repeated string vpc_security_group_ids = 19 [json_name = "vpc_security_group_ids"];
 
-  TagSpecifications tag_specifications = 20 [json_name = "tag_specifications"];
+  ElasticInferenceAccelerator elastic_inference_accelerator = 20 [json_name = "elastic_inference_accelerator"];
 
-  CapacityReservationSpecification capacity_reservation_specification = 21 [json_name = "capacity_reservation_specification"];
+  TagSpecifications tag_specifications = 21 [json_name = "tag_specifications"];
 
-  CpuOptions cpu_options = 22 [json_name = "cpu_options"];
+  HibernationOptions hibernation_options = 22 [json_name = "hibernation_options"];
 
-  ElasticInferenceAccelerator elastic_inference_accelerator = 23 [json_name = "elastic_inference_accelerator"];
+  MetadataOptions metadata_options = 23 [json_name = "metadata_options"];
 
-  HibernationOptions hibernation_options = 24 [json_name = "hibernation_options"];
+  Monitoring monitoring = 24;
 
-  MetadataOptions metadata_options = 25 [json_name = "metadata_options"];
+  Placement placement = 25;
 
-  Placement placement = 26;
+  CapacityReservationSpecification capacity_reservation_specification = 26 [json_name = "capacity_reservation_specification"];
 
-  LicenseSpecification license_specification = 27 [json_name = "license_specification"];
+  CreditSpecification credit_specification = 27 [json_name = "credit_specification"];
 
-  Monitoring monitoring = 28;
+  ElasticGpuSpecifications elastic_gpu_specifications = 28 [json_name = "elastic_gpu_specifications"];
 
-  NetworkInterfaces network_interfaces = 29 [json_name = "network_interfaces"];
+  IamInstanceProfile iam_instance_profile = 29 [json_name = "iam_instance_profile"];
 
-  BlockDeviceMappings block_device_mappings = 30 [json_name = "block_device_mappings"];
+  InstanceMarketOptions instance_market_options = 30 [json_name = "instance_market_options"];
 
-  InstanceMarketOptions instance_market_options = 31 [json_name = "instance_market_options"];
+  LicenseSpecification license_specification = 31 [json_name = "license_specification"];
 
-  CreditSpecification credit_specification = 32 [json_name = "credit_specification"];
+  NetworkInterfaces network_interfaces = 32 [json_name = "network_interfaces"];
 
-  ElasticGpuSpecifications elastic_gpu_specifications = 33 [json_name = "elastic_gpu_specifications"];
+  BlockDeviceMappings block_device_mappings = 33 [json_name = "block_device_mappings"];
 
-  IamInstanceProfile iam_instance_profile = 34 [json_name = "iam_instance_profile"];
+  CpuOptions cpu_options = 34 [json_name = "cpu_options"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 35;
 
@@ -15466,30 +15466,14 @@ message AwsLaunchTemplate {
 
   terraform.meta.Lifecycle lifecycle = 39;
 
+  message ElasticInferenceAccelerator {
+    string type = 1;
+  }
+
   message TagSpecifications {
     string resource_type = 1 [json_name = "resource_type"];
 
     map<string, string> tags = 2;
-  }
-
-  message CapacityReservationSpecification {
-    string capacity_reservation_preference = 1 [json_name = "capacity_reservation_preference"];
-
-    CapacityReservationTarget capacity_reservation_target = 2 [json_name = "capacity_reservation_target"];
-
-    message CapacityReservationTarget {
-      string capacity_reservation_id = 1 [json_name = "capacity_reservation_id"];
-    }
-  }
-
-  message CpuOptions {
-    int64 core_count = 1 [json_name = "core_count"];
-
-    int64 threads_per_core = 2 [json_name = "threads_per_core"];
-  }
-
-  message ElasticInferenceAccelerator {
-    string type = 1;
   }
 
   message HibernationOptions {
@@ -15502,6 +15486,10 @@ message AwsLaunchTemplate {
     int64 http_put_response_hop_limit = 2 [json_name = "http_put_response_hop_limit"];
 
     string http_tokens = 3 [json_name = "http_tokens"];
+  }
+
+  message Monitoring {
+    bool enabled = 1;
   }
 
   message Placement {
@@ -15518,12 +15506,50 @@ message AwsLaunchTemplate {
     string tenancy = 6;
   }
 
-  message LicenseSpecification {
-    string license_configuration_arn = 1 [json_name = "license_configuration_arn"];
+  message CapacityReservationSpecification {
+    string capacity_reservation_preference = 1 [json_name = "capacity_reservation_preference"];
+
+    CapacityReservationTarget capacity_reservation_target = 2 [json_name = "capacity_reservation_target"];
+
+    message CapacityReservationTarget {
+      string capacity_reservation_id = 1 [json_name = "capacity_reservation_id"];
+    }
   }
 
-  message Monitoring {
-    bool enabled = 1;
+  message CreditSpecification {
+    string cpu_credits = 1 [json_name = "cpu_credits"];
+  }
+
+  message ElasticGpuSpecifications {
+    string type = 1;
+  }
+
+  message IamInstanceProfile {
+    string arn = 1;
+
+    string name = 2;
+  }
+
+  message InstanceMarketOptions {
+    string market_type = 1 [json_name = "market_type"];
+
+    SpotOptions spot_options = 2 [json_name = "spot_options"];
+
+    message SpotOptions {
+      int64 block_duration_minutes = 1 [json_name = "block_duration_minutes"];
+
+      string instance_interruption_behavior = 2 [json_name = "instance_interruption_behavior"];
+
+      string max_price = 3 [json_name = "max_price"];
+
+      string spot_instance_type = 4 [json_name = "spot_instance_type"];
+
+      string valid_until = 5 [json_name = "valid_until"];
+    }
+  }
+
+  message LicenseSpecification {
+    string license_configuration_arn = 1 [json_name = "license_configuration_arn"];
   }
 
   message NetworkInterfaces {
@@ -15578,36 +15604,10 @@ message AwsLaunchTemplate {
     }
   }
 
-  message InstanceMarketOptions {
-    string market_type = 1 [json_name = "market_type"];
+  message CpuOptions {
+    int64 core_count = 1 [json_name = "core_count"];
 
-    SpotOptions spot_options = 2 [json_name = "spot_options"];
-
-    message SpotOptions {
-      int64 block_duration_minutes = 1 [json_name = "block_duration_minutes"];
-
-      string instance_interruption_behavior = 2 [json_name = "instance_interruption_behavior"];
-
-      string max_price = 3 [json_name = "max_price"];
-
-      string spot_instance_type = 4 [json_name = "spot_instance_type"];
-
-      string valid_until = 5 [json_name = "valid_until"];
-    }
-  }
-
-  message CreditSpecification {
-    string cpu_credits = 1 [json_name = "cpu_credits"];
-  }
-
-  message ElasticGpuSpecifications {
-    string type = 1;
-  }
-
-  message IamInstanceProfile {
-    string arn = 1;
-
-    string name = 2;
+    int64 threads_per_core = 2 [json_name = "threads_per_core"];
   }
 }
 
@@ -15857,9 +15857,9 @@ message AwsLbListenerRule {
 
   int64 priority = 4;
 
-  Action action = 5;
+  Condition condition = 5;
 
-  Condition condition = 6;
+  Action action = 6;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
 
@@ -15870,6 +15870,52 @@ message AwsLbListenerRule {
   string provider = 10;
 
   terraform.meta.Lifecycle lifecycle = 11;
+
+  message Condition {
+    string field = 1;
+
+    repeated string values = 2;
+
+    SourceIp source_ip = 3 [json_name = "source_ip"];
+
+    HostHeader host_header = 4 [json_name = "host_header"];
+
+    HttpHeader http_header = 5 [json_name = "http_header"];
+
+    HttpRequestMethod http_request_method = 6 [json_name = "http_request_method"];
+
+    PathPattern path_pattern = 7 [json_name = "path_pattern"];
+
+    QueryString query_string = 8 [json_name = "query_string"];
+
+    message SourceIp {
+      repeated string values = 1;
+    }
+
+    message HostHeader {
+      repeated string values = 1;
+    }
+
+    message HttpHeader {
+      string http_header_name = 1 [json_name = "http_header_name"];
+
+      repeated string values = 2;
+    }
+
+    message HttpRequestMethod {
+      repeated string values = 1;
+    }
+
+    message PathPattern {
+      repeated string values = 1;
+    }
+
+    message QueryString {
+      string key = 1;
+
+      string value = 2;
+    }
+  }
 
   message Action {
     int64 order = 1;
@@ -15948,52 +15994,6 @@ message AwsLbListenerRule {
       string user_pool_client_id = 7 [json_name = "user_pool_client_id"];
 
       string user_pool_domain = 8 [json_name = "user_pool_domain"];
-    }
-  }
-
-  message Condition {
-    string field = 1;
-
-    repeated string values = 2;
-
-    HostHeader host_header = 3 [json_name = "host_header"];
-
-    HttpHeader http_header = 4 [json_name = "http_header"];
-
-    HttpRequestMethod http_request_method = 5 [json_name = "http_request_method"];
-
-    PathPattern path_pattern = 6 [json_name = "path_pattern"];
-
-    QueryString query_string = 7 [json_name = "query_string"];
-
-    SourceIp source_ip = 8 [json_name = "source_ip"];
-
-    message HostHeader {
-      repeated string values = 1;
-    }
-
-    message HttpHeader {
-      string http_header_name = 1 [json_name = "http_header_name"];
-
-      repeated string values = 2;
-    }
-
-    message HttpRequestMethod {
-      repeated string values = 1;
-    }
-
-    message PathPattern {
-      repeated string values = 1;
-    }
-
-    message QueryString {
-      string key = 1;
-
-      string value = 2;
-    }
-
-    message SourceIp {
-      repeated string values = 1;
     }
   }
 }
@@ -16604,15 +16604,15 @@ message AwsMqBroker {
 
   map<string, string> tags = 14;
 
-  EncryptionOptions encryption_options = 15 [json_name = "encryption_options"];
+  Configuration configuration = 15;
 
-  Logs logs = 16;
+  EncryptionOptions encryption_options = 16 [json_name = "encryption_options"];
 
-  MaintenanceWindowStartTime maintenance_window_start_time = 17 [json_name = "maintenance_window_start_time"];
+  Logs logs = 17;
 
-  User user = 18;
+  MaintenanceWindowStartTime maintenance_window_start_time = 18 [json_name = "maintenance_window_start_time"];
 
-  Configuration configuration = 19;
+  User user = 19;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 20;
 
@@ -16633,6 +16633,12 @@ message AwsMqBroker {
 
     //ip_address: string
     string ip_address = 3 [json_name = "ip_address"];
+  }
+
+  message Configuration {
+    string id = 1;
+
+    int64 revision = 2;
   }
 
   message EncryptionOptions {
@@ -16663,12 +16669,6 @@ message AwsMqBroker {
     string password = 3;
 
     string username = 4;
-  }
-
-  message Configuration {
-    string id = 1;
-
-    int64 revision = 2;
   }
 }
 
@@ -16727,17 +16727,17 @@ message AwsMskCluster {
 
   string zookeeper_connect_string = 11 [json_name = "zookeeper_connect_string"];
 
-  LoggingInfo logging_info = 12 [json_name = "logging_info"];
+  BrokerNodeGroupInfo broker_node_group_info = 12 [json_name = "broker_node_group_info"];
 
-  OpenMonitoring open_monitoring = 13 [json_name = "open_monitoring"];
+  ClientAuthentication client_authentication = 13 [json_name = "client_authentication"];
 
-  BrokerNodeGroupInfo broker_node_group_info = 14 [json_name = "broker_node_group_info"];
+  ConfigurationInfo configuration_info = 14 [json_name = "configuration_info"];
 
-  ClientAuthentication client_authentication = 15 [json_name = "client_authentication"];
+  EncryptionInfo encryption_info = 15 [json_name = "encryption_info"];
 
-  ConfigurationInfo configuration_info = 16 [json_name = "configuration_info"];
+  LoggingInfo logging_info = 16 [json_name = "logging_info"];
 
-  EncryptionInfo encryption_info = 17 [json_name = "encryption_info"];
+  OpenMonitoring open_monitoring = 17 [json_name = "open_monitoring"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 18;
 
@@ -16748,56 +16748,6 @@ message AwsMskCluster {
   string provider = 21;
 
   terraform.meta.Lifecycle lifecycle = 22;
-
-  message LoggingInfo {
-    BrokerLogs broker_logs = 1 [json_name = "broker_logs"];
-
-    message BrokerLogs {
-      CloudwatchLogs cloudwatch_logs = 1 [json_name = "cloudwatch_logs"];
-
-      Firehose firehose = 2;
-
-      S3 s3 = 3;
-
-      message CloudwatchLogs {
-        bool enabled = 1;
-
-        string log_group = 2 [json_name = "log_group"];
-      }
-
-      message Firehose {
-        string delivery_stream = 1 [json_name = "delivery_stream"];
-
-        bool enabled = 2;
-      }
-
-      message S3 {
-        string bucket = 1;
-
-        bool enabled = 2;
-
-        string prefix = 3;
-      }
-    }
-  }
-
-  message OpenMonitoring {
-    Prometheus prometheus = 1;
-
-    message Prometheus {
-      JmxExporter jmx_exporter = 1 [json_name = "jmx_exporter"];
-
-      NodeExporter node_exporter = 2 [json_name = "node_exporter"];
-
-      message JmxExporter {
-        bool enabled_in_broker = 1 [json_name = "enabled_in_broker"];
-      }
-
-      message NodeExporter {
-        bool enabled_in_broker = 1 [json_name = "enabled_in_broker"];
-      }
-    }
-  }
 
   message BrokerNodeGroupInfo {
     string az_distribution = 1 [json_name = "az_distribution"];
@@ -16834,6 +16784,56 @@ message AwsMskCluster {
       string client_broker = 1 [json_name = "client_broker"];
 
       bool in_cluster = 2 [json_name = "in_cluster"];
+    }
+  }
+
+  message LoggingInfo {
+    BrokerLogs broker_logs = 1 [json_name = "broker_logs"];
+
+    message BrokerLogs {
+      S3 s3 = 1;
+
+      CloudwatchLogs cloudwatch_logs = 2 [json_name = "cloudwatch_logs"];
+
+      Firehose firehose = 3;
+
+      message S3 {
+        string bucket = 1;
+
+        bool enabled = 2;
+
+        string prefix = 3;
+      }
+
+      message CloudwatchLogs {
+        bool enabled = 1;
+
+        string log_group = 2 [json_name = "log_group"];
+      }
+
+      message Firehose {
+        string delivery_stream = 1 [json_name = "delivery_stream"];
+
+        bool enabled = 2;
+      }
+    }
+  }
+
+  message OpenMonitoring {
+    Prometheus prometheus = 1;
+
+    message Prometheus {
+      JmxExporter jmx_exporter = 1 [json_name = "jmx_exporter"];
+
+      NodeExporter node_exporter = 2 [json_name = "node_exporter"];
+
+      message JmxExporter {
+        bool enabled_in_broker = 1 [json_name = "enabled_in_broker"];
+      }
+
+      message NodeExporter {
+        bool enabled_in_broker = 1 [json_name = "enabled_in_broker"];
+      }
     }
   }
 }
@@ -17870,13 +17870,13 @@ message AwsOpsworksInstance {
 
   string virtualization_type = 43 [json_name = "virtualization_type"];
 
-  Timeouts timeouts = 44;
+  EbsBlockDevice ebs_block_device = 44 [json_name = "ebs_block_device"];
 
-  EbsBlockDevice ebs_block_device = 45 [json_name = "ebs_block_device"];
+  EphemeralBlockDevice ephemeral_block_device = 45 [json_name = "ephemeral_block_device"];
 
-  EphemeralBlockDevice ephemeral_block_device = 46 [json_name = "ephemeral_block_device"];
+  RootBlockDevice root_block_device = 46 [json_name = "root_block_device"];
 
-  RootBlockDevice root_block_device = 47 [json_name = "root_block_device"];
+  Timeouts timeouts = 47;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 48;
 
@@ -17887,14 +17887,6 @@ message AwsOpsworksInstance {
   string provider = 51;
 
   terraform.meta.Lifecycle lifecycle = 52;
-
-  message Timeouts {
-    string create = 1;
-
-    string delete = 2;
-
-    string update = 3;
-  }
 
   message EbsBlockDevice {
     bool delete_on_termination = 1 [json_name = "delete_on_termination"];
@@ -17924,6 +17916,14 @@ message AwsOpsworksInstance {
     int64 volume_size = 3 [json_name = "volume_size"];
 
     string volume_type = 4 [json_name = "volume_type"];
+  }
+
+  message Timeouts {
+    string create = 1;
+
+    string delete = 2;
+
+    string update = 3;
   }
 }
 
@@ -20231,15 +20231,15 @@ message AwsRoute53Record {
 
   string zone_id = 11 [json_name = "zone_id"];
 
-  LatencyRoutingPolicy latency_routing_policy = 12 [json_name = "latency_routing_policy"];
+  Alias alias = 12;
 
-  WeightedRoutingPolicy weighted_routing_policy = 13 [json_name = "weighted_routing_policy"];
+  FailoverRoutingPolicy failover_routing_policy = 13 [json_name = "failover_routing_policy"];
 
-  Alias alias = 14;
+  GeolocationRoutingPolicy geolocation_routing_policy = 14 [json_name = "geolocation_routing_policy"];
 
-  FailoverRoutingPolicy failover_routing_policy = 15 [json_name = "failover_routing_policy"];
+  LatencyRoutingPolicy latency_routing_policy = 15 [json_name = "latency_routing_policy"];
 
-  GeolocationRoutingPolicy geolocation_routing_policy = 16 [json_name = "geolocation_routing_policy"];
+  WeightedRoutingPolicy weighted_routing_policy = 16 [json_name = "weighted_routing_policy"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 17;
 
@@ -20250,14 +20250,6 @@ message AwsRoute53Record {
   string provider = 20;
 
   terraform.meta.Lifecycle lifecycle = 21;
-
-  message LatencyRoutingPolicy {
-    string region = 1;
-  }
-
-  message WeightedRoutingPolicy {
-    int64 weight = 1;
-  }
 
   message Alias {
     bool evaluate_target_health = 1 [json_name = "evaluate_target_health"];
@@ -20277,6 +20269,14 @@ message AwsRoute53Record {
     string country = 2;
 
     string subdivision = 3;
+  }
+
+  message LatencyRoutingPolicy {
+    string region = 1;
+  }
+
+  message WeightedRoutingPolicy {
+    int64 weight = 1;
   }
 }
 
@@ -20650,23 +20650,23 @@ message AwsS3Bucket {
 
   string website_endpoint = 16 [json_name = "website_endpoint"];
 
-  Website website = 17;
+  CorsRule cors_rule = 17 [json_name = "cors_rule"];
 
-  Grant grant = 18;
+  LifecycleRule lifecycle_rule = 18 [json_name = "lifecycle_rule"];
 
-  ServerSideEncryptionConfiguration server_side_encryption_configuration = 19 [json_name = "server_side_encryption_configuration"];
+  ReplicationConfiguration replication_configuration = 19 [json_name = "replication_configuration"];
 
   Versioning versioning = 20;
 
-  ObjectLockConfiguration object_lock_configuration = 21 [json_name = "object_lock_configuration"];
+  Website website = 21;
 
-  ReplicationConfiguration replication_configuration = 22 [json_name = "replication_configuration"];
+  Grant grant = 22;
 
-  CorsRule cors_rule = 23 [json_name = "cors_rule"];
+  Logging logging = 23;
 
-  LifecycleRule lifecycle_rule = 24 [json_name = "lifecycle_rule"];
+  ObjectLockConfiguration object_lock_configuration = 24 [json_name = "object_lock_configuration"];
 
-  Logging logging = 25;
+  ServerSideEncryptionConfiguration server_side_encryption_configuration = 25 [json_name = "server_side_encryption_configuration"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 26;
 
@@ -20677,116 +20677,6 @@ message AwsS3Bucket {
   string provider = 29;
 
   terraform.meta.Lifecycle lifecycle = 30;
-
-  message Website {
-    string error_document = 1 [json_name = "error_document"];
-
-    string index_document = 2 [json_name = "index_document"];
-
-    string redirect_all_requests_to = 3 [json_name = "redirect_all_requests_to"];
-
-    string routing_rules = 4 [json_name = "routing_rules"];
-  }
-
-  message Grant {
-    string id = 1;
-
-    repeated string permissions = 2;
-
-    string type = 3;
-
-    string uri = 4;
-  }
-
-  message ServerSideEncryptionConfiguration {
-    Rule rule = 1;
-
-    message Rule {
-      ApplyServerSideEncryptionByDefault apply_server_side_encryption_by_default = 1 [json_name = "apply_server_side_encryption_by_default"];
-
-      message ApplyServerSideEncryptionByDefault {
-        string kms_master_key_id = 1 [json_name = "kms_master_key_id"];
-
-        string sse_algorithm = 2 [json_name = "sse_algorithm"];
-      }
-    }
-  }
-
-  message Versioning {
-    bool enabled = 1;
-
-    bool mfa_delete = 2 [json_name = "mfa_delete"];
-  }
-
-  message ObjectLockConfiguration {
-    string object_lock_enabled = 1 [json_name = "object_lock_enabled"];
-
-    Rule rule = 2;
-
-    message Rule {
-      DefaultRetention default_retention = 1 [json_name = "default_retention"];
-
-      message DefaultRetention {
-        int64 days = 1;
-
-        string mode = 2;
-
-        int64 years = 3;
-      }
-    }
-  }
-
-  message ReplicationConfiguration {
-    string role = 1;
-
-    Rules rules = 2;
-
-    message Rules {
-      string id = 1;
-
-      string prefix = 2;
-
-      int64 priority = 3;
-
-      string status = 4;
-
-      SourceSelectionCriteria source_selection_criteria = 5 [json_name = "source_selection_criteria"];
-
-      Destination destination = 6;
-
-      Filter filter = 7;
-
-      message SourceSelectionCriteria {
-        SseKmsEncryptedObjects sse_kms_encrypted_objects = 1 [json_name = "sse_kms_encrypted_objects"];
-
-        message SseKmsEncryptedObjects {
-          bool enabled = 1;
-        }
-      }
-
-      message Destination {
-        string account_id = 1 [json_name = "account_id"];
-
-        string bucket = 2;
-
-        string replica_kms_key_id = 3 [json_name = "replica_kms_key_id"];
-
-        string storage_class = 4 [json_name = "storage_class"];
-
-        AccessControlTranslation access_control_translation = 5 [json_name = "access_control_translation"];
-
-        message AccessControlTranslation {
-          string owner = 1;
-        }
-      }
-
-      message Filter {
-        string prefix = 1;
-
-        map<string, string> tags = 2;
-      }
-    }
-  }
 
   message CorsRule {
     repeated string allowed_headers = 1 [json_name = "allowed_headers"];
@@ -20811,13 +20701,25 @@ message AwsS3Bucket {
 
     map<string, string> tags = 5;
 
-    NoncurrentVersionTransition noncurrent_version_transition = 6 [json_name = "noncurrent_version_transition"];
+    Expiration expiration = 6;
 
-    Transition transition = 7;
+    NoncurrentVersionExpiration noncurrent_version_expiration = 7 [json_name = "noncurrent_version_expiration"];
 
-    Expiration expiration = 8;
+    NoncurrentVersionTransition noncurrent_version_transition = 8 [json_name = "noncurrent_version_transition"];
 
-    NoncurrentVersionExpiration noncurrent_version_expiration = 9 [json_name = "noncurrent_version_expiration"];
+    Transition transition = 9;
+
+    message Expiration {
+      string date = 1;
+
+      int64 days = 2;
+
+      bool expired_object_delete_marker = 3 [json_name = "expired_object_delete_marker"];
+    }
+
+    message NoncurrentVersionExpiration {
+      int64 days = 1;
+    }
 
     message NoncurrentVersionTransition {
       int64 days = 1;
@@ -20832,24 +20734,122 @@ message AwsS3Bucket {
 
       string storage_class = 3 [json_name = "storage_class"];
     }
+  }
 
-    message Expiration {
-      string date = 1;
+  message ReplicationConfiguration {
+    string role = 1;
 
-      int64 days = 2;
+    Rules rules = 2;
 
-      bool expired_object_delete_marker = 3 [json_name = "expired_object_delete_marker"];
+    message Rules {
+      string id = 1;
+
+      string prefix = 2;
+
+      int64 priority = 3;
+
+      string status = 4;
+
+      Destination destination = 5;
+
+      Filter filter = 6;
+
+      SourceSelectionCriteria source_selection_criteria = 7 [json_name = "source_selection_criteria"];
+
+      message Destination {
+        string account_id = 1 [json_name = "account_id"];
+
+        string bucket = 2;
+
+        string replica_kms_key_id = 3 [json_name = "replica_kms_key_id"];
+
+        string storage_class = 4 [json_name = "storage_class"];
+
+        AccessControlTranslation access_control_translation = 5 [json_name = "access_control_translation"];
+
+        message AccessControlTranslation {
+          string owner = 1;
+        }
+      }
+
+      message Filter {
+        string prefix = 1;
+
+        map<string, string> tags = 2;
+      }
+
+      message SourceSelectionCriteria {
+        SseKmsEncryptedObjects sse_kms_encrypted_objects = 1 [json_name = "sse_kms_encrypted_objects"];
+
+        message SseKmsEncryptedObjects {
+          bool enabled = 1;
+        }
+      }
     }
+  }
 
-    message NoncurrentVersionExpiration {
-      int64 days = 1;
-    }
+  message Versioning {
+    bool enabled = 1;
+
+    bool mfa_delete = 2 [json_name = "mfa_delete"];
+  }
+
+  message Website {
+    string error_document = 1 [json_name = "error_document"];
+
+    string index_document = 2 [json_name = "index_document"];
+
+    string redirect_all_requests_to = 3 [json_name = "redirect_all_requests_to"];
+
+    string routing_rules = 4 [json_name = "routing_rules"];
+  }
+
+  message Grant {
+    string id = 1;
+
+    repeated string permissions = 2;
+
+    string type = 3;
+
+    string uri = 4;
   }
 
   message Logging {
     string target_bucket = 1 [json_name = "target_bucket"];
 
     string target_prefix = 2 [json_name = "target_prefix"];
+  }
+
+  message ObjectLockConfiguration {
+    string object_lock_enabled = 1 [json_name = "object_lock_enabled"];
+
+    Rule rule = 2;
+
+    message Rule {
+      DefaultRetention default_retention = 1 [json_name = "default_retention"];
+
+      message DefaultRetention {
+        int64 days = 1;
+
+        string mode = 2;
+
+        int64 years = 3;
+      }
+    }
+  }
+
+  message ServerSideEncryptionConfiguration {
+    Rule rule = 1;
+
+    message Rule {
+      ApplyServerSideEncryptionByDefault apply_server_side_encryption_by_default = 1 [json_name = "apply_server_side_encryption_by_default"];
+
+      message ApplyServerSideEncryptionByDefault {
+        string kms_master_key_id = 1 [json_name = "kms_master_key_id"];
+
+        string sse_algorithm = 2 [json_name = "sse_algorithm"];
+      }
+    }
   }
 }
 
@@ -20920,11 +20920,11 @@ message AwsS3BucketInventory {
 
   repeated string optional_fields = 6 [json_name = "optional_fields"];
 
-  Destination destination = 7;
+  Schedule schedule = 7;
 
-  Filter filter = 8;
+  Destination destination = 8;
 
-  Schedule schedule = 9;
+  Filter filter = 9;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
@@ -20935,6 +20935,10 @@ message AwsS3BucketInventory {
   string provider = 13;
 
   terraform.meta.Lifecycle lifecycle = 14;
+
+  message Schedule {
+    string frequency = 1;
+  }
 
   message Destination {
     Bucket bucket = 1;
@@ -20951,15 +20955,15 @@ message AwsS3BucketInventory {
       Encryption encryption = 5;
 
       message Encryption {
-        SseS3 sse_s3 = 1 [json_name = "sse_s3"];
+        SseKms sse_kms = 1 [json_name = "sse_kms"];
 
-        SseKms sse_kms = 2 [json_name = "sse_kms"];
-
-        message SseS3 {
-        }
+        SseS3 sse_s3 = 2 [json_name = "sse_s3"];
 
         message SseKms {
           string key_id = 1 [json_name = "key_id"];
+        }
+
+        message SseS3 {
         }
       }
     }
@@ -20967,10 +20971,6 @@ message AwsS3BucketInventory {
 
   message Filter {
     string prefix = 1;
-  }
-
-  message Schedule {
-    string frequency = 1;
   }
 }
 
@@ -21241,11 +21241,11 @@ message AwsSagemakerModel {
 
   map<string, string> tags = 6;
 
-  PrimaryContainer primary_container = 7 [json_name = "primary_container"];
+  Container container = 7;
 
-  VpcConfig vpc_config = 8 [json_name = "vpc_config"];
+  PrimaryContainer primary_container = 8 [json_name = "primary_container"];
 
-  Container container = 9;
+  VpcConfig vpc_config = 9 [json_name = "vpc_config"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
 
@@ -21256,6 +21256,16 @@ message AwsSagemakerModel {
   string provider = 13;
 
   terraform.meta.Lifecycle lifecycle = 14;
+
+  message Container {
+    string container_hostname = 1 [json_name = "container_hostname"];
+
+    map<string, string> environment = 2;
+
+    string image = 3;
+
+    string model_data_url = 4 [json_name = "model_data_url"];
+  }
 
   message PrimaryContainer {
     string container_hostname = 1 [json_name = "container_hostname"];
@@ -21271,16 +21281,6 @@ message AwsSagemakerModel {
     repeated string security_group_ids = 1 [json_name = "security_group_ids"];
 
     repeated string subnets = 2;
-  }
-
-  message Container {
-    string container_hostname = 1 [json_name = "container_hostname"];
-
-    map<string, string> environment = 2;
-
-    string image = 3;
-
-    string model_data_url = 4 [json_name = "model_data_url"];
   }
 }
 
@@ -21706,11 +21706,11 @@ message AwsServiceDiscoveryService {
 
   string namespace_id = 5 [json_name = "namespace_id"];
 
-  HealthCheckConfig health_check_config = 6 [json_name = "health_check_config"];
+  DnsConfig dns_config = 6 [json_name = "dns_config"];
 
-  HealthCheckCustomConfig health_check_custom_config = 7 [json_name = "health_check_custom_config"];
+  HealthCheckConfig health_check_config = 7 [json_name = "health_check_config"];
 
-  DnsConfig dns_config = 8 [json_name = "dns_config"];
+  HealthCheckCustomConfig health_check_custom_config = 8 [json_name = "health_check_custom_config"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
 
@@ -21721,18 +21721,6 @@ message AwsServiceDiscoveryService {
   string provider = 12;
 
   terraform.meta.Lifecycle lifecycle = 13;
-
-  message HealthCheckConfig {
-    int64 failure_threshold = 1 [json_name = "failure_threshold"];
-
-    string resource_path = 2 [json_name = "resource_path"];
-
-    string type = 3;
-  }
-
-  message HealthCheckCustomConfig {
-    int64 failure_threshold = 1 [json_name = "failure_threshold"];
-  }
 
   message DnsConfig {
     string namespace_id = 1 [json_name = "namespace_id"];
@@ -21746,6 +21734,18 @@ message AwsServiceDiscoveryService {
 
       string type = 2;
     }
+  }
+
+  message HealthCheckConfig {
+    int64 failure_threshold = 1 [json_name = "failure_threshold"];
+
+    string resource_path = 2 [json_name = "resource_path"];
+
+    string type = 3;
+  }
+
+  message HealthCheckCustomConfig {
+    int64 failure_threshold = 1 [json_name = "failure_threshold"];
   }
 }
 
@@ -21972,11 +21972,11 @@ message AwsSesEventDestination {
 
   string name = 5;
 
-  KinesisDestination kinesis_destination = 6 [json_name = "kinesis_destination"];
+  CloudwatchDestination cloudwatch_destination = 6 [json_name = "cloudwatch_destination"];
 
-  SnsDestination sns_destination = 7 [json_name = "sns_destination"];
+  KinesisDestination kinesis_destination = 7 [json_name = "kinesis_destination"];
 
-  CloudwatchDestination cloudwatch_destination = 8 [json_name = "cloudwatch_destination"];
+  SnsDestination sns_destination = 8 [json_name = "sns_destination"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
 
@@ -21988,6 +21988,14 @@ message AwsSesEventDestination {
 
   terraform.meta.Lifecycle lifecycle = 13;
 
+  message CloudwatchDestination {
+    string default_value = 1 [json_name = "default_value"];
+
+    string dimension_name = 2 [json_name = "dimension_name"];
+
+    string value_source = 3 [json_name = "value_source"];
+  }
+
   message KinesisDestination {
     string role_arn = 1 [json_name = "role_arn"];
 
@@ -21996,14 +22004,6 @@ message AwsSesEventDestination {
 
   message SnsDestination {
     string topic_arn = 1 [json_name = "topic_arn"];
-  }
-
-  message CloudwatchDestination {
-    string default_value = 1 [json_name = "default_value"];
-
-    string dimension_name = 2 [json_name = "dimension_name"];
-
-    string value_source = 3 [json_name = "value_source"];
   }
 }
 
@@ -22090,19 +22090,19 @@ message AwsSesReceiptRule {
 
   string tls_policy = 8 [json_name = "tls_policy"];
 
-  LambdaAction lambda_action = 9 [json_name = "lambda_action"];
+  WorkmailAction workmail_action = 9 [json_name = "workmail_action"];
 
-  S3Action s3_action = 10 [json_name = "s3_action"];
+  AddHeaderAction add_header_action = 10 [json_name = "add_header_action"];
 
-  SnsAction sns_action = 11 [json_name = "sns_action"];
+  BounceAction bounce_action = 11 [json_name = "bounce_action"];
 
-  StopAction stop_action = 12 [json_name = "stop_action"];
+  LambdaAction lambda_action = 12 [json_name = "lambda_action"];
 
-  WorkmailAction workmail_action = 13 [json_name = "workmail_action"];
+  S3Action s3_action = 13 [json_name = "s3_action"];
 
-  AddHeaderAction add_header_action = 14 [json_name = "add_header_action"];
+  SnsAction sns_action = 14 [json_name = "sns_action"];
 
-  BounceAction bounce_action = 15 [json_name = "bounce_action"];
+  StopAction stop_action = 15 [json_name = "stop_action"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
 
@@ -22113,6 +22113,36 @@ message AwsSesReceiptRule {
   string provider = 19;
 
   terraform.meta.Lifecycle lifecycle = 20;
+
+  message WorkmailAction {
+    string organization_arn = 1 [json_name = "organization_arn"];
+
+    int64 position = 2;
+
+    string topic_arn = 3 [json_name = "topic_arn"];
+  }
+
+  message AddHeaderAction {
+    string header_name = 1 [json_name = "header_name"];
+
+    string header_value = 2 [json_name = "header_value"];
+
+    int64 position = 3;
+  }
+
+  message BounceAction {
+    string message = 1;
+
+    int64 position = 2;
+
+    string sender = 3;
+
+    string smtp_reply_code = 4 [json_name = "smtp_reply_code"];
+
+    string status_code = 5 [json_name = "status_code"];
+
+    string topic_arn = 6 [json_name = "topic_arn"];
+  }
 
   message LambdaAction {
     string function_arn = 1 [json_name = "function_arn"];
@@ -22148,36 +22178,6 @@ message AwsSesReceiptRule {
     string scope = 2;
 
     string topic_arn = 3 [json_name = "topic_arn"];
-  }
-
-  message WorkmailAction {
-    string organization_arn = 1 [json_name = "organization_arn"];
-
-    int64 position = 2;
-
-    string topic_arn = 3 [json_name = "topic_arn"];
-  }
-
-  message AddHeaderAction {
-    string header_name = 1 [json_name = "header_name"];
-
-    string header_value = 2 [json_name = "header_value"];
-
-    int64 position = 3;
-  }
-
-  message BounceAction {
-    string message = 1;
-
-    int64 position = 2;
-
-    string sender = 3;
-
-    string smtp_reply_code = 4 [json_name = "smtp_reply_code"];
-
-    string status_code = 5 [json_name = "status_code"];
-
-    string topic_arn = 6 [json_name = "topic_arn"];
   }
 }
 
@@ -22755,19 +22755,19 @@ message AwsSpotInstanceRequest {
 
   bool wait_for_fulfillment = 48 [json_name = "wait_for_fulfillment"];
 
-  MetadataOptions metadata_options = 49 [json_name = "metadata_options"];
+  RootBlockDevice root_block_device = 49 [json_name = "root_block_device"];
 
-  NetworkInterface network_interface = 50 [json_name = "network_interface"];
+  Timeouts timeouts = 50;
 
-  RootBlockDevice root_block_device = 51 [json_name = "root_block_device"];
+  CreditSpecification credit_specification = 51 [json_name = "credit_specification"];
 
-  Timeouts timeouts = 52;
+  EbsBlockDevice ebs_block_device = 52 [json_name = "ebs_block_device"];
 
-  CreditSpecification credit_specification = 53 [json_name = "credit_specification"];
+  EphemeralBlockDevice ephemeral_block_device = 53 [json_name = "ephemeral_block_device"];
 
-  EbsBlockDevice ebs_block_device = 54 [json_name = "ebs_block_device"];
+  MetadataOptions metadata_options = 54 [json_name = "metadata_options"];
 
-  EphemeralBlockDevice ephemeral_block_device = 55 [json_name = "ephemeral_block_device"];
+  NetworkInterface network_interface = 55 [json_name = "network_interface"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 56;
 
@@ -22778,22 +22778,6 @@ message AwsSpotInstanceRequest {
   string provider = 59;
 
   terraform.meta.Lifecycle lifecycle = 60;
-
-  message MetadataOptions {
-    string http_endpoint = 1 [json_name = "http_endpoint"];
-
-    int64 http_put_response_hop_limit = 2 [json_name = "http_put_response_hop_limit"];
-
-    string http_tokens = 3 [json_name = "http_tokens"];
-  }
-
-  message NetworkInterface {
-    bool delete_on_termination = 1 [json_name = "delete_on_termination"];
-
-    int64 device_index = 2 [json_name = "device_index"];
-
-    string network_interface_id = 3 [json_name = "network_interface_id"];
-  }
 
   message RootBlockDevice {
     bool delete_on_termination = 1 [json_name = "delete_on_termination"];
@@ -22849,6 +22833,22 @@ message AwsSpotInstanceRequest {
     bool no_device = 2 [json_name = "no_device"];
 
     string virtual_name = 3 [json_name = "virtual_name"];
+  }
+
+  message MetadataOptions {
+    string http_endpoint = 1 [json_name = "http_endpoint"];
+
+    int64 http_put_response_hop_limit = 2 [json_name = "http_put_response_hop_limit"];
+
+    string http_tokens = 3 [json_name = "http_tokens"];
+  }
+
+  message NetworkInterface {
+    bool delete_on_termination = 1 [json_name = "delete_on_termination"];
+
+    int64 device_index = 2 [json_name = "device_index"];
+
+    string network_interface_id = 3 [json_name = "network_interface_id"];
   }
 }
 
@@ -22975,9 +22975,9 @@ message AwsSsmAssociation {
 
   string schedule_expression = 12 [json_name = "schedule_expression"];
 
-  Targets targets = 13;
+  OutputLocation output_location = 13 [json_name = "output_location"];
 
-  OutputLocation output_location = 14 [json_name = "output_location"];
+  Targets targets = 14;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 15;
 
@@ -22989,16 +22989,16 @@ message AwsSsmAssociation {
 
   terraform.meta.Lifecycle lifecycle = 19;
 
-  message Targets {
-    string key = 1;
-
-    repeated string values = 2;
-  }
-
   message OutputLocation {
     string s3_bucket_name = 1 [json_name = "s3_bucket_name"];
 
     string s3_key_prefix = 2 [json_name = "s3_key_prefix"];
+  }
+
+  message Targets {
+    string key = 1;
+
+    repeated string values = 2;
   }
 }
 
@@ -23247,15 +23247,9 @@ message AwsSsmMaintenanceWindowTask {
 
       int64 timeout_seconds = 7 [json_name = "timeout_seconds"];
 
-      Parameter parameter = 8;
+      NotificationConfig notification_config = 8 [json_name = "notification_config"];
 
-      NotificationConfig notification_config = 9 [json_name = "notification_config"];
-
-      message Parameter {
-        string name = 1;
-
-        repeated string values = 2;
-      }
+      Parameter parameter = 9;
 
       message NotificationConfig {
         string notification_arn = 1 [json_name = "notification_arn"];
@@ -23263,6 +23257,12 @@ message AwsSsmMaintenanceWindowTask {
         repeated string notification_events = 2 [json_name = "notification_events"];
 
         string notification_type = 3 [json_name = "notification_type"];
+      }
+
+      message Parameter {
+        string name = 1;
+
+        repeated string values = 2;
       }
     }
 
@@ -23512,9 +23512,9 @@ message AwsStoragegatewayGateway {
 
   string tape_drive_type = 13 [json_name = "tape_drive_type"];
 
-  SmbActiveDirectorySettings smb_active_directory_settings = 14 [json_name = "smb_active_directory_settings"];
+  Timeouts timeouts = 14;
 
-  Timeouts timeouts = 15;
+  SmbActiveDirectorySettings smb_active_directory_settings = 15 [json_name = "smb_active_directory_settings"];
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 16;
 
@@ -23526,16 +23526,16 @@ message AwsStoragegatewayGateway {
 
   terraform.meta.Lifecycle lifecycle = 20;
 
+  message Timeouts {
+    string create = 1;
+  }
+
   message SmbActiveDirectorySettings {
     string domain_name = 1 [json_name = "domain_name"];
 
     string password = 2;
 
     string username = 3;
-  }
-
-  message Timeouts {
-    string create = 1;
   }
 }
 
@@ -24329,9 +24329,9 @@ message AwsVpcPeeringConnectionOptions {
 
   string vpc_peering_connection_id = 2 [json_name = "vpc_peering_connection_id"];
 
-  Accepter accepter = 3;
+  Requester requester = 3;
 
-  Requester requester = 4;
+  Accepter accepter = 4;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
 
@@ -24343,7 +24343,7 @@ message AwsVpcPeeringConnectionOptions {
 
   terraform.meta.Lifecycle lifecycle = 9;
 
-  message Accepter {
+  message Requester {
     bool allow_classic_link_to_remote_vpc = 1 [json_name = "allow_classic_link_to_remote_vpc"];
 
     bool allow_remote_vpc_dns_resolution = 2 [json_name = "allow_remote_vpc_dns_resolution"];
@@ -24351,7 +24351,7 @@ message AwsVpcPeeringConnectionOptions {
     bool allow_vpc_to_remote_classic_link = 3 [json_name = "allow_vpc_to_remote_classic_link"];
   }
 
-  message Requester {
+  message Accepter {
     bool allow_classic_link_to_remote_vpc = 1 [json_name = "allow_classic_link_to_remote_vpc"];
 
     bool allow_remote_vpc_dns_resolution = 2 [json_name = "allow_remote_vpc_dns_resolution"];
@@ -24908,15 +24908,15 @@ message AwsWafWebAcl {
 
     string type = 3;
 
-    Action action = 4;
+    OverrideAction override_action = 4 [json_name = "override_action"];
 
-    OverrideAction override_action = 5 [json_name = "override_action"];
+    Action action = 5;
 
-    message Action {
+    message OverrideAction {
       string type = 1;
     }
 
-    message OverrideAction {
+    message Action {
       string type = 1;
     }
   }
@@ -25301,11 +25301,11 @@ message AwsWafregionalWebAcl {
 
   map<string, string> tags = 5;
 
-  LoggingConfiguration logging_configuration = 6 [json_name = "logging_configuration"];
+  DefaultAction default_action = 6 [json_name = "default_action"];
 
-  Rule rule = 7;
+  LoggingConfiguration logging_configuration = 7 [json_name = "logging_configuration"];
 
-  DefaultAction default_action = 8 [json_name = "default_action"];
+  Rule rule = 8;
 
   terraform.meta.MetaFields.DependsOnEntry depends_on = 9;
 
@@ -25316,6 +25316,10 @@ message AwsWafregionalWebAcl {
   string provider = 12;
 
   terraform.meta.Lifecycle lifecycle = 13;
+
+  message DefaultAction {
+    string type = 1;
+  }
 
   message LoggingConfiguration {
     string log_destination = 1 [json_name = "log_destination"];
@@ -25351,10 +25355,6 @@ message AwsWafregionalWebAcl {
     message OverrideAction {
       string type = 1;
     }
-  }
-
-  message DefaultAction {
-    string type = 1;
   }
 }
 

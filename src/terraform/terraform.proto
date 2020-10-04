@@ -28,6 +28,10 @@ import "terraform/tls-data.proto";
 
 import "terraform/tls-resources.proto";
 
+import "terraform/vault-data.proto";
+
+import "terraform/vault-resources.proto";
+
 message Terraform {
   Resources resource = 1;
 
@@ -1843,6 +1847,178 @@ message Terraform {
     map<string, tls.resources.TlsPrivateKey> tls_private_key = 904 [json_name = "tls_private_key"];
 
     map<string, tls.resources.TlsSelfSignedCert> tls_self_signed_cert = 905 [json_name = "tls_self_signed_cert"];
+
+    map<string, vault.resources.VaultAlicloudAuthBackendRole> vault_alicloud_auth_backend_role = 906 [json_name = "vault_alicloud_auth_backend_role"];
+
+    map<string, vault.resources.VaultApproleAuthBackendLogin> vault_approle_auth_backend_login = 907 [json_name = "vault_approle_auth_backend_login"];
+
+    map<string, vault.resources.VaultApproleAuthBackendRole> vault_approle_auth_backend_role = 908 [json_name = "vault_approle_auth_backend_role"];
+
+    map<string, vault.resources.VaultApproleAuthBackendRoleSecretId> vault_approle_auth_backend_role_secret_id = 909 [json_name = "vault_approle_auth_backend_role_secret_id"];
+
+    map<string, vault.resources.VaultAudit> vault_audit = 910 [json_name = "vault_audit"];
+
+    map<string, vault.resources.VaultAuthBackend> vault_auth_backend = 911 [json_name = "vault_auth_backend"];
+
+    map<string, vault.resources.VaultAwsAuthBackendCert> vault_aws_auth_backend_cert = 912 [json_name = "vault_aws_auth_backend_cert"];
+
+    map<string, vault.resources.VaultAwsAuthBackendClient> vault_aws_auth_backend_client = 913 [json_name = "vault_aws_auth_backend_client"];
+
+    map<string, vault.resources.VaultAwsAuthBackendIdentityWhitelist> vault_aws_auth_backend_identity_whitelist = 914 [json_name = "vault_aws_auth_backend_identity_whitelist"];
+
+    map<string, vault.resources.VaultAwsAuthBackendLogin> vault_aws_auth_backend_login = 915 [json_name = "vault_aws_auth_backend_login"];
+
+    map<string, vault.resources.VaultAwsAuthBackendRole> vault_aws_auth_backend_role = 916 [json_name = "vault_aws_auth_backend_role"];
+
+    map<string, vault.resources.VaultAwsAuthBackendRoleTag> vault_aws_auth_backend_role_tag = 917 [json_name = "vault_aws_auth_backend_role_tag"];
+
+    map<string, vault.resources.VaultAwsAuthBackendRoletagBlacklist> vault_aws_auth_backend_roletag_blacklist = 918 [json_name = "vault_aws_auth_backend_roletag_blacklist"];
+
+    map<string, vault.resources.VaultAwsAuthBackendStsRole> vault_aws_auth_backend_sts_role = 919 [json_name = "vault_aws_auth_backend_sts_role"];
+
+    map<string, vault.resources.VaultAwsSecretBackend> vault_aws_secret_backend = 920 [json_name = "vault_aws_secret_backend"];
+
+    map<string, vault.resources.VaultAwsSecretBackendRole> vault_aws_secret_backend_role = 921 [json_name = "vault_aws_secret_backend_role"];
+
+    map<string, vault.resources.VaultAzureAuthBackendConfig> vault_azure_auth_backend_config = 922 [json_name = "vault_azure_auth_backend_config"];
+
+    map<string, vault.resources.VaultAzureAuthBackendRole> vault_azure_auth_backend_role = 923 [json_name = "vault_azure_auth_backend_role"];
+
+    map<string, vault.resources.VaultAzureSecretBackend> vault_azure_secret_backend = 924 [json_name = "vault_azure_secret_backend"];
+
+    map<string, vault.resources.VaultAzureSecretBackendRole> vault_azure_secret_backend_role = 925 [json_name = "vault_azure_secret_backend_role"];
+
+    map<string, vault.resources.VaultCertAuthBackendRole> vault_cert_auth_backend_role = 926 [json_name = "vault_cert_auth_backend_role"];
+
+    map<string, vault.resources.VaultConsulSecretBackend> vault_consul_secret_backend = 927 [json_name = "vault_consul_secret_backend"];
+
+    map<string, vault.resources.VaultConsulSecretBackendRole> vault_consul_secret_backend_role = 928 [json_name = "vault_consul_secret_backend_role"];
+
+    map<string, vault.resources.VaultDatabaseSecretBackendConnection> vault_database_secret_backend_connection = 929 [json_name = "vault_database_secret_backend_connection"];
+
+    map<string, vault.resources.VaultDatabaseSecretBackendRole> vault_database_secret_backend_role = 930 [json_name = "vault_database_secret_backend_role"];
+
+    map<string, vault.resources.VaultDatabaseSecretBackendStaticRole> vault_database_secret_backend_static_role = 931 [json_name = "vault_database_secret_backend_static_role"];
+
+    map<string, vault.resources.VaultEgpPolicy> vault_egp_policy = 932 [json_name = "vault_egp_policy"];
+
+    map<string, vault.resources.VaultGcpAuthBackend> vault_gcp_auth_backend = 933 [json_name = "vault_gcp_auth_backend"];
+
+    map<string, vault.resources.VaultGcpAuthBackendRole> vault_gcp_auth_backend_role = 934 [json_name = "vault_gcp_auth_backend_role"];
+
+    map<string, vault.resources.VaultGcpSecretBackend> vault_gcp_secret_backend = 935 [json_name = "vault_gcp_secret_backend"];
+
+    map<string, vault.resources.VaultGcpSecretRoleset> vault_gcp_secret_roleset = 936 [json_name = "vault_gcp_secret_roleset"];
+
+    map<string, vault.resources.VaultGenericEndpoint> vault_generic_endpoint = 937 [json_name = "vault_generic_endpoint"];
+
+    map<string, vault.resources.VaultGenericSecret> vault_generic_secret = 938 [json_name = "vault_generic_secret"];
+
+    map<string, vault.resources.VaultGithubAuthBackend> vault_github_auth_backend = 939 [json_name = "vault_github_auth_backend"];
+
+    map<string, vault.resources.VaultGithubTeam> vault_github_team = 940 [json_name = "vault_github_team"];
+
+    map<string, vault.resources.VaultGithubUser> vault_github_user = 941 [json_name = "vault_github_user"];
+
+    map<string, vault.resources.VaultIdentityEntity> vault_identity_entity = 942 [json_name = "vault_identity_entity"];
+
+    map<string, vault.resources.VaultIdentityEntityAlias> vault_identity_entity_alias = 943 [json_name = "vault_identity_entity_alias"];
+
+    map<string, vault.resources.VaultIdentityEntityPolicies> vault_identity_entity_policies = 944 [json_name = "vault_identity_entity_policies"];
+
+    map<string, vault.resources.VaultIdentityGroup> vault_identity_group = 945 [json_name = "vault_identity_group"];
+
+    map<string, vault.resources.VaultIdentityGroupAlias> vault_identity_group_alias = 946 [json_name = "vault_identity_group_alias"];
+
+    map<string, vault.resources.VaultIdentityGroupMemberEntityIds> vault_identity_group_member_entity_ids = 947 [json_name = "vault_identity_group_member_entity_ids"];
+
+    map<string, vault.resources.VaultIdentityGroupPolicies> vault_identity_group_policies = 948 [json_name = "vault_identity_group_policies"];
+
+    map<string, vault.resources.VaultIdentityOidc> vault_identity_oidc = 949 [json_name = "vault_identity_oidc"];
+
+    map<string, vault.resources.VaultIdentityOidcKey> vault_identity_oidc_key = 950 [json_name = "vault_identity_oidc_key"];
+
+    map<string, vault.resources.VaultIdentityOidcKeyAllowedClientId> vault_identity_oidc_key_allowed_client_id = 951 [json_name = "vault_identity_oidc_key_allowed_client_id"];
+
+    map<string, vault.resources.VaultIdentityOidcRole> vault_identity_oidc_role = 952 [json_name = "vault_identity_oidc_role"];
+
+    map<string, vault.resources.VaultJwtAuthBackend> vault_jwt_auth_backend = 953 [json_name = "vault_jwt_auth_backend"];
+
+    map<string, vault.resources.VaultJwtAuthBackendRole> vault_jwt_auth_backend_role = 954 [json_name = "vault_jwt_auth_backend_role"];
+
+    map<string, vault.resources.VaultKubernetesAuthBackendConfig> vault_kubernetes_auth_backend_config = 955 [json_name = "vault_kubernetes_auth_backend_config"];
+
+    map<string, vault.resources.VaultKubernetesAuthBackendRole> vault_kubernetes_auth_backend_role = 956 [json_name = "vault_kubernetes_auth_backend_role"];
+
+    map<string, vault.resources.VaultLdapAuthBackend> vault_ldap_auth_backend = 957 [json_name = "vault_ldap_auth_backend"];
+
+    map<string, vault.resources.VaultLdapAuthBackendGroup> vault_ldap_auth_backend_group = 958 [json_name = "vault_ldap_auth_backend_group"];
+
+    map<string, vault.resources.VaultLdapAuthBackendUser> vault_ldap_auth_backend_user = 959 [json_name = "vault_ldap_auth_backend_user"];
+
+    map<string, vault.resources.VaultMfaDuo> vault_mfa_duo = 960 [json_name = "vault_mfa_duo"];
+
+    map<string, vault.resources.VaultMount> vault_mount = 961 [json_name = "vault_mount"];
+
+    map<string, vault.resources.VaultNamespace> vault_namespace = 962 [json_name = "vault_namespace"];
+
+    map<string, vault.resources.VaultOktaAuthBackend> vault_okta_auth_backend = 963 [json_name = "vault_okta_auth_backend"];
+
+    map<string, vault.resources.VaultOktaAuthBackendGroup> vault_okta_auth_backend_group = 964 [json_name = "vault_okta_auth_backend_group"];
+
+    map<string, vault.resources.VaultOktaAuthBackendUser> vault_okta_auth_backend_user = 965 [json_name = "vault_okta_auth_backend_user"];
+
+    map<string, vault.resources.VaultPkiSecretBackend> vault_pki_secret_backend = 966 [json_name = "vault_pki_secret_backend"];
+
+    map<string, vault.resources.VaultPkiSecretBackendCert> vault_pki_secret_backend_cert = 967 [json_name = "vault_pki_secret_backend_cert"];
+
+    map<string, vault.resources.VaultPkiSecretBackendConfigCa> vault_pki_secret_backend_config_ca = 968 [json_name = "vault_pki_secret_backend_config_ca"];
+
+    map<string, vault.resources.VaultPkiSecretBackendConfigUrls> vault_pki_secret_backend_config_urls = 969 [json_name = "vault_pki_secret_backend_config_urls"];
+
+    map<string, vault.resources.VaultPkiSecretBackendCrlConfig> vault_pki_secret_backend_crl_config = 970 [json_name = "vault_pki_secret_backend_crl_config"];
+
+    map<string, vault.resources.VaultPkiSecretBackendIntermediateCertRequest> vault_pki_secret_backend_intermediate_cert_request = 971 [json_name = "vault_pki_secret_backend_intermediate_cert_request"];
+
+    map<string, vault.resources.VaultPkiSecretBackendIntermediateSetSigned> vault_pki_secret_backend_intermediate_set_signed = 972 [json_name = "vault_pki_secret_backend_intermediate_set_signed"];
+
+    map<string, vault.resources.VaultPkiSecretBackendRole> vault_pki_secret_backend_role = 973 [json_name = "vault_pki_secret_backend_role"];
+
+    map<string, vault.resources.VaultPkiSecretBackendRootCert> vault_pki_secret_backend_root_cert = 974 [json_name = "vault_pki_secret_backend_root_cert"];
+
+    map<string, vault.resources.VaultPkiSecretBackendRootSignIntermediate> vault_pki_secret_backend_root_sign_intermediate = 975 [json_name = "vault_pki_secret_backend_root_sign_intermediate"];
+
+    map<string, vault.resources.VaultPkiSecretBackendSign> vault_pki_secret_backend_sign = 976 [json_name = "vault_pki_secret_backend_sign"];
+
+    map<string, vault.resources.VaultPolicy> vault_policy = 977 [json_name = "vault_policy"];
+
+    map<string, vault.resources.VaultQuotaRateLimit> vault_quota_rate_limit = 978 [json_name = "vault_quota_rate_limit"];
+
+    map<string, vault.resources.VaultRabbitmqSecretBackend> vault_rabbitmq_secret_backend = 979 [json_name = "vault_rabbitmq_secret_backend"];
+
+    map<string, vault.resources.VaultRabbitmqSecretBackendRole> vault_rabbitmq_secret_backend_role = 980 [json_name = "vault_rabbitmq_secret_backend_role"];
+
+    map<string, vault.resources.VaultRgpPolicy> vault_rgp_policy = 981 [json_name = "vault_rgp_policy"];
+
+    map<string, vault.resources.VaultSshSecretBackendCa> vault_ssh_secret_backend_ca = 982 [json_name = "vault_ssh_secret_backend_ca"];
+
+    map<string, vault.resources.VaultSshSecretBackendRole> vault_ssh_secret_backend_role = 983 [json_name = "vault_ssh_secret_backend_role"];
+
+    map<string, vault.resources.VaultToken> vault_token = 984 [json_name = "vault_token"];
+
+    map<string, vault.resources.VaultTokenAuthBackendRole> vault_token_auth_backend_role = 985 [json_name = "vault_token_auth_backend_role"];
+
+    map<string, vault.resources.VaultTransformAlphabet> vault_transform_alphabet = 986 [json_name = "vault_transform_alphabet"];
+
+    map<string, vault.resources.VaultTransformRole> vault_transform_role = 987 [json_name = "vault_transform_role"];
+
+    map<string, vault.resources.VaultTransformTemplate> vault_transform_template = 988 [json_name = "vault_transform_template"];
+
+    map<string, vault.resources.VaultTransformTransformation> vault_transform_transformation = 989 [json_name = "vault_transform_transformation"];
+
+    map<string, vault.resources.VaultTransitSecretBackendKey> vault_transit_secret_backend_key = 990 [json_name = "vault_transit_secret_backend_key"];
+
+    map<string, vault.resources.VaultTransitSecretCacheConfig> vault_transit_secret_cache_config = 991 [json_name = "vault_transit_secret_cache_config"];
   }
 
   message Datasources {
@@ -2363,5 +2539,29 @@ message Terraform {
     map<string, packet.data.PacketVolume> packet_volume = 258 [json_name = "packet_volume"];
 
     map<string, tls.data.TlsPublicKey> tls_public_key = 259 [json_name = "tls_public_key"];
+
+    map<string, vault.data.VaultApproleAuthBackendRoleId> vault_approle_auth_backend_role_id = 260 [json_name = "vault_approle_auth_backend_role_id"];
+
+    map<string, vault.data.VaultAuthBackend> vault_auth_backend = 261 [json_name = "vault_auth_backend"];
+
+    map<string, vault.data.VaultAwsAccessCredentials> vault_aws_access_credentials = 262 [json_name = "vault_aws_access_credentials"];
+
+    map<string, vault.data.VaultAzureAccessCredentials> vault_azure_access_credentials = 263 [json_name = "vault_azure_access_credentials"];
+
+    map<string, vault.data.VaultGenericSecret> vault_generic_secret = 264 [json_name = "vault_generic_secret"];
+
+    map<string, vault.data.VaultIdentityEntity> vault_identity_entity = 265 [json_name = "vault_identity_entity"];
+
+    map<string, vault.data.VaultIdentityGroup> vault_identity_group = 266 [json_name = "vault_identity_group"];
+
+    map<string, vault.data.VaultKubernetesAuthBackendConfig> vault_kubernetes_auth_backend_config = 267 [json_name = "vault_kubernetes_auth_backend_config"];
+
+    map<string, vault.data.VaultKubernetesAuthBackendRole> vault_kubernetes_auth_backend_role = 268 [json_name = "vault_kubernetes_auth_backend_role"];
+
+    map<string, vault.data.VaultPolicyDocument> vault_policy_document = 269 [json_name = "vault_policy_document"];
+
+    map<string, vault.data.VaultTransformDecode> vault_transform_decode = 270 [json_name = "vault_transform_decode"];
+
+    map<string, vault.data.VaultTransformEncode> vault_transform_encode = 271 [json_name = "vault_transform_encode"];
   }
 }

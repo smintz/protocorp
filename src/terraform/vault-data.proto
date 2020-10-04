@@ -1,0 +1,594 @@
+syntax = "proto3";
+
+package terraform.vault.data;
+
+import "terraform/meta.proto";
+
+//VaultApproleAuthBackendRoleId version is 0
+message VaultApproleAuthBackendRoleId {
+  //Unique name of the auth backend to configure.
+  string backend = 1;
+
+  string id = 2;
+
+  //The RoleID of the role.
+  string role_id = 3 [json_name = "role_id"];
+
+  //Name of the role.
+  string role_name = 4 [json_name = "role_name"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 5;
+
+  int32 count = 6;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 7;
+
+  string provider = 8;
+
+  terraform.meta.Lifecycle lifecycle = 9;
+}
+
+//VaultAuthBackend version is 0
+message VaultAuthBackend {
+  //The accessor of the auth backend.
+  string accessor = 1;
+
+  //Default lease duration in seconds
+  int64 default_lease_ttl_seconds = 2 [json_name = "default_lease_ttl_seconds"];
+
+  //The description of the auth backend.
+  string description = 3;
+
+  string id = 4;
+
+  //Specifies whether to show this mount in the UI-specific listing endpoint.
+  string listing_visibility = 5 [json_name = "listing_visibility"];
+
+  //Specifies if the auth method is local only
+  bool local = 6;
+
+  //Maximum possible lease duration in seconds
+  int64 max_lease_ttl_seconds = 7 [json_name = "max_lease_ttl_seconds"];
+
+  //The auth backend mount point.
+  string path = 8;
+
+  //The name of the auth backend.
+  string type = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//VaultAwsAccessCredentials version is 0
+message VaultAwsAccessCredentials {
+  //AWS access key ID read from Vault.
+  string access_key = 1 [json_name = "access_key"];
+
+  //AWS Secret Backend to read credentials from.
+  string backend = 2;
+
+  string id = 3;
+
+  //Lease duration in seconds relative to the time in lease_start_time.
+  int64 lease_duration = 4 [json_name = "lease_duration"];
+
+  //Lease identifier assigned by vault.
+  string lease_id = 5 [json_name = "lease_id"];
+
+  //True if the duration of this lease can be extended through renewal.
+  bool lease_renewable = 6 [json_name = "lease_renewable"];
+
+  //Time at which the lease was read, using the clock of the system where Terraform was running
+  string lease_start_time = 7 [json_name = "lease_start_time"];
+
+  //Region the read credentials belong to.
+  string region = 8;
+
+  //AWS Secret Role to read credentials from.
+  string role = 9;
+
+  //ARN to use if multiple are available in the role. Required if the role has multiple ARNs.
+  string role_arn = 10 [json_name = "role_arn"];
+
+  //AWS secret key read from Vault.
+  string secret_key = 11 [json_name = "secret_key"];
+
+  //AWS security token read from Vault. (Only returned if type is 'sts').
+  string security_token = 12 [json_name = "security_token"];
+
+  //Type of credentials to read. Must be either 'creds' for Access Key and Secret Key, or 'sts' for STS.
+  string type = 13;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//VaultAzureAccessCredentials version is 0
+message VaultAzureAccessCredentials {
+  //Azure Secret Backend to read credentials from.
+  string backend = 1;
+
+  //The client id for credentials to query the Azure APIs.
+  string client_id = 2 [json_name = "client_id"];
+
+  //The client secret for credentials to query the Azure APIs.
+  string client_secret = 3 [json_name = "client_secret"];
+
+  string id = 4;
+
+  //Lease duration in seconds relative to the time in lease_start_time.
+  int64 lease_duration = 5 [json_name = "lease_duration"];
+
+  //Lease identifier assigned by vault.
+  string lease_id = 6 [json_name = "lease_id"];
+
+  //True if the duration of this lease can be extended through renewal.
+  bool lease_renewable = 7 [json_name = "lease_renewable"];
+
+  //Time at which the lease was read, using the clock of the system where Terraform was running
+  string lease_start_time = 8 [json_name = "lease_start_time"];
+
+  //If 'validate_creds' is true, the number of seconds after which to give up validating credentials.
+  int64 max_cred_validation_seconds = 9 [json_name = "max_cred_validation_seconds"];
+
+  //If 'validate_creds' is true, the number of seconds to wait between each test of generated credentials.
+  int64 num_seconds_between_tests = 10 [json_name = "num_seconds_between_tests"];
+
+  //If 'validate_creds' is true, the number of sequential successes required to validate generated credentials.
+  int64 num_sequential_successes = 11 [json_name = "num_sequential_successes"];
+
+  //Azure Secret Role to read credentials from.
+  string role = 12;
+
+  //Whether generated credentials should be validated before being returned.
+  bool validate_creds = 13 [json_name = "validate_creds"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 14;
+
+  int32 count = 15;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 16;
+
+  string provider = 17;
+
+  terraform.meta.Lifecycle lifecycle = 18;
+}
+
+//VaultGenericSecret version is 0
+message VaultGenericSecret {
+  //Map of strings read from Vault.
+  map<string, string> data = 1;
+
+  //JSON-encoded secret data read from Vault.
+  string data_json = 2 [json_name = "data_json"];
+
+  string id = 3;
+
+  //Lease duration in seconds relative to the time in lease_start_time.
+  int64 lease_duration = 4 [json_name = "lease_duration"];
+
+  //Lease identifier assigned by vault.
+  string lease_id = 5 [json_name = "lease_id"];
+
+  //True if the duration of this lease can be extended through renewal.
+  bool lease_renewable = 6 [json_name = "lease_renewable"];
+
+  //Time at which the lease was read, using the clock of the system where Terraform was running
+  string lease_start_time = 7 [json_name = "lease_start_time"];
+
+  //Full path from which a secret will be read.
+  string path = 8;
+
+  int64 version = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//VaultIdentityEntity version is 0
+message VaultIdentityEntity {
+  //ID of the alias.
+  string alias_id = 1 [json_name = "alias_id"];
+
+  //Accessor of the mount to which the alias belongs to. This should be supplied in conjunction with `alias_name`.
+  string alias_mount_accessor = 2 [json_name = "alias_mount_accessor"];
+
+  //Name of the alias. This should be supplied in conjunction with `alias_mount_accessor`.
+  string alias_name = 3 [json_name = "alias_name"];
+
+  repeated Aliases aliases = 4;
+
+  string creation_time = 5 [json_name = "creation_time"];
+
+  //Entity data from Vault in JSON String form
+  string data_json = 6 [json_name = "data_json"];
+
+  repeated string direct_group_ids = 7 [json_name = "direct_group_ids"];
+
+  bool disabled = 8;
+
+  //ID of the entity.
+  string entity_id = 9 [json_name = "entity_id"];
+
+  //Name of the entity.
+  string entity_name = 10 [json_name = "entity_name"];
+
+  repeated string group_ids = 11 [json_name = "group_ids"];
+
+  string id = 12;
+
+  repeated string inherited_group_ids = 13 [json_name = "inherited_group_ids"];
+
+  string last_update_time = 14 [json_name = "last_update_time"];
+
+  repeated string merged_entity_ids = 15 [json_name = "merged_entity_ids"];
+
+  map<string, string> metadata = 16;
+
+  string namespace_id = 17 [json_name = "namespace_id"];
+
+  repeated string policies = 18;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 19;
+
+  int32 count = 20;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 21;
+
+  string provider = 22;
+
+  terraform.meta.Lifecycle lifecycle = 23;
+
+  message Aliases {
+    //canonical_id: string
+    string canonical_id = 1 [json_name = "canonical_id"];
+
+    //creation_time: string
+    string creation_time = 2 [json_name = "creation_time"];
+
+    //id: string
+    string id = 3;
+
+    //last_update_time: string
+    string last_update_time = 4 [json_name = "last_update_time"];
+
+    //merged_from_canonical_ids: set of string
+    repeated string merged_from_canonical_ids = 5 [json_name = "merged_from_canonical_ids"];
+
+    //metadata: map of string
+    map<string, string> metadata = 6;
+
+    //mount_accessor: string
+    string mount_accessor = 7 [json_name = "mount_accessor"];
+
+    //mount_path: string
+    string mount_path = 8 [json_name = "mount_path"];
+
+    //mount_type: string
+    string mount_type = 9 [json_name = "mount_type"];
+
+    //name: string
+    string name = 10;
+  }
+}
+
+//VaultIdentityGroup version is 0
+message VaultIdentityGroup {
+  string alias_canonical_id = 1 [json_name = "alias_canonical_id"];
+
+  string alias_creation_time = 2 [json_name = "alias_creation_time"];
+
+  //ID of the alias.
+  string alias_id = 3 [json_name = "alias_id"];
+
+  string alias_last_update_time = 4 [json_name = "alias_last_update_time"];
+
+  repeated string alias_merged_from_canonical_ids = 5 [json_name = "alias_merged_from_canonical_ids"];
+
+  map<string, string> alias_metadata = 6;
+
+  //Accessor of the mount to which the alias belongs to. This should be supplied in conjunction with `alias_name`.
+  string alias_mount_accessor = 7 [json_name = "alias_mount_accessor"];
+
+  string alias_mount_path = 8 [json_name = "alias_mount_path"];
+
+  string alias_mount_type = 9 [json_name = "alias_mount_type"];
+
+  //Name of the alias. This should be supplied in conjunction with `alias_mount_accessor`.
+  string alias_name = 10 [json_name = "alias_name"];
+
+  string creation_time = 11 [json_name = "creation_time"];
+
+  //Group data from Vault in JSON String form
+  string data_json = 12 [json_name = "data_json"];
+
+  //ID of the group.
+  string group_id = 13 [json_name = "group_id"];
+
+  //Name of the group.
+  string group_name = 14 [json_name = "group_name"];
+
+  string id = 15;
+
+  string last_update_time = 16 [json_name = "last_update_time"];
+
+  repeated string member_entity_ids = 17 [json_name = "member_entity_ids"];
+
+  repeated string member_group_ids = 18 [json_name = "member_group_ids"];
+
+  map<string, string> metadata = 19;
+
+  int64 modify_index = 20 [json_name = "modify_index"];
+
+  string namespace_id = 21 [json_name = "namespace_id"];
+
+  repeated string parent_group_ids = 22 [json_name = "parent_group_ids"];
+
+  repeated string policies = 23;
+
+  string type = 24;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 25;
+
+  int32 count = 26;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 27;
+
+  string provider = 28;
+
+  terraform.meta.Lifecycle lifecycle = 29;
+}
+
+//VaultKubernetesAuthBackendConfig version is 0
+message VaultKubernetesAuthBackendConfig {
+  //Unique name of the kubernetes backend to configure.
+  string backend = 1;
+
+  string id = 2;
+
+  //Optional JWT issuer. If no issuer is specified, kubernetes.io/serviceaccount will be used as the default issuer.
+  string issuer = 3;
+
+  //PEM encoded CA cert for use by the TLS client used to talk with the Kubernetes API.
+  string kubernetes_ca_cert = 4 [json_name = "kubernetes_ca_cert"];
+
+  //Host must be a host string, a host:port pair, or a URL to the base of the Kubernetes API server.
+  string kubernetes_host = 5 [json_name = "kubernetes_host"];
+
+  //Optional list of PEM-formatted public keys or certificates used to verify the signatures of Kubernetes service account JWTs. If a certificate is given, its public key will be extracted. Not every installation of Kubernetes exposes these keys.
+  repeated string pem_keys = 6 [json_name = "pem_keys"];
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 7;
+
+  int32 count = 8;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 9;
+
+  string provider = 10;
+
+  terraform.meta.Lifecycle lifecycle = 11;
+}
+
+//VaultKubernetesAuthBackendRole version is 0
+message VaultKubernetesAuthBackendRole {
+  //Optional Audience claim to verify in the JWT.
+  string audience = 1;
+
+  //Unique name of the kubernetes backend to configure.
+  string backend = 2;
+
+  //List of CIDRs valid as the source address for login requests. This value is also encoded into any resulting token.
+  repeated string bound_cidrs = 3 [json_name = "bound_cidrs"];
+
+  //List of service account names able to access this role. If set to "*" all names are allowed, both this and bound_service_account_namespaces can not be "*".
+  repeated string bound_service_account_names = 4 [json_name = "bound_service_account_names"];
+
+  //List of namespaces allowed to access this role. If set to "*" all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
+  repeated string bound_service_account_namespaces = 5 [json_name = "bound_service_account_namespaces"];
+
+  string id = 6;
+
+  //Number of seconds after which issued tokens can no longer be renewed.
+  int64 max_ttl = 7 [json_name = "max_ttl"];
+
+  //Number of times issued tokens can be used. Setting this to 0 or leaving it unset means unlimited uses.
+  int64 num_uses = 8 [json_name = "num_uses"];
+
+  //Number of seconds to set the TTL to for issued tokens upon renewal. Makes the token a periodic token, which will never expire as long as it is renewed before the TTL each period.
+  int64 period = 9;
+
+  //Policies to be set on tokens issued using this role.
+  repeated string policies = 10;
+
+  //Name of the role.
+  string role_name = 11 [json_name = "role_name"];
+
+  //Specifies the blocks of IP addresses which are allowed to use the generated token
+  repeated string token_bound_cidrs = 12 [json_name = "token_bound_cidrs"];
+
+  //Generated Token's Explicit Maximum TTL in seconds
+  int64 token_explicit_max_ttl = 13 [json_name = "token_explicit_max_ttl"];
+
+  //The maximum lifetime of the generated token
+  int64 token_max_ttl = 14 [json_name = "token_max_ttl"];
+
+  //If true, the 'default' policy will not automatically be added to generated tokens
+  bool token_no_default_policy = 15 [json_name = "token_no_default_policy"];
+
+  //The maximum number of times a token may be used, a value of zero means unlimited
+  int64 token_num_uses = 16 [json_name = "token_num_uses"];
+
+  //Generated Token's Period
+  int64 token_period = 17 [json_name = "token_period"];
+
+  //Generated Token's Policies
+  repeated string token_policies = 18 [json_name = "token_policies"];
+
+  //The initial ttl of the token to generate in seconds
+  int64 token_ttl = 19 [json_name = "token_ttl"];
+
+  //The type of token to generate, service or batch
+  string token_type = 20 [json_name = "token_type"];
+
+  //Default number of seconds to set as the TTL for issued tokens and at renewal time.
+  int64 ttl = 21;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 22;
+
+  int32 count = 23;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 24;
+
+  string provider = 25;
+
+  terraform.meta.Lifecycle lifecycle = 26;
+}
+
+//VaultPolicyDocument version is 0
+message VaultPolicyDocument {
+  string hcl = 1;
+
+  string id = 2;
+
+  Rule rule = 3;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 4;
+
+  int32 count = 5;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 6;
+
+  string provider = 7;
+
+  terraform.meta.Lifecycle lifecycle = 8;
+
+  message Rule {
+    repeated string capabilities = 1;
+
+    string description = 2;
+
+    string max_wrapping_ttl = 3 [json_name = "max_wrapping_ttl"];
+
+    string min_wrapping_ttl = 4 [json_name = "min_wrapping_ttl"];
+
+    string path = 5;
+
+    repeated string required_parameters = 6 [json_name = "required_parameters"];
+
+    AllowedParameter allowed_parameter = 7 [json_name = "allowed_parameter"];
+
+    DeniedParameter denied_parameter = 8 [json_name = "denied_parameter"];
+
+    message AllowedParameter {
+      string key = 1;
+
+      repeated string value = 2;
+    }
+
+    message DeniedParameter {
+      string key = 1;
+
+      repeated string value = 2;
+    }
+  }
+}
+
+//VaultTransformDecode version is 0
+message VaultTransformDecode {
+  //Specifies a list of items to be decoded in a single batch. If this parameter is set, the top-level parameters 'value', 'transformation' and 'tweak' will be ignored. Each batch item within the list can specify these parameters instead.
+  map<string, string> batch_input = 1;
+
+  //The result of decoding batch_input.
+  map<string, string> batch_results = 2;
+
+  //The result of decoding a value.
+  string decoded_value = 3 [json_name = "decoded_value"];
+
+  string id = 4;
+
+  //Path to backend from which to retrieve data.
+  string path = 5;
+
+  //The name of the role.
+  string role_name = 6 [json_name = "role_name"];
+
+  //The transformation to perform. If no value is provided and the role contains a single transformation, this value will be inferred from the role.
+  string transformation = 7;
+
+  //The tweak value to use. Only applicable for FPE transformations
+  string tweak = 8;
+
+  //The value in which to decode.
+  string value = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
+
+//VaultTransformEncode version is 0
+message VaultTransformEncode {
+  //Specifies a list of items to be encoded in a single batch. If this parameter is set, the parameters 'value', 'transformation' and 'tweak' will be ignored. Each batch item within the list can specify these parameters instead.
+  map<string, string> batch_input = 1;
+
+  //The result of encoding batch_input.
+  map<string, string> batch_results = 2;
+
+  //The result of encoding a value.
+  string encoded_value = 3 [json_name = "encoded_value"];
+
+  string id = 4;
+
+  //Path to backend from which to retrieve data.
+  string path = 5;
+
+  //The name of the role.
+  string role_name = 6 [json_name = "role_name"];
+
+  //The transformation to perform. If no value is provided and the role contains a single transformation, this value will be inferred from the role.
+  string transformation = 7;
+
+  //The tweak value to use. Only applicable for FPE transformations
+  string tweak = 8;
+
+  //The value in which to encode.
+  string value = 9;
+
+  terraform.meta.MetaFields.DependsOnEntry depends_on = 10;
+
+  int32 count = 11;
+
+  terraform.meta.MetaFields.ForEachEntry for_each = 12;
+
+  string provider = 13;
+
+  terraform.meta.Lifecycle lifecycle = 14;
+}
