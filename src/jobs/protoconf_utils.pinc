@@ -1,8 +1,9 @@
 """
 utils for protoconf based nomad jobs
 """
-load("/nomad/v0.11.1/api.proto", "Template", "ServiceCheck")
+load("/nomad/v0.12.5/api.proto", "Template", "ServiceCheck")
 load("helpers/job.pinc", "NewJob")
+load("//google/protobuf/duration.proto", "Duration")
 load("consts.pinc", PROTOCONF_VERSION="PROTOCONF_V_VERSION")
 
 
@@ -105,7 +106,7 @@ mutate.NewService(
     to=4301,
     checks=[
         ServiceCheck(
-            Type="tcp", Interval=10 * 1000000000, Timeout=2 * 1000000000
+            Type="tcp", Interval=10 * 100000000, Timeout=2 * 100000000,
         )
     ],
     tags=["grpcprefix-/v1.ProtoconfMutationService/MutateConfig"],

@@ -50,23 +50,16 @@
                     {
                       "Type": "http",
                       "Path": "/health",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }
                     }
                   ],
                   "Connect": {
-                    "SidecarService": {
-                      "Tags": [
-                        "connect"
-                      ]
-                    },
                     "SidecarTask": {
-                      "Env": {
-                        "HELLO": "world"
-                      }
+                      "Name": "connect"
                     }
                   }
                 }
@@ -77,17 +70,11 @@
                 "Networks": [
                   {
                     "Mode": "bridge",
-                    "ReservedPorts": [
+                    "DynamicPorts": [
                       {
                         "Label": "lb",
                         "Value": 80,
                         "To": 80
-                      }
-                    ],
-                    "DynamicPorts": [
-                      {
-                        "Label": "ui",
-                        "To": 9998
                       }
                     ]
                   }
@@ -134,23 +121,16 @@
                     {
                       "Type": "http",
                       "Path": "/health",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }
                     }
                   ],
                   "Connect": {
-                    "SidecarService": {
-                      "Tags": [
-                        "connect"
-                      ]
-                    },
                     "SidecarTask": {
-                      "Env": {
-                        "HELLO": "world"
-                      }
+                      "Name": "connect"
                     }
                   }
                 }
@@ -161,17 +141,11 @@
                 "Networks": [
                   {
                     "Mode": "bridge",
-                    "ReservedPorts": [
+                    "DynamicPorts": [
                       {
                         "Label": "lb",
                         "Value": 9999,
                         "To": 9999
-                      }
-                    ],
-                    "DynamicPorts": [
-                      {
-                        "Label": "ui",
-                        "To": 9998
                       }
                     ]
                   }

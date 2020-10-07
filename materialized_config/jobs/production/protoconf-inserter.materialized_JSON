@@ -81,23 +81,16 @@
                     {
                       "Type": "http",
                       "Path": "/hooks/protoconf-insert",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }
                     }
                   ],
                   "Connect": {
-                    "SidecarService": {
-                      "Tags": [
-                        "connect"
-                      ]
-                    },
                     "SidecarTask": {
-                      "Env": {
-                        "HELLO": "world"
-                      }
+                      "Name": "connect"
                     }
                   }
                 }
@@ -107,13 +100,7 @@
                 "MemoryMB": 512,
                 "Networks": [
                   {
-                    "Mode": "bridge",
-                    "DynamicPorts": [
-                      {
-                        "Label": "webhooks",
-                        "To": 9000
-                      }
-                    ]
+                    "Mode": "bridge"
                   }
                 ]
               },

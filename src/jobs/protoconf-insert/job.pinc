@@ -1,7 +1,8 @@
 """
 """
 load("/webhook/hook-proto.pinc", "HOOK_PROTO")
-load("/nomad/v0.11.1/api.proto", "Template", "ServiceCheck", "CheckRestart")
+load("/nomad/v0.12.5/api.proto", "Template", "ServiceCheck", "CheckRestart")
+load("//google/protobuf/duration.proto", "Duration")
 load("/jobs/helpers/job.pinc", "NewJob")
 load("insertion-script.pinc", "PROTOCONF_INSERT_SCRIPT")
 load("/jobs/protoconf_exec_task.pinc", "ProtoconfExecTask")

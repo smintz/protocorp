@@ -29,6 +29,7 @@ client {{
   options {{
       driver.raw_exec.enabled = 1
       docker.privileged.enabled = true
+      docker.volumes.enabled = true
   }}
 }}
 

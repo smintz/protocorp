@@ -40,7 +40,7 @@
                 "Networks": [
                   {
                     "Mode": "bridge",
-                    "ReservedPorts": [
+                    "DynamicPorts": [
                       {
                         "Label": "agent",
                         "Value": 4300

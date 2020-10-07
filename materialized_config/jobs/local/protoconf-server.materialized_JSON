@@ -46,20 +46,13 @@
                   "Checks": [
                     {
                       "Type": "tcp",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000"
+                      "Interval": 1000000000,
+                      "Timeout": 200000000
                     }
                   ],
                   "Connect": {
-                    "SidecarService": {
-                      "Tags": [
-                        "connect"
-                      ]
-                    },
                     "SidecarTask": {
-                      "Env": {
-                        "HELLO": "world"
-                      }
+                      "Name": "connect"
                     }
                   }
                 }
@@ -69,13 +62,7 @@
                 "MemoryMB": 1024,
                 "Networks": [
                   {
-                    "Mode": "bridge",
-                    "DynamicPorts": [
-                      {
-                        "Label": "mutate",
-                        "To": 4301
-                      }
-                    ]
+                    "Mode": "bridge"
                   }
                 ]
               },

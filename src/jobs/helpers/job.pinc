@@ -1,7 +1,7 @@
 """
 nomad jobs
 """
-load("/nomad/v0.11.1/api.proto", "Job", "TaskGroup")
+load("/nomad/v0.12.5/api.proto", "Job", "TaskGroup")
 load("/infra/infra.pinc", "CLUSTERS")
 load("/infra/helpers/get_cluster_name.pinc", "get_cluster_name")
 load("task.pinc", "NewTask")
