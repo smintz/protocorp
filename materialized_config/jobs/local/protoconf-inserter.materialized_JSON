@@ -73,6 +73,9 @@
               "Services": [
                 {
                   "Name": "webhooks",
+                  "Tags": [
+                    "httpprefix-webhooks.service.ams3c01.pco.nf/"
+                  ],
                   "PortLabel": "webhooks",
                   "Checks": [
                     {

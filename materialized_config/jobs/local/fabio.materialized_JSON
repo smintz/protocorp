@@ -42,6 +42,9 @@
               "Services": [
                 {
                   "Name": "fabio-http",
+                  "Tags": [
+                    "httpprefix-fabio-http.service.ams3c01.pco.nf/"
+                  ],
                   "PortLabel": "ui",
                   "Checks": [
                     {
@@ -110,6 +113,9 @@
               "Services": [
                 {
                   "Name": "fabio-grpc",
+                  "Tags": [
+                    "httpprefix-fabio-grpc.service.ams3c01.pco.nf/"
+                  ],
                   "PortLabel": "ui",
                   "Checks": [
                     {
