@@ -58,18 +58,18 @@ def DefaultVersions(
 
 
 CLUSTERS = [
-    Cluster(
-        provider=Cluster.Providers.DIGITALOCEAN,
-        region="ams3",
-        cluster_number=1,
-        tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
-        versions=DefaultVersions(
-            nomad_version="0.12.5",
-            consul_version="1.8.4",
-            vault_version="1.5.4",
-        ),
-        ready=True,
-    ),
+    # Cluster(
+    #     provider=Cluster.Providers.DIGITALOCEAN,
+    #     region="ams3",
+    #     cluster_number=1,
+    #     tiers=[Tier(name="server", count=3), Tier(name="general", count=0)],
+    #     versions=DefaultVersions(
+    #         nomad_version="0.12.5",
+    #         consul_version="1.8.4",
+    #         vault_version="1.5.4",
+    #     ),
+    #     ready=True,
+    # ),
     # Cluster(
     #     provider=Cluster.Providers.PACKET,
     #     region="ams1",
