@@ -1,0 +1,18 @@
+"""
+fabio
+"""
+load("/jobs/helpers/job.pinc", "NewJob")
+load("/nomad/v0.12.5/api.proto", "ServiceCheck", "CheckRestart")
+load("/infra/consts.pinc", "CONSUL_DOMAIN")
+
+
+IPFS_JOB = NewJob("ipfs", type="system")
+
+
+task = IPFS_JOB.NewTask("ipfs")
+task.SetImage("ipfs/go-ipfs")
+task.SetMemory(512)
+task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
+
+task.NewPort("api", 5001, 5001)
+task.NewPort("proxy", 8080, 8080)

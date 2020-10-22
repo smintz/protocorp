@@ -1,0 +1,63 @@
+{
+  "protoFile": "nomad/v0.11.1/api.proto",
+  "value": {
+    "@type": "type.googleapis.com/api.RegisterJobRequest",
+    "Job": {
+      "Region": "global",
+      "ID": "ipfs",
+      "Name": "ipfs",
+      "Type": "system",
+      "Priority": 75,
+      "Datacenters": [
+        "ams3c01"
+      ],
+      "TaskGroups": [
+        {
+          "Name": "default",
+          "Count": 1,
+          "Tasks": [
+            {
+              "Name": "ipfs",
+              "Driver": "docker",
+              "Config": {
+                "dns_options": [
+                  "169.254.1.1"
+                ],
+                "image": "ipfs/go-ipfs",
+                "port_map": [
+                  {
+                    "proxy": 8080
+                  }
+                ],
+                "volumes": [
+                  "/etc/ssl:/etc/ssl"
+                ]
+              },
+              "Resources": {
+                "CPU": 100,
+                "MemoryMB": 512,
+                "Networks": [
+                  {
+                    "Mode": "bridge",
+                    "DynamicPorts": [
+                      {
+                        "Label": "api",
+                        "Value": 5001,
+                        "To": 5001
+                      },
+                      {
+                        "Label": "proxy",
+                        "Value": 8080,
+                        "To": 8080
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

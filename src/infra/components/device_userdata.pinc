@@ -6,6 +6,8 @@ load("docker.pinc", "Docker")
 load("consul.pinc", "Consul")
 load("vault.pinc", "Vault")
 load("nomad.pinc", "Nomad")
+load("ipfs.pinc", "IpfsService")
+load("ipdr.pinc", "IpdrService")
 load("protoconf_binary.pinc", "ProtoconfBinary")
 load("/pc4os/component.pinc", "Component", "String")
 
@@ -55,6 +57,8 @@ advertise {{
                     advertise_addr=advertise_addr,
                 ),
                 vault,
+                IpfsService(),
+                IpdrService(),
                 Docker(),
                 Nomad(
                     nmd.role,

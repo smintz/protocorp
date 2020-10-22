@@ -1,0 +1,48 @@
+"""
+ipdr.pinc
+"""
+load("/pc4os/component.pinc", "Component")
+load("/pc4os/command.pinc", "Command")
+load("/pc4os/systemd.pinc", "Systemd")
+load("/pc4os/systemd.proto", "Service")
+load("/pc4os/file.pinc", "File", "Directory")
+
+
+def IpdrInstall(version):
+    download_file = "/tmp/ipdr-{version}.tar.gz".format(version=version)
+
+    def render():
+        return [
+            File(
+                download_file,
+                download="https://github.com/miguelmota/ipdr/releases/download/v{version}/ipdr_{version}_linux_amd64.tar.gz".format(
+                    version=version
+                ),
+            ),
+            Command("tar", "-xvf", download_file, "-C", "/usr/local/bin"),
+        ]
+
+    return Component("IpdrInstall", render)
+
+
+def IpdrService(version="0.1.6"):
+    service = Service(
+        ExecReload="/bin/kill -HUP $MAINPID",
+        ExecStart="ipdr server -p 5000",
+        KillMode="process",
+        KillSignal="SIGINT",
+        LimitNOFILE="infinity",
+        LimitNPROC="infinity",
+        Restart="on-failure",
+        RestartSec="2",
+        StartLimitBurst=3,
+        StartLimitIntervalSec=10,
+        TasksMax="infinity",
+    )
+
+    output = [IpdrInstall(version), Systemd("ipdr", service)]
+
+    def render():
+        return output
+
+    return Component("IpdrService", render)
