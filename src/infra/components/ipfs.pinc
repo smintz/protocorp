@@ -21,7 +21,7 @@ def IpfsInstall(version):
             ),
             Directory("/tmp/ipfs-install"),
             Command("tar", "-xvf", download_file, "-C", "/tmp/ipfs-install"),
-            Command("/tmp/ipfs-install/install.sh"),
+            Command("/tmp/ipfs-install/go-ipfs/install.sh"),
             Command("ipfs", "init", "--profile", "server"),
         ]
 
@@ -31,7 +31,7 @@ def IpfsInstall(version):
 def IpfsService(version="v0.7.0"):
     service = Service(
         ExecReload="/bin/kill -HUP $MAINPID",
-        ExecStart="ipfs daemon",
+        ExecStart="/usr/local/bin/ipfs daemon",
         KillMode="process",
         KillSignal="SIGINT",
         LimitNOFILE="infinity",

@@ -28,7 +28,7 @@ def IpdrInstall(version):
 def IpdrService(version="0.1.6"):
     service = Service(
         ExecReload="/bin/kill -HUP $MAINPID",
-        ExecStart="ipdr server -p 5000",
+        ExecStart="/usr/local/bin/ipdr server -p 5000",
         KillMode="process",
         KillSignal="SIGINT",
         LimitNOFILE="infinity",
