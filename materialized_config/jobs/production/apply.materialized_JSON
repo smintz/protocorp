@@ -76,24 +76,6 @@
         ]
       },
       {
-        "path": "jobs/production/ipfs",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          },
-          {
-            "file": {
-              "path": "/local/ipfs.json",
-              "serializer": "JSON"
-            }
-          }
-        ]
-      },
-      {
         "path": "jobs/production/protoconf-inserter",
         "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
