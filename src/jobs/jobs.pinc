@@ -96,7 +96,7 @@ def generate_job_for_service(svc):
     artifact = svc.artifact.name if svc.artifact else svc.name.lower()
 
     for ver in svc.versions:
-        job.SetCount(1, ver.name)
+        job.SetCount(3, ver.name)
         task = job.NewTask("server", ver.name)
         envoy = job.NewTask("envoy", ver.name)
 

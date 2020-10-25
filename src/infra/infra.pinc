@@ -64,7 +64,7 @@ CLUSTERS = [
         cluster_number=1,
         tiers=[
             Tier(name="server", count=3),
-            Tier(name="general", count=3, instance_type="s-8vcpu-16gb"),
+            Tier(name="general", count=0, instance_type="s-8vcpu-16gb"),
         ],
         versions=DefaultVersions(
             nomad_version="0.12.5",
