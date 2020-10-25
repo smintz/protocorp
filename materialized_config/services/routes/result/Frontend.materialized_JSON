@@ -2,18 +2,7 @@
   "protoFile": "envoy/config/bootstrap/v2/bootstrap.proto",
   "value": {
     "@type": "type.googleapis.com/envoy.config.bootstrap.v2.Bootstrap",
-    "dynamicResources": {
-      "adsConfig": {
-        "apiType": "GRPC",
-        "grpcServices": [
-          {
-            "envoyGrpc": {
-              "clusterName": "xds_cluster"
-            }
-          }
-        ]
-      }
-    },
+    "dynamicResources": {},
     "staticResources": {
       "listeners": [
         {

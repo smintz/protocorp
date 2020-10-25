@@ -26,6 +26,9 @@
                 "image": "fabiolb/fabio",
                 "port_map": [
                   {
+                    "ui": 9998
+                  },
+                  {
                     "lb": 80
                   }
                 ],
@@ -109,6 +112,9 @@
                 ],
                 "image": "fabiolb/fabio",
                 "port_map": [
+                  {
+                    "ui": 9998
+                  },
                   {
                     "lb": 9999
                   }

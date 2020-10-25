@@ -16,102 +16,6 @@
         ]
       },
       {
-        "path": "jobs/production/adservice",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
-        "path": "jobs/production/cartservice",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
-        "path": "jobs/production/checkoutservice",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
-        "path": "jobs/production/currencyservice",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
-        "path": "jobs/production/paymentservice",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
-        "path": "jobs/production/productcatalogservice",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
-        "path": "jobs/production/recommendationservice",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
-        "path": "jobs/production/shippingservice",
-        "protoFile": "nomad/v0.11.1/api.proto",
-        "actions": [
-          {
-            "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
-              "method": "POST"
-            }
-          }
-        ]
-      },
-      {
         "path": "jobs/production/protoconf-agent",
         "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
@@ -137,6 +41,18 @@
       },
       {
         "path": "jobs/production/fabio",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
+        "path": "jobs/production/prometheus",
         "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
           {

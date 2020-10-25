@@ -4,6 +4,7 @@ defines the AD_SERVICE
 load("//services/services.proto", "Service", "Artifact", "Version")
 load("//ownership/ownership.proto", "Owner")
 load("//groups/dummy_group.pinc", "DUMMY_GROUP")
+load("consts.pinc", "DEFAULT_VERSIONS")
 
 
 AD_SERVICE = Service(
@@ -13,29 +14,7 @@ AD_SERVICE = Service(
     """.strip(),
     owner=Owner(group=DUMMY_GROUP),
     artifact=Artifact(name="adservice"),
-    versions=[
-        Service.WeightedVersion(
-            name="prod",
-            version=Version(
-                major=0, minor=1, patch=4, prerelease="31-gc4d8670"
-            ),
-            weight=90,
-        ),
-        Service.WeightedVersion(
-            name="beta",
-            version=Version(
-                major=0, minor=1, patch=4, prerelease="31-gc4d8670"
-            ),
-            weight=9,
-        ),
-        Service.WeightedVersion(
-            name="alpha",
-            version=Version(
-                major=0, minor=1, patch=4, prerelease="31-gc4d8670"
-            ),
-            weight=1,
-        ),
-    ],
+    versions=DEFAULT_VERSIONS,
     slos=[
         Service.SLO(
             error_rate=Service.SLO.ErrorRateSLO(

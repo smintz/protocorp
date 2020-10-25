@@ -3,12 +3,16 @@ jobs registry
 """
 load("/jobs/protoconf-insert/job.pinc", INSERTER="job")
 load("fabio.nomad.pinc", "FABIO_JOB")
+load("prometheus.nomad.pinc", "PROM_JOB")
 load("protoconf_utils.pinc", "PROTOCONF_AGENT_JOB", "PROTOCONF_SERVER_JOB")
 load("//jobs/helpers/job.pinc", "NewJob")
 load("//services/registry.pinc", svcs="reg")
 load("//jobs/protoconf_exec_task.pinc", "ProtoconfExecTask")
-load("//nomad/v0.11.1/api.proto", "TaskArtifact")
+load(
+    "//nomad/v0.11.1/api.proto", "TaskArtifact", "ServiceCheck", "CheckRestart"
+)
 load("re.star", "re")
+load("/infra/consts.pinc", "CONSUL_DOMAIN")
 
 
 def version(v):
@@ -105,7 +109,6 @@ def generate_job_for_service(svc):
         task.task.Env = {
             "LISTEN_ADDR": "0.0.0.0",
             "PORT": "18080",
-            "test": "hello",
             "http_proxy": "${NOMAD_ADDR_envoy_forwarder}",
         }
         for s in svc.downstreams:
@@ -114,11 +117,46 @@ def generate_job_for_service(svc):
                 + "_ADDR"
             )
             task.task.Env[env_name] = s.name.lower()
-        envoy.SetImage("envoyproxy/envoy:v1.15.0")
+        envoy.SetImage("envoyproxy/envoy-alpine:v1.15.0")
         envoy.NewService(
-            name + "-envoy", 8881, tags=["envoy-admin"], label="envoyadmin"
+            name + "-envoy",
+            8881,
+            label="envoyadmin",
+            checks=[
+                ServiceCheck(
+                    Type="http",
+                    Path="/ready",
+                    Interval=10 * 1000000000,
+                    Timeout=2 * 1000000000,
+                    CheckRestart=CheckRestart(Limit=5),
+                )
+            ],
+            tags=[
+                "httpprefix-{}-envoy.service.{}.{}/".format(
+                    name, dc, CONSUL_DOMAIN
+                )
+                for dc in job.job.Datacenters
+            ]
+            + ["envoy-admin"],
         )
-        envoy.NewService(name, 10000, label="ingress", tags=[ver.name, v])
+        envoy.NewService(
+            name,
+            10000,
+            label="ingress",
+            checks=[
+                ServiceCheck(
+                    Type="tcp",
+                    Interval=10 * 1000000000,
+                    Timeout=2 * 1000000000,
+                    CheckRestart=CheckRestart(Limit=5),
+                )
+            ],
+            tags=[
+                "httpprefix-{}.service.{}.{}/".format(name, dc, CONSUL_DOMAIN)
+                for dc in job.job.Datacenters
+            ]
+            + [ver.name, v],
+        )
         envoy.NewPort("forwarder", 11000)
         envoy.task.Resources.CPU = 100
         envoy.SetConfig(
@@ -152,5 +190,6 @@ def populate(reg):
     reg.register_job(PROTOCONF_AGENT_JOB.job)
     reg.register_job(PROTOCONF_SERVER_JOB.job)
     reg.register_job(FABIO_JOB.job)
+    reg.register_job(PROM_JOB.job)
     # reg.register_job(IPFS_JOB.job)
     reg.register_job(INSERTER.job)

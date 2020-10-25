@@ -40,8 +40,7 @@
                 "PRODUCT_CATALOG_SERVICE_ADDR": "productcatalogservice",
                 "RECOMMENDATION_SERVICE_ADDR": "recommendationservice",
                 "SHIPPING_SERVICE_ADDR": "shippingservice",
-                "http_proxy": "${NOMAD_ADDR_envoy_forwarder}",
-                "test": "hello"
+                "http_proxy": "${NOMAD_ADDR_envoy_forwarder}"
               },
               "Resources": {
                 "CPU": 100,
@@ -72,8 +71,14 @@
                 "dns_options": [
                   "169.254.1.1"
                 ],
-                "image": "envoyproxy/envoy:v1.15.0",
+                "image": "envoyproxy/envoy-alpine:v1.15.0",
                 "port_map": [
+                  {
+                    "envoyadmin": 8881
+                  },
+                  {
+                    "ingress": 10000
+                  },
                   {
                     "forwarder": 11000
                   }
@@ -83,9 +88,21 @@
                 {
                   "Name": "frontend-envoy",
                   "Tags": [
+                    "httpprefix-frontend-envoy.service.ams3c01.pco.nf/",
                     "envoy-admin"
                   ],
                   "PortLabel": "envoyadmin",
+                  "Checks": [
+                    {
+                      "Type": "http",
+                      "Path": "/ready",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ],
                   "Connect": {
                     "SidecarService": {
                       "Tags": [
@@ -102,10 +119,21 @@
                 {
                   "Name": "frontend",
                   "Tags": [
+                    "httpprefix-frontend.service.ams3c01.pco.nf/",
                     "prod",
                     "v0.1.4-31-gc4d8670"
                   ],
                   "PortLabel": "ingress",
+                  "Checks": [
+                    {
+                      "Type": "tcp",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ],
                   "Connect": {
                     "SidecarService": {
                       "Tags": [
@@ -211,8 +239,7 @@
                 "PRODUCT_CATALOG_SERVICE_ADDR": "productcatalogservice",
                 "RECOMMENDATION_SERVICE_ADDR": "recommendationservice",
                 "SHIPPING_SERVICE_ADDR": "shippingservice",
-                "http_proxy": "${NOMAD_ADDR_envoy_forwarder}",
-                "test": "hello"
+                "http_proxy": "${NOMAD_ADDR_envoy_forwarder}"
               },
               "Resources": {
                 "CPU": 100,
@@ -243,8 +270,14 @@
                 "dns_options": [
                   "169.254.1.1"
                 ],
-                "image": "envoyproxy/envoy:v1.15.0",
+                "image": "envoyproxy/envoy-alpine:v1.15.0",
                 "port_map": [
+                  {
+                    "envoyadmin": 8881
+                  },
+                  {
+                    "ingress": 10000
+                  },
                   {
                     "forwarder": 11000
                   }
@@ -254,9 +287,21 @@
                 {
                   "Name": "frontend-envoy",
                   "Tags": [
+                    "httpprefix-frontend-envoy.service.ams3c01.pco.nf/",
                     "envoy-admin"
                   ],
                   "PortLabel": "envoyadmin",
+                  "Checks": [
+                    {
+                      "Type": "http",
+                      "Path": "/ready",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ],
                   "Connect": {
                     "SidecarService": {
                       "Tags": [
@@ -273,10 +318,21 @@
                 {
                   "Name": "frontend",
                   "Tags": [
+                    "httpprefix-frontend.service.ams3c01.pco.nf/",
                     "beta",
                     "v0.1.4-31-gc4d8670"
                   ],
                   "PortLabel": "ingress",
+                  "Checks": [
+                    {
+                      "Type": "tcp",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ],
                   "Connect": {
                     "SidecarService": {
                       "Tags": [
@@ -382,8 +438,7 @@
                 "PRODUCT_CATALOG_SERVICE_ADDR": "productcatalogservice",
                 "RECOMMENDATION_SERVICE_ADDR": "recommendationservice",
                 "SHIPPING_SERVICE_ADDR": "shippingservice",
-                "http_proxy": "${NOMAD_ADDR_envoy_forwarder}",
-                "test": "hello"
+                "http_proxy": "${NOMAD_ADDR_envoy_forwarder}"
               },
               "Resources": {
                 "CPU": 100,
@@ -414,8 +469,14 @@
                 "dns_options": [
                   "169.254.1.1"
                 ],
-                "image": "envoyproxy/envoy:v1.15.0",
+                "image": "envoyproxy/envoy-alpine:v1.15.0",
                 "port_map": [
+                  {
+                    "envoyadmin": 8881
+                  },
+                  {
+                    "ingress": 10000
+                  },
                   {
                     "forwarder": 11000
                   }
@@ -425,9 +486,21 @@
                 {
                   "Name": "frontend-envoy",
                   "Tags": [
+                    "httpprefix-frontend-envoy.service.ams3c01.pco.nf/",
                     "envoy-admin"
                   ],
                   "PortLabel": "envoyadmin",
+                  "Checks": [
+                    {
+                      "Type": "http",
+                      "Path": "/ready",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ],
                   "Connect": {
                     "SidecarService": {
                       "Tags": [
@@ -444,10 +517,21 @@
                 {
                   "Name": "frontend",
                   "Tags": [
+                    "httpprefix-frontend.service.ams3c01.pco.nf/",
                     "alpha",
                     "v0.1.4-31-gc4d8670"
                   ],
                   "PortLabel": "ingress",
+                  "Checks": [
+                    {
+                      "Type": "tcp",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ],
                   "Connect": {
                     "SidecarService": {
                       "Tags": [

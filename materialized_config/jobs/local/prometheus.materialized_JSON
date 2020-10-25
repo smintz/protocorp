@@ -1,0 +1,100 @@
+{
+  "protoFile": "nomad/v0.11.1/api.proto",
+  "value": {
+    "@type": "type.googleapis.com/api.RegisterJobRequest",
+    "Job": {
+      "Region": "global",
+      "ID": "prometheus",
+      "Name": "prometheus",
+      "Type": "service",
+      "Priority": 75,
+      "Datacenters": [
+        "dc1"
+      ],
+      "TaskGroups": [
+        {
+          "Name": "default",
+          "Count": 1,
+          "Tasks": [
+            {
+              "Name": "prometheus",
+              "Driver": "docker",
+              "Config": {
+                "args": [
+                  "--config.file=/local/prometheus.yml",
+                  "--storage.tsdb.path=/alloc/data",
+                  "--web.listen-address=:${NOMAD_PORT_http}"
+                ],
+                "dns_options": [
+                  "169.254.1.1"
+                ],
+                "image": "prom/prometheus",
+                "network_mode": "host",
+                "port_map": [
+                  {
+                    "http": 9090
+                  }
+                ],
+                "volumes": [
+                  "/etc/ssl:/etc/ssl"
+                ]
+              },
+              "Services": [
+                {
+                  "Name": "promehteus",
+                  "Tags": [
+                    "httpprefix-prometheus.service.ams3c01.pco.nf/"
+                  ],
+                  "PortLabel": "http",
+                  "Checks": [
+                    {
+                      "Type": "tcp",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
+                      "CheckRestart": {
+                        "Limit": 5
+                      }
+                    }
+                  ],
+                  "Connect": {
+                    "SidecarService": {
+                      "Tags": [
+                        "connect"
+                      ]
+                    },
+                    "SidecarTask": {
+                      "Env": {
+                        "HELLO": "world"
+                      }
+                    }
+                  }
+                }
+              ],
+              "Resources": {
+                "CPU": 100,
+                "MemoryMB": 512,
+                "Networks": [
+                  {
+                    "Mode": "bridge",
+                    "DynamicPorts": [
+                      {
+                        "Label": "http",
+                        "To": 9090
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Templates": [
+                {
+                  "DestPath": "local/prometheus.yml",
+                  "EmbeddedTmpl": "\n{{$dc := env \"NOMAD_DC\" -}}\nglobal:\n  scrape_interval:     15s\n  evaluation_interval: 15s\nrule_files:\nscrape_configs:\n  - job_name: 'consul_metrics'\n    consul_sd_configs:\n    - server: 'localhost:8500'\n      services: ['consul']\n    relabel_configs:\n    - source_labels: [__meta_consul_dc]\n      target_label: dc\n    - source_labels: [__meta_consul_node]\n      target_label: node\n    - source_labels: [__meta_consul_service]\n      target_label: service\n    - source_labels: [__meta_consul_tags]\n      regex: 'version=([^,])'\n      action: replace\n      replacement: $1\n      target_label: version\n    - source_labels: [__meta_consul_node]\n      regex: '(.+)[0-9]{3}'\n      action: replace\n      replacement: $1\n      target_label: tier\n    - source_labels: [__address__]\n      regex: '(.+):8300'\n      action: replace\n      replacement: \"$1:8501\"\n      target_label: __address__\n    metrics_path: /v1/agent/metrics\n    scheme: https\n    params:\n      format: ['prometheus']\n    tls_config:\n      insecure_skip_verify: true\n  - job_name: 'nomad_metrics'\n    consul_sd_configs:\n    - server: 'localhost:8500'\n      services: ['nomad-client', 'nomad']\n    relabel_configs:\n    - source_labels: ['__meta_consul_tags']\n      regex: '(.*)http(.*)'\n      action: keep\n    - source_labels: [__meta_consul_dc]\n      target_label: dc\n    - source_labels: [__meta_consul_node]\n      target_label: node\n    - source_labels: [__meta_consul_service]\n      target_label: service\n    - source_labels: [__meta_consul_tags]\n      regex: 'version=([^,])'\n      action: replace\n      replacement: $1\n      target_label: version\n    - source_labels: [__meta_consul_node]\n      regex: '(.+)[0-9]{3}'\n      action: replace\n      replacement: $1\n      target_label: tier\n    metrics_path: /v1/metrics\n    scheme: https\n    params:\n      format: ['prometheus']\n    tls_config:\n      insecure_skip_verify: true\n  - job_name: 'prometheus'\n    consul_sd_configs:\n    - server: 'localhost:8500'\n      tags: [\"envoy-admin\"]\n    metrics_path: /stats/prometheus\n    relabel_configs:\n    - source_labels: [__meta_consul_tags]\n      regex: .*,skip_scrape,.*\n      action: drop\n    - source_labels: [__meta_consul_dc]\n      target_label: dc\n    - source_labels: [__meta_consul_node]\n      target_label: machine\n    - source_labels: [__meta_consul_service]\n      regex: '(.*)-envoy'\n      action: replace\n      replacement: $1\n      target_label: service\n    - source_labels: [__meta_consul_service]\n      regex: '(nomad|nomad-client|vault)'\n      action: drop\n    - source_labels: [__meta_consul_tags]\n      regex: '.*version=([^,]*).*'\n      action: replace\n      replacement: $1\n      target_label: version\n    - source_labels: [__meta_consul_node]\n      regex: '(.+)[0-9]{3}'\n      action: replace\n      replacement: $1\n      target_label: tier\n"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

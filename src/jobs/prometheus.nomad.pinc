@@ -1,0 +1,144 @@
+"""
+fabio
+"""
+load("/jobs/helpers/job.pinc", "NewJob")
+load("/nomad/v0.12.5/api.proto", "ServiceCheck", "CheckRestart")
+load("/infra/consts.pinc", "CONSUL_DOMAIN")
+
+
+PROM_JOB = NewJob("prometheus")
+
+PROM_CONFIG = """
+{{$dc := env "NOMAD_DC" -}}
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+rule_files:
+scrape_configs:
+  - job_name: 'consul_metrics'
+    consul_sd_configs:
+    - server: 'localhost:8500'
+      services: ['consul']
+    relabel_configs:
+    - source_labels: [__meta_consul_dc]
+      target_label: dc
+    - source_labels: [__meta_consul_node]
+      target_label: node
+    - source_labels: [__meta_consul_service]
+      target_label: service
+    - source_labels: [__meta_consul_tags]
+      regex: 'version=([^,])'
+      action: replace
+      replacement: $1
+      target_label: version
+    - source_labels: [__meta_consul_node]
+      regex: '(.+)[0-9]{3}'
+      action: replace
+      replacement: $1
+      target_label: tier
+    - source_labels: [__address__]
+      regex: '(.+):8300'
+      action: replace
+      replacement: "$1:8501"
+      target_label: __address__
+    metrics_path: /v1/agent/metrics
+    scheme: https
+    params:
+      format: ['prometheus']
+    tls_config:
+      insecure_skip_verify: true
+  - job_name: 'nomad_metrics'
+    consul_sd_configs:
+    - server: 'localhost:8500'
+      services: ['nomad-client', 'nomad']
+    relabel_configs:
+    - source_labels: ['__meta_consul_tags']
+      regex: '(.*)http(.*)'
+      action: keep
+    - source_labels: [__meta_consul_dc]
+      target_label: dc
+    - source_labels: [__meta_consul_node]
+      target_label: node
+    - source_labels: [__meta_consul_service]
+      target_label: service
+    - source_labels: [__meta_consul_tags]
+      regex: 'version=([^,])'
+      action: replace
+      replacement: $1
+      target_label: version
+    - source_labels: [__meta_consul_node]
+      regex: '(.+)[0-9]{3}'
+      action: replace
+      replacement: $1
+      target_label: tier
+    metrics_path: /v1/metrics
+    scheme: https
+    params:
+      format: ['prometheus']
+    tls_config:
+      insecure_skip_verify: true
+  - job_name: 'prometheus'
+    consul_sd_configs:
+    - server: 'localhost:8500'
+      tags: ["envoy-admin"]
+    metrics_path: /stats/prometheus
+    relabel_configs:
+    - source_labels: [__meta_consul_tags]
+      regex: .*,skip_scrape,.*
+      action: drop
+    - source_labels: [__meta_consul_dc]
+      target_label: dc
+    - source_labels: [__meta_consul_node]
+      target_label: machine
+    - source_labels: [__meta_consul_service]
+      regex: '(.*)-envoy'
+      action: replace
+      replacement: $1
+      target_label: service
+    - source_labels: [__meta_consul_service]
+      regex: '(nomad|nomad-client|vault)'
+      action: drop
+    - source_labels: [__meta_consul_tags]
+      regex: '.*version=([^,]*).*'
+      action: replace
+      replacement: $1
+      target_label: version
+    - source_labels: [__meta_consul_node]
+      regex: '(.+)[0-9]{3}'
+      action: replace
+      replacement: $1
+      target_label: tier
+"""
+
+task = PROM_JOB.NewTask("prometheus")
+task.SetImage("prom/prometheus")
+task.SetMemory(512)
+task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
+task.SetConfig("network_mode", "host")
+task.SetConfig(
+    "args",
+    [
+        "--config.file=/local/prometheus.yml",
+        "--storage.tsdb.path=/alloc/data",
+        "--web.listen-address=:${NOMAD_PORT_http}",
+    ],
+)
+task.AddTemplate("local/prometheus.yml", PROM_CONFIG)
+
+task.NewService(
+    "promehteus",
+    9090,
+    label="http",
+    tags=[
+        "httpprefix-prometheus.service.{}.{}/".format(dc, CONSUL_DOMAIN)
+        for dc in PROM_JOB.job.Datacenters
+    ],
+    checks=[
+        ServiceCheck(
+            Type="tcp",
+            Interval=10 * 1000000000,
+            Timeout=2 * 1000000000,
+            CheckRestart=CheckRestart(Limit=5),
+        )
+    ],
+)

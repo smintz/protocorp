@@ -104,7 +104,7 @@ def bootstrap_for_service(service):
         dynamic_resources=Bootstrap.DynamicResources(
             # lds_config=ConfigSource(),
             # cds_config=ConfigSource(),
-            ads_config=api_config_source,
+            # ads_config=api_config_source,
         ),
         static_resources=Bootstrap.StaticResources(
             listeners=[
