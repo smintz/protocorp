@@ -1,6 +1,69 @@
 {
   "resource": {
     "cloudflare_record": {
+      "general-0-ams3-c01": {
+        "name": "${random_pet.general-0-ams3-c01.id}.node.ams3c01",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-0-ams3-c01.ipv4_address}",
+        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+      },
+      "general-0-ams3-c01-global": {
+        "name": "*.service",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-0-ams3-c01.ipv4_address}",
+        "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
+      },
+      "general-0-ams3-c01-star": {
+        "name": "*.service.ams3c01",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-0-ams3-c01.ipv4_address}",
+        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+      },
+      "general-1-ams3-c01": {
+        "name": "${random_pet.general-1-ams3-c01.id}.node.ams3c01",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-1-ams3-c01.ipv4_address}",
+        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+      },
+      "general-1-ams3-c01-global": {
+        "name": "*.service",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-1-ams3-c01.ipv4_address}",
+        "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
+      },
+      "general-1-ams3-c01-star": {
+        "name": "*.service.ams3c01",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-1-ams3-c01.ipv4_address}",
+        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+      },
+      "general-2-ams3-c01": {
+        "name": "${random_pet.general-2-ams3-c01.id}.node.ams3c01",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-2-ams3-c01.ipv4_address}",
+        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+      },
+      "general-2-ams3-c01-global": {
+        "name": "*.service",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-2-ams3-c01.ipv4_address}",
+        "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
+      },
+      "general-2-ams3-c01-star": {
+        "name": "*.service.ams3c01",
+        "ttl": 120,
+        "type": "A",
+        "value": "${digitalocean_droplet.general-2-ams3-c01.ipv4_address}",
+        "zone_id": "f05cf5af25ffab8e186f43cfea099628"
+      },
       "server-0-ams3-c01": {
         "name": "${random_pet.server-0-ams3-c01.id}.node.ams3c01",
         "ttl": 120,
@@ -150,6 +213,66 @@
       }
     },
     "digitalocean_droplet": {
+      "general-0-ams3-c01": {
+        "image": "ubuntu-18-04-x64",
+        "name": "${random_pet.general-0-ams3-c01.id}",
+        "private_networking": true,
+        "region": "ams3",
+        "size": "s-8vcpu-16gb",
+        "ssh_keys": [
+          "${digitalocean_ssh_key.smintz-0.id}",
+          "${digitalocean_ssh_key.smintz-1.id}"
+        ],
+        "tags": [
+          "general",
+          "c01"
+        ],
+        "user_data": "#!/bin/bash\nexport DEBIAN_FRONTEND=noninteractive\napt-get update\napt-get install -y unzip curl jq dnsutils\nuseradd --system --home /etc/consul.d --shell /bin/false consul\nmkdir -p /etc/consul.d\nchown root:root /etc/consul.d\nchmod 0755 /etc/consul.d\nmkdir -p /opt/consul\nchown consul:consul /opt/consul\nchmod 0755 /opt/consul\ncurl -L https://releases.hashicorp.com/consul/1.8.4/consul_1.8.4_linux_amd64.zip -o /tmp/consul-1.8.4.zip\nchown root:root /tmp/consul-1.8.4.zip\nchmod 0644 /tmp/consul-1.8.4.zip\nunzip -x /tmp/consul-1.8.4.zip -d /usr/local/bin\nrm /tmp/consul-1.8.4.zip\nconsul -autocomplete-install\ncomplete -C /usr/local/bin/consul consul\ncat <<FILE_CONTENT | cat | tee /etc/systemd/network/consul0.netdev\n# Creates a \"dummy\" network interface\n# we'll configure this interface with a link-local address\n# See: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html\n##\n\n[NetDev]\nName=consul0\nKind=dummy\n\nFILE_CONTENT\nchown root:root /etc/systemd/network/consul0.netdev\nchmod 0644 /etc/systemd/network/consul0.netdev\ncat <<FILE_CONTENT | cat | tee /etc/systemd/network/consul0.network\n# We \"find\" the dummy0 interface we created and configure it with a link-local address\n# See: https://www.freedesktop.org/software/systemd/man/systemd.network.html\n##\n[Match]\nName=consul0\n\n[Network]\nAddress=169.254.1.1/32\n\n# We want these domains\nDomains= ~pco.nf.\n\n# To go to the consul DNS server we'll bind to this address\nDNS=169.254.1.1\n\nFILE_CONTENT\nchown root:root /etc/systemd/network/consul0.network\nchmod 0644 /etc/systemd/network/consul0.network\ncat <<FILE_CONTENT | cat | tee /etc/systemd/resolved.conf\n[Resolve]\nDNS=8.8.8.8\nFallbackDNS=8.8.4.4\n\nFILE_CONTENT\nchown root:root /etc/systemd/resolved.conf\nchmod 0644 /etc/systemd/resolved.conf\nsystemctl restart systemd-resolved\nsystemctl restart systemd-networkd\ncat <<FILE_CONTENT | cat | tee /etc/resolv.conf\nnameserver 127.0.0.53\nFILE_CONTENT\nchown root:root /etc/resolv.conf\nchmod 0644 /etc/resolv.conf\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/config.hcl\nui = true\nbind_addr = \"0.0.0.0\"\nadvertise_addr = \"{{GetPublicIP}}\"\ndatacenter = \"ams3c01\"\ndata_dir = \"/opt/consul\"\ndomain = \"pco.nf\"\nFILE_CONTENT\nchown consul:consul /etc/consul.d/config.hcl\nchmod 0640 /etc/consul.d/config.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/connect.hcl\nconnect {\n  enabled = true\n}\n\nFILE_CONTENT\nchown consul:consul /etc/consul.d/connect.hcl\nchmod 0640 /etc/consul.d/connect.hcl\ncat <<FILE_CONTENT | cat | tee /usr/local/share/ca-certificates/protoconf.crt\n${tls_self_signed_cert.root.cert_pem}\nFILE_CONTENT\nchown root:root /usr/local/share/ca-certificates/protoconf.crt\nchmod 0644 /usr/local/share/ca-certificates/protoconf.crt\nupdate-ca-certificates\nmkdir -p /etc/consul.d/tls\nchown root:root /etc/consul.d/tls\nchmod 0755 /etc/consul.d/tls\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls/key.pem\n${tls_private_key.general-0-ams3-c01-consul.private_key_pem}\nFILE_CONTENT\nchown consul:consul /etc/consul.d/tls/key.pem\nchmod 600 /etc/consul.d/tls/key.pem\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls/cert.pem\n${tls_locally_signed_cert.general-0-ams3-c01-consul.cert_pem}\nFILE_CONTENT\nchown consul:consul /etc/consul.d/tls/cert.pem\nchmod 0644 /etc/consul.d/tls/cert.pem\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls.hcl\nkey_file = \"/etc/consul.d/tls/key.pem\"\ncert_file = \"/etc/consul.d/tls/cert.pem\"\nca_file = \"/usr/local/share/ca-certificates/protoconf.crt\"\naddresses {\n    https = \"0.0.0.0\"\n    dns = \"169.254.1.1\"\n}\nports {\n    https = 8501\n    dns = 53\n    grpc = 8502\n}\nencrypt = \"${random_id.consul_encrypt.b64_std}\"\nrecursors = [\"127.0.0.53\"]\n\nFILE_CONTENT\nchown root:root /etc/consul.d/tls.hcl\nchmod 0644 /etc/consul.d/tls.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/join_lan.hcl\nretry_join = [\"provider=digitalocean api_token=${var.digitalocean_token} region=ams3 tag_name=server\"]\nFILE_CONTENT\nchown consul:consul /etc/consul.d/join_lan.hcl\nchmod 0640 /etc/consul.d/join_lan.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/join_wan.hcl\nretry_join_wan = [\"provider=digitalocean api_token=${var.digitalocean_token} region=ams3 tag_name=server\",\"wan.protoconf.com\"]\nFILE_CONTENT\nchown consul:consul /etc/consul.d/join_wan.hcl\nchmod 0640 /etc/consul.d/join_wan.hcl\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/consul.service\n[Unit]\nAfter=network-online.target\nDescription=HashiCorp Consul - A service mesh solution\nDocumentation=https://www.consul.io/\nRequires=network-online.target\n[Service]\nAmbientCapabilities=CAP_NET_BIND_SERVICE\nExecReload=/usr/local/bin/consul reload\nExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/\nGroup=consul\nKillMode=process\nLimitNOFILE=65536\nRestart=on-failure\nType=notify\nUser=consul\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/consul.service\nchmod 0644 /etc/systemd/system/consul.service\nsystemctl start consul\nsystemctl enable consul\n\ncurl -L https://dist.ipfs.io/go-ipfs/v0.7.0/go-ipfs_v0.7.0_linux-amd64.tar.gz -o /tmp/ipfs-v0.7.0.tar.gz\nchown root:root /tmp/ipfs-v0.7.0.tar.gz\nchmod 0644 /tmp/ipfs-v0.7.0.tar.gz\nmkdir -p /tmp/ipfs-install\nchown root:root /tmp/ipfs-install\nchmod 0755 /tmp/ipfs-install\ntar -xvf /tmp/ipfs-v0.7.0.tar.gz -C /tmp/ipfs-install\n/tmp/ipfs-install/go-ipfs/install.sh\nipfs init --profile server\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/ipfs.service\n[Unit]\nDescription=ipfs\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/ipfs daemon\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/ipfs.service\nchmod 0644 /etc/systemd/system/ipfs.service\nsystemctl start ipfs\nsystemctl enable ipfs\ncurl -L https://github.com/jvassev/image2ipfs/releases/download/v0.1.0/image2ipfs-0.1.0_amd64_linux.gz -o /usr/local/bin/ipdr.gz\nchown root:root /usr/local/bin/ipdr.gz\nchmod 0755 /usr/local/bin/ipdr.gz\ngunzip /usr/local/bin/ipdr.gz\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/ipdr.service\n[Unit]\nDescription=ipdr\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/ipdr server\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/ipdr.service\nchmod 0644 /etc/systemd/system/ipdr.service\nsystemctl start ipdr\nsystemctl enable ipdr\napt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common\ncurl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -\nsudo add-apt-repository  \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" \napt-get update\napt-get install -y docker-ce docker-ce-cli containerd.io\ncurl -L https://github.com/containernetworking/plugins/releases/download/v0.8.4/cni-plugins-linux-amd64-v0.8.4.tgz -o /tmp/cni-plugins.tgz\nchown root:root /tmp/cni-plugins.tgz\nchmod 0644 /tmp/cni-plugins.tgz\nmkdir -p /opt/cni/bin\nchown root:root /opt/cni/bin\nchmod 0755 /opt/cni/bin\ntar -C /opt/cni/bin -xzf /tmp/cni-plugins.tgz\ncat <<FILE_CONTENT | cat | tee /etc/sysctl.d/bridge.conf\nnet.bridge.bridge-nf-call-arptables = 1\nnet.bridge.bridge-nf-call-ip6tables = 1\nnet.bridge.bridge-nf-call-iptables = 1\n\nFILE_CONTENT\nchown root:root /etc/sysctl.d/bridge.conf\nchmod 0644 /etc/sysctl.d/bridge.conf\nsysctl -p\nmkdir -p /etc/nomad.d\nchown root:root /etc/nomad.d\nchmod 700 /etc/nomad.d\nmkdir -p /opt/nomad\nchown root:root /opt/nomad\nchmod 0755 /opt/nomad\ncurl -L https://releases.hashicorp.com/nomad/0.12.5/nomad_0.12.5_linux_amd64.zip -o /tmp/nomad-0.12.5.zip\nchown root:root /tmp/nomad-0.12.5.zip\nchmod 0644 /tmp/nomad-0.12.5.zip\nunzip -x /tmp/nomad-0.12.5.zip -d /usr/local/bin\nrm /tmp/nomad-0.12.5.zip\nnomad -autocomplete-install\ncomplete -C /usr/local/bin/nomad nomad\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/nomad.hcl\ndata_dir = \"/opt/nomad\"\nFILE_CONTENT\nchown root:root /etc/nomad.d/nomad.hcl\nchmod 0644 /etc/nomad.d/nomad.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/datacenter.hcl\ndatacenter = \"ams3c01\"\nFILE_CONTENT\nchown root:root /etc/nomad.d/datacenter.hcl\nchmod 0644 /etc/nomad.d/datacenter.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/client.hcl\nclient {\n  enabled = true\n  node_class = \"general\"\n  meta {\n      tier = \"general\"\n  }\n  options {\n      driver.raw_exec.enabled = 1\n      docker.privileged.enabled = true\n      docker.volumes.enabled = true\n  }\n}\n\ntelemetry {\n    publish_allocation_metrics = true\n    publish_node_metrics = true\n    prometheus_metrics = true\n}\n\nconsul {\n    address = \"127.0.0.1:8500\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/client.hcl\nchmod 0644 /etc/nomad.d/client.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/vault.hcl\nvault {\n    enabled = true\n    address = \"https://vault.service.ams3c01.pco.nf:8200\"\n    create_from_role = \"nomad-cluster\"\n    ca_file = \"/usr/local/share/ca-certificates/protoconf.crt\"\n    cert_file = \"/etc/nomad.d/tls/cert.pem\"\n    key_file = \"/etc/nomad.d/tls/key.pem\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/vault.hcl\nchmod 0644 /etc/nomad.d/vault.hcl\nmkdir -p /etc/nomad.d/tls\nchown root:root /etc/nomad.d/tls\nchmod 0755 /etc/nomad.d/tls\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls/key.pem\n${tls_private_key.general-0-ams3-c01-nomad.private_key_pem}\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls/key.pem\nchmod 600 /etc/nomad.d/tls/key.pem\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls/cert.pem\n${tls_locally_signed_cert.general-0-ams3-c01-nomad.cert_pem}\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls/cert.pem\nchmod 0644 /etc/nomad.d/tls/cert.pem\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls.hcl\ntls {\n  http = true\n  rpc  = true\n\n  ca_file   = \"/usr/local/share/ca-certificates/protoconf.crt\"\n  cert_file = \"/etc/nomad.d/tls/cert.pem\"\n  key_file  = \"/etc/nomad.d/tls/key.pem\"\n\n  verify_server_hostname = false\n  verify_https_client    = false\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls.hcl\nchmod 0644 /etc/nomad.d/tls.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/99-additional-configs.hcl\nadvertise {\n    http = \"{{GetPublicIP}}\"\n    rpc = \"{{GetPublicIP}}\"\n    serf = \"{{GetPublicIP}}\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/99-additional-configs.hcl\nchmod 0644 /etc/nomad.d/99-additional-configs.hcl\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/nomad.service\n[Unit]\nDescription=nomad\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/nomad agent -config /etc/nomad.d\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/nomad.service\nchmod 0644 /etc/systemd/system/nomad.service\nsystemctl start nomad\nsystemctl enable nomad\ncurl -L https://github.com/protoconf/protoconf/releases/download/0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5/protoconf-linux-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz -o /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\nchown root:root /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\nchmod 0644 /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\ntar -xvf /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz -C /usr/local/bin"
+      },
+      "general-1-ams3-c01": {
+        "image": "ubuntu-18-04-x64",
+        "name": "${random_pet.general-1-ams3-c01.id}",
+        "private_networking": true,
+        "region": "ams3",
+        "size": "s-8vcpu-16gb",
+        "ssh_keys": [
+          "${digitalocean_ssh_key.smintz-0.id}",
+          "${digitalocean_ssh_key.smintz-1.id}"
+        ],
+        "tags": [
+          "general",
+          "c01"
+        ],
+        "user_data": "#!/bin/bash\nexport DEBIAN_FRONTEND=noninteractive\napt-get update\napt-get install -y unzip curl jq dnsutils\nuseradd --system --home /etc/consul.d --shell /bin/false consul\nmkdir -p /etc/consul.d\nchown root:root /etc/consul.d\nchmod 0755 /etc/consul.d\nmkdir -p /opt/consul\nchown consul:consul /opt/consul\nchmod 0755 /opt/consul\ncurl -L https://releases.hashicorp.com/consul/1.8.4/consul_1.8.4_linux_amd64.zip -o /tmp/consul-1.8.4.zip\nchown root:root /tmp/consul-1.8.4.zip\nchmod 0644 /tmp/consul-1.8.4.zip\nunzip -x /tmp/consul-1.8.4.zip -d /usr/local/bin\nrm /tmp/consul-1.8.4.zip\nconsul -autocomplete-install\ncomplete -C /usr/local/bin/consul consul\ncat <<FILE_CONTENT | cat | tee /etc/systemd/network/consul0.netdev\n# Creates a \"dummy\" network interface\n# we'll configure this interface with a link-local address\n# See: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html\n##\n\n[NetDev]\nName=consul0\nKind=dummy\n\nFILE_CONTENT\nchown root:root /etc/systemd/network/consul0.netdev\nchmod 0644 /etc/systemd/network/consul0.netdev\ncat <<FILE_CONTENT | cat | tee /etc/systemd/network/consul0.network\n# We \"find\" the dummy0 interface we created and configure it with a link-local address\n# See: https://www.freedesktop.org/software/systemd/man/systemd.network.html\n##\n[Match]\nName=consul0\n\n[Network]\nAddress=169.254.1.1/32\n\n# We want these domains\nDomains= ~pco.nf.\n\n# To go to the consul DNS server we'll bind to this address\nDNS=169.254.1.1\n\nFILE_CONTENT\nchown root:root /etc/systemd/network/consul0.network\nchmod 0644 /etc/systemd/network/consul0.network\ncat <<FILE_CONTENT | cat | tee /etc/systemd/resolved.conf\n[Resolve]\nDNS=8.8.8.8\nFallbackDNS=8.8.4.4\n\nFILE_CONTENT\nchown root:root /etc/systemd/resolved.conf\nchmod 0644 /etc/systemd/resolved.conf\nsystemctl restart systemd-resolved\nsystemctl restart systemd-networkd\ncat <<FILE_CONTENT | cat | tee /etc/resolv.conf\nnameserver 127.0.0.53\nFILE_CONTENT\nchown root:root /etc/resolv.conf\nchmod 0644 /etc/resolv.conf\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/config.hcl\nui = true\nbind_addr = \"0.0.0.0\"\nadvertise_addr = \"{{GetPublicIP}}\"\ndatacenter = \"ams3c01\"\ndata_dir = \"/opt/consul\"\ndomain = \"pco.nf\"\nFILE_CONTENT\nchown consul:consul /etc/consul.d/config.hcl\nchmod 0640 /etc/consul.d/config.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/connect.hcl\nconnect {\n  enabled = true\n}\n\nFILE_CONTENT\nchown consul:consul /etc/consul.d/connect.hcl\nchmod 0640 /etc/consul.d/connect.hcl\ncat <<FILE_CONTENT | cat | tee /usr/local/share/ca-certificates/protoconf.crt\n${tls_self_signed_cert.root.cert_pem}\nFILE_CONTENT\nchown root:root /usr/local/share/ca-certificates/protoconf.crt\nchmod 0644 /usr/local/share/ca-certificates/protoconf.crt\nupdate-ca-certificates\nmkdir -p /etc/consul.d/tls\nchown root:root /etc/consul.d/tls\nchmod 0755 /etc/consul.d/tls\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls/key.pem\n${tls_private_key.general-1-ams3-c01-consul.private_key_pem}\nFILE_CONTENT\nchown consul:consul /etc/consul.d/tls/key.pem\nchmod 600 /etc/consul.d/tls/key.pem\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls/cert.pem\n${tls_locally_signed_cert.general-1-ams3-c01-consul.cert_pem}\nFILE_CONTENT\nchown consul:consul /etc/consul.d/tls/cert.pem\nchmod 0644 /etc/consul.d/tls/cert.pem\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls.hcl\nkey_file = \"/etc/consul.d/tls/key.pem\"\ncert_file = \"/etc/consul.d/tls/cert.pem\"\nca_file = \"/usr/local/share/ca-certificates/protoconf.crt\"\naddresses {\n    https = \"0.0.0.0\"\n    dns = \"169.254.1.1\"\n}\nports {\n    https = 8501\n    dns = 53\n    grpc = 8502\n}\nencrypt = \"${random_id.consul_encrypt.b64_std}\"\nrecursors = [\"127.0.0.53\"]\n\nFILE_CONTENT\nchown root:root /etc/consul.d/tls.hcl\nchmod 0644 /etc/consul.d/tls.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/join_lan.hcl\nretry_join = [\"provider=digitalocean api_token=${var.digitalocean_token} region=ams3 tag_name=server\"]\nFILE_CONTENT\nchown consul:consul /etc/consul.d/join_lan.hcl\nchmod 0640 /etc/consul.d/join_lan.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/join_wan.hcl\nretry_join_wan = [\"provider=digitalocean api_token=${var.digitalocean_token} region=ams3 tag_name=server\",\"wan.protoconf.com\"]\nFILE_CONTENT\nchown consul:consul /etc/consul.d/join_wan.hcl\nchmod 0640 /etc/consul.d/join_wan.hcl\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/consul.service\n[Unit]\nAfter=network-online.target\nDescription=HashiCorp Consul - A service mesh solution\nDocumentation=https://www.consul.io/\nRequires=network-online.target\n[Service]\nAmbientCapabilities=CAP_NET_BIND_SERVICE\nExecReload=/usr/local/bin/consul reload\nExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/\nGroup=consul\nKillMode=process\nLimitNOFILE=65536\nRestart=on-failure\nType=notify\nUser=consul\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/consul.service\nchmod 0644 /etc/systemd/system/consul.service\nsystemctl start consul\nsystemctl enable consul\n\ncurl -L https://dist.ipfs.io/go-ipfs/v0.7.0/go-ipfs_v0.7.0_linux-amd64.tar.gz -o /tmp/ipfs-v0.7.0.tar.gz\nchown root:root /tmp/ipfs-v0.7.0.tar.gz\nchmod 0644 /tmp/ipfs-v0.7.0.tar.gz\nmkdir -p /tmp/ipfs-install\nchown root:root /tmp/ipfs-install\nchmod 0755 /tmp/ipfs-install\ntar -xvf /tmp/ipfs-v0.7.0.tar.gz -C /tmp/ipfs-install\n/tmp/ipfs-install/go-ipfs/install.sh\nipfs init --profile server\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/ipfs.service\n[Unit]\nDescription=ipfs\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/ipfs daemon\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/ipfs.service\nchmod 0644 /etc/systemd/system/ipfs.service\nsystemctl start ipfs\nsystemctl enable ipfs\ncurl -L https://github.com/jvassev/image2ipfs/releases/download/v0.1.0/image2ipfs-0.1.0_amd64_linux.gz -o /usr/local/bin/ipdr.gz\nchown root:root /usr/local/bin/ipdr.gz\nchmod 0755 /usr/local/bin/ipdr.gz\ngunzip /usr/local/bin/ipdr.gz\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/ipdr.service\n[Unit]\nDescription=ipdr\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/ipdr server\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/ipdr.service\nchmod 0644 /etc/systemd/system/ipdr.service\nsystemctl start ipdr\nsystemctl enable ipdr\napt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common\ncurl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -\nsudo add-apt-repository  \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" \napt-get update\napt-get install -y docker-ce docker-ce-cli containerd.io\ncurl -L https://github.com/containernetworking/plugins/releases/download/v0.8.4/cni-plugins-linux-amd64-v0.8.4.tgz -o /tmp/cni-plugins.tgz\nchown root:root /tmp/cni-plugins.tgz\nchmod 0644 /tmp/cni-plugins.tgz\nmkdir -p /opt/cni/bin\nchown root:root /opt/cni/bin\nchmod 0755 /opt/cni/bin\ntar -C /opt/cni/bin -xzf /tmp/cni-plugins.tgz\ncat <<FILE_CONTENT | cat | tee /etc/sysctl.d/bridge.conf\nnet.bridge.bridge-nf-call-arptables = 1\nnet.bridge.bridge-nf-call-ip6tables = 1\nnet.bridge.bridge-nf-call-iptables = 1\n\nFILE_CONTENT\nchown root:root /etc/sysctl.d/bridge.conf\nchmod 0644 /etc/sysctl.d/bridge.conf\nsysctl -p\nmkdir -p /etc/nomad.d\nchown root:root /etc/nomad.d\nchmod 700 /etc/nomad.d\nmkdir -p /opt/nomad\nchown root:root /opt/nomad\nchmod 0755 /opt/nomad\ncurl -L https://releases.hashicorp.com/nomad/0.12.5/nomad_0.12.5_linux_amd64.zip -o /tmp/nomad-0.12.5.zip\nchown root:root /tmp/nomad-0.12.5.zip\nchmod 0644 /tmp/nomad-0.12.5.zip\nunzip -x /tmp/nomad-0.12.5.zip -d /usr/local/bin\nrm /tmp/nomad-0.12.5.zip\nnomad -autocomplete-install\ncomplete -C /usr/local/bin/nomad nomad\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/nomad.hcl\ndata_dir = \"/opt/nomad\"\nFILE_CONTENT\nchown root:root /etc/nomad.d/nomad.hcl\nchmod 0644 /etc/nomad.d/nomad.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/datacenter.hcl\ndatacenter = \"ams3c01\"\nFILE_CONTENT\nchown root:root /etc/nomad.d/datacenter.hcl\nchmod 0644 /etc/nomad.d/datacenter.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/client.hcl\nclient {\n  enabled = true\n  node_class = \"general\"\n  meta {\n      tier = \"general\"\n  }\n  options {\n      driver.raw_exec.enabled = 1\n      docker.privileged.enabled = true\n      docker.volumes.enabled = true\n  }\n}\n\ntelemetry {\n    publish_allocation_metrics = true\n    publish_node_metrics = true\n    prometheus_metrics = true\n}\n\nconsul {\n    address = \"127.0.0.1:8500\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/client.hcl\nchmod 0644 /etc/nomad.d/client.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/vault.hcl\nvault {\n    enabled = true\n    address = \"https://vault.service.ams3c01.pco.nf:8200\"\n    create_from_role = \"nomad-cluster\"\n    ca_file = \"/usr/local/share/ca-certificates/protoconf.crt\"\n    cert_file = \"/etc/nomad.d/tls/cert.pem\"\n    key_file = \"/etc/nomad.d/tls/key.pem\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/vault.hcl\nchmod 0644 /etc/nomad.d/vault.hcl\nmkdir -p /etc/nomad.d/tls\nchown root:root /etc/nomad.d/tls\nchmod 0755 /etc/nomad.d/tls\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls/key.pem\n${tls_private_key.general-1-ams3-c01-nomad.private_key_pem}\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls/key.pem\nchmod 600 /etc/nomad.d/tls/key.pem\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls/cert.pem\n${tls_locally_signed_cert.general-1-ams3-c01-nomad.cert_pem}\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls/cert.pem\nchmod 0644 /etc/nomad.d/tls/cert.pem\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls.hcl\ntls {\n  http = true\n  rpc  = true\n\n  ca_file   = \"/usr/local/share/ca-certificates/protoconf.crt\"\n  cert_file = \"/etc/nomad.d/tls/cert.pem\"\n  key_file  = \"/etc/nomad.d/tls/key.pem\"\n\n  verify_server_hostname = false\n  verify_https_client    = false\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls.hcl\nchmod 0644 /etc/nomad.d/tls.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/99-additional-configs.hcl\nadvertise {\n    http = \"{{GetPublicIP}}\"\n    rpc = \"{{GetPublicIP}}\"\n    serf = \"{{GetPublicIP}}\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/99-additional-configs.hcl\nchmod 0644 /etc/nomad.d/99-additional-configs.hcl\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/nomad.service\n[Unit]\nDescription=nomad\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/nomad agent -config /etc/nomad.d\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/nomad.service\nchmod 0644 /etc/systemd/system/nomad.service\nsystemctl start nomad\nsystemctl enable nomad\ncurl -L https://github.com/protoconf/protoconf/releases/download/0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5/protoconf-linux-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz -o /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\nchown root:root /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\nchmod 0644 /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\ntar -xvf /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz -C /usr/local/bin",
+        "lifecycle": {
+          "create_before_destroy": true,
+          "ignore_changes": [
+            "user_data"
+          ]
+        }
+      },
+      "general-2-ams3-c01": {
+        "image": "ubuntu-18-04-x64",
+        "name": "${random_pet.general-2-ams3-c01.id}",
+        "private_networking": true,
+        "region": "ams3",
+        "size": "s-8vcpu-16gb",
+        "ssh_keys": [
+          "${digitalocean_ssh_key.smintz-0.id}",
+          "${digitalocean_ssh_key.smintz-1.id}"
+        ],
+        "tags": [
+          "general",
+          "c01"
+        ],
+        "user_data": "#!/bin/bash\nexport DEBIAN_FRONTEND=noninteractive\napt-get update\napt-get install -y unzip curl jq dnsutils\nuseradd --system --home /etc/consul.d --shell /bin/false consul\nmkdir -p /etc/consul.d\nchown root:root /etc/consul.d\nchmod 0755 /etc/consul.d\nmkdir -p /opt/consul\nchown consul:consul /opt/consul\nchmod 0755 /opt/consul\ncurl -L https://releases.hashicorp.com/consul/1.8.4/consul_1.8.4_linux_amd64.zip -o /tmp/consul-1.8.4.zip\nchown root:root /tmp/consul-1.8.4.zip\nchmod 0644 /tmp/consul-1.8.4.zip\nunzip -x /tmp/consul-1.8.4.zip -d /usr/local/bin\nrm /tmp/consul-1.8.4.zip\nconsul -autocomplete-install\ncomplete -C /usr/local/bin/consul consul\ncat <<FILE_CONTENT | cat | tee /etc/systemd/network/consul0.netdev\n# Creates a \"dummy\" network interface\n# we'll configure this interface with a link-local address\n# See: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html\n##\n\n[NetDev]\nName=consul0\nKind=dummy\n\nFILE_CONTENT\nchown root:root /etc/systemd/network/consul0.netdev\nchmod 0644 /etc/systemd/network/consul0.netdev\ncat <<FILE_CONTENT | cat | tee /etc/systemd/network/consul0.network\n# We \"find\" the dummy0 interface we created and configure it with a link-local address\n# See: https://www.freedesktop.org/software/systemd/man/systemd.network.html\n##\n[Match]\nName=consul0\n\n[Network]\nAddress=169.254.1.1/32\n\n# We want these domains\nDomains= ~pco.nf.\n\n# To go to the consul DNS server we'll bind to this address\nDNS=169.254.1.1\n\nFILE_CONTENT\nchown root:root /etc/systemd/network/consul0.network\nchmod 0644 /etc/systemd/network/consul0.network\ncat <<FILE_CONTENT | cat | tee /etc/systemd/resolved.conf\n[Resolve]\nDNS=8.8.8.8\nFallbackDNS=8.8.4.4\n\nFILE_CONTENT\nchown root:root /etc/systemd/resolved.conf\nchmod 0644 /etc/systemd/resolved.conf\nsystemctl restart systemd-resolved\nsystemctl restart systemd-networkd\ncat <<FILE_CONTENT | cat | tee /etc/resolv.conf\nnameserver 127.0.0.53\nFILE_CONTENT\nchown root:root /etc/resolv.conf\nchmod 0644 /etc/resolv.conf\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/config.hcl\nui = true\nbind_addr = \"0.0.0.0\"\nadvertise_addr = \"{{GetPublicIP}}\"\ndatacenter = \"ams3c01\"\ndata_dir = \"/opt/consul\"\ndomain = \"pco.nf\"\nFILE_CONTENT\nchown consul:consul /etc/consul.d/config.hcl\nchmod 0640 /etc/consul.d/config.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/connect.hcl\nconnect {\n  enabled = true\n}\n\nFILE_CONTENT\nchown consul:consul /etc/consul.d/connect.hcl\nchmod 0640 /etc/consul.d/connect.hcl\ncat <<FILE_CONTENT | cat | tee /usr/local/share/ca-certificates/protoconf.crt\n${tls_self_signed_cert.root.cert_pem}\nFILE_CONTENT\nchown root:root /usr/local/share/ca-certificates/protoconf.crt\nchmod 0644 /usr/local/share/ca-certificates/protoconf.crt\nupdate-ca-certificates\nmkdir -p /etc/consul.d/tls\nchown root:root /etc/consul.d/tls\nchmod 0755 /etc/consul.d/tls\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls/key.pem\n${tls_private_key.general-2-ams3-c01-consul.private_key_pem}\nFILE_CONTENT\nchown consul:consul /etc/consul.d/tls/key.pem\nchmod 600 /etc/consul.d/tls/key.pem\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls/cert.pem\n${tls_locally_signed_cert.general-2-ams3-c01-consul.cert_pem}\nFILE_CONTENT\nchown consul:consul /etc/consul.d/tls/cert.pem\nchmod 0644 /etc/consul.d/tls/cert.pem\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/tls.hcl\nkey_file = \"/etc/consul.d/tls/key.pem\"\ncert_file = \"/etc/consul.d/tls/cert.pem\"\nca_file = \"/usr/local/share/ca-certificates/protoconf.crt\"\naddresses {\n    https = \"0.0.0.0\"\n    dns = \"169.254.1.1\"\n}\nports {\n    https = 8501\n    dns = 53\n    grpc = 8502\n}\nencrypt = \"${random_id.consul_encrypt.b64_std}\"\nrecursors = [\"127.0.0.53\"]\n\nFILE_CONTENT\nchown root:root /etc/consul.d/tls.hcl\nchmod 0644 /etc/consul.d/tls.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/join_lan.hcl\nretry_join = [\"provider=digitalocean api_token=${var.digitalocean_token} region=ams3 tag_name=server\"]\nFILE_CONTENT\nchown consul:consul /etc/consul.d/join_lan.hcl\nchmod 0640 /etc/consul.d/join_lan.hcl\ncat <<FILE_CONTENT | cat | tee /etc/consul.d/join_wan.hcl\nretry_join_wan = [\"provider=digitalocean api_token=${var.digitalocean_token} region=ams3 tag_name=server\",\"wan.protoconf.com\"]\nFILE_CONTENT\nchown consul:consul /etc/consul.d/join_wan.hcl\nchmod 0640 /etc/consul.d/join_wan.hcl\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/consul.service\n[Unit]\nAfter=network-online.target\nDescription=HashiCorp Consul - A service mesh solution\nDocumentation=https://www.consul.io/\nRequires=network-online.target\n[Service]\nAmbientCapabilities=CAP_NET_BIND_SERVICE\nExecReload=/usr/local/bin/consul reload\nExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/\nGroup=consul\nKillMode=process\nLimitNOFILE=65536\nRestart=on-failure\nType=notify\nUser=consul\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/consul.service\nchmod 0644 /etc/systemd/system/consul.service\nsystemctl start consul\nsystemctl enable consul\n\ncurl -L https://dist.ipfs.io/go-ipfs/v0.7.0/go-ipfs_v0.7.0_linux-amd64.tar.gz -o /tmp/ipfs-v0.7.0.tar.gz\nchown root:root /tmp/ipfs-v0.7.0.tar.gz\nchmod 0644 /tmp/ipfs-v0.7.0.tar.gz\nmkdir -p /tmp/ipfs-install\nchown root:root /tmp/ipfs-install\nchmod 0755 /tmp/ipfs-install\ntar -xvf /tmp/ipfs-v0.7.0.tar.gz -C /tmp/ipfs-install\n/tmp/ipfs-install/go-ipfs/install.sh\nipfs init --profile server\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/ipfs.service\n[Unit]\nDescription=ipfs\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/ipfs daemon\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/ipfs.service\nchmod 0644 /etc/systemd/system/ipfs.service\nsystemctl start ipfs\nsystemctl enable ipfs\ncurl -L https://github.com/jvassev/image2ipfs/releases/download/v0.1.0/image2ipfs-0.1.0_amd64_linux.gz -o /usr/local/bin/ipdr.gz\nchown root:root /usr/local/bin/ipdr.gz\nchmod 0755 /usr/local/bin/ipdr.gz\ngunzip /usr/local/bin/ipdr.gz\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/ipdr.service\n[Unit]\nDescription=ipdr\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/ipdr server\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/ipdr.service\nchmod 0644 /etc/systemd/system/ipdr.service\nsystemctl start ipdr\nsystemctl enable ipdr\napt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common\ncurl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -\nsudo add-apt-repository  \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" \napt-get update\napt-get install -y docker-ce docker-ce-cli containerd.io\ncurl -L https://github.com/containernetworking/plugins/releases/download/v0.8.4/cni-plugins-linux-amd64-v0.8.4.tgz -o /tmp/cni-plugins.tgz\nchown root:root /tmp/cni-plugins.tgz\nchmod 0644 /tmp/cni-plugins.tgz\nmkdir -p /opt/cni/bin\nchown root:root /opt/cni/bin\nchmod 0755 /opt/cni/bin\ntar -C /opt/cni/bin -xzf /tmp/cni-plugins.tgz\ncat <<FILE_CONTENT | cat | tee /etc/sysctl.d/bridge.conf\nnet.bridge.bridge-nf-call-arptables = 1\nnet.bridge.bridge-nf-call-ip6tables = 1\nnet.bridge.bridge-nf-call-iptables = 1\n\nFILE_CONTENT\nchown root:root /etc/sysctl.d/bridge.conf\nchmod 0644 /etc/sysctl.d/bridge.conf\nsysctl -p\nmkdir -p /etc/nomad.d\nchown root:root /etc/nomad.d\nchmod 700 /etc/nomad.d\nmkdir -p /opt/nomad\nchown root:root /opt/nomad\nchmod 0755 /opt/nomad\ncurl -L https://releases.hashicorp.com/nomad/0.12.5/nomad_0.12.5_linux_amd64.zip -o /tmp/nomad-0.12.5.zip\nchown root:root /tmp/nomad-0.12.5.zip\nchmod 0644 /tmp/nomad-0.12.5.zip\nunzip -x /tmp/nomad-0.12.5.zip -d /usr/local/bin\nrm /tmp/nomad-0.12.5.zip\nnomad -autocomplete-install\ncomplete -C /usr/local/bin/nomad nomad\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/nomad.hcl\ndata_dir = \"/opt/nomad\"\nFILE_CONTENT\nchown root:root /etc/nomad.d/nomad.hcl\nchmod 0644 /etc/nomad.d/nomad.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/datacenter.hcl\ndatacenter = \"ams3c01\"\nFILE_CONTENT\nchown root:root /etc/nomad.d/datacenter.hcl\nchmod 0644 /etc/nomad.d/datacenter.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/client.hcl\nclient {\n  enabled = true\n  node_class = \"general\"\n  meta {\n      tier = \"general\"\n  }\n  options {\n      driver.raw_exec.enabled = 1\n      docker.privileged.enabled = true\n      docker.volumes.enabled = true\n  }\n}\n\ntelemetry {\n    publish_allocation_metrics = true\n    publish_node_metrics = true\n    prometheus_metrics = true\n}\n\nconsul {\n    address = \"127.0.0.1:8500\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/client.hcl\nchmod 0644 /etc/nomad.d/client.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/vault.hcl\nvault {\n    enabled = true\n    address = \"https://vault.service.ams3c01.pco.nf:8200\"\n    create_from_role = \"nomad-cluster\"\n    ca_file = \"/usr/local/share/ca-certificates/protoconf.crt\"\n    cert_file = \"/etc/nomad.d/tls/cert.pem\"\n    key_file = \"/etc/nomad.d/tls/key.pem\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/vault.hcl\nchmod 0644 /etc/nomad.d/vault.hcl\nmkdir -p /etc/nomad.d/tls\nchown root:root /etc/nomad.d/tls\nchmod 0755 /etc/nomad.d/tls\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls/key.pem\n${tls_private_key.general-2-ams3-c01-nomad.private_key_pem}\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls/key.pem\nchmod 600 /etc/nomad.d/tls/key.pem\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls/cert.pem\n${tls_locally_signed_cert.general-2-ams3-c01-nomad.cert_pem}\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls/cert.pem\nchmod 0644 /etc/nomad.d/tls/cert.pem\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/tls.hcl\ntls {\n  http = true\n  rpc  = true\n\n  ca_file   = \"/usr/local/share/ca-certificates/protoconf.crt\"\n  cert_file = \"/etc/nomad.d/tls/cert.pem\"\n  key_file  = \"/etc/nomad.d/tls/key.pem\"\n\n  verify_server_hostname = false\n  verify_https_client    = false\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/tls.hcl\nchmod 0644 /etc/nomad.d/tls.hcl\ncat <<FILE_CONTENT | cat | tee /etc/nomad.d/99-additional-configs.hcl\nadvertise {\n    http = \"{{GetPublicIP}}\"\n    rpc = \"{{GetPublicIP}}\"\n    serf = \"{{GetPublicIP}}\"\n}\n\nFILE_CONTENT\nchown root:root /etc/nomad.d/99-additional-configs.hcl\nchmod 0644 /etc/nomad.d/99-additional-configs.hcl\ncat <<FILE_CONTENT | cat | tee /etc/systemd/system/nomad.service\n[Unit]\nDescription=nomad\nDocumentation=http://localhost\n[Service]\nExecReload=/bin/kill -HUP $MAINPID\nExecStart=/usr/local/bin/nomad agent -config /etc/nomad.d\nKillMode=process\nKillSignal=SIGINT\nLimitNOFILE=infinity\nLimitNPROC=infinity\nRestart=on-failure\nRestartSec=2\nStartLimitBurst=3\nStartLimitIntervalSec=10\nTasksMax=infinity\n[Install]\nWantedBy=multi-user.target\nFILE_CONTENT\nchown root:root /etc/systemd/system/nomad.service\nchmod 0644 /etc/systemd/system/nomad.service\nsystemctl start nomad\nsystemctl enable nomad\ncurl -L https://github.com/protoconf/protoconf/releases/download/0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5/protoconf-linux-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz -o /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\nchown root:root /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\nchmod 0644 /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz\ntar -xvf /tmp/protoconf-0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5.tar.gz -C /usr/local/bin",
+        "lifecycle": {
+          "create_before_destroy": true,
+          "ignore_changes": [
+            "user_data"
+          ]
+        }
+      },
       "server-0-ams3-c01": {
         "image": "ubuntu-18-04-x64",
         "name": "${random_pet.server-0-ams3-c01.id}",
@@ -230,6 +353,15 @@
       }
     },
     "random_pet": {
+      "general-0-ams3-c01": {
+        "prefix": "general"
+      },
+      "general-1-ams3-c01": {
+        "prefix": "general"
+      },
+      "general-2-ams3-c01": {
+        "prefix": "general"
+      },
       "server-0-ams3-c01": {
         "prefix": "server"
       },
@@ -246,6 +378,114 @@
         "private_key_pem": "${tls_private_key.consul-encrypt.private_key_pem}",
         "subject": {
           "common_name": "consul-encrypt"
+        }
+      },
+      "general-0-ams3-c01-consul": {
+        "dns_names": [
+          "${random_pet.general-0-ams3-c01.id}",
+          "${random_pet.general-0-ams3-c01.id}.node.ams3c01.pco.nf",
+          "consul.service.pco.nf",
+          "consul.service.ams3c01.pco.nf",
+          "localhost"
+        ],
+        "ip_addresses": [
+          "127.0.0.1",
+          "169.254.1.1"
+        ],
+        "key_algorithm": "${tls_private_key.general-0-ams3-c01-consul.algorithm}",
+        "private_key_pem": "${tls_private_key.general-0-ams3-c01-consul.private_key_pem}",
+        "subject": {
+          "common_name": "${random_pet.general-0-ams3-c01.id}.node.ams3c01.pco.nf"
+        }
+      },
+      "general-0-ams3-c01-nomad": {
+        "dns_names": [
+          "${random_pet.general-0-ams3-c01.id}",
+          "${random_pet.general-0-ams3-c01.id}.node.ams3c01.pco.nf",
+          "nomad.service.pco.nf",
+          "nomad.service.ams3c01.pco.nf",
+          "server.global.nomad",
+          "localhost"
+        ],
+        "ip_addresses": [
+          "127.0.0.1"
+        ],
+        "key_algorithm": "${tls_private_key.general-0-ams3-c01-nomad.algorithm}",
+        "private_key_pem": "${tls_private_key.general-0-ams3-c01-nomad.private_key_pem}",
+        "subject": {
+          "common_name": "${random_pet.general-0-ams3-c01.id}.node.ams3c01.pco.nf"
+        }
+      },
+      "general-1-ams3-c01-consul": {
+        "dns_names": [
+          "${random_pet.general-1-ams3-c01.id}",
+          "${random_pet.general-1-ams3-c01.id}.node.ams3c01.pco.nf",
+          "consul.service.pco.nf",
+          "consul.service.ams3c01.pco.nf",
+          "localhost"
+        ],
+        "ip_addresses": [
+          "127.0.0.1",
+          "169.254.1.1"
+        ],
+        "key_algorithm": "${tls_private_key.general-1-ams3-c01-consul.algorithm}",
+        "private_key_pem": "${tls_private_key.general-1-ams3-c01-consul.private_key_pem}",
+        "subject": {
+          "common_name": "${random_pet.general-1-ams3-c01.id}.node.ams3c01.pco.nf"
+        }
+      },
+      "general-1-ams3-c01-nomad": {
+        "dns_names": [
+          "${random_pet.general-1-ams3-c01.id}",
+          "${random_pet.general-1-ams3-c01.id}.node.ams3c01.pco.nf",
+          "nomad.service.pco.nf",
+          "nomad.service.ams3c01.pco.nf",
+          "server.global.nomad",
+          "localhost"
+        ],
+        "ip_addresses": [
+          "127.0.0.1"
+        ],
+        "key_algorithm": "${tls_private_key.general-1-ams3-c01-nomad.algorithm}",
+        "private_key_pem": "${tls_private_key.general-1-ams3-c01-nomad.private_key_pem}",
+        "subject": {
+          "common_name": "${random_pet.general-1-ams3-c01.id}.node.ams3c01.pco.nf"
+        }
+      },
+      "general-2-ams3-c01-consul": {
+        "dns_names": [
+          "${random_pet.general-2-ams3-c01.id}",
+          "${random_pet.general-2-ams3-c01.id}.node.ams3c01.pco.nf",
+          "consul.service.pco.nf",
+          "consul.service.ams3c01.pco.nf",
+          "localhost"
+        ],
+        "ip_addresses": [
+          "127.0.0.1",
+          "169.254.1.1"
+        ],
+        "key_algorithm": "${tls_private_key.general-2-ams3-c01-consul.algorithm}",
+        "private_key_pem": "${tls_private_key.general-2-ams3-c01-consul.private_key_pem}",
+        "subject": {
+          "common_name": "${random_pet.general-2-ams3-c01.id}.node.ams3c01.pco.nf"
+        }
+      },
+      "general-2-ams3-c01-nomad": {
+        "dns_names": [
+          "${random_pet.general-2-ams3-c01.id}",
+          "${random_pet.general-2-ams3-c01.id}.node.ams3c01.pco.nf",
+          "nomad.service.pco.nf",
+          "nomad.service.ams3c01.pco.nf",
+          "server.global.nomad",
+          "localhost"
+        ],
+        "ip_addresses": [
+          "127.0.0.1"
+        ],
+        "key_algorithm": "${tls_private_key.general-2-ams3-c01-nomad.algorithm}",
+        "private_key_pem": "${tls_private_key.general-2-ams3-c01-nomad.private_key_pem}",
+        "subject": {
+          "common_name": "${random_pet.general-2-ams3-c01.id}.node.ams3c01.pco.nf"
         }
       },
       "server-0-ams3-c01-consul": {
@@ -430,6 +670,90 @@
         "early_renewal_hours": 720,
         "validity_period_hours": 2160
       },
+      "general-0-ams3-c01-consul": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth",
+          "client_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.general-0-ams3-c01-consul.cert_request_pem}",
+        "early_renewal_hours": 720,
+        "validity_period_hours": 2160
+      },
+      "general-0-ams3-c01-nomad": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth",
+          "client_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.general-0-ams3-c01-nomad.cert_request_pem}",
+        "early_renewal_hours": 720,
+        "validity_period_hours": 2160
+      },
+      "general-1-ams3-c01-consul": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth",
+          "client_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.general-1-ams3-c01-consul.cert_request_pem}",
+        "early_renewal_hours": 720,
+        "validity_period_hours": 2160
+      },
+      "general-1-ams3-c01-nomad": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth",
+          "client_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.general-1-ams3-c01-nomad.cert_request_pem}",
+        "early_renewal_hours": 720,
+        "validity_period_hours": 2160
+      },
+      "general-2-ams3-c01-consul": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth",
+          "client_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.general-2-ams3-c01-consul.cert_request_pem}",
+        "early_renewal_hours": 720,
+        "validity_period_hours": 2160
+      },
+      "general-2-ams3-c01-nomad": {
+        "allowed_uses": [
+          "key_encipherment",
+          "digital_signature",
+          "server_auth",
+          "client_auth"
+        ],
+        "ca_cert_pem": "${tls_self_signed_cert.root.cert_pem}",
+        "ca_key_algorithm": "${tls_private_key.root.algorithm}",
+        "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
+        "cert_request_pem": "${tls_cert_request.general-2-ams3-c01-nomad.cert_request_pem}",
+        "early_renewal_hours": 720,
+        "validity_period_hours": 2160
+      },
       "server-0-ams3-c01-consul": {
         "allowed_uses": [
           "key_encipherment",
@@ -573,6 +897,36 @@
     },
     "tls_private_key": {
       "consul-encrypt": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384",
+        "rsa_bits": 4096
+      },
+      "general-0-ams3-c01-consul": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384",
+        "rsa_bits": 4096
+      },
+      "general-0-ams3-c01-nomad": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384",
+        "rsa_bits": 4096
+      },
+      "general-1-ams3-c01-consul": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384",
+        "rsa_bits": 4096
+      },
+      "general-1-ams3-c01-nomad": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384",
+        "rsa_bits": 4096
+      },
+      "general-2-ams3-c01-consul": {
+        "algorithm": "ECDSA",
+        "ecdsa_curve": "P384",
+        "rsa_bits": 4096
+      },
+      "general-2-ams3-c01-nomad": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
         "rsa_bits": 4096
