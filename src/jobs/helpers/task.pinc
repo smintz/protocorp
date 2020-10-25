@@ -4,16 +4,17 @@ Task Helper
 
 load("/google/protobuf/struct.proto", "Value", "ListValue", "Struct")
 load(
-    "/nomad/v0.12.5/api.proto",
-    "Task",
-    "Vault",
-    "Resources",
-    "NetworkResource",
-    "Port",
-    "Service",
+    "/nomad/v0.11.1/api.proto",
     "ConsulConnect",
     "ConsulSidecarService",
+    "NetworkResource",
+    "Port",
+    "Resources",
+    "Service",
     "SidecarTask",
+    "Task",
+    "Template",
+    "Vault",
 )
 
 
@@ -59,7 +60,11 @@ def NewTask(name, image=None):
         Resources=Resources(
             CPU=100,
             MemoryMB=64,
-            Networks=[NetworkResource(ReservedPorts=[], DynamicPorts=[])],
+            Networks=[
+                NetworkResource(
+                    Mode="bridge", ReservedPorts=[], DynamicPorts=[]
+                )
+            ],
         ),
     )
 
@@ -79,7 +84,6 @@ def NewTask(name, image=None):
             fail("task driver does not support images")
 
         setConfig("image", imageName)
-        # local_task.Config["image"] = Value(string_value=imageName)
 
     def setPortMapping(label, port):
         if not hasattr(local_task.Config, "port_map"):
@@ -92,6 +96,7 @@ def NewTask(name, image=None):
 
     def newPort(label, to=None, reserve=None):
         network = local_task.Resources.Networks[0]
+
         network.Mode = "bridge"
         for n in network.ReservedPorts + network.DynamicPorts:
             if label == n.Label:
@@ -130,6 +135,30 @@ def NewTask(name, image=None):
     def addVaultPolicies(*policies):
         local_task.Vault = Vault(Policies=list(policies))
 
+    # message Template {
+    #   string SourcePath = 1;
+    #   string DestPath = 2;
+    #   string EmbeddedTmpl = 3;
+    #   string ChangeMode = 4;
+    #   string ChangeSignal = 5;
+    #   google.protobuf.Duration Splay = 6;
+    #   string Perms = 7;
+    #   string LeftDelim = 8;
+    #   string RightDelim = 9;
+    #   bool Envvars = 10;
+    #   google.protobuf.Duration VaultGrace = 11;
+    # }
+    def addTemplate(dest, embedded=None, src=None, **kwargs):
+        t = Template(DestPath=dest, **kwargs)
+        if embedded:
+            t.EmbeddedTmpl = embedded
+        if src:
+            t.SourcePath = src
+
+        if not local_task.Templates:
+            local_task.Templates = []
+        local_task.Templates.append(t)
+
     if image:
         setImage(image)
 
@@ -144,5 +173,6 @@ def NewTask(name, image=None):
         SetConfig=setConfig,
         SetCPU=setCPU,
         SetMemory=setMemory,
+        AddTemplate=addTemplate,
         Value=value,
     )

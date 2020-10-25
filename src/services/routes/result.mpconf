@@ -1,0 +1,8 @@
+load("helpers.pinc", "bootstrap_for_service")
+load("//services/registry.pinc", svcs="reg")
+
+
+def main():
+    return dict(
+        [[svc.name, bootstrap_for_service(svc)] for svc in svcs.services]
+    )

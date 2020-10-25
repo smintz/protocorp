@@ -26,6 +26,7 @@ def DigitalOceanCluster(tf, cluster):
     Returns:
         a BaseClusterInterface instance
     """
+    global_dns = CloudflareDNS(tf, CLOUDFLARE_INTERNAL_DOMAIN_ID)
     cluster_dns = CloudflareDNS(
         tf,
         CLOUDFLARE_INTERNAL_DOMAIN_ID,
@@ -106,6 +107,11 @@ def DigitalOceanCluster(tf, cluster):
             )
             cluster_dns.CreateEntry(
                 nmd.tfid + "-star",
+                "*.service",
+                "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
+            )
+            global_dns.CreateEntry(
+                nmd.tfid + "-global",
                 "*.service",
                 "${digitalocean_droplet.%s.ipv4_address}" % nmd.tfid,
             )

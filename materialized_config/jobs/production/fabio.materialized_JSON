@@ -58,8 +58,15 @@
                     }
                   ],
                   "Connect": {
+                    "SidecarService": {
+                      "Tags": [
+                        "connect"
+                      ]
+                    },
                     "SidecarTask": {
-                      "Name": "connect"
+                      "Env": {
+                        "HELLO": "world"
+                      }
                     }
                   }
                 }
@@ -70,11 +77,17 @@
                 "Networks": [
                   {
                     "Mode": "bridge",
-                    "DynamicPorts": [
+                    "ReservedPorts": [
                       {
                         "Label": "lb",
                         "Value": 80,
                         "To": 80
+                      }
+                    ],
+                    "DynamicPorts": [
+                      {
+                        "Label": "ui",
+                        "To": 9998
                       }
                     ]
                   }
@@ -129,8 +142,15 @@
                     }
                   ],
                   "Connect": {
+                    "SidecarService": {
+                      "Tags": [
+                        "connect"
+                      ]
+                    },
                     "SidecarTask": {
-                      "Name": "connect"
+                      "Env": {
+                        "HELLO": "world"
+                      }
                     }
                   }
                 }
@@ -141,11 +161,17 @@
                 "Networks": [
                   {
                     "Mode": "bridge",
-                    "DynamicPorts": [
+                    "ReservedPorts": [
                       {
                         "Label": "lb",
                         "Value": 9999,
                         "To": 9999
+                      }
+                    ],
+                    "DynamicPorts": [
+                      {
+                        "Label": "ui",
+                        "To": 9998
                       }
                     ]
                   }

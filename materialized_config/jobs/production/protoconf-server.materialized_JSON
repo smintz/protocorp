@@ -51,8 +51,15 @@
                     }
                   ],
                   "Connect": {
+                    "SidecarService": {
+                      "Tags": [
+                        "connect"
+                      ]
+                    },
                     "SidecarTask": {
-                      "Name": "connect"
+                      "Env": {
+                        "HELLO": "world"
+                      }
                     }
                   }
                 }
@@ -62,7 +69,13 @@
                 "MemoryMB": 1024,
                 "Networks": [
                   {
-                    "Mode": "bridge"
+                    "Mode": "bridge",
+                    "DynamicPorts": [
+                      {
+                        "Label": "mutate",
+                        "To": 4301
+                      }
+                    ]
                   }
                 ]
               },

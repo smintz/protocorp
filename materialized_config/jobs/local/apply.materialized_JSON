@@ -4,7 +4,7 @@
     "@type": "type.googleapis.com/exec_config.Config",
     "items": [
       {
-        "path": "jobs/local/local-job-executor",
+        "path": "jobs/local/frontend",
         "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
           {
@@ -12,11 +12,101 @@
               "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
             }
-          },
+          }
+        ]
+      },
+      {
+        "path": "jobs/local/adservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
           {
-            "file": {
-              "path": "/local/local-job-executor.json",
-              "serializer": "JSON"
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
+        "path": "jobs/local/cartservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
+        "path": "jobs/local/checkoutservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
+        "path": "jobs/local/currencyservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
+        "path": "jobs/local/paymentservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
+        "path": "jobs/local/productcatalogservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
+        "path": "jobs/local/recommendationservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
+        "path": "jobs/local/shippingservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
             }
           }
         ]
@@ -30,12 +120,6 @@
               "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
             }
-          },
-          {
-            "file": {
-              "path": "/local/protoconf-agent.json",
-              "serializer": "JSON"
-            }
           }
         ]
       },
@@ -47,12 +131,6 @@
             "http": {
               "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
-            }
-          },
-          {
-            "file": {
-              "path": "/local/protoconf-server.json",
-              "serializer": "JSON"
             }
           }
         ]
@@ -66,12 +144,6 @@
               "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
             }
-          },
-          {
-            "file": {
-              "path": "/local/fabio.json",
-              "serializer": "JSON"
-            }
           }
         ]
       },
@@ -83,12 +155,6 @@
             "http": {
               "uri": "http://localhost:4646/v1/jobs",
               "method": "POST"
-            }
-          },
-          {
-            "file": {
-              "path": "/local/protoconf-inserter.json",
-              "serializer": "JSON"
             }
           }
         ]

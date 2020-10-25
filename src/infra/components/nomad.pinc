@@ -278,6 +278,10 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
                     mode="0755",
                     b64_escape=True,
                 ),
+                File(
+                    "/etc/profile.d/nomad.sh",
+                    content="export NOMAD_ADDR=https://localhost:4646",
+                ),
                 Command("/etc/nomad.d/scripts/before_nomad.sh"),
             ]
         )

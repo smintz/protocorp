@@ -38,7 +38,9 @@
                 "CPU": 1000,
                 "MemoryMB": 64,
                 "Networks": [
-                  {}
+                  {
+                    "Mode": "bridge"
+                  }
                 ]
               },
               "Templates": [
@@ -89,8 +91,15 @@
                     }
                   ],
                   "Connect": {
+                    "SidecarService": {
+                      "Tags": [
+                        "connect"
+                      ]
+                    },
                     "SidecarTask": {
-                      "Name": "connect"
+                      "Env": {
+                        "HELLO": "world"
+                      }
                     }
                   }
                 }
@@ -100,7 +109,13 @@
                 "MemoryMB": 512,
                 "Networks": [
                   {
-                    "Mode": "bridge"
+                    "Mode": "bridge",
+                    "DynamicPorts": [
+                      {
+                        "Label": "webhooks",
+                        "To": 9000
+                      }
+                    ]
                   }
                 ]
               },
