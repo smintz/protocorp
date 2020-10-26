@@ -77,7 +77,7 @@ scrape_configs:
       format: ['prometheus']
     tls_config:
       insecure_skip_verify: true
-  - job_name: 'prometheus'
+  - job_name: 'envoy'
     consul_sd_configs:
     - server: 'localhost:8500'
       tags: ["envoy-admin"]
