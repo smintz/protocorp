@@ -80,7 +80,7 @@ main() {
   export VAULT_TOKEN=$(consul kv get vault_init | openssl aes-256-cbc -d -a -kfile /etc/vault.d/tls/consul_encrypt.key | jq -r '.root_token')
   vault policy write admin /etc/vault.d/scripts/admin.hcl
   vault policy write github-policy /etc/vault.d/scripts/github-policy.hcl
-  vault write kv/github-creds @/root/github-creds
+  vault write kv/github-creds url=$(cat /etc/vault/scripts/github-creds)
   vault auth enable cert
   vault write auth/cert/certs/terraform \
     display_name=terraform \
@@ -264,7 +264,10 @@ seal "gcpckms" {{
                 Directory(
                     "/etc/vault.d/tls", mode="700", owner="vault", group="vault"
                 ),
-                File("/root/github-creds", "${var.github_secret_url}"),
+                File(
+                    "/etc/vault.d/scripts/github-creds",
+                    "${var.github_secret_url}",
+                ),
                 File(
                     "/etc/vault.d/tls/key.pem",
                     "${%s}" % pki.private_key,
