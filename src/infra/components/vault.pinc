@@ -264,7 +264,7 @@ seal "gcpckms" {{
                 Directory(
                     "/etc/vault.d/tls", mode="700", owner="vault", group="vault"
                 ),
-                File("/root/github-creds", "${var.github-secert-url}"),
+                File("/root/github-creds", "${var.github_secret_url}"),
                 File(
                     "/etc/vault.d/tls/key.pem",
                     "${%s}" % pki.private_key,
