@@ -206,6 +206,7 @@ ca_file = "/usr/local/share/ca-certificates/protoconf.crt"
 addresses {
     https = "0.0.0.0"
     dns = "169.254.1.1"
+    grpc = "169.254.1.1"
 }
 ports {
     https = 8501
