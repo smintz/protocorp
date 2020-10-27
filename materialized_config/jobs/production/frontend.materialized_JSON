@@ -8,6 +8,9 @@
       "Name": "frontend",
       "Type": "service",
       "Priority": 75,
+      "Datacenters": [
+        "ams3c01"
+      ],
       "TaskGroups": [
         {
           "Name": "prod",
@@ -85,6 +88,7 @@
                 {
                   "Name": "frontend-envoy",
                   "Tags": [
+                    "httpprefix-frontend-envoy.service.ams3c01.pco.nf/",
                     "envoy-admin"
                   ],
                   "PortLabel": "envoyadmin",
@@ -115,6 +119,7 @@
                 {
                   "Name": "frontend",
                   "Tags": [
+                    "httpprefix-frontend.service.ams3c01.pco.nf/",
                     "prod",
                     "v0.1.4-31-gc4d8670"
                   ],

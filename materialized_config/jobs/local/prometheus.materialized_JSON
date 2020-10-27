@@ -42,6 +42,9 @@
               "Services": [
                 {
                   "Name": "promehteus",
+                  "Tags": [
+                    "httpprefix-prometheus.service.ams3c01.pco.nf/"
+                  ],
                   "PortLabel": "http",
                   "Checks": [
                     {
