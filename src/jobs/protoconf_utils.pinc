@@ -106,7 +106,7 @@ mutate.NewService(
     to=4301,
     checks=[
         ServiceCheck(
-            Type="tcp", Interval=10 * 100000000, Timeout=2 * 100000000,
+            Type="tcp", Interval=10 * 1000000000, Timeout=2 * 1000000000,
         )
     ],
     tags=["grpcprefix-/v1.ProtoconfMutationService/MutateConfig"],

@@ -265,10 +265,6 @@ seal "gcpckms" {{
                     "/etc/vault.d/tls", mode="700", owner="vault", group="vault"
                 ),
                 File(
-                    "/etc/vault.d/scripts/github-creds",
-                    "${var.github_secret_url}",
-                ),
-                File(
                     "/etc/vault.d/tls/key.pem",
                     "${%s}" % pki.private_key,
                     mode="600",
@@ -314,6 +310,9 @@ seal "gcpckms" {{
                 owner="vault",
                 group="vault",
                 mode="0755",
+            ),
+            File(
+                "/etc/vault.d/scripts/github-creds", "${var.github_secret_url}",
             ),
             File(
                 "/etc/vault.d/scripts/post_start.sh",
