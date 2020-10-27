@@ -80,6 +80,7 @@ main() {
   export VAULT_TOKEN=$(consul kv get vault_init | openssl aes-256-cbc -d -a -kfile /etc/vault.d/tls/consul_encrypt.key | jq -r '.root_token')
   vault policy write admin /etc/vault.d/scripts/admin.hcl
   vault policy write github-policy /etc/vault.d/scripts/github-policy.hcl
+  vault secrets enable kv
   vault write kv/github-creds url=$(cat /etc/vault.d/scripts/github-creds)
   vault auth enable cert
   vault write auth/cert/certs/terraform \
