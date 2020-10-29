@@ -4,6 +4,18 @@
     "@type": "type.googleapis.com/exec_config.Config",
     "items": [
       {
+        "path": "jobs/local/local-job-executor",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
         "path": "jobs/local/frontend",
         "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [

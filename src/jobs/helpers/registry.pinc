@@ -8,7 +8,9 @@ load(
     "Action",
     "ActionTypeHttp",
 )
+load("../protoconf_exec_task.pinc", "ProtoconfExecTask")
 load("/nomad/v0.11.1/api.proto", "RegisterJobRequest")
+load("/nomad/v0.11.1/api.pinc", "NOMAD_PROTO")
 load("job.pinc", "NewJob")
 
 
@@ -50,6 +52,15 @@ def JobRegistry(
         j = NewJob(*args, **kwargs)
         register_job(j.job)
         return j
+
+    executor_job = NewJob(executor_name)
+    executor_job.AddTask(
+        ProtoconfExecTask(
+            "/".join([config_root, "apply"]),
+            {"nomad/v0.11.1/api.proto": NOMAD_PROTO},
+        )
+    )
+    register_job(executor_job.job)
 
     return struct(
         output=output,

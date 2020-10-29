@@ -4,6 +4,18 @@
     "@type": "type.googleapis.com/exec_config.Config",
     "items": [
       {
+        "path": "jobs/production/production-jobs-executor",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
         "path": "jobs/production/frontend",
         "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
