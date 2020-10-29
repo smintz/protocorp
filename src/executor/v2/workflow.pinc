@@ -1,0 +1,36 @@
+load(
+    "//executor/exec_config.proto",
+    "Action",
+    "ActionTypeAcquireLeadership",
+    "ActionTypeSpawnCommand",
+    "ActionTypeRunCommand",
+    "ActionTypeWriteToFile",
+    "ExecConfig",
+    "Serializer",
+    "WatcherConfig",
+)
+
+
+def Workflow(name):
+    def aid(action_id):
+        return ".".join([name, action_id])
+
+    def action(action_id, **kwargs):
+        return Action(id=aid(action_id), then=[], on_error=[], **kwargs,)
+
+    def _command(cmd, args=[], env={}, cwd=None):
+        return ActionTypeRunCommand(cmd=cmd, args=args, env=env, cwd=cwd)
+
+    def command(action_id, *args, **kwargs):
+        return action(action_id, command=_command(*args, **kwargs), **kwargs)
+
+    def spawn(action_id, *args, **kwargs):
+        return action(
+            action_id,
+            spawn=ActionTypeSpawnCommand(command=_command(*args, **kwargs)),
+            **kwargs,
+        )
+
+    # def file(action_id, )
+
+    return struct()
