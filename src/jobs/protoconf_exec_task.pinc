@@ -4,6 +4,22 @@ ProtoconfExecTask
 load("helpers/task.pinc", "NewTask")
 load("consts.pinc", PROTOCONF_VERSION="PROTOCONF_V_VERSION")
 load("/nomad/v0.11.1/api.proto", "Template")
+load("//rollout/rollout.pinc", "GradualRollout")
+load("//rollout/rollout.proto", "RolloutConfigRegistry", "RolloutConfig")
+load("mutable:rollout/protoconf_exec", p="value")
+
+pct = float(p.global_counter / 100)
+rollout_config = RolloutConfigRegistry(
+    configs={
+        "PROTOCONF_EXEC_CPU": RolloutConfig(
+            name="PROTOCONF_EXEC_CPU",
+            percentage=pct,
+            # percentage=1.0,
+        )
+    }
+)
+
+rollout = GradualRollout("PROTOCONF_EXEC_CPU", rollout_config)
 
 
 def ProtoconfExecTask(config, templates={}):
@@ -26,4 +42,6 @@ def ProtoconfExecTask(config, templates={}):
     task.SetConfig("volumes", ["/etc/ssl:/etc/ssl"])
     task.SetConfig("args", ["exec", "-config=" + config, "-proto_dir=/local"])
     task.SetCPU(1000)
+    if rollout.for_item(config):
+        task.SetCPU(100)
     return task.task
