@@ -3,147 +3,147 @@
     "cloudflare_record": {
       "server-0-ams3-c01": {
         "name": "${random_pet.server-0-ams3-c01.id}.node.ams3c01",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-0-ams3-c01-consul": {
         "name": "consul.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-0-ams3-c01-global": {
         "name": "*.service",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
         "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
       },
       "server-0-ams3-c01-nomad": {
         "name": "nomad.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-0-ams3-c01-star": {
         "name": "*.service.ams3c01",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-0-ams3-c01-vault": {
         "name": "vault.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-0-ams3-c01-wan": {
         "name": "wan",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-0-ams3-c01.ipv4_address}",
         "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
       },
       "server-1-ams3-c01": {
         "name": "${random_pet.server-1-ams3-c01.id}.node.ams3c01",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-1-ams3-c01-consul": {
         "name": "consul.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-1-ams3-c01-global": {
         "name": "*.service",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
         "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
       },
       "server-1-ams3-c01-nomad": {
         "name": "nomad.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-1-ams3-c01-star": {
         "name": "*.service.ams3c01",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-1-ams3-c01-vault": {
         "name": "vault.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-1-ams3-c01-wan": {
         "name": "wan",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-1-ams3-c01.ipv4_address}",
         "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
       },
       "server-2-ams3-c01": {
         "name": "${random_pet.server-2-ams3-c01.id}.node.ams3c01",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-2-ams3-c01-consul": {
         "name": "consul.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-2-ams3-c01-global": {
         "name": "*.service",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
         "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
       },
       "server-2-ams3-c01-nomad": {
         "name": "nomad.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-2-ams3-c01-star": {
         "name": "*.service.ams3c01",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-2-ams3-c01-vault": {
         "name": "vault.service.ams3c01",
-        "ttl": 1,
+        "ttl": "1",
         "type": "A",
         "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
         "zone_id": "f05cf5af25ffab8e186f43cfea099628"
       },
       "server-2-ams3-c01-wan": {
         "name": "wan",
-        "ttl": 120,
+        "ttl": "120",
         "type": "A",
         "value": "${digitalocean_droplet.server-2-ams3-c01.ipv4_address}",
         "zone_id": "0280c074462b8ec6ff40f9b1790f7af3"
@@ -223,10 +223,10 @@
     },
     "random_id": {
       "consul_encrypt": {
-        "byte_length": 16
+        "byte_length": "16"
       },
       "nomad_encrypt": {
-        "byte_length": 16
+        "byte_length": "16"
       }
     },
     "random_pet": {
@@ -427,8 +427,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.consul-encrypt.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-0-ams3-c01-consul": {
         "allowed_uses": [
@@ -441,8 +441,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-0-ams3-c01-consul.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-0-ams3-c01-nomad": {
         "allowed_uses": [
@@ -455,8 +455,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-0-ams3-c01-nomad.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-0-ams3-c01-vault": {
         "allowed_uses": [
@@ -469,8 +469,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-0-ams3-c01-vault.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-1-ams3-c01-consul": {
         "allowed_uses": [
@@ -483,8 +483,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-1-ams3-c01-consul.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-1-ams3-c01-nomad": {
         "allowed_uses": [
@@ -497,8 +497,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-1-ams3-c01-nomad.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-1-ams3-c01-vault": {
         "allowed_uses": [
@@ -511,8 +511,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-1-ams3-c01-vault.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-2-ams3-c01-consul": {
         "allowed_uses": [
@@ -525,8 +525,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-2-ams3-c01-consul.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-2-ams3-c01-nomad": {
         "allowed_uses": [
@@ -539,8 +539,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-2-ams3-c01-nomad.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "server-2-ams3-c01-vault": {
         "allowed_uses": [
@@ -553,8 +553,8 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.server-2-ams3-c01-vault.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       },
       "vault-terraform": {
         "allowed_uses": [
@@ -567,15 +567,15 @@
         "ca_key_algorithm": "${tls_private_key.root.algorithm}",
         "ca_private_key_pem": "${tls_private_key.root.private_key_pem}",
         "cert_request_pem": "${tls_cert_request.vault-terraform.cert_request_pem}",
-        "early_renewal_hours": 720,
-        "validity_period_hours": 2160
+        "early_renewal_hours": "720",
+        "validity_period_hours": "2160"
       }
     },
     "tls_private_key": {
       "consul-encrypt": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "root": {
         "algorithm": "ECDSA",
@@ -584,52 +584,52 @@
       "server-0-ams3-c01-consul": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "server-0-ams3-c01-nomad": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "server-0-ams3-c01-vault": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "server-1-ams3-c01-consul": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "server-1-ams3-c01-nomad": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "server-1-ams3-c01-vault": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "server-2-ams3-c01-consul": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "server-2-ams3-c01-nomad": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "server-2-ams3-c01-vault": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       },
       "vault-terraform": {
         "algorithm": "ECDSA",
         "ecdsa_curve": "P384",
-        "rsa_bits": 4096
+        "rsa_bits": "4096"
       }
     },
     "tls_self_signed_cert": {
@@ -644,11 +644,11 @@
         "dns_names": [
           "protoconf.com"
         ],
-        "early_renewal_hours": 43800,
+        "early_renewal_hours": "43800",
         "is_ca_certificate": true,
         "key_algorithm": "${tls_private_key.root.algorithm}",
         "private_key_pem": "${tls_private_key.root.private_key_pem}",
-        "validity_period_hours": 87600,
+        "validity_period_hours": "87600",
         "subject": {
           "common_name": "protoconf.com",
           "organization": "protoconf",

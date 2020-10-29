@@ -96,8 +96,8 @@
                     {
                       "Type": "http",
                       "Path": "/ready",
-                      "Interval": 10000000000,
-                      "Timeout": 2000000000,
+                      "Interval": "10000000000",
+                      "Timeout": "2000000000",
                       "CheckRestart": {
                         "Limit": 5
                       }
@@ -127,8 +127,8 @@
                   "Checks": [
                     {
                       "Type": "tcp",
-                      "Interval": 10000000000,
-                      "Timeout": 2000000000,
+                      "Interval": "10000000000",
+                      "Timeout": "2000000000",
                       "CheckRestart": {
                         "Limit": 5
                       }
