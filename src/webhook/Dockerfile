@@ -1,4 +1,4 @@
-FROM protoconf/protoconf:v0.1.1-beta10.0 AS protoconf
+FROM protoconf/protoconf:0.1.2-rc1.0- AS protoconf
 FROM almir/webhook:2.6.11 AS webhook
 
 FROM ubuntu:18.04
