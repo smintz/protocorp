@@ -191,7 +191,7 @@
                 ]
               },
               "Resources": {
-                "CPU": 1000,
+                "CPU": 100,
                 "MemoryMB": 64,
                 "Networks": [
                   {
