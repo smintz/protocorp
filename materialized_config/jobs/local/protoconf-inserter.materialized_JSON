@@ -28,7 +28,7 @@
                 "dns_options": [
                   "169.254.1.1"
                 ],
-                "image": "protoconf/protoconf:0.1.1-b5da114c51b921c68d116211842da1f9d292fcb5",
+                "image": "protoconf/protoconf:0.1.2-rc1.0-",
                 "network_mode": "host",
                 "volumes": [
                   "/etc/ssl:/etc/ssl"
