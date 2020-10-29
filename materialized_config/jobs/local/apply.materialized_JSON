@@ -28,6 +28,18 @@
         ]
       },
       {
+        "path": "jobs/local/adservice",
+        "protoFile": "nomad/v0.11.1/api.proto",
+        "actions": [
+          {
+            "http": {
+              "uri": "http://localhost:4646/v1/jobs",
+              "method": "POST"
+            }
+          }
+        ]
+      },
+      {
         "path": "jobs/local/protoconf-agent",
         "protoFile": "nomad/v0.11.1/api.proto",
         "actions": [
