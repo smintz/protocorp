@@ -76,6 +76,7 @@ def GoogleCluster(tf, cluster):
                 ),
             ),
             network_interface=GoogleComputeInstance.NetworkInterface(network="default"),
+            allow_stopping_for_update=True,
             service_account=GoogleComputeInstance.ServiceAccount(
                 scopes=[
                     "https://www.googleapis.com/auth/userinfo.email",
