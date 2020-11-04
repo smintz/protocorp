@@ -9,7 +9,8 @@
       "Type": "system",
       "Priority": 75,
       "Datacenters": [
-        "ams3c01"
+        "ams3c01",
+        "europe-west4c01"
       ],
       "TaskGroups": [
         {

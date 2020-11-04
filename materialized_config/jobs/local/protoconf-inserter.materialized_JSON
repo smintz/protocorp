@@ -76,15 +76,16 @@
                 {
                   "Name": "webhooks",
                   "Tags": [
-                    "httpprefix-webhooks.service.ams3c01.pco.nf/"
+                    "httpprefix-webhooks.service.ams3c01.pco.nf/",
+                    "httpprefix-webhooks.service.europe-west4c01.pco.nf/"
                   ],
                   "PortLabel": "webhooks",
                   "Checks": [
                     {
                       "Type": "http",
                       "Path": "/hooks/protoconf-insert",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }

@@ -46,8 +46,8 @@
                   "Checks": [
                     {
                       "Type": "tcp",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000"
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000
                     }
                   ],
                   "Connect": {

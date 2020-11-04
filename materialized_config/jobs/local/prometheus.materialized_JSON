@@ -43,14 +43,15 @@
                 {
                   "Name": "promehteus",
                   "Tags": [
-                    "httpprefix-prometheus.service.ams3c01.pco.nf/"
+                    "httpprefix-prometheus.service.ams3c01.pco.nf/",
+                    "httpprefix-prometheus.service.europe-west4c01.pco.nf/"
                   ],
                   "PortLabel": "http",
                   "Checks": [
                     {
                       "Type": "tcp",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }

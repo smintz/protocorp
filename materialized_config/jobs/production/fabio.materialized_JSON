@@ -9,7 +9,8 @@
       "Type": "system",
       "Priority": 75,
       "Datacenters": [
-        "ams3c01"
+        "ams3c01",
+        "europe-west4c01"
       ],
       "TaskGroups": [
         {
@@ -46,15 +47,16 @@
                 {
                   "Name": "fabio-http",
                   "Tags": [
-                    "httpprefix-fabio-http.service.ams3c01.pco.nf/"
+                    "httpprefix-fabio-http.service.ams3c01.pco.nf/",
+                    "httpprefix-fabio-http.service.europe-west4c01.pco.nf/"
                   ],
                   "PortLabel": "ui",
                   "Checks": [
                     {
                       "Type": "http",
                       "Path": "/health",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }
@@ -133,15 +135,16 @@
                 {
                   "Name": "fabio-grpc",
                   "Tags": [
-                    "httpprefix-fabio-grpc.service.ams3c01.pco.nf/"
+                    "httpprefix-fabio-grpc.service.ams3c01.pco.nf/",
+                    "httpprefix-fabio-grpc.service.europe-west4c01.pco.nf/"
                   ],
                   "PortLabel": "ui",
                   "Checks": [
                     {
                       "Type": "http",
                       "Path": "/health",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }

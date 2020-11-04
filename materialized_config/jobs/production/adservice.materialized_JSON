@@ -9,7 +9,8 @@
       "Type": "service",
       "Priority": 75,
       "Datacenters": [
-        "ams3c01"
+        "ams3c01",
+        "europe-west4c01"
       ],
       "TaskGroups": [
         {
@@ -82,6 +83,7 @@
                   "Name": "adservice-envoy",
                   "Tags": [
                     "httpprefix-adservice-envoy.service.ams3c01.pco.nf/",
+                    "httpprefix-adservice-envoy.service.europe-west4c01.pco.nf/",
                     "envoy-admin"
                   ],
                   "PortLabel": "envoyadmin",
@@ -89,8 +91,8 @@
                     {
                       "Type": "http",
                       "Path": "/ready",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }
@@ -113,6 +115,7 @@
                   "Name": "adservice",
                   "Tags": [
                     "httpprefix-adservice.service.ams3c01.pco.nf/",
+                    "httpprefix-adservice.service.europe-west4c01.pco.nf/",
                     "prod",
                     "v0.1.4-31-gc4d8670"
                   ],
@@ -120,8 +123,8 @@
                   "Checks": [
                     {
                       "Type": "tcp",
-                      "Interval": "10000000000",
-                      "Timeout": "2000000000",
+                      "Interval": 10000000000,
+                      "Timeout": 2000000000,
                       "CheckRestart": {
                         "Limit": 5
                       }
