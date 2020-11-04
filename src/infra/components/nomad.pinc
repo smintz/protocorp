@@ -230,14 +230,10 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
     setup = [
         InstallCNIPlugins(),
         NomadInstall(version),
-        File(
-            "/etc/nomad.d/nomad.hcl",
-            content="\n".join(['data_dir = "/opt/nomad"']),
-        ),
+        File("/etc/nomad.d/nomad.hcl", content="\n".join(['data_dir = "/opt/nomad"']),),
         File("/etc/nomad.d/datacenter.hcl", 'datacenter = "{}"'.format(dc)),
-        File(
-            "/etc/nomad.d/client.hcl", content=CLIENT_CONFIG.format(role=role)
-        ),
+        File("/etc/nomad.d/region.hcl", 'region = "{}"'.format(dc)),
+        File("/etc/nomad.d/client.hcl", content=CLIENT_CONFIG.format(role=role)),
         File(
             "/etc/nomad.d/vault.hcl",
             content=VAULT_CONFIG.format(dc=dc, domain=nf.domain),
@@ -306,9 +302,7 @@ def Nomad(role, nf, version=NOMAD_VERSION, ca=None, additional_config=None):
             [
                 Directory("/etc/nomad.d/tls"),
                 File(
-                    "/etc/nomad.d/tls/key.pem",
-                    "${%s}" % pki.private_key,
-                    mode="600",
+                    "/etc/nomad.d/tls/key.pem", "${%s}" % pki.private_key, mode="600",
                 ),
                 File("/etc/nomad.d/tls/cert.pem", "${%s}" % pki.certificate),
                 File(
@@ -331,10 +325,7 @@ tls {
         )
     if additional_config:
         setup.append(
-            File(
-                "/etc/nomad.d/99-additional-configs.hcl",
-                content=additional_config,
-            )
+            File("/etc/nomad.d/99-additional-configs.hcl", content=additional_config,)
         )
 
     setup.append(Systemd("nomad", service))
