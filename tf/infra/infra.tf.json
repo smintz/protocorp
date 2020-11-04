@@ -238,6 +238,12 @@
           "automatic_restart": true,
           "on_host_maintenance": "MIGRATE"
         },
+        "service_account": {
+          "scopes": [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/compute.readonly"
+          ]
+        },
         "boot_disk": {
           "auto_delete": true,
           "initialize_params": {
@@ -264,6 +270,12 @@
           "automatic_restart": true,
           "on_host_maintenance": "MIGRATE"
         },
+        "service_account": {
+          "scopes": [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/compute.readonly"
+          ]
+        },
         "boot_disk": {
           "auto_delete": true,
           "initialize_params": {
@@ -289,6 +301,12 @@
         "scheduling": {
           "automatic_restart": true,
           "on_host_maintenance": "MIGRATE"
+        },
+        "service_account": {
+          "scopes": [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/compute.readonly"
+          ]
         },
         "boot_disk": {
           "auto_delete": true,

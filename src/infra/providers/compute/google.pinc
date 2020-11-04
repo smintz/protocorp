@@ -75,8 +75,12 @@ def GoogleCluster(tf, cluster):
                     image="ubuntu-os-cloud/ubuntu-1804-lts",
                 ),
             ),
-            network_interface=GoogleComputeInstance.NetworkInterface(
-                network="default"
+            network_interface=GoogleComputeInstance.NetworkInterface(network="default"),
+            service_account=GoogleComputeInstance.ServiceAccount(
+                scopes=[
+                    "https://www.googleapis.com/auth/userinfo.email",
+                    "https://www.googleapis.com/auth/compute.readonly",
+                ]
             ),
             lifecycle=Lifecycle(create_before_destroy=True),
         )
@@ -103,10 +107,7 @@ def GoogleCluster(tf, cluster):
 
     def create_tier_local(tier, userdata):
         nmd = ServerNameMetadata(tf).create(
-            tier.name,
-            0,
-            cluster.region,
-            get_cluster_name(cluster.cluster_number),
+            tier.name, 0, cluster.region, get_cluster_name(cluster.cluster_number),
         )
 
         tf.google_compute_region_instance_group_manager[
@@ -148,9 +149,7 @@ def GoogleCluster(tf, cluster):
                 ],
             )
 
-        tf.google_compute_instance_template[
-            tier.name
-        ] = GoogleComputeInstanceTemplate(
+        tf.google_compute_instance_template[tier.name] = GoogleComputeInstanceTemplate(
             name_prefix=tier.name,
             machine_type=get_instance_size(nmd),
             tags=[tier.name],
@@ -175,7 +174,5 @@ def GoogleCluster(tf, cluster):
     return BaseClusterInterface(
         tf,
         create_tier_func=create_tier,
-        join="provider=gce tag_value=server zone_pattern={}.*".format(
-            cluster.region
-        ),
+        join="provider=gce tag_value=server zone_pattern={}.*".format(cluster.region),
     )
