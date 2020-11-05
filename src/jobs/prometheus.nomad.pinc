@@ -126,7 +126,7 @@ task.SetConfig(
 task.AddTemplate("local/prometheus.yml", PROM_CONFIG)
 
 task.NewService(
-    "promehteus",
+    "prometheus",
     9090,
     label="http",
     tags=[

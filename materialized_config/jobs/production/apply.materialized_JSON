@@ -9,7 +9,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "uri": "https://nomad.service.pco.nf:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -21,7 +21,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "uri": "https://nomad.service.pco.nf:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -33,7 +33,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "uri": "https://nomad.service.pco.nf:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -45,7 +45,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "uri": "https://nomad.service.pco.nf:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -57,7 +57,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "uri": "https://nomad.service.pco.nf:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -69,7 +69,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "uri": "https://nomad.service.pco.nf:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -81,7 +81,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "uri": "https://nomad.service.pco.nf:4646/v1/jobs",
               "method": "POST"
             }
           }
@@ -93,7 +93,7 @@
         "actions": [
           {
             "http": {
-              "uri": "https://nomad.service.ams3c01.pco.nf:4646/v1/jobs",
+              "uri": "https://nomad.service.pco.nf:4646/v1/jobs",
               "method": "POST"
             }
           }
