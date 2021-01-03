@@ -8,10 +8,6 @@
       "Name": "protoconf-inserter",
       "Type": "service",
       "Priority": 75,
-      "Datacenters": [
-        "ams3c01",
-        "europe-west4c01"
-      ],
       "TaskGroups": [
         {
           "Name": "default",
@@ -76,10 +72,6 @@
               "Services": [
                 {
                   "Name": "webhooks",
-                  "Tags": [
-                    "httpprefix-webhooks.service.ams3c01.pco.nf/",
-                    "httpprefix-webhooks.service.europe-west4c01.pco.nf/"
-                  ],
                   "PortLabel": "webhooks",
                   "Checks": [
                     {

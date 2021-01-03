@@ -11,7 +11,7 @@ def ServerNameMetadata(tf):
         tfid = "-".join([role, str(id), region, cluster])
         tf.random_pet[tfid] = RandomPet(prefix=role)
         hostname = "${random_pet.%s.id}" % tfid
-        dc = region + cluster
+        dc = cluster
         fqdn = "{}.node.{}.{}".format(hostname, dc, CONSUL_DOMAIN)
         return ServerMetadata(
             cluster_name=cluster,

@@ -7,6 +7,7 @@ load(
     "GoogleComputeInstance",
     "GoogleComputeInstanceTemplate",
     "GoogleComputeRegionInstanceGroupManager",
+    "GoogleComputeBackendService",
     # "GoogleKmsCryptoKey",
     # "GoogleKmsKeyRing",
     # "GoogleKmsKeyRingIamBinding",
@@ -158,7 +159,7 @@ def GoogleCluster(tf, cluster):
             scheduling=GoogleComputeInstanceTemplate.Scheduling(
                 automatic_restart=True,
                 on_host_maintenance="MIGRATE",
-                preemptible=False,
+                preemptible=True,
             ),
             disk=GoogleComputeInstanceTemplate.Disk(
                 boot=True,
@@ -170,6 +171,12 @@ def GoogleCluster(tf, cluster):
             ),
             service_account=svc_account,
             lifecycle=Lifecycle(create_before_destroy=True),
+        )
+
+        tf.google_compute_backend_service = GoogleComputeBackendService(
+            backend=GoogleComputeBackendService.Backend(
+                
+            )
         )
 
     return BaseClusterInterface(

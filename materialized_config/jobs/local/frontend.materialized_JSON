@@ -88,8 +88,6 @@
                 {
                   "Name": "frontend-envoy",
                   "Tags": [
-                    "httpprefix-frontend-envoy.service.ams3c01.pco.nf/",
-                    "httpprefix-frontend-envoy.service.europe-west4c01.pco.nf/",
                     "envoy-admin"
                   ],
                   "PortLabel": "envoyadmin",
@@ -120,8 +118,6 @@
                 {
                   "Name": "frontend",
                   "Tags": [
-                    "httpprefix-frontend.service.ams3c01.pco.nf/",
-                    "httpprefix-frontend.service.europe-west4c01.pco.nf/",
                     "prod",
                     "v0.1.4-31-gc4d8670"
                   ],

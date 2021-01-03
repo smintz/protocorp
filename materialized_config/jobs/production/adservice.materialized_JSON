@@ -8,10 +8,6 @@
       "Name": "adservice",
       "Type": "service",
       "Priority": 75,
-      "Datacenters": [
-        "ams3c01",
-        "europe-west4c01"
-      ],
       "TaskGroups": [
         {
           "Name": "prod",
@@ -82,8 +78,6 @@
                 {
                   "Name": "adservice-envoy",
                   "Tags": [
-                    "httpprefix-adservice-envoy.service.ams3c01.pco.nf/",
-                    "httpprefix-adservice-envoy.service.europe-west4c01.pco.nf/",
                     "envoy-admin"
                   ],
                   "PortLabel": "envoyadmin",
@@ -114,8 +108,6 @@
                 {
                   "Name": "adservice",
                   "Tags": [
-                    "httpprefix-adservice.service.ams3c01.pco.nf/",
-                    "httpprefix-adservice.service.europe-west4c01.pco.nf/",
                     "prod",
                     "v0.1.4-31-gc4d8670"
                   ],
